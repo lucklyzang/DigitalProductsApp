@@ -1,31 +1,30 @@
 <template>
   <div class="content-box">
+		<NavBar path="/" />
 		<div class="content-top">
 			<span>登录某某</span>
 			<span>发现有趣</span>
 		</div>
 		<div class="content-middle">
-			<div class="phone-number">
-				<van-field class="uni-input" v-model="phoneNumber" @input="inputEvent" type="number" placeholder="请输入手机号码" />
-			</div>
-			<div class="send-auth-box" @click="loginToIndex">
-				<span>发送短信验证码</span>
-			</div>
 			<div class="tip-info">
-        <van-icon name="checked" size="15" color="#bc8c51"/>
+        		<van-icon name="checked" size="15" color="#bc8c51"/>
 				<span>已阅读并同意</span>
 				<span>《用户协议》</span>
 				<span>和</span>
 				<span>《隐私协议》</span>
 			</div>
+			<div class="send-auth-box" @click="weixinLogin">
+				<van-icon name="chat-o" size="30" color="#18c618"/>
+				<span>微信快速登录</span>
+			</div>
 		</div>
 		<div class="content-bottom">
 			<div>
 				<span>
-					微信登录
+					其它登录方式
 				</span>
 			</div>
-			<div @click="weixinAuthEvent">
+			<div @click="otherAuthEvent">
 				<img :src="weixinPng">
 			</div>
 		</div>
@@ -36,15 +35,16 @@
 import {logIn} from '@/api/login.js'
 import { mapGetters, mapMutations } from 'vuex'
 import Loading from '@/components/Loading'
+import NavBar from '@/components/NavBar'
 import { setStore, getStore, IsPC, scanCode } from '@/common/js/utils'
 export default {
   name: 'Login',
   components: {
-    Loading
+    Loading,
+	NavBar
   },
   data () {
     return {
-      phoneNumber: '',
       loadingspan: '登录中,请稍候···',
       showLoadingHint: false,
       weixinPng :require("@/common/images/login/weixin.png")
@@ -89,30 +89,33 @@ export default {
       'changeTitleTxt',
       'changeOverDueWay'
     ]),
-    // 输入框值改变事件
-    inputEvent (event) {
-    },
-	//微信登录
-	weixinAuthEvent () {
-		this.$router.push({path:'/weixinLogin'})
+	//其它方式登录
+	otherAuthEvent () {
+		this.$router.push({path:'/home'})
 	},
     // 验证码
-    loginToIndex () {
+    weixinLogin () {
       this.$router.push({path:'/verificationCode'})
     }
   }
 }
 </script>
 <style lang="less" scoped>
-@import "../common/stylus/variable.less";
-@import "../common/stylus/mixin.less";
-@import "../common/stylus/modifyUi.less";
+@import "~@/common/stylus/variable.less";
+@import "~@/common/stylus/mixin.less";
+@import "~@/common/stylus/modifyUi.less";
    .content-box {
     .content-wrapper();
+	/deep/ .van-nav-bar {
+		.van-icon {
+			color: #fff !important;
+			font-size: 24px !important
+		}
+	};
     background: #252525;
 		.content-top {
-			height: 35vh;
-			line-height: 35vh;
+			height: 40vh;
+			line-height: 40vh;
 			width: 80%;
 			margin: 0 auto;
 			span {
@@ -130,23 +133,6 @@ export default {
 		.content-middle {
 			width: 80%;
 			margin: 0 auto;
-			.phone-number {
-        .bottom-border-1px(#6f6f6f);
-        /deep/ .uni-input {
-					color: #fff;
-					height: 50px;
-					font-size: 18px;
-          background: transparent;
-          .van-field__value {
-            font-size: 18px
-          };
-          .van-field__body {
-            .van-field__control {
-              color: #fff
-            }
-          }
-				}
-			};
 			.send-auth-box {
 				height: 50px;
 				border-radius: 30px;
@@ -154,7 +140,14 @@ export default {
 				background: #ffba3a;
 				margin: 30px 0;
 				text-align: center;
-				line-height: 50px
+				line-height: 50px;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: center;
+				align-items: center;
+				/deep/ .van-icon {
+					margin-right: 8px
+				}
 			};
 			.tip-info {
 				font-size: 12px;

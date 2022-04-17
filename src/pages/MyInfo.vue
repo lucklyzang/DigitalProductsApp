@@ -1,6 +1,6 @@
 <template>
   <div class="page-box">
-    <van-nav-bar :fixed="true" :safe-area-inset-top="true" :border="false"/>
+    <NavBar :leftArrow="false" />
     <div class="content-box">
       <div class="content-top">
         <div class="person-message-box">
@@ -19,57 +19,24 @@
           </div>
         </div>
         <div class="function-zone">
-          <div class="function-zone-icon-list" v-for="(item,index) in zoneIconList" :key="index">
+          <div class="function-zone-icon-list" v-for="(item,index) in zoneIconList" :key="index" @click="featureSetTopEvent(item)">
             <van-icon :name="item.icon" size="32" color="#ee9f4d" />
             <span>{{item.span}}</span>
           </div>
         </div>
 		  </div>
       <div class="content-bottom">
-      	<div class="nick-name">
-				<div class="left">
-          <van-icon name="contact" size="20" color="#c0bebe" />
-					<span>账号与安全</span>
-				</div>
-				<div class="right">
-					<div>
-						<van-icon name="arrow" size="15" color="#6c6c6c" />
-					</div>
+      	<div class="nick-name" v-for="(item,index) in featureSetList" :key="index" @click="featureSetEvent(item)">
+			<div class="left">
+				<van-icon :name="item.iconLeft" size="20" color="#c0bebe" />
+				<span>{{item.span}}</span>
+			</div>
+			<div class="right">
+				<div>
+					<van-icon :name="item.iconRight" size="15" color="#6c6c6c" />
 				</div>
 			</div>
-			<div class="nick-name">
-				<div class="left">
-          <van-icon name="service-o" size="20" color="#c0bebe" />
-					<span>我的客服</span>
-				</div>
-				<div class="right">
-					<div>
-						<van-icon name="arrow" size="15" color="#6c6c6c" />
-					</div>
-				</div>
-			</div>
-			<div class="nick-name">
-				<div class="left">
-          <van-icon name="info-o" size="20" color="#c0bebe" />
-					<span>关于</span>
-				</div>
-				<div class="right">
-					<div>
-						<van-icon name="arrow" size="15" color="#6c6c6c" />
-					</div>
-				</div>
-			</div>
-      <div class="nick-name">
-				<div class="left">
-        <van-icon name="share-o" size="20" color="#c0bebe" />
-					<span>分享</span>
-				</div>
-				<div class="right">
-					<div>
-						<van-icon name="arrow" size="15" color="#6c6c6c" />
-					</div>
-				</div>
-			</div>
+		</div>
       </div>
     </div>
     <FooterBottom></FooterBottom>  
@@ -77,6 +44,7 @@
 </template>
 <script>
   import FooterBottom from '../components/FooterBottom'
+  import NavBar from '@/components/NavBar'
   import NoData from '@/components/NoData'
   import Loading from '@/components/Loading'
   import store from '@/store'
@@ -88,7 +56,8 @@
     components:{
       NoData,
       Loading,
-      FooterBottom
+      FooterBottom,
+	  NavBar
     },
     data() {
       return {
@@ -112,6 +81,28 @@
 					{
 						icon: 'setting',
 						span: '设置'
+					}
+				],
+				featureSetList: [
+					{
+						iconLeft: 'contact',
+						iconRight: 'arrow',
+						span: '账号与安全'
+					},
+					{
+						iconLeft: 'service-o',
+						iconRight: 'arrow',
+						span: '我的客服'
+					},
+					{
+						iconLeft: 'info-o',
+						iconRight: 'arrow',
+						span: '关于'
+					},
+					{
+						iconLeft: 'share-o',
+						iconRight: 'arrow',
+						span: '分享'
 					}
 				],
         defaultPersonPng :require("@/common/images/home/default-person.jpg"),
@@ -149,15 +140,33 @@
         'changeTitleTxt'
       ]),
 
-      juddgeIspc () {
-        return IsPC()
-      },
+		juddgeIspc () {
+			return IsPC()
+		},
 
-      toEditPersonPage () {
-			},
+		toEditPersonPage () {
+		},
 
-			toSetPage () {
+		toSetPage () {
+		},
+
+		// 上部区域功能事件
+		featureSetTopEvent(item) {
+			if (item.span === '我的订单') {
+				this.$router.push({path: 'myOrderForm'}) 
+			} else if (item.span === '藏品记录') {
+				this.$router.push({path: 'collectionRecords'})
+			} else if (item.span === '设置') {
+				this.$router.push({path: 'systemSet'})
 			}
+		}, 
+
+		// 下部区域功能事件
+		featureSetEvent(item) {
+			if (item.span === '账号与安全') {
+				this.$router.push({path: 'accountSecurity'})
+			}
+		}
     }
   }
 </script>
@@ -167,16 +176,12 @@
   @import "../common/stylus/modifyUi.less";
   .page-box {
     .content-wrapper();
-    .van-nav-bar {
-      background: #252525
-    };
     .content-box {
       flex: 1;
       display: flex;
       flex-direction: column;
       position: relative;
       background: #252525;
-      margin-top: 45px;
       .content-top {
         height: auto;
         font-size: 14px;

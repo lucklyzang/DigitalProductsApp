@@ -6,12 +6,27 @@ const Home = () =>
     import ('@/pages/Home')
 const Login = () =>
     import ('@/pages/Login')
+const WeixinLogin = () =>
+    import ('@/pages/weixinLogin/WeixinLogin')
 const MyInfo = () =>
     import ('@/pages/MyInfo')
+const RealNameAuthentication = () =>
+    import ('@/pages/realNameAuthentication/RealNameAuthentication')
+const AccountSecurity = () =>
+    import ('@/pages/accountSecurity/AccountSecurity')
 const VerificationCode = () =>
     import ('@/pages/verification/VerificationCode')
+const CollectionRecords = () =>
+    import ('@/pages/collectionsRecords/CollectionRecords')
+const SystemSet = () =>
+    import ('@/pages/systemSet/SystemSet')
+const MyOrderForm = () =>
+    import ('@/pages/myOrderForm/MyOrderForm')
+const CollectionDetails = () =>
+    import ('@/pages/digitalCollection/DigitalCollectionDetails')
+const IndividualitySignature = () =>
+    import ('@/pages/individualitySignature/IndividualitySignature')
 Vue.use(Router)
-
 let baseRoute = [{
         path: '/',
         name: 'login',
@@ -31,7 +46,47 @@ let baseRoute = [{
         path: '/verificationCode',
         name: 'verificationCode',
         component: VerificationCode
-    }
+    },
+    {
+        path: '/collectionDetails',
+        name: 'collectionDetails',
+        component: CollectionDetails
+    },
+    {
+        path: '/weixinLogin',
+        name: 'weixinLogin',
+        component: WeixinLogin
+    },
+    {
+        path: '/accountSecurity',
+        name: 'accountSecurity',
+        component: AccountSecurity
+    },
+    {
+        path: '/myOrderForm',
+        name: 'myOrderForm',
+        component: MyOrderForm
+    },
+    {
+        path: '/realNameAuthentication',
+        name: 'realNameAuthentication',
+        component: RealNameAuthentication
+    },
+    {
+        path: '/collectionRecords',
+        name: 'collectionRecords',
+        component: CollectionRecords
+    },
+    {
+        path: '/systemSet',
+        name: 'systemSet',
+        component: SystemSet
+    },
+    {
+        path: '/individualitySignature',
+        name: 'individualitySignature',
+        component: IndividualitySignature
+    },
 ];
 let router = new Router({
     routes: baseRoute,

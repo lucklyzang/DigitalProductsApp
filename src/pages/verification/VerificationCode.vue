@@ -1,10 +1,6 @@
 <template>
 	<div class="content-box">
-        <van-nav-bar
-            left-arrow
-            @click-left="backTo"
-            :border="false"
-        />
+        <NavBar path="/" />
 		<div class="content-top">
 			<span>请输入验证码</span>
 			<span>已发送到手机号 134******47</span>
@@ -28,6 +24,7 @@
 </template>
 
 <script>
+	import NavBar from '@/components/NavBar'
 	import {
 		mapGetters,
 		mapMutations
@@ -40,6 +37,7 @@
 	} from '@/api/login.js'
 	export default {
 		components: {
+			NavBar
 		},
 		data() {
 			return {
@@ -59,9 +57,6 @@
 		methods: {
 			...mapMutations([
 			]),
-			backTo () {
-				this.$router.push({path:'/'})
-			},
 			inputEventOne (event) {},
 			inputEventTwo (event) {},
 			inputEventThree (event) {},
@@ -78,7 +73,6 @@
 		.content-wrapper();
         background: #252525;
         /deep/ .van-nav-bar {
-            background: #252525;
             .van-icon {
                 color: #fff !important;
                 font-size: 24px !important
