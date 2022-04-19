@@ -14,7 +14,7 @@
 		</div>
 		<div class="content-bottom">
 			<div class="all-order" v-show="currentTabIndex === 0">
-				<div class="order-list" @click="orderDetailsEvent" v-for="(item,index) in orderList" :key="index">
+				<div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
 					<div class="left">
 						<div class="img-show">
 							<img :src="item.collectionUrl">
@@ -29,10 +29,9 @@
 					</div>
 					<div class="right">
 						<div>
-                            <van-icon :name="item.iconName" size="10" color="#e6c980"/>
-							<span>{{item.collectionStatus}}</span>
+							<span :class="[item.collectionStatus=='已付款'?'spanPaiedStyle':item.collectionStatus=='已取消'? 'spanCancelStyle':'']">{{item.collectionStatus}}</span>
 						</div>
-						<div>
+						<div v-show="item.collectionStatus == '待付款'">
 							<span>
 								{{item.collectionOPeration}}
 							</span>
@@ -43,14 +42,92 @@
 					<span>没有更多数据</span>
 				</div>
 			</div>
-            <div class="to-pay" v-show="currentTabIndex === 1">
-                待付款
+            <div class="all-order to-pay" v-show="currentTabIndex === 1">
+                <div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
+					<div class="left">
+						<div class="img-show">
+							<img :src="item.collectionUrl">
+						</div>
+						<div class="span-show">
+							<span>{{item.collectionName}}</span>
+                            <p>
+                             <span v-for="(innerItem,innerIndex) in item.collectionTagsList" :key="innerIndex">{{innerItem}}</span>
+                            </p>
+							<span>{{item.collectionPrice}}</span>
+						</div>
+					</div>
+					<div class="right">
+						<div>
+							<span :class="[item.collectionStatus=='已付款'?'spanPaiedStyle':item.collectionStatus=='已取消'? 'spanCancelStyle':'']">{{item.collectionStatus}}</span>
+						</div>
+						<div v-show="item.collectionStatus == '待付款'">
+							<span>
+								{{item.collectionOPeration}}
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="no-more-data">
+					<span>没有更多数据</span>
+				</div>
             </div>
-            <div class="to-pay" v-show="currentTabIndex === 2">
-                已付款
+            <div class="all-order to-pay" v-show="currentTabIndex === 2">
+                <div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
+					<div class="left">
+						<div class="img-show">
+							<img :src="item.collectionUrl">
+						</div>
+						<div class="span-show">
+							<span>{{item.collectionName}}</span>
+                            <p>
+                             <span v-for="(innerItem,innerIndex) in item.collectionTagsList" :key="innerIndex">{{innerItem}}</span>
+                            </p>
+							<span>{{item.collectionPrice}}</span>
+						</div>
+					</div>
+					<div class="right">
+						<div>
+                           <span :class="[item.collectionStatus=='已付款'?'spanPaiedStyle':item.collectionStatus=='已取消'? 'spanCancelStyle':'']">{{item.collectionStatus}}</span>
+						</div>
+						<div v-show="item.collectionStatus == '待付款'">
+							<span>
+								{{item.collectionOPeration}}
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="no-more-data">
+					<span>没有更多数据</span>
+				</div>
             </div>
-            <div class="to-pay" v-show="currentTabIndex === 3">
-                已取消
+            <div class="all-order to-pay" v-show="currentTabIndex === 3">
+                <div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
+					<div class="left">
+						<div class="img-show">
+							<img :src="item.collectionUrl">
+						</div>
+						<div class="span-show">
+							<span>{{item.collectionName}}</span>
+                            <p>
+                             <span v-for="(innerItem,innerIndex) in item.collectionTagsList" :key="innerIndex">{{innerItem}}</span>
+                            </p>
+							<span>{{item.collectionPrice}}</span>
+						</div>
+					</div>
+					<div class="right">
+						<div>
+                            <span :class="[item.collectionStatus=='已付款'?'spanPaiedStyle':item.collectionStatus=='已取消'? 'spanCancelStyle':'']">{{item.collectionStatus}}</span>
+						</div>
+						<div v-show="item.collectionStatus == '待付款'">
+							<span>
+								{{item.collectionOPeration}}
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="no-more-data">
+					<span>没有更多数据</span>
+				</div>
             </div>			
 		</div>
 	</div>
@@ -86,8 +163,8 @@
                         collectionUrl: require("@/common/images/home/default-person.jpg"),
                         iconName: 'underway-o',
                         collectionPrice: '9.90',
-                        collectionTagsList: ['属性一','属性二'],
-                        collectionStatus: '待支付',
+                        collectionTagsList: ['属性一','属性二','属性一','属性二'],
+                        collectionStatus: '待付款',
                         collectionOPeration: '去付款'
 
                     },
@@ -97,8 +174,18 @@
                         iconName: 'underway-o',
                         collectionPrice: '9.90',
                         collectionTagsList: ['属性一','属性二'],
-                        collectionStatus: '待支付',
+                        collectionStatus: '已取消',
                         collectionOPeration: '去付款'
+
+                    },
+					{
+                        collectionName: '吉乐福·舒清富',
+                        collectionUrl: require("@/common/images/home/default-person.jpg"),
+                        iconName: 'underway-o',
+                        collectionPrice: '9.90',
+                        collectionTagsList: ['属性一','属性二'],
+                        collectionStatus: '已付款',
+                        collectionOPeration: '订单详情'
 
                     }
                 ],
@@ -123,7 +210,12 @@
 				console.log(index,this.currentTabIndex)
 			},
 			// 跳转订单详情页面
-			orderDetailsEvent () {
+			orderDetailsEvent (item) {
+				if (item.collectionStatus !== '待付款') {
+					this.$router.push({path: 'orderFormDetails'})
+				} else {
+					this.$router.push({path: 'orderFormToPaid'})
+				}
 			}
 		}
 	}
@@ -134,7 +226,7 @@
 @import "~@/common/stylus/modifyUi.less";
 	.content-box {
 		.content-wrapper();
-         background: #252525;
+         background: @color-background;
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
@@ -149,7 +241,7 @@
 			.tab-switch {
 				position: sticky;
 				top: 50px;
-				background: #252525;
+				background: @color-background;
 				width: 100%;
 				z-index: 200;
 				display: flex;
@@ -199,7 +291,7 @@
                     align-items: center;
 					padding: 0 10px;
 					border-radius: 10px;
-					background: #2a1f32;
+					background: @color-block;
                     margin-bottom: 10px;
                     box-sizing: border-box;
 					.left {
@@ -222,6 +314,7 @@
 							flex-direction: column;
 							justify-content: space-between;
 							margin-left: 14px;
+							flex: 1;
 							>span {
 								&:nth-child(1) {
 									font-size: 16px;
@@ -233,21 +326,19 @@
 								};
 							};
                             p {
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                                width: 170px;
+                                overflow: auto;
+                                width: 100%;
                                 span {
                                     display: inline-block;
                                     padding: 0 8px;
                                     height: 18px;
-                                    border: 1px solid #ab4eff;
+                                    border: 1px solid #bd69ff;
                                     font-size: 10px;
                                     border-radius: 10px;
                                     box-sizing: border-box;
                                     text-align: center;
                                     line-height: 18px;
-                                    color: #ab4eff;
+                                    color: #bd69ff;
                                     margin-right: 4px
                                 }
                             }
@@ -256,14 +347,29 @@
 					.right {
 						display: flex;
                         height: 77px;
+						width: 70px;
 						flex-direction: column;
 						justify-content: space-between;
 						>div {
 							&:nth-child(1) {
 								span {
+									display: inline-block;
 									margin-left: 4px;
-									font-size: 14px;
-									color: #e6c980
+									font-size: 12px;
+									color: #fff;
+									width: 50px;
+									height: 20px;
+									text-align: center;
+									line-height: 20px;
+									background-image: linear-gradient(to right, #f2c25e , #e4931e);
+									border-top-right-radius: 10px;
+									border-bottom-right-radius: 10px;
+								};
+								.spanPaiedStyle {
+									background-image: linear-gradient(to right, #00d2ff , #0090ff)
+								};
+								.spanCancelStyle {
+									background-image: linear-gradient(to right, #686868 , #686868)
 								}
 							};
 							&:nth-child(2) {

@@ -57,7 +57,7 @@
     @import "~@/common/stylus/modifyUi.less";
 	.content-box {
 		.content-wrapper();
-        background: #252525;
+        background: @color-background;
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
@@ -81,7 +81,7 @@
                 border: 1px solid #2c2c2c;
                 border-radius: 10px;
                 color: #fff;
-                background: #2a1f32;
+                background: @color-block;
                 font-size: 18px;
                 .van-field__control {
                     color: #fff !important
@@ -103,7 +103,7 @@
                 font-size: 16px;
                 text-align: center;
                 line-height: 40px;
-                background: #2a1f32;
+                background: @color-block;
                 border-radius: 20px;
                 &:first-child {
                     margin-right: 20px;

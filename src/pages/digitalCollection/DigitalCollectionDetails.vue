@@ -9,7 +9,7 @@
             @click-right="onClickRight"
         >
             <template #right>
-                <van-icon name="share-o" size="20" color="#9f9f9f" />
+                <img :src="sharePng" alt="">
             </template>
         </van-nav-bar>
         <div class="content">
@@ -17,14 +17,22 @@
                 <div class="collection-exhibition">
                     <img :src="digitalCollectioUrl">
                 </div>
+                <div class="booth">
+                    <img :src="boothPng" alt="">
+                </div>
                 <div class="synopsis">
                     <div class="title">
                         <span>
-                            新疆喀纳斯之秋
+                            新疆喀纳斯之秋新疆喀纳斯之秋
                         </span>
                     </div>
                     <div class="number">
                         <div class="left">
+                            <span>属性一</span>
+                            <span>属性一</span>
+                            <span>属性一</span>
+                            <span>属性一</span>
+                            <span>属性一</span>
                             <span>属性一</span>
                         </div>
                         <div class="right">
@@ -32,16 +40,17 @@
                             <span>8000 份</span>
                         </div>
                     </div>
+                    <img :src="detailsTitleWrappper" alt="">
                 </div>
             </div>
             <div class="content-middle">
-                <div class="framer">
+                <div class="framer" @click="toWorkRoomEvent">
                     <div>
                         <img :src="digitalCollectioUrl">
                     </div>
                     <div>
                         <span>乔玲</span>
-                        <span>作品2</span>
+                        <span>作品</span>
                     </div>
                 </div>
                 <div class="focus-box">
@@ -95,7 +104,10 @@
 		},
 		data() {
 			return {
-                digitalCollectioUrl: require("@/common/images/home/default-person.jpg")
+                digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
+                sharePng: require("@/common/images/login/my-share.png"),
+                boothPng: require("@/common/images/home/booth.png"),
+                detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png")
 			}
 		},
 		onReady() {},
@@ -109,13 +121,15 @@
 			...mapMutations([
 			]),
 
-			onClickLeft() {
+			toWorkRoomEvent() {
+                this.$router.push({path: 'workRoom'})
+            },
+
+            onClickLeft () {
                 this.$router.push({path: 'home'})
             },
 
-            onClickRight() {
-                
-            }
+            onClickRight () {}
 		}
 	}
 </script>
@@ -127,17 +141,23 @@
 	.page-box {
 		.content-wrapper();
         /deep/ .van-nav-bar {
-            background: #252525;
+            background: @color-background;
             .van-icon-arrow-left {
                 color: #fff !important;
                 font-size: 24px !important
+            };
+            .van-nav-bar__right {
+                img {
+                    width: 22px;
+                    height: 22px
+                }
             }
         };
         .content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: #252525;
+            background: @color-background;
             padding-bottom: 80px;
             box-sizing: border-box;
             .content-top {
@@ -148,61 +168,106 @@
                         width: 100%;
                         height: 100%
                     }
-                }
+                };
+                .booth {
+                    width: 92%;
+                    margin: 0 auto;
+                    margin-top: 20px;
+                    height: 50px;
+                    img {
+                        width: 100%;
+                        height: 100%
+                    }
+                };
                 .synopsis {
                     width: 100%;
                     display: flex;
                     height: 80px;
+                    margin-top: 30px;
                     flex-direction: column;
-                    justify-content: flex-end;
+                    justify-content: center;
                     align-items: center;
+                    position: relative;
                     .title {
+                        width: 60%;
                         font-size: 24px;
                         color: #FFFFFF;
+                        text-align: center;
                         font-weight: bold;
+                        .no-wrap()
                     };
                     .number {
-                        width: 180px;
+                        width: 60%;
                         font-size: 14px;
-                        margin-top: 10px;
+                        margin-top: 16px;
                         display: flex;
+                        height: 40px;
                         flex-flow: row nowrap;
                         justify-content: space-between;
                         align-items: center;
                         .left {
+                            width: 50%;
+                            height: 40px;
+                            overflow: auto;
+                            margin-right: 12px;
+                            display: flex;
+                            flex-flow: row wrap;
+                            align-items: center;
+                            z-index: 1000;
                             span {
                                 display: inline-block;
                                 padding: 0 6px;
-                                height: 18px;
-                                border: 1px solid #ab4eff;
+                                height: 20px;
+                                border: 1px solid #be68ff;
                                 font-size: 10px;
                                 border-radius: 10px;
                                 text-align: center;
-                                line-height: 18px;
-                                color: #ab4eff
+                                line-height: 20px;
+                                margin-right: 4px;
+                                margin-bottom: 4px;
+                                color: #be68ff;
+                                &:nth-child(even) {
+                                    margin-right: 0
+                                }
                             }
                         }
                         .right {
+                            width: 50%;
+                            height: 40px;
+                            line-height: 40px;
                             font-size: 0;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            align-items: center;
+                            justify-content: flex-end;
                             span {
                                 font-size: 14px;
                                 display: inline-block;
+                                height: 20px;
+                                line-height: 20px;
                                 &:first-child {
-                                    background: orange;
+                                    background: #ffbc41;
                                     color: black;
                                     padding: 1px 4px 1px 4px;
                                     border-top-left-radius: 2px;
                                     border-bottom-left-radius: 2px;
                                 };
                                 &:last-child {
-                                    background: #646363;
-                                    color: #e3cd33;
+                                    background: #3e3a51;
+                                    color: #ffbc41;
                                     padding: 1px 4px 1px 4px;
                                     border-top-right-radius: 2px;
                                     border-bottom-right-radius: 2px
                                 }
                             }
                         }
+                    };
+                    img {
+                        position: absolute;
+                        top: 0;
+                        left: 10%;
+                        width: 80%;
+                        height: 80px
                     }
                 }
 		    };
@@ -212,7 +277,7 @@
                 margin-top: 10px;
                 padding: 8px;
                 box-sizing: border-box;
-                background: #2a1f32;
+                background: @color-block;
                 border-radius: 14px;
                 .img-box {
                     height: 350px;
@@ -231,7 +296,7 @@
             .content-middle {
                 width: 94%;
                 margin: 0 auto;
-                background: #2a1f32;
+                background: @color-block;
                 padding: 8px 10px;
                 margin-top: 20px;
                 box-sizing: border-box;
@@ -267,7 +332,7 @@
                                 };
                                 &:last-child {
                                     font-size: 14px;
-                                    color: #9c9c9c;
+                                    color: #686866;
                                 }
                             }
                         }
@@ -282,9 +347,9 @@
                         font-size: 12px;
                         height: 20px;
                         line-height: 20px;
-                        padding: 0 8px;
+                        padding: 0 10px;
                         margin-left: 10px;
-                        background: #ffc252;
+                        background: #ffbc41;
                         border-radius: 20px
                     }
                 }
@@ -295,7 +360,7 @@
                 margin-top: 10px;
                 padding: 8px 18px;;
                 box-sizing: border-box;
-                background: #2a1f32;
+                background: @color-block;
                 border-radius: 14px;
                 .information-title {
                     span {
@@ -315,7 +380,7 @@
             }
         };
 		.content-bottom {
-            background: #252525;
+            background: #00020f;
 			height: 80px;
 			width: 100%;
             position: fixed;
@@ -338,11 +403,12 @@
 				&:last-child {
 					display: flex;
 					flex-direction: column;
-					justify-content: center;
+					justify-content: space-between;
+                    font-size: 14px;
 					align-items: center;
-					background: rgb(47 47 47);
-					width: 180px;
-					padding: 26px 0;
+					background: #282834;
+					width: 140px;
+					padding: 8px 0;
 					box-sizing: border-box;
 					height: 50px;
 					border-radius: 26px;

@@ -12,6 +12,8 @@ const MyInfo = () =>
     import ('@/pages/MyInfo')
 const RealNameAuthentication = () =>
     import ('@/pages/realNameAuthentication/RealNameAuthentication')
+const RealNameAythenticationCertified = () =>
+    import ('@/pages/realNameAuthentication/RealNameAythenticationCertified')
 const AccountSecurity = () =>
     import ('@/pages/accountSecurity/AccountSecurity')
 const VerificationCode = () =>
@@ -20,10 +22,18 @@ const CollectionRecords = () =>
     import ('@/pages/collectionsRecords/CollectionRecords')
 const SystemSet = () =>
     import ('@/pages/systemSet/SystemSet')
+const WorkRoom = () =>
+    import ('@/pages/workRoom/WorkRoom')    
 const MyOrderForm = () =>
     import ('@/pages/myOrderForm/MyOrderForm')
 const CollectionDetails = () =>
     import ('@/pages/digitalCollection/DigitalCollectionDetails')
+const OrderFormDetails = () =>
+    import ('@/pages/myOrderForm/OrderFormDetails')
+const SystemMessage = () =>
+    import ('@/pages/systemMessage/SystemMessage')
+const OrderFormToPaid = () =>
+    import ('@/pages/myOrderForm/OrderFormToPaid')    
 const IndividualitySignature = () =>
     import ('@/pages/individualitySignature/IndividualitySignature')
 Vue.use(Router)
@@ -73,6 +83,11 @@ let baseRoute = [{
         component: RealNameAuthentication
     },
     {
+        path: '/realNameAythenticationCertified',
+        name: 'realNameAythenticationCertified',
+        component: RealNameAythenticationCertified
+    },
+    {
         path: '/collectionRecords',
         name: 'collectionRecords',
         component: CollectionRecords
@@ -83,10 +98,30 @@ let baseRoute = [{
         component: SystemSet
     },
     {
+        path: '/systemMessage',
+        name: 'systemMessage',
+        component: SystemMessage
+    },
+    {
         path: '/individualitySignature',
         name: 'individualitySignature',
         component: IndividualitySignature
     },
+    {
+        path: '/orderFormDetails',
+        name: 'orderFormDetails',
+        component: OrderFormDetails
+    },
+    {
+        path: '/orderFormToPaid',
+        name: 'orderFormToPaid',
+        component: OrderFormToPaid
+    },
+    {
+        path: '/workRoom',
+        name: 'WorkRoom',
+        component: WorkRoom
+    }
 ];
 let router = new Router({
     routes: baseRoute,

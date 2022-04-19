@@ -76,7 +76,7 @@ export default {
   @import "../common/stylus/variable.less";
   .tabBar-box  {
     /deep/ .van-nav-bar {
-      background: @color-theme
+      background: @color-background
     }
   }
 </style>

@@ -6,7 +6,7 @@
         <div class="person-message-box">
           <div class="message-left">
             <div class="person-picture" @click="toEditPersonPage">
-              <img :src="defaultPersonPng">
+              <img :src="notLoginPng">
             </div>
             <div class="person-name">
               <div v-if="true">砂夹石三</div>
@@ -20,7 +20,7 @@
         </div>
         <div class="function-zone">
           <div class="function-zone-icon-list" v-for="(item,index) in zoneIconList" :key="index" @click="featureSetTopEvent(item)">
-            <van-icon :name="item.icon" size="32" color="#ee9f4d" />
+            <img :src="item.icon" alt="">
             <span>{{item.span}}</span>
           </div>
         </div>
@@ -28,12 +28,12 @@
       <div class="content-bottom">
       	<div class="nick-name" v-for="(item,index) in featureSetList" :key="index" @click="featureSetEvent(item)">
 			<div class="left">
-				<van-icon :name="item.iconLeft" size="20" color="#c0bebe" />
+				<img :src="item.iconLeft" alt="">
 				<span>{{item.span}}</span>
 			</div>
 			<div class="right">
 				<div>
-					<van-icon :name="item.iconRight" size="15" color="#6c6c6c" />
+					<img :src="item.iconRight" alt="">
 				</div>
 			</div>
 		</div>
@@ -67,45 +67,46 @@
 				iconName: 'gear-filled',
 				zoneIconList: [
 					{
-						icon: 'setting',
+						icon: require("@/common/images/login/my-order.png"),
 						span: '我的订单'
 					},
 					{
-						icon: 'setting',
+						icon: require("@/common/images/login/collection-record.png"),
 						span: '藏品记录'
 					},
 					{
-						icon: 'setting',
+						icon: require("@/common/images/login/message.png"),
 						span: '消息'
 					},
 					{
-						icon: 'setting',
+						icon: require("@/common/images/login/set.png"),
 						span: '设置'
 					}
 				],
 				featureSetList: [
 					{
-						iconLeft: 'contact',
-						iconRight: 'arrow',
+						iconLeft:  require("@/common/images/login/account-security.png"),
+						iconRight: require("@/common/images/login/arrow-right.png"),
 						span: '账号与安全'
 					},
 					{
-						iconLeft: 'service-o',
-						iconRight: 'arrow',
+						iconLeft:  require("@/common/images/login/my-service.png"),
+						iconRight: require("@/common/images/login/arrow-right.png"),
 						span: '我的客服'
 					},
 					{
-						iconLeft: 'info-o',
-						iconRight: 'arrow',
+						iconLeft: require("@/common/images/login/about.png"),
+						iconRight: require("@/common/images/login/arrow-right.png"),
 						span: '关于'
 					},
 					{
-						iconLeft: 'share-o',
-						iconRight: 'arrow',
+						iconLeft:  require("@/common/images/login/my-share.png"),
+						iconRight: require("@/common/images/login/arrow-right.png"),
 						span: '分享'
 					}
 				],
         defaultPersonPng :require("@/common/images/home/default-person.jpg"),
+		notLoginPng :require("@/common/images/login/not-login.png")
       }
     },
 
@@ -158,6 +159,8 @@
 				this.$router.push({path: 'collectionRecords'})
 			} else if (item.span === '设置') {
 				this.$router.push({path: 'systemSet'})
+			} else if (item.span === '消息') {
+				this.$router.push({path: 'systemMessage'})
 			}
 		}, 
 
@@ -181,11 +184,11 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      background: #252525;
+      background: @color-background;
       .content-top {
         height: auto;
         font-size: 14px;
-        background: #252525;
+        background: @color-background;
 			.person-message-box {
 				width: 92%;
 				margin: 0 auto;
@@ -224,7 +227,7 @@
 								display: flex;
 								flex-flow: row nowrap;
                 margin-top: 4px;
-                color: #636363;
+                color: #686868;
 								span {
 									display: inline-block;
 									height: 26px;
@@ -240,7 +243,7 @@
 				width: 92%;
 				margin: 0 auto;
 				height: 75px;
-				background: #2a1f32;
+				background: @color-block;
 				border-radius: 10px;
 				display: flex;
 				flex-flow: row wrap;
@@ -251,8 +254,12 @@
 					flex-direction: column;
 					justify-content: center;
 					align-items: center;
+					img {
+						width: 40px;
+						height: 40px;
+					};
 					span {
-						color: #878787;
+						color: #706f77;
 						margin-top: 10px;
 					}
 				}
@@ -277,23 +284,31 @@
         align-items: center;
 				height: 46px;
 				padding: 6px;
-        background: #2a1f32;
+        background: @color-block;
         margin-bottom: 10px;
 				.left {
 					font-size: 16px;
 					color: #FFFFFF;
 					display: flex;
-          flex-flow: row nowrap;
+          			flex-flow: row nowrap;
 					justify-content: space-between;
-          >span {
-            margin-left: 16px;
-          }
+					>span {
+						margin-left: 16px;
+					};
+					img {
+						width: 18px;
+						height: 18px
+					}
 				};
 				.right {
 					> div {
 						display: flex;
 						flex-direction: column;
 						justify-content: center;
+						img {
+							width: 8px;
+							height: 10px
+						}
 					}
 				}
 			}

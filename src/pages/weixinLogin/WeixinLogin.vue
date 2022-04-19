@@ -7,14 +7,20 @@
 		</div>
 		<div class="content-middle">
 			<div class="tip-info">
-        		<van-icon name="checked" size="15" color="#bc8c51"/>
-				<span>已阅读并同意</span>
-				<span>《用户协议》</span>
-				<span>和</span>
-				<span>《隐私协议》</span>
+        		<van-checkbox v-model="checked">
+					<template #icon="props">
+						<img class="img-icon" :src="props.checked ? activeIcon : inactiveIcon" />
+					</template>
+					<template #default>
+						<span>已阅读并同意</span>
+						<span>《用户协议》</span>
+						<span>和</span>
+						<span>《隐私协议》</span>
+					</template>
+				</van-checkbox>
 			</div>
 			<div class="send-auth-box" @click="weixinLogin">
-				<van-icon name="chat-o" size="30" color="#18c618"/>
+				<img :src="weixinPng">
 				<span>微信快速登录</span>
 			</div>
 		</div>
@@ -25,7 +31,7 @@
 				</span>
 			</div>
 			<div @click="otherAuthEvent">
-				<img :src="weixinPng">
+				<img :src="phonePng">
 			</div>
 		</div>
 	</div>
@@ -47,7 +53,12 @@ export default {
     return {
       loadingspan: '登录中,请稍候···',
       showLoadingHint: false,
-      weixinPng :require("@/common/images/login/weixin.png")
+      weixinPng :require("@/common/images/login/weixin-fast-login.png"),
+	  phonePng :require("@/common/images/login/phone-login.png"),
+	  checked: false,
+      weixinPng: require("@/common/images/login/weixin-fast-login.png"),
+	  activeIcon: require("@/common/images/login/agree-checked.png"),
+      inactiveIcon: require("@/common/images/login/agree-default.png")
     }
   },
 
@@ -112,7 +123,7 @@ export default {
 			font-size: 24px !important
 		}
 	};
-    background: #252525;
+    background: @color-background;
 		.content-top {
 			height: 40vh;
 			line-height: 40vh;
@@ -126,7 +137,7 @@ export default {
 					margin-right: 20px;
 				};
 				&:last-child {
-					color: #747474
+					color: #686868
 				}
 			}
 		};
@@ -137,7 +148,7 @@ export default {
 				height: 50px;
 				border-radius: 30px;
 				font-size: 18px;
-				background: #ffba3a;
+				background: #ffbc41;
 				margin: 30px 0;
 				text-align: center;
 				line-height: 50px;
@@ -145,29 +156,39 @@ export default {
 				flex-flow: row nowrap;
 				justify-content: center;
 				align-items: center;
-				/deep/ .van-icon {
-					margin-right: 8px
+				img {
+					margin-right: 8px;
+					width: 30px;
+					height: 25px
 				}
 			};
 			.tip-info {
 				font-size: 12px;
 				text-align: center;
-				.van-icon {
-					margin-right: 6px
-				};
-				span {
-					&:nth-child(2) {
-						color: #646464
+				/deep/ .van-checkbox {
+					justify-content: center;
+					.van-checkbox__icon {
+						img {
+							width: 17px;
+							height: 17px
+						}
 					};
-					&:nth-child(3) {
-						color: #dbdbdb
-					};
-					&:nth-child(4) {
-						color: #646464
-					};
-					&:nth-child(5) {
-						color: #dbdbdb
-					};
+					.van-checkbox__label {
+						>span {
+							&:nth-child(1) {
+								color: #696864
+							};
+							&:nth-child(2) {
+								color: #e9eaec
+							};
+							&:nth-child(3) {
+								color: #696864
+							};
+							&:nth-child(4) {
+								color: #e9eaec
+							};
+						}
+					}
 				}
 			}
 		};		
@@ -180,7 +201,7 @@ export default {
 			>div {
 				&:first-child {
 					font-size: 12px;
-					color: #757575;
+					color: #b2b2b0;
 					margin-bottom: 20px
 				};
 				&:last-child {

@@ -9,7 +9,7 @@
 			</div>
 			<div class="right">
                 <img :src="defaultPersonPng">
-                <van-icon name="arrow" size="15" color="#6c6c6c" />
+                <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
         <div class="nick-name">
@@ -18,7 +18,7 @@
 			</div>
 			<div class="right">
                 <span>凝结</span>
-                <van-icon name="arrow" size="15" color="#6c6c6c" />
+                <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
         <div class="nick-name">
@@ -27,7 +27,7 @@
 			</div>
 			<div class="right" @click="changeIndividualitySignature">
                 <span>TA很神秘,什么都没有留下,TA很神秘,什么都没有留下</span>
-                <van-icon name="arrow" size="15" color="#6c6c6c" />
+                <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
       </div>
@@ -58,6 +58,7 @@
         showLoadingHint: false,
         versionNumber: '1.8',
         defaultPersonPng :require("@/common/images/home/default-person.jpg"),
+        arrowRightPng: require("@/common/images/login/arrow-right.png")
       }
     },
 
@@ -129,7 +130,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      background: #252525;
+      background: @color-background;
 		.content-top {
 			height: 300px;
 			font-size: 13px;
@@ -148,7 +149,7 @@
                 align-items: center;
 				height: 46px;
 				padding: 6px;
-                background: #2a1f32;
+                background: @color-block;
                 border-radius: 10px;
                 margin-bottom: 10px;
 				.left {
@@ -169,15 +170,16 @@
                     justify-content: flex-end;
                     span {
                        font-size: 14px;
-                       color: #6c6c6c;
+                       color: #717078;
                        margin: 0 6px;
                        width: 120px;
                        flex: 1;
                        text-align: right;
                        .no-wrap()
                     };
-                    .van-icon {
-                        width: 15px;
+                    img {
+                      width: 8px;
+                      height: 10px
                     }
 				}
 			};
@@ -191,25 +193,29 @@
                        width: 40px;
                        height: 40px;
                        margin: 0 6px;
-                       border-radius: 50%
+                       border-radius: 50%;
+                       &:last-child {
+                         width: 8px;
+                         height: 10px
+                       }
                     }
 				}
             }
 		};
         .content-bottom {
-            width: 92%;
-			margin: 0 auto;
-			border-radius: 10px;
-            box-sizing: border-box;
-            padding: 6px;
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: center;
-            align-items: center;
-            height: 55px;
-            background: #2a1f32;
-            color: #9533db;
-            font-size: 15px;
+          width: 92%;
+          margin: 0 auto;
+          border-radius: 10px;
+          box-sizing: border-box;
+          padding: 6px;
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: center;
+          align-items: center;
+          height: 55px;
+          background: @color-block;
+          color: #bc67ff;
+          font-size: 15px;
         }
     }
   }

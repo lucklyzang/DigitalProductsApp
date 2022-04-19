@@ -12,11 +12,17 @@
 				<span>发送短信验证码</span>
 			</div>
 			<div class="tip-info">
-        <van-icon name="checked" size="15" color="#bc8c51"/>
-				<span>已阅读并同意</span>
-				<span>《用户协议》</span>
-				<span>和</span>
-				<span>《隐私协议》</span>
+				<van-checkbox v-model="checked">
+					<template #icon="props">
+						<img class="img-icon" :src="props.checked ? activeIcon : inactiveIcon" />
+					</template>
+					<template #default>
+						<span>已阅读并同意</span>
+						<span>《用户协议》</span>
+						<span>和</span>
+						<span>《隐私协议》</span>
+					</template>
+				</van-checkbox>
 			</div>
 		</div>
 		<div class="content-bottom">
@@ -47,7 +53,10 @@ export default {
       phoneNumber: '',
       loadingspan: '登录中,请稍候···',
       showLoadingHint: false,
-      weixinPng :require("@/common/images/login/weixin.png")
+	  checked: false,
+      weixinPng: require("@/common/images/login/weixin-login.png"),
+	  activeIcon: require("@/common/images/login/agree-checked.png"),
+      inactiveIcon: require("@/common/images/login/agree-default.png")
     }
   },
 
@@ -109,7 +118,7 @@ export default {
 @import "../common/stylus/modifyUi.less";
    .content-box {
     .content-wrapper();
-    background: #252525;
+    background: @color-background;
 		.content-top {
 			height: 35vh;
 			line-height: 35vh;
@@ -123,7 +132,7 @@ export default {
 					margin-right: 20px;
 				};
 				&:last-child {
-					color: #747474
+					color: #686868
 				}
 			}
 		};
@@ -151,7 +160,7 @@ export default {
 				height: 50px;
 				border-radius: 30px;
 				font-size: 18px;
-				background: #ffba3a;
+				background: #ffbc41;
 				margin: 30px 0;
 				text-align: center;
 				line-height: 50px
@@ -159,22 +168,30 @@ export default {
 			.tip-info {
 				font-size: 12px;
 				text-align: center;
-				.van-icon {
-					margin-right: 6px
-				};
-				span {
-					&:nth-child(2) {
-						color: #646464
+				/deep/ .van-checkbox {
+					justify-content: center;
+					.van-checkbox__icon {
+						img {
+							width: 17px;
+							height: 17px
+						}
 					};
-					&:nth-child(3) {
-						color: #dbdbdb
-					};
-					&:nth-child(4) {
-						color: #646464
-					};
-					&:nth-child(5) {
-						color: #dbdbdb
-					};
+					.van-checkbox__label {
+						>span {
+							&:nth-child(1) {
+								color: #696864
+							};
+							&:nth-child(2) {
+								color: #e9eaec
+							};
+							&:nth-child(3) {
+								color: #696864
+							};
+							&:nth-child(4) {
+								color: #e9eaec
+							};
+						}
+					}
 				}
 			}
 		};		
@@ -187,7 +204,7 @@ export default {
 			>div {
 				&:first-child {
 					font-size: 12px;
-					color: #757575;
+					color: #b2b2b0;
 					margin-bottom: 20px
 				};
 				&:last-child {

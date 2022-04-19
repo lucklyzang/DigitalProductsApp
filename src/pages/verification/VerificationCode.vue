@@ -71,7 +71,7 @@
     @import "~@/common/stylus/modifyUi.less";
 	.content-box {
 		.content-wrapper();
-        background: #252525;
+        background: @color-background;
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
@@ -92,11 +92,11 @@
 				&:nth-child(2) {
 					margin: 10px 0;
 					font-size: 12px;
-					color: #8e8e8e
+					color: #686868
 				};
 				&:nth-child(3) {
 					font-size: 12px;
-					color: #736166
+					color: #ab7a90
 				}
 			}
 		};
@@ -108,7 +108,7 @@
 			> div {
 				width: 50px;
 				margin-right: 16px;
-                .bottom-border-1px(#6f6f6f);
+                .bottom-border-1px(#ffffff);
 				&:last-child {
 					margin-right: 0;
 				};

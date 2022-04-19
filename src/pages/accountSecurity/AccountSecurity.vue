@@ -9,7 +9,7 @@
 			</div>
 			<div class="right">
                 <span>12121212112</span>
-                <van-icon name="arrow" size="15" color="#6c6c6c" />
+                <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
         <div class="nick-name" @click="realNameAuthenticationEvent">
@@ -17,9 +17,9 @@
 				<span>实名认证</span>
 			</div>
 			<div class="right">
-                <van-icon name="passed" size="18" color="#69d844" />
+                <van-icon name="passed" size="18" color="#00c259" />
                 <span>已认证</span>
-                <van-icon name="arrow" size="15" color="#6c6c6c" />
+                <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
       </div>
@@ -49,7 +49,8 @@
         noDataShow: false,
         showLoadingHint: false,
         versionNumber: '1.8',
-        defaultPersonPng :require("@/common/images/home/default-person.jpg"),
+        defaultPersonPng: require("@/common/images/home/default-person.jpg"),
+        arrowRightPng: require("@/common/images/login/arrow-right.png")
       }
     },
 
@@ -95,7 +96,10 @@
 
       //实名认证事件
       realNameAuthenticationEvent () {
-          this.$router.push({path: '/realNameAuthentication'})
+          // 未认证
+          // this.$router.push({path: '/realNameAuthentication'});
+          //已认证
+          this.$router.push({path: '/realNameAythenticationCertified'})
       }
     }
   }
@@ -121,7 +125,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      background: #252525;
+      background: @color-background;
 		.content-top {
 			height: 300px;
 			font-size: 13px;
@@ -140,7 +144,7 @@
                 align-items: center;
 				height: 46px;
 				padding: 6px;
-                background: #2a1f32;
+                background: @color-block;
                 border-radius: 10px;
                 margin-bottom: 10px;
 				.left {
@@ -157,10 +161,15 @@
                     display: flex;
                     flex-flow: row nowrap;
                     justify-content: space-between;
+                    align-items: center;
                     span {
                        font-size: 14px;
-                       color: #6c6c6c;
+                       color: #717078;
                        margin: 0 6px;
+                    };
+                    img {
+                      width: 8px;
+                      height: 10px
                     }
 				}
 			}
@@ -176,8 +185,8 @@
             justify-content: center;
             align-items: center;
             height: 55px;
-            background: #2a1f32;
-            color: #9533db;
+            background: @color-block;
+            color: #bc67ff;
             font-size: 15px;
         }
     }

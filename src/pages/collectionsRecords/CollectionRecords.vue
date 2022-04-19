@@ -83,7 +83,7 @@
 @import "~@/common/stylus/modifyUi.less";
 	.content-box {
 		.content-wrapper();
-         background: #252525;
+         background: @color-background;
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
@@ -110,7 +110,7 @@
                     align-items: center;
 					padding: 0 10px;
 					border-radius: 10px;
-					background: #2a1f32;
+					background: @color-block;
                     margin-bottom: 10px;
                     box-sizing: border-box;
 					.left {
@@ -152,13 +152,13 @@
                                     display: inline-block;
                                     padding: 0 8px;
                                     height: 18px;
-                                    border: 1px solid #ab4eff;
+                                    border: 1px solid #bd69ff;
                                     font-size: 10px;
                                     border-radius: 10px;
                                     box-sizing: border-box;
                                     text-align: center;
                                     line-height: 18px;
-                                    color: #ab4eff;
+                                    color: #bd69ff;
                                     margin-right: 4px
                                 }
                             }

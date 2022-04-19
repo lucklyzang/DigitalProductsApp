@@ -3,19 +3,26 @@
     <NavBar title="实名认证" path="accountSecurity" />
     <div class="content-box">
       <div class="content-top">
-        <van-field
-            v-model="realNameValue"
-            placeholder="真实姓名"
-            :border="false"
-        />
-            <van-field
-            v-model="cardValue"
-            placeholder="证件号码"
-            :border="false"
-        />
+        <img :src="realNameAuthenticationPng" alt="">
+        <span>您 已 经 通 过 实 名 认 证</span>
       </div>
-      <div class="content-bottom" @click="cancellationEvent">
-        <span>开始认证</span>
+      <div class="content-bottom">
+        <van-field
+          v-model="realNameValue"
+          label="姓名"
+          :border="false"
+        />
+        <van-field
+          v-model="phoneNumber"
+          type="tel"
+          label="手机号"
+          :border="false"
+        />
+        <van-field
+        v-model="cardValue"
+        label="证件号"
+        :border="false"
+        />
       </div>
     </div>
   </div>
@@ -40,8 +47,10 @@
         noDataShow: false,
         showLoadingHint: false,
         realNameValue: '',
+        phoneNumber: '',
         cardValue: '',
         defaultPersonPng :require("@/common/images/home/default-person.jpg"),
+        realNameAuthenticationPng :require("@/common/images/login/real-name-authentication.png")
       }
     },
 
@@ -109,42 +118,47 @@
       flex-direction: column;
       position: relative;
       background: @color-background;
-		.content-top {
-			height: 300px;
-			position: relative;
-			display: flex;
-			flex-direction: column;
-            width: 92%;
-			margin: 0 auto;
-			margin-top: 20px;
-			padding: 6px;
-            box-sizing: border-box;
-            /deep/ .van-cell {
-                margin-bottom: 8px;
-                background: @color-block;
-                height: 55px;
-                border: 1px solid #2c2c2c;
-                border-radius: 10px;
-                .van-field__control {
-                    color: #fff
-                }
-            }
-		};
-        .content-bottom {
-            width: 92%;
-			margin: 0 auto;
-			border-radius: 10px;
-            box-sizing: border-box;
-            padding: 6px;
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: center;
-            align-items: center;
-            height: 55px;
-            background: @color-block;
-            color: #cca45b;
-            font-size: 15px;
+      .content-top {
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 12px;
+        img {
+          width: 60px;
+          height: 70px
+        };
+        >span {
+          margin-top: 20px
         }
+      };
+      .content-bottom {
+        flex: 1;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 92%;
+        margin: 0 auto;
+        margin-top: 20px;
+        padding: 6px;
+        box-sizing: border-box;
+        /deep/ .van-cell {
+            margin-bottom: 8px;
+            background: #100726;
+            height: 55px;
+            border: 1px solid #2c2c2c;
+            border-radius: 10px;
+            .van-cell__title {
+              color: #fff
+            };
+            .van-field__control {
+              color: #706d76;
+              text-align: right
+            }
+        }
+      }
     }
   }
 </style>

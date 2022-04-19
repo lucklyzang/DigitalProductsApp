@@ -1,8 +1,19 @@
 <template>
   <div class="tabBar-box">
     <van-tabbar route v-model="active" placeholder  @change="onChange" active-color="orange" inactive-color="#cac8c8" :border="false" :safe-area-inset-bottom="true">
-      <van-tabbar-item replace to="/home" icon="wap-home">首页</van-tabbar-item>
-      <van-tabbar-item replace to="/myInfo" icon="manager">我的</van-tabbar-item>
+      <!-- <van-tabbar-item replace to="/home" icon="wap-home">首页</van-tabbar-item> -->
+       <van-tabbar-item replace to="/home">
+        <span>首页</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.homeActive : icon.homeInactive" />
+        </template>
+      </van-tabbar-item>
+       <van-tabbar-item replace to="/myInfo">
+        <span>我的</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.mineActive : icon.mineInactive" />
+        </template>
+      </van-tabbar-item>
     </van-tabbar>
   </div>  
 </template>
@@ -13,7 +24,13 @@ export default {
   name: 'FooterBottom',
   data () {
     return {
-      active: 0
+      active: 0,
+      icon: {
+        homeActive: require("@/common/images/home/home-current.png"),
+        homeInactive: require("@/common/images/home/home.png"),
+        mineActive: require("@/common/images/home/mine-current.png"),
+        mineInactive: require("@/common/images/home/mine.png")
+      }
     }
   },
 
@@ -37,11 +54,12 @@ export default {
 @import "../common/stylus/mixin.less";
 .tabBar-box {
   /deep/ .van-tabbar {
-    background: #252525;
+    background: @color-background;
     .van-tabbar-item {
-      background: #252525;
+      background: @color-background;
       .van-tabbar-item__text {
         font-size: 10px !important;
+        margin-top: 6px
       }
     } 
   }

@@ -16,12 +16,12 @@
       <div class="switch-content">
         <div class="object-box" v-show="currentTabIndex === 0">
           <div class="rare-object">
-            稀有藏品,免费抽
+            <img :src="homeBannerPng" alt="">
           </div>
           <div class="object-list" @click="objectDetailEvent" v-for="(item,index) in digitalCollectionList" :key="index">
             <div class="sell-info-area">
               <div class="left">
-                <van-icon name="underway" size="14" color="#ab4eff" />
+                <van-icon name="underway" size="14" color="#be68ff" />
                 <span>即将开售</span>
                 <span>{{item.countdownTime}}</span>
               </div>
@@ -134,6 +134,7 @@
             return {
                 noDataShow: false,
                 showLoadingHint: false,
+                homeBannerPng: require("@/common/images/home/home-banner.png"),
                 tabTitlelList: [{
                     name: '数字藏品'
                 }, {
@@ -282,11 +283,11 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            background: #252525;
+            background: @color-background;
             /deep/ .van-sticky {
                 z-index: 200;
                 .tab-switch {
-                    background: #252525;
+                    background: @color-background;
                     width: 100%;
                     text-align: center;
                     span {
@@ -324,16 +325,20 @@
                 margin: 0 auto;
                 .object-box {
                     .rare-object {
-                        height: 80px;
+                        height: 90px;
                         border-radius: 10px;
-                        background: #ff5500;
                         margin-bottom: 10px;
-                    }
-                    ;
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 10px
+                        }
+                    };
                     .object-list {
                         border-radius: 10px;
                         position: relative;
                         margin-bottom: 20px;
+                        background: #100726;
                         .sell-info-area {
                             position: absolute;
                             top: 10px;
@@ -345,10 +350,10 @@
                             z-index: 100;
                             color: #333;
                             .left {
-                                background: rgb(97 97 97);
+                                background: #412f19;
+                                color: #be68ff;
                                 border-radius: 16px;
                                 padding: 4px 10px;
-                                color: #ab4eff;
                                 height: 20px;
                                 line-height: 20px;
                                 span {
@@ -401,33 +406,35 @@
                                         &:last-child {
                                             padding: 0 4px;
                                             height: 20px;
-                                            border: 1px solid #ab4eff;
+                                            border: 1px solid #bd69ff;
                                             font-size: 10px;
                                             border-radius: 10px;
                                             text-align: center;
                                             line-height: 20px;
-                                            color: #ab4eff
+                                            color: #bd69ff
                                         }
                                     }
                                 }
                                 ;
                                 .number {
-                                    font-size: 14px;
+                                    font-size: 0;
                                     margin: 10px 0;
                                     span {
+                                        font-size: 14px;
                                         display: inline-block;
+                                        height: 20px;
+                                        line-height: 20px;
+                                        padding: 1px 4px;
                                         &:first-child {
-                                            background: orange;
+                                            background: #ffbc41;
                                             color: black;
-                                            padding: 1px 4px 1px 4px;
                                             border-top-left-radius: 2px;
                                             border-bottom-left-radius: 2px;
                                         }
                                         ;
                                         &:last-child {
-                                            background: #646363;
-                                            color: #e3cd33;
-                                            padding: 1px 4px 1px 4px;
+                                            background: #3e3a51;
+                                            color: #ffbc41;
                                             border-top-right-radius: 2px;
                                             border-bottom-right-radius: 2px
                                         }
@@ -435,6 +442,9 @@
                                 }
                                 ;
                                 .author {
+                                    display: flex;
+                                    flex-flow: row nowrap;
+                                    align-items: center;
                                     img {
                                         width: 20px;
                                         height: 20px;
@@ -445,7 +455,8 @@
                                     span {
                                         margin-left: 6px;
                                         font-size: 13px;
-                                        color: #d4d0d0
+                                        color: #686866;
+                                        margin-top: 2px;
                                     }
                                 }
                             }
@@ -478,7 +489,7 @@
                         padding-top: 2px;
                         box-sizing: border-box;
                         .left {
-                            color: #d7b73e;
+                            color: #febe42;
                             font-size: 18px;
                         }
                         ;
@@ -490,14 +501,14 @@
                                 line-height: 20px;
                                 &:first-child {
                                     padding: 0 8px;
-                                    background: #ab4eff;
+                                    background: #bd69ff;
                                     border-radius: 20px
                                 }
                                 ;
                                 &:last-child {
                                     padding: 0 8px;
                                     margin-left: 10px;
-                                    background: #ffc252;
+                                    background: #ffbc41;
                                     border-radius: 20px
                                 }
                             }
@@ -520,12 +531,12 @@
                                 flex-flow: row nowrap;
                                 justify-content: center;
                                 align-items: center;
-                                color: #ab4eff;
+                                color: #be68ff;
                                 font-size: 16px;
                                 height: 30px;
                                 margin: 0 auto;
                                 width: 90px;
-                                background: #181818;
+                                background: #000000;
                                 border-radius: 20px;
                                 span {
                                     margin-left: 4px
@@ -543,7 +554,7 @@
                                     height: 130px;
                                     padding-left: 20px;
                                     box-sizing: border-box;
-                                    background: rgb(42, 31, 50);
+                                    background: @color-block;
                                     >div {
                                         &:first-child {
                                             width: 90px;
@@ -574,7 +585,7 @@
                                                     span {
                                                         display: inline-block;
                                                         &:first-child {
-                                                            background: orange;
+                                                            background: #ffbc41;
                                                             color: black;
                                                             padding: 1px 4px 1px 4px;
                                                             border-top-left-radius: 2px;
@@ -582,8 +593,8 @@
                                                         }
                                                         ;
                                                         &:last-child {
-                                                            background: #646363;
-                                                            color: #e3cd33;
+                                                            background: #3e3a51;
+                                                            color: #ffbc41;
                                                             padding: 1px 4px 1px 4px;
                                                             border-top-right-radius: 2px;
                                                             border-bottom-right-radius: 2px
