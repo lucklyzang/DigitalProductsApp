@@ -10,7 +10,7 @@ import { setStore } from '@/common/js/utils'
 // http://blink.blinktech.cn/clean 测试地址
 // http://blinktech.cn/project 正式地址
 const service = axios.create({
-  baseURL: 'http://blink.blinktech.cn/clean', //接口基础地址
+  baseURL: 'http://39.100.74.225/nft', //接口基础地址
   retry: 2, // 网络请求异常后，重试次数
   retryDelay: 1000, // 每次重试间隔时间
   shouldRetry: (err) => true // 重试条件
@@ -34,24 +34,6 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    // 获取响应头token,并存储到vuex和localStorage中
-    if (response.headers['token']) {
-      store.commit('changeToken', response.headers['token']);
-      setStore('questToken', response.headers['token']);
-    };
-    if (!response.headers.hasOwnProperty('token')) {
-      if (response.data.msg == `当前用户[${getStore('userName')}]已登陆,不可重复登陆`) {
-				return response
-		  };
-      if (!store.getters.overDueWay) {
-        Toast('token已过期,请重新登录');
-        if(store.getters.globalTimer) {window.clearInterval(store.getters.globalTimer)};
-        removeAllLocalStorage();
-        setTimeout(() => {
-          router.push({path: '/'})
-        },2000);
-      }
-    };
     return response
   },
   (err) => {

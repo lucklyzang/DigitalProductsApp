@@ -6,9 +6,9 @@
 		</div>
 		<div class="content-middle">
 			<div class="phone-number">
-				<van-field class="uni-input" v-model="phoneNumber" @input="inputEvent" type="number" placeholder="请输入手机号码" />
+				<van-field class="uni-input" v-model="phoneNumber" @input="inputEvent" type="tel" placeholder="请输入手机号码" />
 			</div>
-			<div class="send-auth-box" @click="loginToIndex">
+			<div class="send-auth-box" @click="loginToIndex" :class="{'sendAuthBoxStyle': !checked || !phoneNumberUsable}">
 				<span>发送短信验证码</span>
 			</div>
 			<div class="tip-info">
@@ -39,10 +39,10 @@
 </template>
 
 <script>
-import {logIn} from '@/api/login.js'
+import {sendPhoneAuthCode} from '@/api/login.js'
 import { mapGetters, mapMutations } from 'vuex'
 import Loading from '@/components/Loading'
-import { setStore, getStore, IsPC, scanCode } from '@/common/js/utils'
+import { setStore, getStore, IsPC,} from '@/common/js/utils'
 export default {
   name: 'Login',
   components: {
@@ -53,7 +53,8 @@ export default {
       phoneNumber: '',
       loadingspan: '登录中,请稍候···',
       showLoadingHint: false,
-	  checked: false,
+	  checked: true,
+	  phoneNumberUsable: false,
       weixinPng: require("@/common/images/login/weixin-login.png"),
 	  activeIcon: require("@/common/images/login/agree-checked.png"),
       inactiveIcon: require("@/common/images/login/agree-default.png")
@@ -61,6 +62,14 @@ export default {
   },
 
   watch: {
+	  checked (newVal,oldVal) {
+		if (!this.checked) {
+			this.$toast({
+				message: '请阅读并同意协议',
+				position: 'bottom'
+			})
+		}	  
+	  }
   },
 
   computed: {
@@ -99,7 +108,25 @@ export default {
       'changeOverDueWay'
     ]),
     // 输入框值改变事件
-    inputEvent (event) {
+    inputEvent (value) {
+		let myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+		if (!myreg.test(value)) {
+			this.phoneNumberUsable = false;
+			if (value.length >= 11) {
+				this.$toast({
+					message: '手机号格式有误,请重新输入!',
+					position: 'bottom'
+				})
+			}	
+		} else {
+			this.phoneNumberUsable = true;
+			if (!this.checked) {
+				this.$toast({
+					message: '请阅读并同意协议',
+					position: 'bottom'
+				})
+			}	  
+		}
     },
 	//微信登录
 	weixinAuthEvent () {
@@ -107,8 +134,33 @@ export default {
 	},
     // 验证码
     loginToIndex () {
-      this.$router.push({path:'/verificationCode'})
-    }
+		if (!this.checked || !this.phoneNumberUsable) {
+			return
+		};
+		this.sendCode()
+    },
+
+	// 发送验证码
+	sendCode () {
+		sendPhoneAuthCode(this.phoneNumber).then((res) => {
+			if (res && res.data.code == 0) {
+				this.$router.push({name:'verificationCode',params: {phoneNumber: this.phoneNumber}})
+            } else {
+              this.$dialog.alert({
+                message: `${res.data.msg}`,
+                closeOnPopstate: true
+              }).then(() => {
+              });
+            }
+		})
+		.catch((err) => {
+			this.$dialog.alert({
+				message: `${err.message}`,
+				closeOnPopstate: true
+			}).then(() => {
+			})
+		})
+	}
   }
 }
 </script>
@@ -164,6 +216,9 @@ export default {
 				margin: 30px 0;
 				text-align: center;
 				line-height: 50px
+			};
+			.sendAuthBoxStyle {
+				background: #7e7e7e
 			};
 			.tip-info {
 				font-size: 12px;

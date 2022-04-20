@@ -36,6 +36,8 @@ const OrderFormToPaid = () =>
     import ('@/pages/myOrderForm/OrderFormToPaid')    
 const IndividualitySignature = () =>
     import ('@/pages/individualitySignature/IndividualitySignature')
+const ChangeNickname = () =>
+    import ('@/pages/changeNickname/ChangeNickname')    
 Vue.use(Router)
 let baseRoute = [{
         path: '/',
@@ -106,6 +108,11 @@ let baseRoute = [{
         path: '/individualitySignature',
         name: 'individualitySignature',
         component: IndividualitySignature
+    },
+    {
+        path: '/changeNickname',
+        name: 'changeNickname',
+        component: ChangeNickname
     },
     {
         path: '/orderFormDetails',

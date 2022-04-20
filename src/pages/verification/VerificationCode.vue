@@ -3,8 +3,11 @@
         <NavBar path="/" />
 		<div class="content-top">
 			<span>请输入验证码</span>
-			<span>已发送到手机号 134******47</span>
-			<span>58s后重新发送</span>
+			<span>已发送到手机号 {{phoneNumber}}</span>
+			<span v-show="showCountDownTime">
+				<van-count-down :time="time" format="ss" @finish="countDownEnd" />
+				<span>s后重新发送</span>
+			</span>
 		</div>
 		<div class="content-center">
 			<div>
@@ -19,6 +22,12 @@
 			<div>
 				<van-field class="uni-input" v-model="codeFour" @input="inputEventFour" maxlength="1" type="number"/>
 			</div>
+			<div>
+				<van-field class="uni-input" v-model="codeFive" @input="inputEventFive" maxlength="1" type="number"/>
+			</div>
+			<div>
+				<van-field class="uni-input" v-model="codeSix" @input="inputEventSix" maxlength="1" type="number"/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -31,9 +40,11 @@
 	} from 'vuex'
 	import {
 		setCache,
-		removeAllLocalStorage
+		removeAllLocalStorage,
+		setStore
 	} from '@/common/js/utils'
 	import {
+		phoneAuthCodeLogin
 	} from '@/api/login.js'
 	export default {
 		components: {
@@ -41,10 +52,15 @@
 		},
 		data() {
 			return {
+				time: 60000,
 				codeOne: '',
 				codeTwo: '',
 				codeThree: '',
-				codeFour: ''
+				codeFour: '',
+				codeFive: '',
+				codeSix: '',
+				phoneNumber: '',
+				showCountDownTime: true
 			}
 		},
 		onReady() {},
@@ -53,14 +69,58 @@
 			])
 		},
 		mounted() {
+			this.phoneNumber = this.$route.params.phoneNumber
 		},
 		methods: {
 			...mapMutations([
+				'changeToken'
 			]),
+
+			// 输入框变化事件
 			inputEventOne (event) {},
 			inputEventTwo (event) {},
 			inputEventThree (event) {},
-			inputEventFour (event) {}
+			inputEventFour (event) {},
+			inputEventFive (event) {},
+			inputEventSix (event) {
+				if (!this.codeSix) {return};
+				if (this.codeOne && this.codeTwo && this.codeThree && this.codeFour && this.codeFive) {
+					let code = `${this.codeOne}${this.codeTwo}${this.codeThree}${this.codeFour}${this.codeFive}${this.codeSix}`
+					this.phoneCodeLogin(code)
+				}
+			},
+
+			// 手机验证码登录
+			phoneCodeLogin (code) {
+				phoneAuthCodeLogin({
+					mobile: this.phoneNumber,
+  					password: code
+				}).then((res) => {
+					if (res && res.data.code == 0) {
+						setStore('questToken', res.data.token);
+						this.changeToken(res.data.token);
+						this.$router.push({name:'home'})
+					} else {
+						this.$dialog.alert({
+							message: `${res.data.msg}`,
+							closeOnPopstate: true
+						}).then(() => {
+						})
+					}
+				})
+				.catch((err) => {
+					this.$dialog.alert({
+						message: `${err.message}`,
+						closeOnPopstate: true
+					}).then(() => {
+					})
+				})
+			},
+
+			//倒计时结束事件
+			countDownEnd () {
+				this.showCountDownTime = false
+			}
 		}
 	}
 </script>
@@ -95,8 +155,18 @@
 					color: #686868
 				};
 				&:nth-child(3) {
-					font-size: 12px;
-					color: #ab7a90
+					display: flex;
+					flex-flow: row nowrap;
+					justify-content: center;
+					align-items: center;
+					>span {
+						font-size: 12px;
+						color: #ab7a90;
+					};
+					/deep/ .van-count-down {
+						font-size: 12px;
+						color: #ab7a90
+					}
 				}
 			}
 		};
@@ -106,7 +176,7 @@
 			justify-content: center;
 			margin-top: 30px;
 			> div {
-				width: 50px;
+				width: 40px;
 				margin-right: 16px;
                 .bottom-border-1px(#ffffff);
 				&:last-child {
@@ -118,10 +188,14 @@
 					text-align: center;
 					font-size: 18px;
                     background: transparent;
+					padding: 0 !important;
                     .van-field__control {
                         color: #fff !important;
                         text-align: center !important
-                    }
+                    };
+					.van-cell__value {
+						display: flex
+					}
 				}
 			}
 		}

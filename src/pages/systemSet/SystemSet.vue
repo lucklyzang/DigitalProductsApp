@@ -16,7 +16,7 @@
 			<div class="left">
 				<span>昵称</span>
 			</div>
-			<div class="right">
+			<div class="right" @click="changeNickname">
                 <span>凝结</span>
                 <img :src="arrowRightPng" alt="">
 			</div>
@@ -102,6 +102,11 @@
         this.$router.push({path: '/'})
       },
 
+      // 修改昵称事件
+      changeNickname () {
+        this.$router.push({path: 'changeNickname'})
+      },
+
       //修改签名事件
       changeIndividualitySignature () {
           this.$router.push({path: 'individualitySignature'})
@@ -171,7 +176,7 @@
                     span {
                        font-size: 14px;
                        color: #717078;
-                       margin: 0 6px;
+                       margin: -2px 6px 0 8px;
                        width: 120px;
                        flex: 1;
                        text-align: right;
@@ -192,7 +197,7 @@
                     img {
                        width: 40px;
                        height: 40px;
-                       margin: 0 6px;
+                       margin-right: 2px;
                        border-radius: 50%;
                        &:last-child {
                          width: 8px;

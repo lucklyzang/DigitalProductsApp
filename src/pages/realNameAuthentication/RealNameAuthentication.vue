@@ -2,14 +2,17 @@
   <div class="page-box">
     <NavBar title="实名认证" path="accountSecurity" />
     <div class="content-box">
+      <van-loading type="spinner" v-show="loadingShow">认证中...</van-loading>
       <div class="content-top">
         <van-field
             v-model="realNameValue"
+            @blur="realNameChangeEvent"
             placeholder="真实姓名"
             :border="false"
         />
             <van-field
             v-model="cardValue"
+            @blur="cardChangeEvent"
             placeholder="证件号码"
             :border="false"
         />
@@ -22,26 +25,21 @@
 </template>
 <script>
   import NavBar from '@/components/NavBar'
-  import NoData from '@/components/NoData'
-  import Loading from '@/components/Loading'
-  import store from '@/store'
+  import {realNameArenhzneuthentication} from '@/api/products.js'
   import { mapGetters, mapMutations } from 'vuex'
-  import { formatTime, setStore, getStore, removeStore, IsPC} from '@/common/js/utils'
-  let windowTimer
+  import {IsPC} from '@/common/js/utils'
   export default {
-    name: 'Home',
+    name: 'RealNameAuthentication',
     components:{
-      NoData,
-      Loading,
-	  NavBar
+	    NavBar
     },
     data() {
       return {
-        noDataShow: false,
-        showLoadingHint: false,
+        loadingShow: false,
+        phoneRealNameUsable: false,
+        phoneCardUsable: false,
         realNameValue: '',
-        cardValue: '',
-        defaultPersonPng :require("@/common/images/home/default-person.jpg"),
+        cardValue: ''
       }
     },
 
@@ -63,14 +61,6 @@
       ])
     },
 
-    beforeRouteEnter (to, from, next) {
-      next()
-    },
-
-    beforeRouteLeave (to, from, next) {
-      next()
-    },
-
     methods:{
       ...mapMutations([
         'changeTitleTxt'
@@ -80,9 +70,80 @@
         return IsPC()
       },
 
-      //账号注销事件
+      //姓名输入框值变化事件
+      realNameChangeEvent (event) {
+        let regName = /^[\u4e00-\u9fa5][\u4e00-\u9fa5]{1,5}$/;
+        if (!regName.test(this.realNameValue)) {
+          this.phoneRealNameUsable = false;
+          if (this.realNameValue) {
+            this.$toast({
+              message: '姓名格式格式有误,请重新输入!',
+              position: 'bottom'
+            })
+          }  
+        } else {
+          this.phoneRealNameUsable = true
+        }
+      },
+
+      //身份证号输入框值变化事件
+      cardChangeEvent (event) {
+        let regIdCard = /^\d{15}$|^\d{17}[\d|x]/;
+        if (!regIdCard.test(this.cardValue)) {
+          this.phoneCardUsable = false;
+          if (this.cardValue) {
+            this.$toast({
+              message: '身份证格式格式有误,请重新输入!',
+              position: 'bottom'
+            })
+          }  
+        } else {
+          this.phoneCardUsable = true
+        }
+      },
+
+      //实名认证事件
       cancellationEvent () {
-          this.$router.push({path: '/'})
+         if (!this.realNameValue || !this.cardValue) {
+           this.$toast({
+            message: '身份证或姓名不能为空!',
+            position: 'bottom'
+          });
+          return
+        };
+        if (!this.phoneCardUsable || !this.phoneRealNameUsable) {
+           this.$toast({
+            message: '身份证或姓名格式有误,请重新输入!',
+            position: 'bottom'
+          });
+          return
+        };
+        realNameArenhzneuthentication({name: this.realNameValue, idCard: this.cardValue}).then((res) => {
+            this.loadingShow = false;
+            if (res && res.data.code == 0) {
+              this.$toast({
+                message: '实名认证成功',
+                position: 'bottom'
+              });
+              this.$router.push({
+                path: 'home'
+              })
+            } else {
+                this.$dialog.alert({
+                  message: `${res.data.msg}`,
+                  closeOnPopstate: true
+                }).then(() => {
+                })
+            }
+        })
+        .catch((err) => {
+            this.loadingShow = false;
+            this.$dialog.alert({
+              message: `${err.message}`,
+              closeOnPopstate: true
+            }).then(() => {
+            })
+        })
       }
     }
   }
@@ -109,27 +170,27 @@
       flex-direction: column;
       position: relative;
       background: @color-background;
-		.content-top {
-			height: 300px;
-			position: relative;
-			display: flex;
-			flex-direction: column;
-            width: 92%;
-			margin: 0 auto;
-			margin-top: 20px;
-			padding: 6px;
-            box-sizing: border-box;
-            /deep/ .van-cell {
-                margin-bottom: 8px;
-                background: @color-block;
-                height: 55px;
-                border: 1px solid #2c2c2c;
-                border-radius: 10px;
-                .van-field__control {
-                    color: #fff
+      .content-top {
+          height: 300px;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+                width: 92%;
+          margin: 0 auto;
+          margin-top: 20px;
+          padding: 6px;
+                box-sizing: border-box;
+                /deep/ .van-cell {
+                    margin-bottom: 8px;
+                    background: @color-block;
+                    height: 55px;
+                    border: 1px solid #2c2c2c;
+                    border-radius: 10px;
+                    .van-field__control {
+                        color: #fff
+                    }
                 }
-            }
-		};
+        };
         .content-bottom {
             width: 92%;
 			margin: 0 auto;

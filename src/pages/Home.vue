@@ -14,16 +14,18 @@
         </div>
       </van-sticky>
       <div class="switch-content">
-        <div class="object-box" v-show="currentTabIndex === 0">
+        <van-loading type="spinner" v-show="loadingShow"/>
+        <van-empty :description="descriptionContent" v-show="emptyShow" />
+        <div class="object-box" v-show="currentTabIndex === 0 && !emptyShow">
           <div class="rare-object">
             <img :src="homeBannerPng" alt="">
           </div>
           <div class="object-list" @click="objectDetailEvent" v-for="(item,index) in digitalCollectionList" :key="index">
             <div class="sell-info-area">
-              <div class="left">
+              <div class="left" v-show="isShowCocuntDown">
                 <van-icon name="underway" size="14" color="#be68ff" />
                 <span>即将开售</span>
-                <span>{{item.countdownTime}}</span>
+                <van-count-down :time="item.countdownTime" @finish="cocuntDownEvent(index)" format="DD:HH:mm:ss"/>
               </div>
             </div>
             <div class="image-area">
@@ -33,7 +35,9 @@
               <div class="left">
                 <div class="name">
                   <span>{{item.digitalCollectionName}}</span>
-                  <span>{{item.tagAttributes}}</span>
+                  <p>
+                    <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
+                  </p>
                 </div>
                 <div class="number">
                   <span>限量</span>
@@ -53,7 +57,7 @@
             </div>
           </div>
         </div>
-        <div class="sell-date-box" v-show="currentTabIndex === 1">
+        <div class="sell-date-box" v-show="currentTabIndex === 1 && !emptyShow">
           <div class="sell-title">
             <div class="left">
               <span>近期发售计划</span>
@@ -65,29 +69,29 @@
           </div>
           <div class="sell-content-list" v-for="(item,index) in digitalCollectionCalendarList" :key="index">
             <div class="month-day">
-              <span>{{item.digitalCollectioSellDate}}</span>
+              <span>{{item.date}}</span>
             </div>
-            <div class="same-hour-list" v-for="(innerItem, innerIndex) in item.digitalCollectioContentList" :key="innerIndex">  
+            <div class="same-hour-list" v-for="(innerItem, innerIndex) in item.saleTimeList" :key="innerIndex">  
               <div class="hour">
                 <van-icon name="underway" size="20" color="#ab4eff" />
-                <span>{{innerItem.digitalCollectioSellTime}}</span>
+                <span>{{innerItem.time}}</span>
               </div>
-              <div class="object-details-list" v-for="(lastItem, lastIndex) in innerItem.digitalCollectioContentDetailList" :key="lastIndex">
+              <div class="object-details-list" v-for="(lastItem, lastIndex) in innerItem.commodityList" :key="lastIndex">
                 <div class="object-details">
                   <div>
-                    <img :src="lastItem.digitalCollectioUrl">
+                    <img :src="lastItem.imgPath">
                   </div>
                   <div>
                     <div>
-                      <span>{{lastItem.digitalCollectionName}}</span>
+                      <span>{{lastItem.name}}</span>
                     </div>
                     <div>
                       <span>限量</span>
-                      <span>{{lastItem.digitalCollectioShare}} 份</span>
+                      <span>{{lastItem.quantity}} 份</span>
                     </div>
                     <div class="">
                       <span>¥</span>
-                      <span>{{lastItem.digitalCollectioPrice}}</span>
+                      <span>{{lastItem.price}}</span>
                     </div>
                   </div>
                 </div>
@@ -109,6 +113,7 @@
     import NavBar from '@/components/NavBar'
     import NoData from '@/components/NoData'
     import Loading from '@/components/Loading'
+    import {inquareProductList, inquareSellCalendar} from '@/api/products.js'
     import store from '@/store'
     import {
         mapGetters,
@@ -132,33 +137,16 @@
         },
         data() {
             return {
-                noDataShow: false,
-                showLoadingHint: false,
+                loadingShow: false,
                 homeBannerPng: require("@/common/images/home/home-banner.png"),
+                emptyShow: false,
+                descriptionContent: '暂无产品',
                 tabTitlelList: [{
                     name: '数字藏品'
                 }, {
                     name: '发售日历'
                 }],
-                digitalCollectionList: [{
-                    countdownTime: '03:06:00',
-                    digitalCollectionName: '新疆喀纳斯之秋',
-                    digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                    digitalCollectioShare: 8000,
-                    digitalCollectioAuthor: '乔玲',
-                    digitalCollectioAuthorPhoto: require("@/common/images/home/default-person.jpg"),
-                    digitalCollectioPrice: '59.90',
-                    tagAttributes: '风景画'
-                }, {
-                    countdownTime: '03:06:00',
-                    digitalCollectionName: '新疆喀纳斯之秋',
-                    digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                    digitalCollectioShare: 8000,
-                    digitalCollectioAuthor: '乔玲',
-                    digitalCollectioAuthorPhoto: require("@/common/images/home/default-person.jpg"),
-                    digitalCollectioPrice: '59.90',
-                    tagAttributes: '风景画'
-                }],
+                digitalCollectionList: [],
                 digitalCollectionCalendarList: [{
                     digitalCollectioSellDate: '04 月 01 日',
                     digitalCollectioContentList: [{
@@ -229,7 +217,9 @@
             if (!IsPC()) {
                 pushHistory();
                 this.gotoURL(() => {})
-            }
+            };
+            //查询藏品列表
+            this.queryProductsList()
         },
 
         watch: {},
@@ -255,7 +245,95 @@
 
             tabSwitchEvent(index) {
                 this.currentTabIndex = index;
-                console.log(index, this.currentTabIndex)
+                if (index === 0) {
+                    this.descriptionContent = '暂无产品';
+                    this.queryProductsList();
+                } else {
+                    this.descriptionContent = '暂无发售计划';
+                    this.queryProductsList()
+                }
+            },
+
+            // 查询作品列表
+            queryProductsList () {
+                this.loadingShow = true;
+                this.emptyShow = false;
+                this.digitalCollectionList = [];
+                inquareProductList().then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                        if (res.data.list.length == 0) {
+                            this.emptyShow = true;
+                        } else {
+                            for (let item of res.data.list) {
+                                this.digitalCollectionList.push({
+                                    countdownTime: item.seckillTime - new Date().getTime(),
+                                    digitalCollectionName: item.name,
+                                    digitalCollectioUrl: item.imgPath,
+                                    digitalCollectioShare: item.quantity,
+                                    digitalCollectioAuthor: item.publisher,
+                                    creator: item.creator,
+                                    digitalCollectioAuthorPhoto: item.path,
+                                    digitalCollectioPrice: item.price,
+                                    tagAttributes: item.tags,
+                                    isShowCocuntDown: true
+                                })
+                            }
+                        }
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.emptyShow = false;
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            // 查询发售日历
+            queryProductsList () {
+                this.loadingShow = true;
+                this.emptyShow = false;
+                this.digitalCollectionCalendarList = [];
+                inquareSellCalendar().then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                        if (res.data.list.length == 0) {
+                            this.emptyShow = true;
+                        } else {
+                            this.digitalCollectionCalendarList = res.data.list
+                        }
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.emptyShow = false;
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            //倒计时结束事件
+            cocuntDownEvent (index) {
+                this.digitalCollectionList[index]['isShowCocuntDown'] = false
             },
 
             // 藏品点点击详情事件
@@ -356,10 +434,17 @@
                                 padding: 4px 10px;
                                 height: 20px;
                                 line-height: 20px;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                justify-content: flex-start;
+                                align-items: center;
                                 span {
                                     &:nth-child(2) {
                                         margin: 0 4px
                                     }
+                                };
+                                /deep/ .van-count-down {
+                                    color: #be68ff;
                                 }
                             }
                             ;
@@ -393,17 +478,28 @@
                             flex-flow: row nowrap;
                             justify-content: space-between;
                             .left {
-                                width: 65%;
+                                width: 70%;
                                 .name {
                                     font-size: 19px;
                                     color: #FFFFFF;
                                     display: flex;
                                     flex-flow: row nowrap;
-                                    justify-content: space-between;
+                                    justify-content: flex-start;
                                     align-items: center;
                                     >span {
                                         display: inline-block;
-                                        &:last-child {
+                                        width: 60px;
+                                        margin-right: 6px;
+                                    }
+                                    >p {
+                                        flex: 1;
+                                        overflow: auto;
+                                        height: 40px;
+                                        display: flex;
+                                        flex-flow: row nowrap;
+                                        align-items: center;
+                                        >span {
+                                            display: inline-block;
                                             padding: 0 4px;
                                             height: 20px;
                                             border: 1px solid #bd69ff;
@@ -414,8 +510,7 @@
                                             color: #bd69ff
                                         }
                                     }
-                                }
-                                ;
+                                };
                                 .number {
                                     font-size: 0;
                                     margin: 10px 0;
@@ -453,10 +548,12 @@
                                     }
                                     ;
                                     span {
+                                        flex: 1;
                                         margin-left: 6px;
                                         font-size: 13px;
                                         color: #686866;
                                         margin-top: 2px;
+                                        .no-wrap()
                                     }
                                 }
                             }
@@ -466,7 +563,7 @@
                                 flex-direction: column;
                                 justify-content: flex-end;
                                 align-items: flex-end;
-                                width: 35%;
+                                width: 30%;
                                 span {
                                     font-size: 17px;
                                     color: #FFFFFF;
