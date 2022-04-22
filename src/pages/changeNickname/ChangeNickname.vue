@@ -27,7 +27,7 @@
 		setCache,
 		removeAllLocalStorage
 	} from '@/common/js/utils'
-	import {changeNickname} from '@/api/products.js'
+	import {changeNickname,inquareUserInfo} from '@/api/products.js'
 	export default {
 		components: {
 			NavBar
@@ -41,12 +41,18 @@
 		onReady() {},
 		computed: {
 			...mapGetters([
+                'userInfo',
+                'isLogin'
 			])
 		},
 		mounted() {
+            if (this.isLogin) {
+                this.nicknameContent = this.userInfo.nickName
+            }
 		},
 		methods: {
 			...mapMutations([
+                'storeUserInfo'
 			]),
             //保存昵称修改事件
             saveChangeEvent () {
@@ -64,9 +70,7 @@
                             message: '昵称修改成功',
                             position: 'bottom'
                         });
-                        this.$router.push({
-                            path: 'systemSet'
-                        })
+                        this.queryuserInfo()
                     } else {
                         this.$dialog.alert({
                         message: `${res.data.msg}`,
@@ -81,6 +85,31 @@
                         message: `${err.message}`,
                         closeOnPopstate: true
                         }).then(() => {
+                    })
+                })
+            },
+
+            // 查询用户信息
+            queryuserInfo () {
+                inquareUserInfo().then((res) => {
+                    if (res && res.data.code == 0) {
+                        this.storeUserInfo(res.data.data);
+                         this.$router.push({
+                            path: 'systemSet'
+                        })
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
                     })
                 })
             },

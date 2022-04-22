@@ -1,11 +1,10 @@
 import request from '@/utils/request'
 
 // 查询用户信息
-export function inquareUserInfo(data) {
+export function inquareUserInfo() {
     return request({
       url: 'app/purchaser/info',
-      method: 'get',
-      params: data
+      method: 'get'
     })
 };
 
@@ -14,8 +13,17 @@ export function changeNickname(data) {
     return request({
       url: 'app/purchaser/nickName',
       method: 'put',
-      data
+      params: data
     })
+};
+
+// 修改签名
+export function changeSignature(data) {
+  return request({
+    url: 'app/purchaser/signTxt',
+    method: 'put',
+    params: data
+  })
 };
 
 // 修改头像
@@ -45,6 +53,14 @@ export function inquareProductList(data) {
     })
 };
 
+// 作品访问记录
+export function productVisitRecord(id) {
+  return request({
+    url: `app/visit/${id}`,
+    method: 'get'
+  })
+};
+
 // 查询作品详情
 export function inquareProductDetails(id) {
     return request({
@@ -63,6 +79,7 @@ export function inquareSellCalendar() {
 
 // 作品访问记录
 export function productsAccessRecord(id) {
+  debugger;
   return request({
     url: `app/visit/${id}`,
     method: 'get'
@@ -72,7 +89,7 @@ export function productsAccessRecord(id) {
 // 购买商品
 export function purchaseCommodity(commId) {
   return request({
-    url: `app/order/{commId}`,
+    url: `app/order/${commId}`,
     method: 'post'
   })
 };
@@ -119,9 +136,10 @@ export function queryOrderDetails(id) {
 };
 
 // 查询藏品记录
-export function queryObjectRecord(id) {
+export function queryObjectRecord(data) {
   return request({
     url: 'app/record',
-    method: 'get'
+    method: 'get',
+    params: data
   })
 };

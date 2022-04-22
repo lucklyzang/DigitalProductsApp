@@ -6,15 +6,20 @@
         <div class="person-message-box">
           <div class="message-left">
             <div class="person-picture" @click="toEditPersonPage">
-              <img :src="notLoginPng">
+              <img :src="notLoginPng" v-show="!isLogin" alt="">
+			  <img :src="defaultPersonPng" v-show="isLogin && !userInfo.hasOwnProperty('avatarUrl')" alt="">
+			  <img :src="userInfo.avatarUrl" v-show="isLogin && userInfo.hasOwnProperty('avatarUrl')" alt="">
             </div>
             <div class="person-name">
-              <div v-if="true">砂夹石三</div>
-              <div v-else>未登录</div>
-              <div>
-                <span v-if="true">TA很神秘,什么都没有留下</span>
-                <span v-else>登录后可以查看更多数字藏品</span>
-              </div>
+				<div class="top">
+					<div v-if="isLogin">{{userInfo.nickName}}</div>
+					<div v-else>未登录</div>
+				</div>
+				<div class="bottom">
+					<span v-show="!isLogin">登录后可以查看更多数字藏品</span>
+					<span v-show="!userInfo.signTxt && isLogin">TA很神秘,什么都没有留下,TA很神秘,什么都没有留下</span>
+        			<span v-show="userInfo.signTxt && isLogin">{{userInfo.signTxt}}</span>
+				</div>
             </div>
           </div>
         </div>
@@ -47,9 +52,9 @@
   import NavBar from '@/components/NavBar'
   import NoData from '@/components/NoData'
   import Loading from '@/components/Loading'
-  import store from '@/store'
   import { mapGetters, mapMutations } from 'vuex'
-  import { formatTime, setStore, getStore, removeStore, IsPC} from '@/common/js/utils'
+  import {inquareUserInfo} from '@/api/products.js'
+  import { IsPC } from '@/common/js/utils'
   let windowTimer
   export default {
     name: 'Home',
@@ -116,7 +121,8 @@
         pushHistory();
         this.gotoURL(() => {
         })
-      }
+      };
+	  this.queryuserInfo()
     },
 
     watch: {
@@ -124,7 +130,8 @@
 
     computed:{
       ...mapGetters([
-        'userInfo'
+        'userInfo',
+		'isLogin'
       ])
     },
 
@@ -138,7 +145,7 @@
 
     methods:{
       ...mapMutations([
-        'changeTitleTxt'
+        'storeUserInfo'
       ]),
 
 		juddgeIspc () {
@@ -153,6 +160,10 @@
 
 		// 上部区域功能事件
 		featureSetTopEvent(item) {
+			if (!this.isLogin) {
+				this.$router.push({path: '/'});
+				return
+			};
 			if (item.span === '我的订单') {
 				this.$router.push({path: 'myOrderForm'}) 
 			} else if (item.span === '藏品记录') {
@@ -166,9 +177,35 @@
 
 		// 下部区域功能事件
 		featureSetEvent(item) {
+			if (!this.isLogin) {
+				this.$router.push({path: '/'});
+				return
+			};
 			if (item.span === '账号与安全') {
 				this.$router.push({path: 'accountSecurity'})
 			}
+		},
+
+		// 查询用户信息
+		queryuserInfo () {
+			inquareUserInfo().then((res) => {
+				if (res && res.data.code == 0) {
+					this.storeUserInfo(res.data.data);
+				} else {
+					this.$dialog.alert({
+						message: `${res.data.msg}`,
+						closeOnPopstate: true
+					}).then(() => {
+					})
+				}
+			})
+			.catch((err) => {
+				this.$dialog.alert({
+					message: `${err.message}`,
+					closeOnPopstate: true
+				}).then(() => {
+				})
+			})
 		}
     }
   }
@@ -221,19 +258,26 @@
 						display: flex;
 						flex-direction: column;
 						justify-content: center;
-						div {
-							&:last-child {
-								font-size: 13px;
-								display: flex;
-								flex-flow: row nowrap;
-                margin-top: 4px;
-                color: #686868;
-								span {
-									display: inline-block;
-									height: 26px;
-									text-align: center;
-									line-height: 26px
-								}
+						width: 0;
+						.top {
+							>div {
+								.no-wrap()
+							}
+						};
+						.bottom {
+							font-size: 13px;
+							display: flex;
+							flex-flow: row nowrap;
+							margin-top: 4px;
+							color: #686868;
+							span {
+								display: inline-block;
+								height: 26px;
+								text-align: center;
+								line-height: 26px;
+								width: 100%;
+								text-align: left;
+								.no-wrap()
 							}
 						}
 					}

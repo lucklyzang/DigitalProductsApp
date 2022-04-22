@@ -19,8 +19,11 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
+    if (config.url == "app/purchaser/avatar") {
+      config.headers['Content-Type'] = 'multipart/form-data'
+    };
     if (store.getters.token) {
-      config.headers['Authorization'] = store.getters.token
+      config.headers['token'] = store.getters.token
     };
     return config
   },

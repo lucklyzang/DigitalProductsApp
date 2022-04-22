@@ -39,11 +39,6 @@
 		mapMutations
 	} from 'vuex'
 	import {
-		setCache,
-		removeAllLocalStorage,
-		setStore
-	} from '@/common/js/utils'
-	import {
 		phoneAuthCodeLogin
 	} from '@/api/login.js'
 	export default {
@@ -73,7 +68,8 @@
 		},
 		methods: {
 			...mapMutations([
-				'changeToken'
+				'changeToken',
+				'changeIsLogin'
 			]),
 
 			// 输入框变化事件
@@ -97,8 +93,8 @@
   					password: code
 				}).then((res) => {
 					if (res && res.data.code == 0) {
-						setStore('questToken', res.data.token);
 						this.changeToken(res.data.token);
+						this.changeIsLogin(true);
 						this.$router.push({name:'home'})
 					} else {
 						this.$dialog.alert({

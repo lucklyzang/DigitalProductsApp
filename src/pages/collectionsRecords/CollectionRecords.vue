@@ -1,7 +1,9 @@
 <template>
 	<div class="content-box">
 		<NavBar path="/myInfo" title="藏品记录"/>
-		<div class="content-center">
+		<van-loading type="spinner" v-show="loadingShow"/>
+        <van-empty :description="descriptionContent" v-show="emptyShow" />
+		<div class="content-center" v-show="!emptyShow">
 			<div class="all-order">
 				<div class="order-list" v-for="(item,index) in orderList" :key="index">
 					<div class="left">
@@ -30,35 +32,18 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex'
-	import {
-		setCache,
-		removeAllLocalStorage
-	} from '@/common/js/utils'
     import NavBar from '@/components/NavBar'
-	import {
-	} from '@/api/login.js'
+	import {queryObjectRecord} from '@/api/products.js'
 	export default {
 		components: {
             NavBar
 		},
 		data() {
 			return {
-                orderList: [
-                    {
-                        collectionName: '吉乐福·舒清富',
-                        collectionUrl: require("@/common/images/home/default-person.jpg"),
-                        collectionPrice: '9.90',
-                        collectionTagsList: ['属性一','属性二'],
-
-                    },
-                      {
-                        collectionName: '吉乐福·舒清富',
-                        collectionUrl: require("@/common/images/home/default-person.jpg"),
-                        collectionPrice: '9.90',
-                        collectionTagsList: ['属性一','属性二'],
-
-                    }
-                ],
+				emptyShow: false,
+                loadingShow: false,
+				descriptionContent: '暂无藏品',
+                orderList: [],
 				currentTabIndex: 0,
 				animationData: [],
                 defaultPersonPng :require("@/common/images/home/default-person.jpg"),
@@ -70,10 +55,52 @@
 			])
 		},
 		mounted() {
+			// 查询藏品记录
+			this.queryCollectionRecords()
 		},
 		methods: {
 			...mapMutations([
-			])
+			]),
+			// 查询藏品记录
+			queryCollectionRecords () {
+				this.loadingShow = true;
+                this.emptyShow = false;
+                this.orderList = [];
+				queryObjectRecord({page: 1, limit: 20}).then((res) => {
+					this.loadingShow = false;
+					if (res && res.data.code == 0) {
+                        if (res.data.page.list.length == 0) {
+                            this.emptyShow = true;
+                        } else {
+                            for (let item of res.data.page.list) {
+                                this.orderList.push({
+                                    collectionName: item.name,
+									collectionUrl: item.path,
+									collectionPrice: item.price,
+									collectionTagsList: item.tags,
+									id: item.id,
+        							comId: item.comId
+                                })
+                            }
+                        }
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+				})
+				.catch((err) => {
+					this.loadingShow = false;
+                    this.emptyShow = false;
+					this.$dialog.alert({
+						message: `${err.message}`,
+						closeOnPopstate: true
+					}).then(() => {
+					})
+				})
+			}
 		}
 	}
 </script>
@@ -117,6 +144,7 @@
 						display: flex;
 						flex-flow: row nowrap;
                         align-items: center;
+						width: 100%;
 						.img-show {
 							width: 70px;
 							height: 70px;
@@ -130,13 +158,20 @@
 						.span-show {
 							display: flex;
                             height: 70px;
+							flex: 1;
+							width: 0;
 							flex-direction: column;
 							justify-content: space-between;
 							margin-left: 14px;
 							>span {
+								display: inline-block;
 								&:nth-child(1) {
 									font-size: 16px;
-									color: #FFFFFF
+									color: #FFFFFF;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									white-space: nowrap;
+									height: 30px
 								};
 								&:nth-child(3) {
 									font-size: 16px;
@@ -144,10 +179,9 @@
 								};
 							};
                             p {
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                                width: 170px;
+                                overflow: auto;
+								margin: 6px 0;
+								height: 30px;
                                 span {
                                     display: inline-block;
                                     padding: 0 8px;

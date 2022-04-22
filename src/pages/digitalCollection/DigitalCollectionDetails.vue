@@ -15,7 +15,7 @@
         <div class="content">
             <div class="content-top">
                 <div class="collection-exhibition">
-                    <img :src="digitalCollectioUrl">
+                    <img :src="productsDetails.imgPath">
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -23,21 +23,16 @@
                 <div class="synopsis">
                     <div class="title">
                         <span>
-                            新疆喀纳斯之秋新疆喀纳斯之秋
+                            {{productsDetails.name}}
                         </span>
                     </div>
                     <div class="number">
-                        <div class="left">
-                            <span>属性一</span>
-                            <span>属性一</span>
-                            <span>属性一</span>
-                            <span>属性一</span>
-                            <span>属性一</span>
-                            <span>属性一</span>
+                        <div class="left" v-show="productsDetails.tags != null && productsDetails.tags.length>0">
+                            <span v-for="(item,index) in productsDetails.tags" :key="index">{{item}}</span>
                         </div>
                         <div class="right">
                             <span>限量</span>
-                            <span>8000 份</span>
+                            <span>{{productsDetails.quantity}} 份</span>
                         </div>
                     </div>
                     <img :src="detailsTitleWrappper" alt="">
@@ -46,11 +41,11 @@
             <div class="content-middle">
                 <div class="framer" @click="toWorkRoomEvent">
                     <div>
-                        <img :src="digitalCollectioUrl">
+                        <img :src="productsDetails.path">
                     </div>
                     <div>
-                        <span>乔玲</span>
-                        <span>作品</span>
+                        <span>{{productsDetails.creator}}</span>
+                        <span>作品 4</span>
                     </div>
                 </div>
                 <div class="focus-box">
@@ -59,10 +54,10 @@
             </div>
             <div class="collection-story-box">
                 <div class="img-box">
-                    <img :src="digitalCollectioUrl">
+                    <img :src="productsDetails.rickText">
                 </div>
-                <div class="issure-title">
-                    <span>发行方: 桃花传媒有限公司</span>
+                <div class="publisher-title">
+                    <span>发行方: {{productsDetails.publisher}}</span>
                 </div>
             </div>
             <div class="purchase-information">
@@ -76,13 +71,13 @@
                 </div>
             </div>
         </div>
-        <div class="content-bottom">
+        <div class="content-bottom" @click="purchaseEvent">
 			<div>
-				<span>¥ 59.90</span>
+				<span>¥ {{productsDetails.price}}</span>
 			</div>
-			<div>
-				<span>即将开售</span>
-				<span>03:05:28</span>
+			<div :class="{'sellStyle': !isCountDownShow}">
+				<span>{{isCountDownShow ? '即将开售' : '购 买'}}</span>
+				<van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime)- new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
 			</div>
 		</div>
 	</div>
@@ -97,29 +92,91 @@
 		setCache,
 		removeAllLocalStorage
 	} from '@/common/js/utils'
-	import {
-	} from '@/api/login.js'
+	import {inquareProductDetails,purchaseCommodity} from '@/api/products.js'
 	export default {
 		components: {
 		},
+
 		data() {
 			return {
+                productsDetails: {},
+                isCountDownShow: true,
                 digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
                 sharePng: require("@/common/images/login/my-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
                 detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png")
 			}
 		},
+
 		onReady() {},
 		computed: {
 			...mapGetters([
+                'productsId'
 			])
 		},
+
 		mounted() {
+            this.queryProductDetails()
 		},
+
 		methods: {
 			...mapMutations([
+                'changeOrderId'
 			]),
+
+            // 查询作品详情
+            queryProductDetails () {
+                inquareProductDetails(this.productsId).then((res) => {
+                    if (res && res.data.code == 0) {
+                        this.productsDetails = res.data.data;
+                        console.log('作品详情',this.productsDetails);
+                    } else {
+                    this.$dialog.alert({
+                        message: `${res.data.msg}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    });
+                    }
+                })
+                .catch((err) => {
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            // 购买商品
+            purchaseEvent () {
+                if (this.isCountDownShow) {
+                    return
+                };
+                purchaseCommodity(this.productsId).then((res) => {
+                    if (res && res.data.code == 0) {
+                        this.changeOrderId(res.data.data.orderId);
+                        this.$router.push({path: 'orderFormToPaid'})
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            // 倒计时结束事件
+            countDownEvent () {
+                this.isCountDownShow = false
+            },
 
 			toWorkRoomEvent() {
                 this.$router.push({path: 'workRoom'})
@@ -170,7 +227,7 @@
                     }
                 };
                 .booth {
-                    width: 92%;
+                    width: 80%;
                     margin: 0 auto;
                     margin-top: 20px;
                     height: 50px;
@@ -203,7 +260,7 @@
                         display: flex;
                         height: 40px;
                         flex-flow: row nowrap;
-                        justify-content: space-between;
+                        justify-content: center;
                         align-items: center;
                         .left {
                             width: 50%;
@@ -213,6 +270,7 @@
                             display: flex;
                             flex-flow: row wrap;
                             align-items: center;
+                            justify-content: center;
                             z-index: 1000;
                             span {
                                 display: inline-block;
@@ -239,7 +297,7 @@
                             display: flex;
                             flex-flow: row nowrap;
                             align-items: center;
-                            justify-content: flex-end;
+                            justify-content: center;
                             span {
                                 font-size: 14px;
                                 display: inline-block;
@@ -286,11 +344,18 @@
                         height: 100%;
                     }
                 };
-                .issure-title {
+                .publisher-title {
                     padding-left: 10px;
                     font-size: 14px;
                     color: #fff;
-                    margin-top: 14px
+                    width: 100%;
+                    margin-top: 14px;
+                    box-sizing: border-box;
+                    span {
+                        display: inline-block;
+                        width: 100%;
+                        .no-wrap()
+                    }
                 }
             };
             .content-middle {
@@ -308,6 +373,7 @@
                 .framer {
                     display: flex;
                     flex-flow: row nowrap;
+                    flex: 1;
                     > div {
                         &:first-child {
                             width: 45px;
@@ -324,8 +390,11 @@
                             display: flex;
                             flex-direction: column;
                             justify-content: center;
+                            flex: 1;
+                            width: 0;
                             span {
                                 color: #FFFFFF;
+                                .no-wrap();
                                 &:first-child {
                                     font-size: 17px;
                                     margin-bottom: 4px;
@@ -342,13 +411,14 @@
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
+                    width: 50px;
+                    text-align: center;
+                    margin-left: 10px;
                     span {
                         display: inline-block;
                         font-size: 12px;
                         height: 20px;
                         line-height: 20px;
-                        padding: 0 10px;
-                        margin-left: 10px;
                         background: #ffbc41;
                         border-radius: 20px
                     }
@@ -412,9 +482,16 @@
 					box-sizing: border-box;
 					height: 50px;
 					border-radius: 26px;
-					color: #FFFFFF
+					color: #FFFFFF;
+                    /deep/ .van-count-down {
+                        color: #FFFFFF;
+                    }
 				}
 			}
+            .sellStyle {
+                justify-content: center !important;
+                font-size: 18px !important
+            }
 		}
 	}
 </style>

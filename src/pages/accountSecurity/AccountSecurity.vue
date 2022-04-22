@@ -8,18 +8,18 @@
 				<span>手机号</span>
 			</div>
 			<div class="right">
-                <span>12121212112</span>
-                <img :src="arrowRightPng" alt="">
+        <span>{{userInfo.mobile}}</span>
+        <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
-        <div class="nick-name" @click="realNameAuthenticationEvent">
+    <div class="nick-name" @click="realNameAuthenticationEvent">
 			<div class="left">
 				<span>实名认证</span>
 			</div>
 			<div class="right">
-                <van-icon name="passed" size="18" color="#00c259" />
-                <span>已认证</span>
-                <img :src="arrowRightPng" alt="">
+        <van-icon name="passed" size="18" color="#00c259" v-show="userInfo.realFlag == 1"/>
+        <span>{{userInfo.realFlag == 1 ? '已认证' : '去认证'}}</span>
+        <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
       </div>
@@ -97,9 +97,12 @@
       //实名认证事件
       realNameAuthenticationEvent () {
           // 未认证
-          // this.$router.push({path: '/realNameAuthentication'});
-          //已认证
-          this.$router.push({path: '/realNameAythenticationCertified'})
+          if (this.userInfo.realFlag != 1) {
+            this.$router.push({path: '/realNameAuthentication'})
+          } else {
+            //已认证
+            this.$router.push({path: '/realNameAythenticationCertified'})
+          }
       }
     }
   }

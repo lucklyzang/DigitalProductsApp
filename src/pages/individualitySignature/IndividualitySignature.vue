@@ -1,6 +1,7 @@
 <template>
 	<div class="content-box">
         <NavBar path="/systemSet" title="个性签名" />
+        <van-loading type="spinner" v-show="loadingShow"/>
 		<div class="content-center">
             <van-field class="uni-input" v-model="signatureContent"  rows="4"
                 autosize
@@ -10,8 +11,8 @@
             />
 		</div>
         <div class="btn-area">
-            <span>取 消</span>
-            <span>保 存</span>
+            <span @click="cancelChangeEvent">取 消</span>
+            <span @click="saveChangeEvent">保 存</span>
         </div>
 	</div>
 </template>
@@ -26,27 +27,102 @@
 		setCache,
 		removeAllLocalStorage
 	} from '@/common/js/utils'
-	import {
-	} from '@/api/login.js'
+	import {changeSignature,inquareUserInfo} from '@/api/products.js'
 	export default {
 		components: {
 			NavBar
 		},
 		data() {
 			return {
+                loadingShow: false,
 				signatureContent: ''
 			}
 		},
 		onReady() {},
 		computed: {
 			...mapGetters([
+                'userInfo',
+                'isLogin'
 			])
 		},
 		mounted() {
+            if (this.isLogin) {
+                this.signatureContent = this.userInfo.signTxt
+            }
 		},
 		methods: {
 			...mapMutations([
-			])
+                'storeUserInfo'
+			]),
+
+            //保存签名修改事件
+            saveChangeEvent () {
+                if (!this.signatureContent) {
+                    this.$toast({
+                        message: '签名不能为空',
+                        position: 'bottom'
+                    });
+                    return
+                };
+
+                changeSignature({sign: this.signatureContent}).then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                        this.queryuserInfo();
+                        this.$toast({
+                            message: '签名修改成功',
+                            position: 'bottom'
+                        })
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                            }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                        this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                        }).then(() => {
+                    })
+                })
+            },
+
+            // 查询用户信息
+            queryuserInfo () {
+                inquareUserInfo().then((res) => {
+                    if (res && res.data.code == 0) {
+                        this.storeUserInfo(res.data.data);
+                         this.$router.push({
+                            path: 'systemSet'
+                        })
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+            
+            // 签名修改取消事件
+            cancelChangeEvent () {
+                this.signatureContent = '';
+                this.$router.push({
+                    path: 'systemSet'
+                })
+            }
 		}
 	}
 </script>

@@ -2,29 +2,25 @@
 	<div class="content-box">
 		<NavBar path="/myOrderForm" title="订单详情"/>
 		<div class="content-top">
-            <img :src="accountPaidPng" alt="">
-			<span>已付款</span>
+            <img :src="orderFormDetails.status == 1 ? accountPaidPng : canceledPng " alt="">
+			<span>{{orderFormDetails.status == 1 ? '已支付' : '已取消'}}</span>
 		</div>
 		<div class="content-center">
 			<div class="top">
 				<div class="img-show">
-					<img :src="defaultPersonPng">
+					<img :src="orderFormDetails.imgPath">
 				</div>
 				<div class="span-show">
-					<span>伎乐赋·竖琴赋</span>
+					<span>{{orderFormDetails.name}}</span>
 					<p>
-                        <span>属性一</span>
-                        <span>属性一</span>
-                        <span>属性一</span>
-                        <span>属性一</span>
-                        <span>属性一</span>
+                        {{orderFormDetails.pubName}}
                     </p>
 				</div>
 			</div>
 			<div class="bottom">
 				<div>
 					<span>订单金额</span>
-					<span>39.90元</span>
+					<span>{{orderFormDetails.price}}元</span>
 				</div>
 				<div>
 					<span>交易数量</span>
@@ -32,10 +28,11 @@
 				</div>
 				<div>
 					<span>创建时间</span>
-					<span>2022-04-11 14:03:18</span>
+					<span>{{orderFormDetails.createTime}}</span>
 				</div>
 			</div>
 		</div>
+		<van-loading type="spinner" v-show="loadingShow"/>
 	</div>
 </template>
 
@@ -45,30 +42,55 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
-	import {
-	} from '@/api/login.js'
+	import {queryOrderDetails} from '@/api/products.js'
 	export default {
 		components: {
             NavBar
 		},
 		data() {
 			return {
+				loadingShow: false,
+				orderFormDetails: {},
 				accountPaidPng: require("@/common/images/home/account-paid.png"),
-                defaultPersonPng: require("@/common/images/home/default-person.jpg"),
-				canceledPng: require("@/common/images/home/canceled.png"),
-				obligationPng: require("@/common/images/home/obligation.png")
+				canceledPng: require("@/common/images/home/canceled.png")
 			}
 		},
 		onReady() {},
 		computed: {
 			...mapGetters([
+				'orderId'
 			])
 		},
 		mounted() {
+			this.inquareOrderDetails(this.orderId)
 		},
 		methods: {
 			...mapMutations([
-			])
+			]),
+			// 查询订单详情
+            inquareOrderDetails(id) {
+                this.loadingShow = true;
+                queryOrderDetails(id).then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                       this.orderFormDetails = res.data.data
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            }
 		}
 	}
 </script>
@@ -135,33 +157,19 @@
 					display: flex;
 					flex-direction: column;
                     height: 60px;
-					justify-content: flex-start;
+					justify-content: space-between;
 					margin-left: 20px;
 					flex: 1;
+					width: 0;
 					> span {
-						&:nth-child(1) {
-							font-size: 17px;
-							color: #FFFFFF
-						};
-
+						.no-wrap();
+						font-size: 17px;
+						color: #FFFFFF
 					};
                     p {
-                        margin-top: 14px;
-                        overflow: auto;
-                        width: 100%;
-                        span {
-                            display: inline-block;
-                            padding: 0 8px;
-                            height: 18px;
-                            border: 1px solid #bd69ff;
-                            font-size: 10px;
-                            border-radius: 10px;
-                            box-sizing: border-box;
-                            text-align: center;
-                            line-height: 18px;
-                            color: #bd69ff;
-                            margin-right: 4px
-                        }
+                        .no-wrap();
+						font-size: 10px;
+						color: #8c8c8c;
                     }
 				}
 			};

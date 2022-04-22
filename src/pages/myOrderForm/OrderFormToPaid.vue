@@ -4,15 +4,16 @@
 		<div class="content-center">
             <div class="top">
                 <span>未完成</span>
-                <span>剩余28分30妙</span>
+                <van-count-down :time="`${(new Date(orderFormDetails.createTime).getTime() + orderFormDetails.expire*60*1000) - new Date().getTime()}`" format="剩余 mm 分 ss 秒" @finish="cocuntDownEvent"/>
             </div>
 			<div class="center">
+                <van-loading type="spinner" v-show="loadingShow"/>
 				<div class="img-show">
-					<img :src="defaultPersonPng">
+					<img :src="orderFormDetails.imgPath">
 				</div>
 				<div class="span-show">
-					<span>伎乐赋·竖琴赋</span>
-					<span>¥ 19.9</span>
+					<span>{{orderFormDetails.name}}</span>
+					<span>¥ {{orderFormDetails.price}}</span>
 				</div>
 			</div>
             <div class="bottom">
@@ -64,11 +65,11 @@
         <div class="content-bottom">
             <div class="btn-left">
                 <span>
-                    应付 ¥ 19.9
+                    应付 ¥ {{orderFormDetails.price}}
                 </span>
             </div>
             <div class="btn-right">
-                <span>取消订单</span>
+                <span @click="cancellationOfOrder">取消订单</span>
                 <span>确认支付</span>
             </div>
 		</div>
@@ -81,15 +82,16 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
-	import {
-	} from '@/api/login.js'
+	import {queryOrderDetails,cancelOrder,createPaymentOrder} from '@/api/products.js'
 	export default {
 		components: {
             NavBar
 		},
 		data() {
 			return {
-                defaultPersonPng: require("@/common/images/home/default-person.jpg"),
+                loadingShow: false,
+                time: '',
+                orderFormDetails: {},
                 weixinPayPng: require("@/common/images/home/weixin-pay.png"),
                 alipayPayPng: require("@/common/images/home/alipay-pay.png"),
                 otherPayPng: require("@/common/images/home/other-pay.png"),
@@ -99,13 +101,95 @@
 		onReady() {},
 		computed: {
 			...mapGetters([
+                'orderId'
 			])
 		},
 		mounted() {
+            this.inquareOrderDetails(this.orderId)
 		},
 		methods: {
 			...mapMutations([
-			])
+			]),
+
+            // 查询订单详情
+            inquareOrderDetails(id) {
+                this.loadingShow = true;
+                queryOrderDetails(id).then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                       this.orderFormDetails = res.data.data
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            // 取消订单
+            cancellationOfOrder() {
+                this.loadingShow = true;
+                cancelOrder(this.orderId).then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                       this.$toast({
+                            message: '订单取消成功',
+                            position: 'bottom'
+                        })
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            // 创建支付订单
+            createPaymentOrderEvent () {
+                createPaymentOrder({}).then((res) => {
+                    if (res && res.data.code == 0) {
+                        
+                    } else {
+                    this.$dialog.alert({
+                        message: `${res.data.msg}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    });
+                    }
+                })
+                .catch((err) => {
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            // 倒计时结束事件
+            cocuntDownEvent () {
+                
+            }
 		}
 	}
 </script>

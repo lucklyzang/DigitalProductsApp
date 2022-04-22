@@ -20,12 +20,12 @@
           <div class="rare-object">
             <img :src="homeBannerPng" alt="">
           </div>
-          <div class="object-list" @click="objectDetailEvent" v-for="(item,index) in digitalCollectionList" :key="index">
+          <div class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="index">
             <div class="sell-info-area">
-              <div class="left" v-show="isShowCocuntDown">
+              <div class="left" v-show="item.countdownTime > 0">
                 <van-icon name="underway" size="14" color="#be68ff" />
                 <span>即将开售</span>
-                <van-count-down :time="item.countdownTime" @finish="cocuntDownEvent(index)" format="DD:HH:mm:ss"/>
+                <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
               </div>
             </div>
             <div class="image-area">
@@ -100,9 +100,13 @@
           </div>
         </div>
       </div>
-      <div class="name-auth">
+      <div class="name-auth" v-show="userInfo.realFlag === 0">
         <span>实名认证后才可以购买数字藏品</span>
         <span @click="goAuthNameEvent">去认证</span>
+      </div>
+       <div class="name-auth login-hint" v-show="!isLogin">
+        <span>去登录,开启新的体验</span>
+        <span @click="goLoginEvent">登录</span>
       </div>
     </div>
     <FooterBottom></FooterBottom>  
@@ -113,7 +117,7 @@
     import NavBar from '@/components/NavBar'
     import NoData from '@/components/NoData'
     import Loading from '@/components/Loading'
-    import {inquareProductList, inquareSellCalendar} from '@/api/products.js'
+    import {inquareProductList, inquareSellCalendar,productVisitRecord} from '@/api/products.js'
     import store from '@/store'
     import {
         mapGetters,
@@ -137,9 +141,9 @@
         },
         data() {
             return {
-                loadingShow: false,
                 homeBannerPng: require("@/common/images/home/home-banner.png"),
                 emptyShow: false,
+                loadingShow: false,
                 descriptionContent: '暂无产品',
                 tabTitlelList: [{
                     name: '数字藏品'
@@ -147,65 +151,7 @@
                     name: '发售日历'
                 }],
                 digitalCollectionList: [],
-                digitalCollectionCalendarList: [{
-                    digitalCollectioSellDate: '04 月 01 日',
-                    digitalCollectioContentList: [{
-                        digitalCollectioSellTime: '20:00',
-                        digitalCollectioContentDetailList: [{
-                            digitalCollectionName: '新疆喀纳斯之秋',
-                            digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                            digitalCollectioShare: 8000,
-                            digitalCollectioPrice: '59.90',
-                        }, {
-                            digitalCollectionName: '新疆喀纳斯之冬',
-                            digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                            digitalCollectioShare: 8000,
-                            digitalCollectioPrice: '59.90'
-                        }]
-                    }, {
-                        digitalCollectioSellTime: '21:00',
-                        digitalCollectioContentDetailList: [{
-                            digitalCollectionName: '新疆喀纳斯之秋',
-                            digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                            digitalCollectioShare: 8000,
-                            digitalCollectioPrice: '59.90',
-                        }, {
-                            digitalCollectionName: '新疆喀纳斯之冬',
-                            digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                            digitalCollectioShare: 8000,
-                            digitalCollectioPrice: '59.90'
-                        }]
-                    }]
-                }, {
-                    digitalCollectioSellDate: '04 月 012 日',
-                    digitalCollectioContentList: [{
-                        digitalCollectioSellTime: '10:00',
-                        digitalCollectioContentDetailList: [{
-                            digitalCollectionName: '新疆喀纳斯之春',
-                            digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                            digitalCollectioShare: 8000,
-                            digitalCollectioPrice: '59.90',
-                        }, {
-                            digitalCollectionName: '新疆喀纳斯之夏',
-                            digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                            digitalCollectioShare: 8000,
-                            digitalCollectioPrice: '59.90'
-                        }]
-                    }, {
-                        digitalCollectioSellTime: '18:00',
-                        digitalCollectioContentDetailList: [{
-                            digitalCollectionName: '新疆喀纳斯之春',
-                            digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                            digitalCollectioShare: 8000,
-                            digitalCollectioPrice: '59.90',
-                        }, {
-                            digitalCollectionName: '新疆喀纳斯之夏',
-                            digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
-                            digitalCollectioShare: 8000,
-                            digitalCollectioPrice: '59.90'
-                        }]
-                    }]
-                }],
+                digitalCollectionCalendarList: [],
                 isEffect: false,
                 currentTabIndex: 0,
                 animationData: {}
@@ -226,7 +172,8 @@
 
         computed: {
             ...mapGetters([
-                'userInfo'
+                'userInfo',
+                'isLogin'
             ])
         },
 
@@ -240,7 +187,7 @@
 
         methods: {
             ...mapMutations([
-                'changeTitleTxt'
+                'changeProductsId'
             ]),
 
             tabSwitchEvent(index) {
@@ -250,7 +197,7 @@
                     this.queryProductsList();
                 } else {
                     this.descriptionContent = '暂无发售计划';
-                    this.queryProductsList()
+                    this.querySaleCalendar()
                 }
             },
 
@@ -267,7 +214,7 @@
                         } else {
                             for (let item of res.data.list) {
                                 this.digitalCollectionList.push({
-                                    countdownTime: item.seckillTime - new Date().getTime(),
+                                    countdownTime: Number(item.seckillTime) - new Date().getTime(),
                                     digitalCollectionName: item.name,
                                     digitalCollectioUrl: item.imgPath,
                                     digitalCollectioShare: item.quantity,
@@ -276,9 +223,11 @@
                                     digitalCollectioAuthorPhoto: item.path,
                                     digitalCollectioPrice: item.price,
                                     tagAttributes: item.tags,
-                                    isShowCocuntDown: true
+                                    id: item.id,
+                                    status: item.status
                                 })
-                            }
+                            };
+                            console.log(this.digitalCollectionList);
                         }
                     } else {
                         this.$dialog.alert({
@@ -300,7 +249,7 @@
             },
 
             // 查询发售日历
-            queryProductsList () {
+            querySaleCalendar () {
                 this.loadingShow = true;
                 this.emptyShow = false;
                 this.digitalCollectionCalendarList = [];
@@ -332,20 +281,48 @@
             },
 
             //倒计时结束事件
-            cocuntDownEvent (index) {
-                this.digitalCollectionList[index]['isShowCocuntDown'] = false
+            countDownEvent (index) {
             },
 
-            // 藏品点点击详情事件
-            objectDetailEvent() {
-                this.$router.push({
-                    path: 'collectionDetails'
+            //作品访问统计
+            productsVisitStatistics (id) {
+                productVisitRecord(id).then((res) => {
+                    this.changeProductsId(id);
+                    this.$router.push({
+                        name: 'collectionDetails',
+                        params: {id}
+                    });
+                    if (res && res.data.code == 0) {
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
                 })
+                .catch((err) => {
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            // 藏品点击详情事件
+            objectDetailEvent(item,index) {
+               this.productsVisitStatistics(item.id)
             },
 
             // 实名认证事件
             goAuthNameEvent() {
                 this.$router.push({path: '/realNameAuthentication'})
+            },
+
+            //去登陆事件
+            goLoginEvent() {
+                this.$router.push({path: '/login'})
             }
         }
     }
@@ -391,7 +368,7 @@
                             bottom: 6px;
                             width: 10px;
                             height: 3px;
-                            background-color: orange;
+                            background-image: linear-gradient(to right, #fcbe43 , #bf6bfe)
                         }
                     }
                 }
@@ -488,8 +465,9 @@
                                     align-items: center;
                                     >span {
                                         display: inline-block;
-                                        width: 60px;
+                                        max-width: 120px;
                                         margin-right: 6px;
+                                        .no-wrap();
                                     }
                                     >p {
                                         flex: 1;
@@ -505,9 +483,13 @@
                                             border: 1px solid #bd69ff;
                                             font-size: 10px;
                                             border-radius: 10px;
+                                            margin-right: 4px;
                                             text-align: center;
                                             line-height: 20px;
-                                            color: #bd69ff
+                                            color: #bd69ff;
+                                            &:last-child{
+                                                margin-right: 0
+                                            }
                                         }
                                     }
                                 };
@@ -669,17 +651,24 @@
                                             display: flex;
                                             flex-direction: column;
                                             justify-content: space-around;
+                                            flex: 1;
+                                            width: 0;
                                             padding: 4px 0;
                                             >div {
                                                 &:nth-child(1) {
                                                     font-size: 18px;
-                                                    color: #FFFFFF
-                                                }
-                                                ;
+                                                    color: #FFFFFF;
+                                                    span {
+                                                        display: inline-block;
+                                                        width: 100%;
+                                                        .no-wrap()
+                                                    }
+                                                };
                                                 &:nth-child(2) {
-                                                    font-size: 14px;
+                                                    font-size: 0;
                                                     margin: 10px 0;
                                                     span {
+                                                        font-size: 14px;
                                                         display: inline-block;
                                                         &:first-child {
                                                             background: #ffbc41;
@@ -687,8 +676,7 @@
                                                             padding: 1px 4px 1px 4px;
                                                             border-top-left-radius: 2px;
                                                             border-bottom-left-radius: 2px;
-                                                        }
-                                                        ;
+                                                        };
                                                         &:last-child {
                                                             background: #3e3a51;
                                                             color: #ffbc41;

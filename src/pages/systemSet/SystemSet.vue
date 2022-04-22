@@ -1,15 +1,19 @@
 <template>
   <div class="page-box">
     <NavBar title="设置" path="myInfo" />
+    <van-loading type="spinner" v-show="loadingShow"/>
+    <van-overlay :show="overlayShow" />
     <div class="content-box">
       <div class="content-top">
       	<div class="nick-name photo-box">
 			<div class="left">
 				<span>头像</span>
 			</div>
-			<div class="right">
-                <img :src="defaultPersonPng">
-                <img :src="arrowRightPng" alt="">
+			<div class="right" @click="changeHeadPortrait">
+          <img :src="notLoginPng" v-show="!isLogin" alt="">
+          <img :src="defaultPersonPng" v-show="isLogin && !userInfo.hasOwnProperty('avatarUrl')" alt="">
+          <img :src="userInfo.avatarUrl" v-show="isLogin && userInfo.hasOwnProperty('avatarUrl')" alt="">
+          <img :src="arrowRightPng" class="imgIcon" alt="">
 			</div>
 		</div>
         <div class="nick-name">
@@ -17,23 +21,38 @@
 				<span>昵称</span>
 			</div>
 			<div class="right" @click="changeNickname">
-                <span>凝结</span>
-                <img :src="arrowRightPng" alt="">
+        <span v-show="isLogin">{{userInfo.nickName}}</span>
+        <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
-        <div class="nick-name">
+    <div class="nick-name">
 			<div class="left">
 				<span>个性签名</span>
 			</div>
 			<div class="right" @click="changeIndividualitySignature">
-                <span>TA很神秘,什么都没有留下,TA很神秘,什么都没有留下</span>
-                <img :src="arrowRightPng" alt="">
+        <span v-show="!userInfo.signTxt && isLogin">TA很神秘,什么都没有留下,TA很神秘,什么都没有留下</span>
+        <span v-show="userInfo.signTxt && isLogin">{{userInfo.signTxt}}</span>
+        <img :src="arrowRightPng" alt="">
 			</div>
 		</div>
       </div>
-      <div class="content-bottom" @click="cancellationEvent">
+      <div class="content-bottom" @click="logoutEvent">
         <span>退出登录</span>
       </div>
+      <!-- 拍照选择 -->
+      <transition name="van-slide-up">
+        <div class="choose-photo-box" v-show="photoBox">
+          <div class="choose-photo">
+            <van-icon name="photo" />
+            <input name="uploadImg1" id="demo1" @change="previewFileOne" type="file" accept="image/album"/>从图库中选择
+          </div>
+          <div class="photo-graph">
+            <van-icon name="photograph" />
+            <input name="uploadImg2" id="demo2"  @change="previewFileTwo" type="file" accept="image/camera"/>拍照
+          </div>
+          <div class="photo-cancel" @click="photoCancel">取消</div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -41,9 +60,10 @@
   import NavBar from '@/components/NavBar'
   import NoData from '@/components/NoData'
   import Loading from '@/components/Loading'
-  import store from '@/store'
   import { mapGetters, mapMutations } from 'vuex'
-  import { formatTime, setStore, getStore, removeStore, IsPC} from '@/common/js/utils'
+  import {logout} from '@/api/login.js'
+  import {changeAvatar,inquareUserInfo} from '@/api/products.js'
+  import { IsPC} from '@/common/js/utils'
   let windowTimer
   export default {
     name: 'Home',
@@ -54,21 +74,29 @@
     },
     data() {
       return {
-        noDataShow: false,
-        showLoadingHint: false,
-        versionNumber: '1.8',
+        photoBox: false,
+        overlayShow: false,
+        loadingShow: false,
         defaultPersonPng :require("@/common/images/home/default-person.jpg"),
-        arrowRightPng: require("@/common/images/login/arrow-right.png")
+        arrowRightPng: require("@/common/images/login/arrow-right.png"),
+        notLoginPng :require("@/common/images/login/not-login.png")
       }
     },
 
     mounted() {
+      console.log(this.isLogin);
       // 控制设备物理返回按键
       if (!IsPC()) {
         pushHistory();
         this.gotoURL(() => {
         })
-      }
+      };
+      document.addEventListener('click', (e) => {
+        if(e.target.className !='right' && e.target.className != 'imgIcon'){
+          this.photoBox = false;
+          this.overlayShow = false
+        }
+      })
     },
 
     watch: {
@@ -76,7 +104,8 @@
 
     computed:{
       ...mapGetters([
-        'userInfo'
+        'userInfo',
+        'isLogin'
       ])
     },
 
@@ -90,16 +119,92 @@
 
     methods:{
       ...mapMutations([
-        'changeTitleTxt'
+        'storeUserInfo',
+        'changeIsLogin'
       ]),
 
       juddgeIspc () {
         return IsPC()
       },
 
-      //账号注销事件
-      cancellationEvent () {
-        this.$router.push({path: '/'})
+      // 修改头像事件
+      saveChangeAvatarEvent (data) {
+        this.loadingShow = true;
+        changeAvatar(data).then((res) => {
+            this.loadingShow = false;
+            if (res && res.data.code == 0) {
+                this.$toast({
+                  message: '头像修改成功',
+                  position: 'bottom'
+                });
+                this.queryuserInfo()
+            } else {
+                this.$dialog.alert({
+                  message: `${res.data.msg}`,
+                  closeOnPopstate: true
+                }).then(() => {
+                })
+            }
+        })
+        .catch((err) => {
+            this.loadingShow = false;
+              this.$dialog.alert({
+                message: `${err.message}`,
+                closeOnPopstate: true
+              }).then(() => {
+            })
+        })
+      },
+
+      // 查询用户信息
+      queryuserInfo () {
+        inquareUserInfo().then((res) => {
+          if (res && res.data.code == 0) {
+            this.storeUserInfo(res.data.data);
+          } else {
+            this.$dialog.alert({
+              message: `${res.data.msg}`,
+              closeOnPopstate: true
+            }).then(() => {
+            })
+          }
+        })
+        .catch((err) => {
+          this.$dialog.alert({
+            message: `${err.message}`,
+            closeOnPopstate: true
+          }).then(() => {
+          })
+        })
+      },
+
+      //退出登录事件
+      logoutEvent () {
+        logout().then((res) => {
+          this.loadingShow = false;
+          if (res && res.data.code == 0) {
+              this.queryuserInfo();
+              this.changeIsLogin(false);
+              this.$toast({
+                message: '退出登录成功',
+                position: 'bottom'
+              });
+            } else {
+                this.$dialog.alert({
+                message: `${res.data.msg}`,
+                closeOnPopstate: true
+                }).then(() => {
+                })
+            }
+        })
+        .catch((err) => {
+            this.loadingShow = false;
+                this.$dialog.alert({
+                message: `${err.message}`,
+                closeOnPopstate: true
+                }).then(() => {
+            })
+        })
       },
 
       // 修改昵称事件
@@ -109,7 +214,67 @@
 
       //修改签名事件
       changeIndividualitySignature () {
-          this.$router.push({path: 'individualitySignature'})
+        this.$router.push({path: 'individualitySignature'})
+      },
+
+      // 修改头像事件
+      changeHeadPortrait () {
+        this.photoBox = true;
+        this.overlayShow = true
+      },
+
+      // 图片上传预览
+      previewFileOne() {
+        let file = document.getElementById("demo1").files[0];
+        let _this = this;
+        let reader = new FileReader();
+        let isLt2M = file.size/1024/1024 < 16;
+        if (!isLt2M) {
+          this.$dialog.alert({
+            message: '上传图片大小不能超过16MB!',
+            closeOnPopstate: true
+          }).then(() => {
+          });
+          return
+        };  
+        reader.addEventListener("load", function () {
+          let formData = new FormData();
+          formData.append('file', file);
+          _this.saveChangeAvatarEvent(formData)
+        }, false);
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      },
+
+      //拍照预览
+      previewFileTwo() {
+        let file = document.getElementById("demo2").files[0];
+        let _this = this;
+        let reader = new FileReader();
+        let isLt2M = file.size/1024/1024 < 16;
+        if (!isLt2M) {
+          _this.$dialog.alert({
+            message: '上传图片大小不能超过16MB!',
+            closeOnPopstate: true
+          }).then(() => {
+          });
+          return
+        };  
+        reader.addEventListener("load", function () {
+          let formData = new FormData();
+          formData.append('file', file);
+          _this.saveChangeAvatarEvent(formData)
+        }, false);
+        if (file) {
+          reader.readAsDataURL(file);
+        };
+      },
+
+      // 拍照取消
+      photoCancel () {
+        this.photoBox = false;
+        this.overlayShow = false
       }
     }
   }
@@ -221,7 +386,87 @@
           background: @color-block;
           color: #bc67ff;
           font-size: 15px;
+        };
+       .choose-photo-box {
+        position: fixed;
+        margin: auto;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 1000;
+        font-size: 0;
+        > div {
+          width: 100%;
+          text-align: center;
+          font-size: 16px;
+          background: #f6f6f6
         }
+        .choose-photo {
+          padding: 8px 10px;
+          height: 30px;
+          .bottom-border-1px(#cbcbcb);
+          line-height: 30px;
+          position: relative;
+          cursor: pointer;
+          color: @color-theme;
+          overflow: hidden;
+          display: inline-block;
+          *display: inline;
+          *zoom: 1;
+          /deep/ .van-icon {
+            vertical-align: top;
+            font-size: 20px;
+            display: inline-block;
+            line-height: 30px
+          };
+          input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            height: 100%;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            cursor: pointer
+          }
+        };
+        .photo-graph {
+          position: relative;
+          display: inline-block;
+          height: 50px;
+          overflow: hidden;
+         .bottom-border-1px(#cbcbcb);
+          color: @color-theme;
+          text-decoration: none;
+          text-indent: 0;
+          line-height: 50px;
+          /deep/ .van-icon {
+            vertical-align: top;
+            font-size: 20px;
+            display: inline-block;
+            line-height: 50px
+          };
+          input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            height: 100%;
+            top: 0;
+            opacity: 0;
+          }
+        };
+        .photo-cancel {
+          position: relative;
+          display: inline-block;
+          padding: 8px 12px;
+          overflow: hidden;
+          color: @color-theme;
+          text-decoration: none;
+          text-indent: 0;
+          line-height: 30px;
+          font-weight: bold
+        }
+      } 
     }
   }
 </style>
