@@ -1,19 +1,8 @@
 import { setStore, getStore} from '@/common/js/utils'
+import { getDefaultLoginState } from '@/common/js/resetStore'
 export default {
- 
-  getDefaultState: () => {
-    return {
-      userInfo: null, //用户信息
-      isLogin: false, //是否登录
-      token: null //请求token
-    }
-  },
 
-  state:{
-    userInfo: null, //用户信息
-    isLogin: false, //是否登录
-    token: null //请求token
-  },
+  state: getDefaultLoginState(),
 
   getters:{
     userInfo : (state) => {
@@ -56,8 +45,17 @@ export default {
         setStore('isLogin',playLoad);
         state.isLogin = playLoad
       }
+    },
+
+    //重置login的store
+    resetState (state) {
+      Object.assign(state,getDefaultLoginState())
     }
   },
 
-  actions:{}
+  actions:{
+    resetLoginState ({commit}) {
+      commit('resetState')
+    }
+  }
 }
