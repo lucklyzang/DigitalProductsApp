@@ -276,14 +276,14 @@
                                 display: inline-block;
                                 padding: 0 6px;
                                 height: 20px;
-                                border: 1px solid #be68ff;
+                                border: 1px solid #bd6aff;
                                 font-size: 10px;
                                 border-radius: 10px;
                                 text-align: center;
                                 line-height: 20px;
                                 margin-right: 4px;
                                 margin-bottom: 4px;
-                                color: #be68ff;
+                                color: #bd68ff;
                                 &:nth-child(even) {
                                     margin-right: 0
                                 }
@@ -304,7 +304,7 @@
                                 height: 20px;
                                 line-height: 20px;
                                 &:first-child {
-                                    background: #ffbc41;
+                                    background: #febd42;
                                     color: black;
                                     padding: 1px 4px 1px 4px;
                                     border-top-left-radius: 2px;
@@ -419,7 +419,7 @@
                         font-size: 12px;
                         height: 20px;
                         line-height: 20px;
-                        background: #ffbc41;
+                        background: #febd42;
                         border-radius: 20px
                     }
                 }
@@ -443,7 +443,7 @@
                     line-height: 20px;
                     p {
                         font-size: 13px;
-                        color: #9c9c9c;
+                        color: #686868;
                         text-align: justify
                     }
                 }	
@@ -476,7 +476,7 @@
 					justify-content: space-between;
                     font-size: 14px;
 					align-items: center;
-					background: #282834;
+					background: #272833;
 					width: 140px;
 					padding: 8px 0;
 					box-sizing: border-box;

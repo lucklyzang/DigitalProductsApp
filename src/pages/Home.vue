@@ -22,8 +22,8 @@
           </div>
           <div class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="index">
             <div class="sell-info-area">
-              <div class="left" v-show="item.countdownTime > 0">
-                <van-icon name="underway" size="14" color="#be68ff" />
+              <div class="left" v-show="item.countdownTime < 0">
+                <van-icon name="underway" size="14" color="#bd68ff" />
                 <span>即将开售</span>
                 <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
               </div>
@@ -73,7 +73,7 @@
             </div>
             <div class="same-hour-list" v-for="(innerItem, innerIndex) in item.saleTimeList" :key="innerIndex">  
               <div class="hour">
-                <van-icon name="underway" size="20" color="#ab4eff" />
+                <van-icon name="underway" size="20" color="#bd68ff" />
                 <span>{{innerItem.time}}</span>
               </div>
               <div class="object-details-list" v-for="(lastItem, lastIndex) in innerItem.commodityList" :key="lastIndex">
@@ -100,7 +100,7 @@
           </div>
         </div>
       </div>
-      <div class="name-auth" v-show="userInfo.realFlag === 0">
+      <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0">
         <span>实名认证后才可以购买数字藏品</span>
         <span @click="goAuthNameEvent">去认证</span>
       </div>
@@ -164,6 +164,8 @@
                 pushHistory();
                 this.gotoURL(() => {})
             };
+            // this.$store.dispatch("resetLoginState");
+            // window.localStorage.clear();
             //查询藏品列表
             this.queryProductsList()
         },
@@ -405,8 +407,8 @@
                             z-index: 100;
                             color: #333;
                             .left {
-                                background: #412f19;
-                                color: #be68ff;
+                                background: rgba(0,0,0,.54);
+                                color: #bd68ff;
                                 border-radius: 16px;
                                 padding: 4px 10px;
                                 height: 20px;
@@ -421,7 +423,7 @@
                                     }
                                 };
                                 /deep/ .van-count-down {
-                                    color: #be68ff;
+                                    color: #bd68ff;
                                 }
                             }
                             ;
@@ -480,13 +482,13 @@
                                             display: inline-block;
                                             padding: 0 4px;
                                             height: 20px;
-                                            border: 1px solid #bd69ff;
+                                            border: 1px solid #bd6aff;
                                             font-size: 10px;
                                             border-radius: 10px;
                                             margin-right: 4px;
                                             text-align: center;
                                             line-height: 20px;
-                                            color: #bd69ff;
+                                            color: #bd68ff;
                                             &:last-child{
                                                 margin-right: 0
                                             }
@@ -503,7 +505,7 @@
                                         line-height: 20px;
                                         padding: 1px 4px;
                                         &:first-child {
-                                            background: #ffbc41;
+                                            background: #febd42;
                                             color: black;
                                             border-top-left-radius: 2px;
                                             border-bottom-left-radius: 2px;
@@ -568,7 +570,7 @@
                         padding-top: 2px;
                         box-sizing: border-box;
                         .left {
-                            color: #febe42;
+                            color: #ffbc41;
                             font-size: 18px;
                         }
                         ;
@@ -580,14 +582,14 @@
                                 line-height: 20px;
                                 &:first-child {
                                     padding: 0 8px;
-                                    background: #bd69ff;
+                                    background: #bd68fe;
                                     border-radius: 20px
                                 }
                                 ;
                                 &:last-child {
                                     padding: 0 8px;
                                     margin-left: 10px;
-                                    background: #ffbc41;
+                                    background: #febd42;
                                     border-radius: 20px
                                 }
                             }
@@ -600,7 +602,7 @@
                         padding: 6px 0 0 0;
                         border-radius: 12px;
                         .month-day {
-                            color: #dfdfdf;
+                            color: #FFFFFF;
                             font-size: 16px;
                         }
                         ;
@@ -610,7 +612,7 @@
                                 flex-flow: row nowrap;
                                 justify-content: center;
                                 align-items: center;
-                                color: #be68ff;
+                                color: #bd68ff;
                                 font-size: 16px;
                                 height: 30px;
                                 margin: 0 auto;
@@ -671,7 +673,7 @@
                                                         font-size: 14px;
                                                         display: inline-block;
                                                         &:first-child {
-                                                            background: #ffbc41;
+                                                            background: #febd42;
                                                             color: black;
                                                             padding: 1px 4px 1px 4px;
                                                             border-top-left-radius: 2px;

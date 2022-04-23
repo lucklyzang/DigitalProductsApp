@@ -1,6 +1,6 @@
 <template>
   <div class="tabBar-box">
-    <van-tabbar route v-model="active" placeholder  @change="onChange" active-color="orange" inactive-color="#cac8c8" :border="false" :safe-area-inset-bottom="true">
+    <van-tabbar route v-model="active" placeholder  @change="onChange" active-color="#ffbc41" inactive-color="#808188" :border="false" :safe-area-inset-bottom="true">
       <!-- <van-tabbar-item replace to="/home" icon="wap-home">首页</van-tabbar-item> -->
        <van-tabbar-item replace to="/home">
         <span>首页</span>

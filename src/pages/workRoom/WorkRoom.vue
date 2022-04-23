@@ -225,7 +225,7 @@
             line-height: 18px;
             font-size: 11px;
             border-radius: 10px;
-            background: #ffbc41;
+            background: #febd42;
             color: black
         }
       };
@@ -255,7 +255,7 @@
         };
         .bottom-intro {
             margin-top: 10px;
-            color: #524a61;
+            color: #716f78;
             font-size: 13px;
             line-height: 22px;
             text-align: justify
@@ -299,10 +299,10 @@
               z-index: 100;
               color: #333;
               .left {
-                background: #412f19;
+                background: rgba(0,0,0,0.54);
                 border-radius: 16px;
                 padding: 4px 10px;
-                color: #be68ff;
+                color: #bd68ff;
                 height: 20px;
                 line-height: 20px;
                 span {
@@ -353,12 +353,12 @@
                     &:last-child {
                       padding: 0 4px;
                       height: 20px;
-                      border: 1px solid #ab4eff;
+                      border: 1px solid #bd6aff;
                       font-size: 10px;
                       border-radius: 10px;
                       text-align: center;
                       line-height: 20px;
-                      color: #ab4eff
+                      color: #bd68ff
                     }
                   }
                 };
@@ -372,7 +372,7 @@
                     height: 20px;
                     line-height: 20px;
                     &:first-child {
-                      background: #ffbc41;
+                      background: #febd42;
                       color: black;
                       border-top-left-radius: 2px;
                       border-bottom-left-radius: 2px;

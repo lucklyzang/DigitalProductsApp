@@ -23,7 +23,7 @@ const CollectionRecords = () =>
 const SystemSet = () =>
     import ('@/pages/systemSet/SystemSet')
 const WorkRoom = () =>
-    import ('@/pages/workRoom/WorkRoom')    
+    import ('@/pages/workRoom/WorkRoom')
 const MyOrderForm = () =>
     import ('@/pages/myOrderForm/MyOrderForm')
 const CollectionDetails = () =>
@@ -33,16 +33,20 @@ const OrderFormDetails = () =>
 const SystemMessage = () =>
     import ('@/pages/systemMessage/SystemMessage')
 const OrderFormToPaid = () =>
-    import ('@/pages/myOrderForm/OrderFormToPaid')    
+    import ('@/pages/myOrderForm/OrderFormToPaid')
 const IndividualitySignature = () =>
     import ('@/pages/individualitySignature/IndividualitySignature')
 const ChangeNickname = () =>
-    import ('@/pages/changeNickname/ChangeNickname')    
+    import ('@/pages/changeNickname/ChangeNickname')
 Vue.use(Router)
 let baseRoute = [{
-        path: '/',
+        path: '/login',
         name: 'login',
-        component: Login,
+        component: Login
+    },
+    {
+        path: '/',
+        redirect: '/home'
     },
     {
         path: '/home',

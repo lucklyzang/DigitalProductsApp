@@ -229,7 +229,7 @@
                 padding: 0 10px;
                 color: black;
                 font-size: 13px;
-                background-image: linear-gradient(to right, #f1c45f ,#e3901a);
+                background-image: linear-gradient(to right, #f2c460 ,#e29119);
                 border-radius: 6px
             };
 			.center{
@@ -290,7 +290,7 @@
                     line-height: 60px;
                     color: #686868;
                     font-size: 16px;
-                    .bottom-border-1px(#413951);
+                    .bottom-border-1px(#403a51);
                     span {
                         margin-left: 10px
                     }
@@ -376,7 +376,7 @@
                         text-align: center;
                         line-height: 30px;
                         border-radius: 20px;
-                        background: #ffbc41;
+                        background: #ffbd40;
                         margin-left: 4px
                     }
                 }

@@ -311,7 +311,7 @@
 				justify-content: space-between;
 				span {
 					display: inline-block;
-					color: #777575;
+					color: #686868;
 					font-size: 14px;
 					width: 100px;
 					height: 60px;
@@ -414,15 +414,15 @@
 									height: 20px;
 									text-align: center;
 									line-height: 20px;
-									background-image: linear-gradient(to right, #f2c25e , #e4931e);
+									background-image: linear-gradient(to right, #f2c45f , #e3921a);
 									border-top-right-radius: 10px;
 									border-bottom-right-radius: 10px;
 								};
 								.spanPaiedStyle {
-									background-image: linear-gradient(to right, #00d2ff , #0090ff)
+									background-image: linear-gradient(to right, #00d3fe , #0091fd)
 								};
 								.spanCancelStyle {
-									background-image: linear-gradient(to right, #686868 , #686868)
+									background-image: linear-gradient(to right, #b1b1b1 , #686868)
 								}
 							};
 							&:nth-child(2) {

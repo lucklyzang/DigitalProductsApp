@@ -7,18 +7,18 @@
           <div class="message-left">
             <div class="person-picture" @click="toEditPersonPage">
               <img :src="notLoginPng" v-show="!isLogin" alt="">
-			  <img :src="defaultPersonPng" v-show="isLogin && !userInfo.hasOwnProperty('avatarUrl')" alt="">
-			  <img :src="userInfo.avatarUrl" v-show="isLogin && userInfo.hasOwnProperty('avatarUrl')" alt="">
+			  <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl')" alt="">
+			  <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl')" alt="">
             </div>
             <div class="person-name">
 				<div class="top">
-					<div v-if="isLogin">{{userInfo.nickName}}</div>
+					<div v-if="isLogin">{{userInfo && userInfo.nickName}}</div>
 					<div v-else>未登录</div>
 				</div>
 				<div class="bottom">
 					<span v-show="!isLogin">登录后可以查看更多数字藏品</span>
-					<span v-show="!userInfo.signTxt && isLogin">TA很神秘,什么都没有留下,TA很神秘,什么都没有留下</span>
-        			<span v-show="userInfo.signTxt && isLogin">{{userInfo.signTxt}}</span>
+					<span v-show="userInfo && !userInfo.signTxt && isLogin">TA很神秘,什么都没有留下,TA很神秘,什么都没有留下</span>
+        			<span v-show="userInfo && userInfo.signTxt && isLogin">{{userInfo && userInfo.signTxt}}</span>
 				</div>
             </div>
           </div>
@@ -122,7 +122,9 @@
         this.gotoURL(() => {
         })
       };
-	  this.queryuserInfo()
+	  if (this.isLogin) {
+		this.queryuserInfo()
+	  }
     },
 
     watch: {
@@ -161,7 +163,7 @@
 		// 上部区域功能事件
 		featureSetTopEvent(item) {
 			if (!this.isLogin) {
-				this.$router.push({path: '/'});
+				this.$router.push({path: '/login'});
 				return
 			};
 			if (item.span === '我的订单') {
@@ -178,7 +180,7 @@
 		// 下部区域功能事件
 		featureSetEvent(item) {
 			if (!this.isLogin) {
-				this.$router.push({path: '/'});
+				this.$router.push({path: '/login'});
 				return
 			};
 			if (item.span === '账号与安全') {
@@ -303,7 +305,7 @@
 						height: 40px;
 					};
 					span {
-						color: #706f77;
+						color: #464756;
 						margin-top: 10px;
 					}
 				}

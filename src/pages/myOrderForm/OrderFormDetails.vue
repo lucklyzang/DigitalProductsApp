@@ -142,7 +142,7 @@
                 align-items: center;
 				padding: 0 10px;
 				border-radius: 10px;
-				background: #100726;
+				background: @color-block;
 				.img-show {
 					width: 70px;
                     height: 70px;
@@ -168,8 +168,8 @@
 					};
                     p {
                         .no-wrap();
-						font-size: 10px;
-						color: #8c8c8c;
+						font-size: 12px;
+						color: #686868;
                     }
 				}
 			};
@@ -179,7 +179,7 @@
 				margin-top: 30px;
                 padding: 0 10px;
 				border-radius: 10px;
-				background: #100726;
+				background: @color-block;
                 box-sizing: border-box;
 				>div {
 					display: flex;

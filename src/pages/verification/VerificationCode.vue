@@ -11,22 +11,22 @@
 		</div>
 		<div class="content-center">
 			<div>
-                <van-field class="uni-input" v-model="codeOne" @input="inputEventOne" maxlength="1" type="number"/>
+                <van-field class="uni-input" ref="inputOne" v-model="codeOne" @input="inputEventOne" maxlength="1" type="number"/>
 			</div>
 			<div>
-				<van-field class="uni-input" v-model="codeTwo" @input="inputEventTwo" maxlength="1" type="number"/>
+				<van-field class="uni-input" ref="inputTwo" v-model="codeTwo" @input="inputEventTwo" maxlength="1" type="number"/>
 			</div>
 			<div>
-				<van-field class="uni-input" v-model="codeThree" @input="inputEventThree" maxlength="1" type="number"/>
+				<van-field class="uni-input" ref="inputThree" v-model="codeThree" @input="inputEventThree" maxlength="1" type="number"/>
 			</div>
 			<div>
-				<van-field class="uni-input" v-model="codeFour" @input="inputEventFour" maxlength="1" type="number"/>
+				<van-field class="uni-input" ref="inputFour" v-model="codeFour" @input="inputEventFour" maxlength="1" type="number"/>
 			</div>
 			<div>
-				<van-field class="uni-input" v-model="codeFive" @input="inputEventFive" maxlength="1" type="number"/>
+				<van-field class="uni-input" ref="inputFive" v-model="codeFive" @input="inputEventFive" maxlength="1" type="number"/>
 			</div>
 			<div>
-				<van-field class="uni-input" v-model="codeSix" @input="inputEventSix" maxlength="1" type="number"/>
+				<van-field class="uni-input" ref="inputSix" v-model="codeSix" @input="inputEventSix" maxlength="1" type="number"/>
 			</div>
 		</div>
 	</div>
@@ -64,7 +64,8 @@
 			])
 		},
 		mounted() {
-			this.phoneNumber = this.$route.params.phoneNumber
+			this.phoneNumber = this.$route.params.phoneNumber;
+			this.$refs.inputOne.focus()
 		},
 		methods: {
 			...mapMutations([
@@ -73,13 +74,39 @@
 			]),
 
 			// 输入框变化事件
-			inputEventOne (event) {},
-			inputEventTwo (event) {},
-			inputEventThree (event) {},
-			inputEventFour (event) {},
-			inputEventFive (event) {},
+			inputEventOne (event) {
+				if (event) {
+					this.$refs.inputOne.blur();
+					this.$refs.inputTwo.focus()
+				}
+			},
+			inputEventTwo (event) {
+				if (event) {
+					this.$refs.inputTwo.blur();
+					this.$refs.inputThree.focus()
+				}
+			},
+			inputEventThree (event) {
+				if (event) {
+					this.$refs.inputThree.blur();
+					this.$refs.inputFour.focus()
+				}
+			},
+			inputEventFour (event) {
+				if (event) {
+					this.$refs.inputFour.blur();
+					this.$refs.inputFive.focus()
+				}
+			},
+			inputEventFive (event) {
+				if (event) {
+					this.$refs.inputFive.blur();
+					this.$refs.inputSix.focus()
+				}
+			},
 			inputEventSix (event) {
 				if (!this.codeSix) {return};
+				this.$refs.inputSix.blur();
 				if (this.codeOne && this.codeTwo && this.codeThree && this.codeFour && this.codeFive) {
 					let code = `${this.codeOne}${this.codeTwo}${this.codeThree}${this.codeFour}${this.codeFive}${this.codeSix}`
 					this.phoneCodeLogin(code)
@@ -97,6 +124,12 @@
 						this.changeIsLogin(true);
 						this.$router.push({name:'home'})
 					} else {
+						this.codeOne = '';
+						this.codeTwo = '';
+						this.codeThree = '';
+						this.codeFour = '';
+						this.codeFive = '';
+						this.codeSix = '';
 						this.$dialog.alert({
 							message: `${res.data.msg}`,
 							closeOnPopstate: true
@@ -105,6 +138,12 @@
 					}
 				})
 				.catch((err) => {
+					this.codeOne = '';
+					this.codeTwo = '';
+					this.codeThree = '';
+					this.codeFour = '';
+					this.codeFive = '';
+					this.codeSix = '';
 					this.$dialog.alert({
 						message: `${err.message}`,
 						closeOnPopstate: true
@@ -140,13 +179,13 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			span {
+			> span {
 				&:nth-child(1) {
 					font-size: 30px;
 					color: #FFFFFF
 				};
 				&:nth-child(2) {
-					margin: 10px 0;
+					margin: 20px 0 10px 0;
 					font-size: 12px;
 					color: #686868
 				};
@@ -157,11 +196,11 @@
 					align-items: center;
 					>span {
 						font-size: 12px;
-						color: #ab7a90;
+						color: #3f2e1f;
 					};
 					/deep/ .van-count-down {
 						font-size: 12px;
-						color: #ab7a90
+						color: #3f2e1f
 					}
 				}
 			}
@@ -174,7 +213,7 @@
 			> div {
 				width: 40px;
 				margin-right: 16px;
-                .bottom-border-1px(#ffffff);
+                .bottom-border-1px(#32343c,5px);
 				&:last-child {
 					margin-right: 0;
 				};

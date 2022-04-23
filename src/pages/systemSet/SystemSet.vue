@@ -340,7 +340,7 @@
                     justify-content: flex-end;
                     span {
                        font-size: 14px;
-                       color: #717078;
+                       color: #514a60;
                        margin: -2px 6px 0 8px;
                        width: 120px;
                        flex: 1;
@@ -384,7 +384,7 @@
           align-items: center;
           height: 55px;
           background: @color-block;
-          color: #bc67ff;
+          color: #ffbc41;
           font-size: 15px;
         };
        .choose-photo-box {

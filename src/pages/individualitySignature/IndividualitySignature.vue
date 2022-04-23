@@ -161,6 +161,9 @@
                 font-size: 18px;
                 .van-field__control {
                     color: #fff !important
+                };
+                .van-field__word-limit {
+                    color: #414a5a
                 }
             }
 		};
@@ -183,10 +186,10 @@
                 border-radius: 20px;
                 &:first-child {
                     margin-right: 20px;
-                    color: #4f4f4f
+                    color: #686868
                 };
                 &:last-child {
-                    color: #ca9b43
+                    color: #ffbc41
                 }
             }
         }

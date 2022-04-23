@@ -180,7 +180,7 @@ export default {
 				font-size: 26px;
 				font-weight: bold;
 				&:first-child {
-					color: #FFFFFF;
+					color: #ebebeb;
 					margin-right: 20px;
 				};
 				&:last-child {
@@ -192,7 +192,7 @@ export default {
 			width: 80%;
 			margin: 0 auto;
 			.phone-number {
-        .bottom-border-1px(#6f6f6f);
+        .bottom-border-1px(#343544,3px);
         /deep/ .uni-input {
 					color: #fff;
 					height: 50px;
@@ -212,10 +212,11 @@ export default {
 				height: 50px;
 				border-radius: 30px;
 				font-size: 18px;
-				background: #ffbc41;
+				background: #ffbd40;
 				margin: 30px 0;
 				text-align: center;
-				line-height: 50px
+				line-height: 50px;
+				color: #1e1d1c;
 			};
 			.sendAuthBoxStyle {
 				background: #7e7e7e
@@ -234,16 +235,16 @@ export default {
 					.van-checkbox__label {
 						>span {
 							&:nth-child(1) {
-								color: #696864
+								color: #686868
 							};
 							&:nth-child(2) {
-								color: #e9eaec
+								color: #FFFFFF
 							};
 							&:nth-child(3) {
-								color: #696864
+								color: #686868
 							};
 							&:nth-child(4) {
-								color: #e9eaec
+								color: #FFFFFF
 							};
 						}
 					}

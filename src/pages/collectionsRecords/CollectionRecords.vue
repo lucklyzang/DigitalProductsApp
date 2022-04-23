@@ -43,10 +43,18 @@
 				emptyShow: false,
                 loadingShow: false,
 				descriptionContent: '暂无藏品',
-                orderList: [],
+                orderList: [
+					{
+						collectionUrl: require("@/common/images/home/default-person.jpg"),
+						collectionName: '大大大',
+						collectionTagsList: ['飒飒','飒飒'],
+						collectionPrice: 12.4
+
+					}
+				],
 				currentTabIndex: 0,
 				animationData: [],
-                defaultPersonPng :require("@/common/images/home/default-person.jpg"),
+                defaultPersonPng :require("@/common/images/home/default-person.jpg")
 			}
 		},
 		onReady() {},
@@ -56,7 +64,7 @@
 		},
 		mounted() {
 			// 查询藏品记录
-			this.queryCollectionRecords()
+			// this.queryCollectionRecords()
 		},
 		methods: {
 			...mapMutations([
@@ -186,13 +194,13 @@
                                     display: inline-block;
                                     padding: 0 8px;
                                     height: 18px;
-                                    border: 1px solid #bd69ff;
+                                    border: 1px solid #bd6aff;
                                     font-size: 10px;
                                     border-radius: 10px;
                                     box-sizing: border-box;
                                     text-align: center;
                                     line-height: 18px;
-                                    color: #bd69ff;
+                                    color: #bd68ff;
                                     margin-right: 4px
                                 }
                             }

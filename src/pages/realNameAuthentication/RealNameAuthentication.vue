@@ -187,7 +187,7 @@
                     border: 1px solid #2c2c2c;
                     border-radius: 10px;
                     .van-field__control {
-                        color: #fff
+                        color: #251e35
                     }
                 }
         };
@@ -203,7 +203,7 @@
             align-items: center;
             height: 55px;
             background: @color-block;
-            color: #cca45b;
+            color: #ffbc41;
             font-size: 15px;
         }
     }

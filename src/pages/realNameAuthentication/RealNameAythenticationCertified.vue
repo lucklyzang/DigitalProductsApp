@@ -151,7 +151,7 @@
             border: 1px solid #2c2c2c;
             border-radius: 10px;
             .van-cell__title {
-              color: #fff
+              color: #514a60
             };
             .van-field__control {
               color: #706d76;

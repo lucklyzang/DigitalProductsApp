@@ -137,13 +137,13 @@
                  &:last-child {
                     color: #fff;
                     font-size: 12px;
-                    color: #727179
+                    color: #716f78
                 }
             }
           };
           .bottom {
             margin-top: 16px;
-            color: #727179;
+            color: #716f78;
             font-size: 13px;
             line-height: 22px;
             text-align: justify
