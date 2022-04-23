@@ -48,317 +48,329 @@
   </div>
 </template>
 <script>
-  import FooterBottom from '../components/FooterBottom'
-  import NavBar from '@/components/NavBar'
-  import NoData from '@/components/NoData'
-  import Loading from '@/components/Loading'
-  import { mapGetters, mapMutations } from 'vuex'
-  import {inquareUserInfo} from '@/api/products.js'
-  import { IsPC } from '@/common/js/utils'
-  let windowTimer
-  export default {
-    name: 'Home',
-    components:{
-      NoData,
-      Loading,
-      FooterBottom,
-	  NavBar
-    },
-    data() {
-      return {
-        noDataShow: false,
-        showLoadingHint: false,
-        versionNumber: '1.8',
-				iconName: 'gear-filled',
-				zoneIconList: [
-					{
-						icon: require("@/common/images/login/my-order.png"),
-						span: '我的订单'
-					},
-					{
-						icon: require("@/common/images/login/collection-record.png"),
-						span: '藏品记录'
-					},
-					{
-						icon: require("@/common/images/login/message.png"),
-						span: '消息'
-					},
-					{
-						icon: require("@/common/images/login/set.png"),
-						span: '设置'
-					}
-				],
-				featureSetList: [
-					{
-						iconLeft:  require("@/common/images/login/account-security.png"),
-						iconRight: require("@/common/images/login/arrow-right.png"),
-						span: '账号与安全'
-					},
-					{
-						iconLeft:  require("@/common/images/login/my-service.png"),
-						iconRight: require("@/common/images/login/arrow-right.png"),
-						span: '我的客服'
-					},
-					{
-						iconLeft: require("@/common/images/login/about.png"),
-						iconRight: require("@/common/images/login/arrow-right.png"),
-						span: '关于'
-					},
-					{
-						iconLeft:  require("@/common/images/login/my-share.png"),
-						iconRight: require("@/common/images/login/arrow-right.png"),
-						span: '分享'
-					}
-				],
-        defaultPersonPng :require("@/common/images/home/default-person.jpg"),
-		notLoginPng :require("@/common/images/login/not-login.png")
-      }
-    },
+    import FooterBottom from '../components/FooterBottom'
+    import NavBar from '@/components/NavBar'
+    import NoData from '@/components/NoData'
+    import Loading from '@/components/Loading'
+    import {
+        mapGetters,
+        mapMutations
+    } from 'vuex'
+    import {
+        inquareUserInfo
+    } from '@/api/products.js'
+    import {
+        IsPC
+    } from '@/common/js/utils'
+    let windowTimer
+    export default {
+        name: 'Home',
+        components: {
+            NoData,
+            Loading,
+            FooterBottom,
+            NavBar
+        },
+        data() {
+            return {
+                noDataShow: false,
+                showLoadingHint: false,
+                versionNumber: '1.8',
+                iconName: 'gear-filled',
+                zoneIconList: [{
+                    icon: require("@/common/images/login/my-order.png"),
+                    span: '我的订单'
+                }, {
+                    icon: require("@/common/images/login/collection-record.png"),
+                    span: '藏品记录'
+                }, {
+                    icon: require("@/common/images/login/message.png"),
+                    span: '消息'
+                }, {
+                    icon: require("@/common/images/login/set.png"),
+                    span: '设置'
+                }],
+                featureSetList: [{
+                    iconLeft: require("@/common/images/login/account-security.png"),
+                    iconRight: require("@/common/images/login/arrow-right.png"),
+                    span: '账号与安全'
+                }, {
+                    iconLeft: require("@/common/images/login/my-service.png"),
+                    iconRight: require("@/common/images/login/arrow-right.png"),
+                    span: '我的客服'
+                }, {
+                    iconLeft: require("@/common/images/login/about.png"),
+                    iconRight: require("@/common/images/login/arrow-right.png"),
+                    span: '关于'
+                }, {
+                    iconLeft: require("@/common/images/login/my-share.png"),
+                    iconRight: require("@/common/images/login/arrow-right.png"),
+                    span: '分享'
+                }],
+                defaultPersonPng: require("@/common/images/home/default-person.jpg"),
+                notLoginPng: require("@/common/images/login/not-login.png")
+            }
+        },
 
-    mounted() {
-      // 控制设备物理返回按键
-      if (!IsPC()) {
-        pushHistory();
-        this.gotoURL(() => {
-        })
-      };
-	  if (this.isLogin) {
-		this.queryuserInfo()
-	  }
-    },
+        mounted() {
+            // 控制设备物理返回按键
+            if (!IsPC()) {
+                pushHistory();
+                this.gotoURL(() => {})
+            };
+            if (this.isLogin) {
+                this.queryuserInfo()
+            }
+        },
 
-    watch: {
-    },
+        watch: {},
 
-    computed:{
-      ...mapGetters([
-        'userInfo',
-		'isLogin'
-      ])
-    },
+        computed: {
+            ...mapGetters([
+                'userInfo',
+                'isLogin'
+            ])
+        },
 
-    beforeRouteEnter (to, from, next) {
-      next()
-    },
+        beforeRouteEnter(to, from, next) {
+            next()
+        },
 
-    beforeRouteLeave (to, from, next) {
-      next()
-    },
+        beforeRouteLeave(to, from, next) {
+            next()
+        },
 
-    methods:{
-      ...mapMutations([
-        'storeUserInfo'
-      ]),
+        methods: {
+            ...mapMutations([
+                'storeUserInfo'
+            ]),
 
-		juddgeIspc () {
-			return IsPC()
-		},
+            juddgeIspc() {
+                return IsPC()
+            },
 
-		toEditPersonPage () {
-		},
+            toEditPersonPage() {},
 
-		toSetPage () {
-		},
+            toSetPage() {},
 
-		// 上部区域功能事件
-		featureSetTopEvent(item) {
-			if (!this.isLogin) {
-				this.$router.push({path: '/login'});
-				return
-			};
-			if (item.span === '我的订单') {
-				this.$router.push({path: 'myOrderForm'}) 
-			} else if (item.span === '藏品记录') {
-				this.$router.push({path: 'collectionRecords'})
-			} else if (item.span === '设置') {
-				this.$router.push({path: 'systemSet'})
-			} else if (item.span === '消息') {
-				this.$router.push({path: 'systemMessage'})
-			}
-		}, 
+            // 上部区域功能事件
+            featureSetTopEvent(item) {
+                if (!this.isLogin) {
+                    this.$router.push({
+                        path: '/login'
+                    });
+                    return
+                };
+                if (item.span === '我的订单') {
+                    this.$router.push({
+                        path: 'myOrderForm'
+                    })
+                } else if (item.span === '藏品记录') {
+                    this.$router.push({
+                        path: 'collectionRecords'
+                    })
+                } else if (item.span === '设置') {
+                    this.$router.push({
+                        path: 'systemSet'
+                    })
+                } else if (item.span === '消息') {
+                    this.$router.push({
+                        path: 'systemMessage'
+                    })
+                }
+            },
 
-		// 下部区域功能事件
-		featureSetEvent(item) {
-			if (!this.isLogin) {
-				this.$router.push({path: '/login'});
-				return
-			};
-			if (item.span === '账号与安全') {
-				this.$router.push({path: 'accountSecurity'})
-			}
-		},
+            // 下部区域功能事件
+            featureSetEvent(item) {
+                if (!this.isLogin) {
+                    this.$router.push({
+                        path: '/login'
+                    });
+                    return
+                };
+                if (item.span === '账号与安全') {
+                    this.$router.push({
+                        path: 'accountSecurity'
+                    })
+                }
+            },
 
-		// 查询用户信息
-		queryuserInfo () {
-			inquareUserInfo().then((res) => {
-				if (res && res.data.code == 0) {
-					this.storeUserInfo(res.data.data);
-				} else {
-					this.$dialog.alert({
-						message: `${res.data.msg}`,
-						closeOnPopstate: true
-					}).then(() => {
-					})
-				}
-			})
-			.catch((err) => {
-				this.$dialog.alert({
-					message: `${err.message}`,
-					closeOnPopstate: true
-				}).then(() => {
-				})
-			})
-		}
+            // 查询用户信息
+            queryuserInfo() {
+                inquareUserInfo().then((res) => {
+                        if (res && res.data.code == 0) {
+                            this.storeUserInfo(res.data.data);
+                        } else {
+                            this.$dialog.alert({
+                                message: `${res.data.msg}`,
+                                closeOnPopstate: true
+                            }).then(() => {})
+                        }
+                    })
+                    .catch((err) => {
+                        this.$dialog.alert({
+                            message: `${err.message}`,
+                            closeOnPopstate: true
+                        }).then(() => {})
+                    })
+            }
+        }
     }
-  }
 </script>
 <style lang='less' scoped>
-  @import "../common/stylus/variable.less";
-  @import "../common/stylus/mixin.less";
-  @import "../common/stylus/modifyUi.less";
-  .page-box {
-    .content-wrapper();
-    .content-box {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      background: @color-background;
-      .content-top {
-        height: auto;
-        font-size: 14px;
-        background: @color-background;
-			.person-message-box {
-				width: 92%;
-				margin: 0 auto;
-				height: 120px;
-				display: flex;
-				flex-flow: row nowrap;
-				justify-content: space-between;
-				.message-left {
-					flex: 1;
-					padding-left: 6px;
-					display: flex;
-					flex-flow: row nowrap;
-					align-items: center;
-					.person-picture {
-						width: 65px;
-						height: 65px;
-						border-radius: 50%;
-						img {
-							width: 100%;
-							height: 100%;
-							border-radius: 50%
-						}
-					};
-					.person-name {
-						color: #fff;
-						height: 80px;
-						margin-left: 10px;
-						font-size: 20px;
-						flex: 1;
-						display: flex;
-						flex-direction: column;
-						justify-content: center;
-						width: 0;
-						.top {
-							>div {
-								.no-wrap()
-							}
-						};
-						.bottom {
-							font-size: 13px;
-							display: flex;
-							flex-flow: row nowrap;
-							margin-top: 4px;
-							color: #686868;
-							span {
-								display: inline-block;
-								height: 26px;
-								text-align: center;
-								line-height: 26px;
-								width: 100%;
-								text-align: left;
-								.no-wrap()
-							}
-						}
-					}
-				}
-			};
-			.function-zone {
-				width: 92%;
-				margin: 0 auto;
-				height: 75px;
-				background: @color-block;
-				border-radius: 10px;
-				display: flex;
-				flex-flow: row wrap;
-				.function-zone-icon-list {
-					flex: 1;
-					height: 75px;
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-					align-items: center;
-					img {
-						width: 40px;
-						height: 40px;
-					};
-					span {
-						color: #464756;
-						margin-top: 10px;
-					}
-				}
-			}
-		};		
-		.content-bottom {
-			flex: 1;
-			font-size: 13px;
-			position: relative;
-			display: flex;
-			flex-direction: column;
-      width: 92%;
-			margin: 0 auto;
-			margin-top: 10px;
-			padding: 0 6px 6px 6px;
-      box-sizing: border-box;
-			border-radius: 10px;
-      .nick-name {
-				display: flex;
-				flex-flow: row nowrap;
-				justify-content: space-between;
-        align-items: center;
-				height: 46px;
-				padding: 6px;
-        background: @color-block;
-        margin-bottom: 10px;
-				.left {
-					font-size: 16px;
-					color: #FFFFFF;
-					display: flex;
-          			flex-flow: row nowrap;
-					justify-content: space-between;
-					>span {
-						margin-left: 16px;
-					};
-					img {
-						width: 18px;
-						height: 18px
-					}
-				};
-				.right {
-					> div {
-						display: flex;
-						flex-direction: column;
-						justify-content: center;
-						img {
-							width: 8px;
-							height: 10px
-						}
-					}
-				}
-			}
-		}
+    @import "../common/stylus/variable.less";
+    @import "../common/stylus/mixin.less";
+    @import "../common/stylus/modifyUi.less";
+    .page-box {
+        .content-wrapper();
+        .content-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: @color-background;
+            .content-top {
+                height: auto;
+                font-size: 14px;
+                background: @color-background;
+                .person-message-box {
+                    width: 92%;
+                    margin: 0 auto;
+                    height: 120px;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    justify-content: space-between;
+                    .message-left {
+                        flex: 1;
+                        padding-left: 6px;
+                        display: flex;
+                        flex-flow: row nowrap;
+                        align-items: center;
+                        .person-picture {
+                            width: 65px;
+                            height: 65px;
+                            border-radius: 50%;
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                border-radius: 50%
+                            }
+                        }
+                        ;
+                        .person-name {
+                            color: #fff;
+                            height: 80px;
+                            margin-left: 10px;
+                            font-size: 20px;
+                            flex: 1;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            width: 0;
+                            .top {
+                                >div {
+                                    .no-wrap()
+                                }
+                            }
+                            ;
+                            .bottom {
+                                font-size: 13px;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                margin-top: 4px;
+                                color: #686868;
+                                span {
+                                    display: inline-block;
+                                    height: 26px;
+                                    text-align: center;
+                                    line-height: 26px;
+                                    width: 100%;
+                                    text-align: left;
+                                    .no-wrap()
+                                }
+                            }
+                        }
+                    }
+                }
+                ;
+                .function-zone {
+                    width: 92%;
+                    margin: 0 auto;
+                    height: 75px;
+                    background: @color-block;
+                    border-radius: 10px;
+                    display: flex;
+                    flex-flow: row wrap;
+                    .function-zone-icon-list {
+                        flex: 1;
+                        height: 75px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        img {
+                            width: 40px;
+                            height: 40px;
+                        }
+                        ;
+                        span {
+                            color: #464756;
+                            margin-top: 10px;
+                        }
+                    }
+                }
+            }
+            ;
+            .content-bottom {
+                flex: 1;
+                font-size: 13px;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                width: 92%;
+                margin: 0 auto;
+                margin-top: 10px;
+                padding: 0 6px 6px 6px;
+                box-sizing: border-box;
+                border-radius: 10px;
+                .nick-name {
+                    display: flex;
+                    flex-flow: row nowrap;
+                    justify-content: space-between;
+                    align-items: center;
+                    height: 46px;
+                    padding: 6px;
+                    background: @color-block;
+                    margin-bottom: 10px;
+                    .left {
+                        font-size: 16px;
+                        color: #FFFFFF;
+                        display: flex;
+                        flex-flow: row nowrap;
+                        justify-content: space-between;
+                        >span {
+                            margin-left: 16px;
+                        }
+                        ;
+                        img {
+                            width: 18px;
+                            height: 18px
+                        }
+                    }
+                    ;
+                    .right {
+                        >div {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            img {
+                                width: 8px;
+                                height: 10px
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-  }
 </style>

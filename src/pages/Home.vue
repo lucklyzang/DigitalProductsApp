@@ -117,7 +117,11 @@
     import NavBar from '@/components/NavBar'
     import NoData from '@/components/NoData'
     import Loading from '@/components/Loading'
-    import {inquareProductList, inquareSellCalendar,productVisitRecord} from '@/api/products.js'
+    import {
+        inquareProductList,
+        inquareSellCalendar,
+        productVisitRecord
+    } from '@/api/products.js'
     import store from '@/store'
     import {
         mapGetters,
@@ -204,127 +208,125 @@
             },
 
             // 查询作品列表
-            queryProductsList () {
+            queryProductsList() {
                 this.loadingShow = true;
                 this.emptyShow = false;
                 this.digitalCollectionList = [];
                 inquareProductList().then((res) => {
-                    this.loadingShow = false;
-                    if (res && res.data.code == 0) {
-                        if (res.data.list.length == 0) {
-                            this.emptyShow = true;
+                        this.loadingShow = false;
+                        if (res && res.data.code == 0) {
+                            if (res.data.list.length == 0) {
+                                this.emptyShow = true;
+                            } else {
+                                for (let item of res.data.list) {
+                                    this.digitalCollectionList.push({
+                                        countdownTime: Number(item.seckillTime) - new Date().getTime(),
+                                        digitalCollectionName: item.name,
+                                        digitalCollectioUrl: item.imgPath,
+                                        digitalCollectioShare: item.quantity,
+                                        digitalCollectioAuthor: item.publisher,
+                                        creator: item.creator,
+                                        digitalCollectioAuthorPhoto: item.path,
+                                        digitalCollectioPrice: item.price,
+                                        tagAttributes: item.tags,
+                                        id: item.id,
+                                        status: item.status
+                                    })
+                                };
+                                console.log(this.digitalCollectionList);
+                            }
                         } else {
-                            for (let item of res.data.list) {
-                                this.digitalCollectionList.push({
-                                    countdownTime: Number(item.seckillTime) - new Date().getTime(),
-                                    digitalCollectionName: item.name,
-                                    digitalCollectioUrl: item.imgPath,
-                                    digitalCollectioShare: item.quantity,
-                                    digitalCollectioAuthor: item.publisher,
-                                    creator: item.creator,
-                                    digitalCollectioAuthorPhoto: item.path,
-                                    digitalCollectioPrice: item.price,
-                                    tagAttributes: item.tags,
-                                    id: item.id,
-                                    status: item.status
-                                })
-                            };
-                            console.log(this.digitalCollectionList);
+                            this.$dialog.alert({
+                                message: `${res.data.msg}`,
+                                closeOnPopstate: true
+                            }).then(() => {})
                         }
-                    } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
-                    }
-                })
-                .catch((err) => {
-                    this.loadingShow = false;
-                    this.emptyShow = false;
-                    this.$dialog.alert({
-                        message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
                     })
-                })
+                    .catch((err) => {
+                        this.loadingShow = false;
+                        this.emptyShow = false;
+                        this.$dialog.alert({
+                            message: `${err.message}`,
+                            closeOnPopstate: true
+                        }).then(() => {})
+                    })
             },
 
             // 查询发售日历
-            querySaleCalendar () {
+            querySaleCalendar() {
                 this.loadingShow = true;
                 this.emptyShow = false;
                 this.digitalCollectionCalendarList = [];
                 inquareSellCalendar().then((res) => {
-                    this.loadingShow = false;
-                    if (res && res.data.code == 0) {
-                        if (res.data.list.length == 0) {
-                            this.emptyShow = true;
+                        this.loadingShow = false;
+                        if (res && res.data.code == 0) {
+                            if (res.data.list.length == 0) {
+                                this.emptyShow = true;
+                            } else {
+                                this.digitalCollectionCalendarList = res.data.list
+                            }
                         } else {
-                            this.digitalCollectionCalendarList = res.data.list
+                            this.$dialog.alert({
+                                message: `${res.data.msg}`,
+                                closeOnPopstate: true
+                            }).then(() => {})
                         }
-                    } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
-                    }
-                })
-                .catch((err) => {
-                    this.loadingShow = false;
-                    this.emptyShow = false;
-                    this.$dialog.alert({
-                        message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
                     })
-                })
+                    .catch((err) => {
+                        this.loadingShow = false;
+                        this.emptyShow = false;
+                        this.$dialog.alert({
+                            message: `${err.message}`,
+                            closeOnPopstate: true
+                        }).then(() => {})
+                    })
             },
 
             //倒计时结束事件
-            countDownEvent (index) {
-            },
+            countDownEvent(index) {},
 
             //作品访问统计
-            productsVisitStatistics (id) {
+            productsVisitStatistics(id) {
                 productVisitRecord(id).then((res) => {
-                    this.changeProductsId(id);
-                    this.$router.push({
-                        name: 'collectionDetails',
-                        params: {id}
-                    });
-                    if (res && res.data.code == 0) {
-                    } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
-                    }
-                })
-                .catch((err) => {
-                    this.$dialog.alert({
-                        message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
+                        this.changeProductsId(id);
+                        this.$router.push({
+                            name: 'collectionDetails',
+                            params: {
+                                id
+                            }
+                        });
+                        if (res && res.data.code == 0) {} else {
+                            this.$dialog.alert({
+                                message: `${res.data.msg}`,
+                                closeOnPopstate: true
+                            }).then(() => {})
+                        }
                     })
-                })
+                    .catch((err) => {
+                        this.$dialog.alert({
+                            message: `${err.message}`,
+                            closeOnPopstate: true
+                        }).then(() => {})
+                    })
             },
 
             // 藏品点击详情事件
-            objectDetailEvent(item,index) {
-               this.productsVisitStatistics(item.id)
+            objectDetailEvent(item, index) {
+                this.productsVisitStatistics(item.id)
             },
 
             // 实名认证事件
             goAuthNameEvent() {
-                this.$router.push({path: '/realNameAuthentication'})
+                this.$router.push({
+                    path: '/realNameAuthentication'
+                })
             },
 
             //去登陆事件
             goLoginEvent() {
-                this.$router.push({path: '/login'})
+                this.$router.push({
+                    path: '/login'
+                })
             }
         }
     }
@@ -370,7 +372,7 @@
                             bottom: 6px;
                             width: 10px;
                             height: 3px;
-                            background-image: linear-gradient(to right, #fcbe43 , #bf6bfe)
+                            background-image: linear-gradient(to right, #fcbe43, #bf6bfe)
                         }
                     }
                 }
@@ -390,7 +392,8 @@
                             height: 100%;
                             border-radius: 10px
                         }
-                    };
+                    }
+                    ;
                     .object-list {
                         border-radius: 10px;
                         position: relative;
@@ -407,7 +410,7 @@
                             z-index: 100;
                             color: #333;
                             .left {
-                                background: rgba(0,0,0,.54);
+                                background: rgba(0, 0, 0, .54);
                                 color: #bd68ff;
                                 border-radius: 16px;
                                 padding: 4px 10px;
@@ -421,7 +424,8 @@
                                     &:nth-child(2) {
                                         margin: 0 4px
                                     }
-                                };
+                                }
+                                ;
                                 /deep/ .van-count-down {
                                     color: #bd68ff;
                                 }
@@ -489,12 +493,13 @@
                                             text-align: center;
                                             line-height: 20px;
                                             color: #bd68ff;
-                                            &:last-child{
+                                            &:last-child {
                                                 margin-right: 0
                                             }
                                         }
                                     }
-                                };
+                                }
+                                ;
                                 .number {
                                     font-size: 0;
                                     margin: 10px 0;
@@ -665,7 +670,8 @@
                                                         width: 100%;
                                                         .no-wrap()
                                                     }
-                                                };
+                                                }
+                                                ;
                                                 &:nth-child(2) {
                                                     font-size: 0;
                                                     margin: 10px 0;
@@ -678,7 +684,8 @@
                                                             padding: 1px 4px 1px 4px;
                                                             border-top-left-radius: 2px;
                                                             border-bottom-left-radius: 2px;
-                                                        };
+                                                        }
+                                                        ;
                                                         &:last-child {
                                                             background: #3e3a51;
                                                             color: #ffbc41;
