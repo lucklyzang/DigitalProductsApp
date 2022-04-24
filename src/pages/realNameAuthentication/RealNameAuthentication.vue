@@ -1,6 +1,6 @@
 <template>
   <div class="page-box">
-    <NavBar title="实名认证" path="accountSecurity" />
+    <NavBar title="实名认证" :path="path" />
     <div class="content-box">
       <van-loading type="spinner" v-show="loadingShow">认证中...</van-loading>
       <div class="content-top">
@@ -39,8 +39,15 @@
         phoneRealNameUsable: false,
         phoneCardUsable: false,
         realNameValue: '',
-        cardValue: ''
+        cardValue: '',
+        path: ''
       }
+    },
+
+     beforeRouteEnter(to, from, next) {
+      next(vm => {
+        vm.path = from.path
+      })
     },
 
     mounted() {
