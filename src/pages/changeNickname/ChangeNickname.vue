@@ -46,6 +46,16 @@
 			])
 		},
 		mounted() {
+            // 控制设备物理返回按键
+            if (!IsPC()) {
+                pushHistory();
+                this.gotoURL(() => {
+                    pushHistory();
+                    this.$router.push({
+                        path: '/systemSet'
+                    })
+                })
+            };
             if (this.isLogin) {
                 this.nicknameContent = this.userInfo.nickName
             }

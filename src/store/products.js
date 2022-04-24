@@ -12,6 +12,11 @@ export default {
         orderId: (state) => {
             state.orderId = getStore('orderId') ? getStore('orderId') : '';
             return state.orderId
+        },
+
+        isPaying: (state)  => {
+            state.isPaying = getStore('isPaying') ? getStore('isPaying') === 'false' ? false : true : false
+            return state.isPaying
         }
     },
 
@@ -29,6 +34,14 @@ export default {
             if (playLoad && playLoad != 'null') {
                 setStore('orderId', playLoad);
                 state.orderId = playLoad
+            }
+        },
+
+         // 保存支付状态
+         changeIsPaying(state, playLoad) {
+            if (playLoad && playLoad != 'null') {
+                setStore('isPaying', playLoad);
+                state.isPaying = playLoad
             }
         },
 

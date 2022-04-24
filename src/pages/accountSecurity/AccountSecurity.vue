@@ -59,6 +59,10 @@
       if (!IsPC()) {
         pushHistory();
         this.gotoURL(() => {
+          pushHistory();
+          this.$router.push({
+            path: '/myInfo'
+          })
         })
       }
     },

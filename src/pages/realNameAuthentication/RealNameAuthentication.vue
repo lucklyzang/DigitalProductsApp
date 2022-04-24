@@ -55,6 +55,10 @@
       if (!IsPC()) {
         pushHistory();
         this.gotoURL(() => {
+          pushHistory();
+					this.$router.push({
+						path: '/accountSecurity'
+					})
         })
       }
     },
@@ -133,7 +137,7 @@
                 position: 'bottom'
               });
               this.$router.push({
-                path: 'home'
+                path: '/home'
               })
             } else {
                 this.$dialog.alert({
@@ -186,17 +190,30 @@
           margin: 0 auto;
           margin-top: 20px;
           padding: 6px;
-                box-sizing: border-box;
-                /deep/ .van-cell {
-                    margin-bottom: 8px;
-                    background: @color-block;
-                    height: 55px;
-                    border: 1px solid #2c2c2c;
-                    border-radius: 10px;
-                    .van-field__control {
-                        color: #251e35
-                    }
-                }
+          box-sizing: border-box;
+          /deep/ .van-cell {
+            margin-bottom: 16px;
+            background: @color-block;
+            height: 55px;
+            border: 1px solid #382057;
+            border-radius: 10px;
+            .van-field__value {
+              display: flex;
+              flex-flow: column;
+              justify-content: center;
+            };
+            .van-cell__value--alone {
+              color: #251e35
+            };
+            .van-cell__title {
+              display: flex;
+              flex-flow: column;
+              justify-content: center;
+            };
+            .van-field__control {
+              color: #514a60 !important
+            } 
+          }
         };
         .content-bottom {
             width: 92%;

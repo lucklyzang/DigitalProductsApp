@@ -22,7 +22,7 @@
           </div>
           <div class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="index">
             <div class="sell-info-area">
-              <div class="left" v-show="item.countdownTime < 0">
+              <div class="left" v-show="item.countdownTime > 0">
                 <van-icon name="underway" size="14" color="#bd68ff" />
                 <span>即将开售</span>
                 <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
@@ -128,10 +128,6 @@
         mapMutations
     } from 'vuex'
     import {
-        formatTime,
-        setStore,
-        getStore,
-        removeStore,
         IsPC
     } from '@/common/js/utils'
     let windowTimer

@@ -53,12 +53,12 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../cleanSystemWeb/index.html'),
+    index: path.resolve(__dirname, '../digitalH5/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../cleanSystemWeb'),
+    assetsRoot: path.resolve(__dirname, '../digitalH5'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/cleanSystemWeb/',
+    assetsPublicPath: '/digitalH5/',
 
     /**
      * Source Maps

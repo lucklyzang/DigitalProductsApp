@@ -1,6 +1,6 @@
 <template>
 	<div class="content-box">
-        <NavBar path="/" />
+        <NavBar path="/login" />
 		<div class="content-top">
 			<span>请输入验证码</span>
 			<span>已发送到手机号 {{phoneNumber}}</span>
@@ -64,6 +64,16 @@
 			])
 		},
 		mounted() {
+			// 控制设备物理返回按键
+			if (!IsPC()) {
+				pushHistory();
+				this.gotoURL(() => {
+					pushHistory();
+					this.$router.push({
+						path: '/login'
+					})
+				})
+			};
 			this.phoneNumber = this.$route.params.phoneNumber;
 			this.$refs.inputOne.focus()
 		},
