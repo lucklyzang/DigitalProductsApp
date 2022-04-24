@@ -62,6 +62,16 @@
 			])
 		},
 		mounted() {
+			// 控制设备物理返回按键
+            if (!IsPC()) {
+                pushHistory();
+                this.gotoURL(() => {
+                pushHistory();
+                    this.$router.push({
+                        path: '/myOrderForm'
+                    })
+                })
+            };
 			this.inquareOrderDetails(this.orderId)
 		},
 		methods: {

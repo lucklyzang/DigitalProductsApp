@@ -46,7 +46,7 @@
       return {
         noDataShow: false,
         showLoadingHint: false,
-        realNameValue: '',
+        realNameValue: '活动时间',
         phoneNumber: '',
         cardValue: '',
         defaultPersonPng :require("@/common/images/home/default-person.jpg"),
@@ -59,6 +59,10 @@
       if (!IsPC()) {
         pushHistory();
         this.gotoURL(() => {
+          pushHistory();
+					this.$router.push({
+						path: '/accountSecurity'
+					})
         })
       }
     },
@@ -145,18 +149,28 @@
         padding: 6px;
         box-sizing: border-box;
         /deep/ .van-cell {
-            margin-bottom: 8px;
-            background: #100726;
-            height: 55px;
-            border: 1px solid #2c2c2c;
-            border-radius: 10px;
-            .van-cell__title {
-              color: #514a60
-            };
-            .van-field__control {
-              color: #706d76;
-              text-align: right
-            }
+          margin-bottom: 8px;
+          background: @color-block;
+          height: 55px;
+          border: 1px solid #2c2c2c;
+          border-radius: 10px;
+          .van-cell__value {
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+          };
+          .van-field__label {
+            color: #fff
+          }; 
+          .van-cell__title {
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+          };
+          .van-field__control {
+            color: #514a60!important;
+            text-align: right
+          }
         }
       }
     }

@@ -2,15 +2,17 @@
 	<div class="content-box">
 		<NavBar path="/myInfo" title="我的订单"/>
 		<div class="content-top">
-			<div class="tab-switch" :animation="animationData">
-				<span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
-					:class="{'active-tab-style': index === currentTabIndex }"
-				>
-					{{
-						item.name
-					}}
-				</span>
-			</div>
+			<van-sticky :offset-top="46">
+				<div class="tab-switch" :animation="animationData">
+					<span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
+						:class="{'active-tab-style': index === currentTabIndex }"
+					>
+						{{
+							item.name
+						}}
+					</span>
+				</div>
+			</van-sticky>	
 		</div>
 		<div class="content-bottom">
 			<van-loading type="spinner" v-show="loadingShow"/>
@@ -173,11 +175,22 @@
 			])
 		},
 		mounted() {
+			// 控制设备物理返回按键
+            if (!IsPC()) {
+                pushHistory();
+                this.gotoURL(() => {
+                pushHistory();
+                    this.$router.push({
+                        path: '/myInfo'
+                    })
+                })
+            };
 			this.queryProductsList(0)
 		},
 		methods: {
 			...mapMutations([
-				'changeOrderId'
+				'changeOrderId',
+				'changeIsPaying'
 			]),
 
 			// tab切换事件
@@ -276,6 +289,7 @@
 				if (item.collectionStatus != 0 ) {
 					this.$router.push({name: 'orderFormDetails',params: {id:item.orderId}})
 				} else {
+					this.changeIsPaying(false);
 					this.$router.push({path: 'orderFormToPaid',params: {id:item.orderId}})
 				}
 			}
@@ -300,42 +314,42 @@
             }
         };
 		.content-top {
-			.tab-switch {
-				position: sticky;
-				top: 50px;
-				background: @color-background;
-				width: 100%;
+			/deep/ .van-sticky {
 				z-index: 200;
-				display: flex;
-				flex-flow: row nowrap;
-				justify-content: space-between;
-				span {
-					display: inline-block;
-					color: #686868;
-					font-size: 14px;
-					width: 100px;
-					height: 60px;
-					line-height: 60px;
-					text-align: center;
-				};
-				.active-tab-style {
-					color: #FFFFFF;
-					font-size: 16px;
-					font-weight: bold;
-					position: relative;
-					&:after {
-					  content: '';
-					  position: absolute;
-						bottom: 0;
-						left: 50%;
-						transform: translateX(-50%);
-						width: 16px;
-						height: 4px;
-						background-image: linear-gradient(to right, #fcbe43 , #bf6bfe);
-						border-radius: 2px
+				.tab-switch {
+					background: @color-background;
+					width: 100%;
+					display: flex;
+					flex-flow: row nowrap;
+					justify-content: space-between;
+					span {
+						display: inline-block;
+						color: #686868;
+						font-size: 14px;
+						width: 100px;
+						height: 60px;
+						line-height: 60px;
+						text-align: center;
+					};
+					.active-tab-style {
+						color: #FFFFFF;
+						font-size: 16px;
+						font-weight: bold;
+						position: relative;
+						&:after {
+						content: '';
+						position: absolute;
+							bottom: 0;
+							left: 50%;
+							transform: translateX(-50%);
+							width: 16px;
+							height: 4px;
+							background-image: linear-gradient(to right, #fcbe43 , #bf6bfe);
+							border-radius: 2px
+						}
 					}
-				};
-			  };
+				}
+			}	
 		};
 		.content-bottom {
 			width: 95%;

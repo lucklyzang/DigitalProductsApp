@@ -49,7 +49,7 @@ export const pushHistory = () => {
 }
 
 /** 
- * 判断设备的操作系统环境
+ * 判断设备的操作系统环境(区分pc和移动端)
 */
 export const IsPC = () => {
   let flag;
@@ -72,6 +72,23 @@ export const IsPC = () => {
 　}
   return flag
 }
+
+/** 
+ * 判断是否是安卓还是ios  
+*/
+export const isAndroid_ios = () => {  
+  let u = navigator.userAgent, 
+    app = navigator.appVersion;  
+  let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器  
+  let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+  if (isAndroid) {
+    return true
+  } else if (isiOS) {
+    return false
+  } else {
+    return '非安卓或ios'
+  }
+}  
 
 /*
  * 扫码枪绑定方法

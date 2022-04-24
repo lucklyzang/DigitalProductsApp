@@ -1,10 +1,17 @@
 <template>
 	<div class="content-box">
 		<NavBar path="/myOrderForm" title="待支付"/>
+        <!-- 支付是否完成确认框 -->
+        <van-dialog v-model="isShowPaySuccess" :showConfirmButton="false" title="请确认微信支付是否已完成" :show-cancel-button="false">
+            <div @click="completePaymentEvent">已完成支付</div>
+            <div @click="paymentIssueEvent">支付遇到问题,重新支付</div>
+        </van-dialog>
 		<div class="content-center">
             <div class="top">
-                <span>未完成</span>
-                <van-count-down :time="`${(new Date(orderFormDetails.createTime).getTime() + orderFormDetails.expire*60*1000) - new Date().getTime()}`" format="剩余 mm 分 ss 秒" @finish="cocuntDownEvent"/>
+                <span>
+                    {{paymentSuccess ? '已完成': '未完成'}}
+                </span>
+                <van-count-down v-show="!paymentSuccess" :time="`${(new Date(orderFormDetails.createTime).getTime() + orderFormDetails.expire*60*1000) - new Date().getTime()}`" format="剩余 mm 分 ss 秒" @finish="cocuntDownEvent"/>
             </div>
 			<div class="center">
                 <van-loading type="spinner" v-show="loadingShow"/>
@@ -34,7 +41,7 @@
                                     <van-radio name="1" />
                                 </template>
                             </van-cell>
-                            <van-cell clickable @click="radio = '2'">
+                            <!-- <van-cell clickable @click="radio = '2'">
                                  <template #default>
                                     <img :src="alipayPayPng" alt="">
                                     <span>支付宝支付</span>
@@ -51,7 +58,7 @@
                                 <template #right-icon>
                                     <van-radio name="3" />
                                 </template>
-                            </van-cell>
+                            </van-cell> -->
                         </van-cell-group>
                     </van-radio-group>
                 </div>
@@ -69,8 +76,11 @@
                 </span>
             </div>
             <div class="btn-right">
-                <span @click="cancellationOfOrder">取消订单</span>
-                <span>确认支付</span>
+                <span class="cancel-order" @click="cancellationOfOrder" v-show="!paymentSuccess && !isPaying">取消订单</span>
+                <span class="sure-pay" @click="surePay" v-show="!paymentSuccess && !isPaying">确认支付</span>
+                <span class="sure-pay" v-show="paymentSuccess || isPaying">
+                    {{paymentSuccess ? '支付成功' : isPaying ? '支付中' : '支付成功'}}
+                </span>
             </div>
 		</div>
 	</div>
@@ -82,15 +92,18 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
-	import {queryOrderDetails,cancelOrder,createPaymentOrder} from '@/api/products.js'
+    import { isAndroid_ios } from '@/common/js/utils'
+	import {queryOrderDetails,cancelOrder,createPaymentOrder,queryPaymentResult} from '@/api/products.js'
 	export default {
 		components: {
             NavBar
 		},
 		data() {
 			return {
+                isShowPaySuccess: false,
                 loadingShow: false,
                 time: '',
+                paymentSuccess: false,
                 orderFormDetails: {},
                 weixinPayPng: require("@/common/images/home/weixin-pay.png"),
                 alipayPayPng: require("@/common/images/home/alipay-pay.png"),
@@ -101,14 +114,30 @@
 		onReady() {},
 		computed: {
 			...mapGetters([
-                'orderId'
+                'orderId',
+                'isPaying'
 			])
 		},
 		mounted() {
+            // 控制设备物理返回按键
+            if (!IsPC()) {
+                pushHistory();
+                this.gotoURL(() => {
+                    if (this.isShowPaySuccess) {return};
+                    pushHistory();
+                    this.$router.push({
+                        path: '/myOrderForm'
+                    })
+                })
+            };
+            if (this.isPaying) {
+                this.isShowPaySuccess = true
+            };
             this.inquareOrderDetails(this.orderId)
 		},
 		methods: {
 			...mapMutations([
+                'changeIsPaying'
 			]),
 
             // 查询订单详情
@@ -117,7 +146,8 @@
                 queryOrderDetails(id).then((res) => {
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
-                       this.orderFormDetails = res.data.data
+                       this.orderFormDetails = res.data.data;
+                       this.orderFormDetails.createTime = this.orderFormDetails.createTime.replace(/-/g,"/");
                     } else {
                         this.$dialog.alert({
                             message: `${res.data.msg}`,
@@ -145,6 +175,9 @@
                        this.$toast({
                             message: '订单取消成功',
                             position: 'bottom'
+                        });
+                        this.$router.push({
+                            path: '/home'
                         })
                     } else {
                         this.$dialog.alert({
@@ -164,17 +197,79 @@
                 })
             },
 
-            // 创建支付订单
-            createPaymentOrderEvent () {
-                createPaymentOrder({}).then((res) => {
+            // 查询支付结果
+            queryPayResult() {
+                this.loadingShow = true;
+                queryPaymentResult(this.orderId).then((res) => {
+                    this.loadingShow = false;
                     if (res && res.data.code == 0) {
-                        
+                       this.$toast({
+                            message: '订单支付成功',
+                            position: 'bottom'
+                        });
+                        this.paymentSuccess = true;
+                        this.changeIsPaying(false)
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+            // 确认支付事件
+            surePay () {
+                if ((new Date(this.orderFormDetails.createTime).getTime() + this.orderFormDetails.expire*60*1000) - new Date().getTime() <=0 ) {
+                    this.$toast({
+                        message: '订单已过期,请重新下单',
+                        position: 'bottom'
+                    });
+                    this.cancellationOfOrder()
+                } else {
+                    if (this.radio == 1) {
+                    // 微信支付
+                    let payParams = {
+                        orderId: this.orderId,
+                        payMode: "WECHAT_H5",
+                        iso: "",
+                        openId: "IP"
+                    };
+                    if (isAndroid_ios() === true) {
+                        payParams['iso'] = "Android"
+                    } else if (isAndroid_ios() === false) {
+                        payParams['iso'] = " iOS"
+                    } else {
+                        payParams['iso'] = "Wap"
+                    };
+                    this.createPaymentOrderEvent(payParams)
+                    } else if (this.radio == 2) {
+                        // 支付宝支付
+                    }
+                }
+            },
+
+            // 创建支付订单
+            createPaymentOrderEvent (data) {
+                createPaymentOrder(data).then((res) => {
+                    if (res && res.data.code == 0) {
+                        this.changeIsPaying(true);
+                        window.location.href = res.data.data.prepayId
                     } else {
                     this.$dialog.alert({
                         message: `${res.data.msg}`,
                         closeOnPopstate: true
                     }).then(() => {
-                    });
+                    })
                     }
                 })
                 .catch((err) => {
@@ -184,6 +279,19 @@
                     }).then(() => {
                     })
                 })
+            },
+
+            // 完成支付弹框事件
+            completePaymentEvent () {
+                this.isShowPaySuccess = false;
+                this.queryPayResult()
+            },
+
+            // 支付问题弹框事件
+            paymentIssueEvent () {
+                this.isShowPaySuccess = false;
+                this.paymentSuccess = false;
+                this.changeIsPaying(false)
             },
 
             // 倒计时结束事件
@@ -209,6 +317,26 @@
             .van-nav-bar__title {
                 color: #fff !important;
                 font-size: 18px !important
+            }
+        };
+        /deep/ .van-dialog {
+            .van-dialog__header {
+                padding-top: 0;
+                line-height: 80px;
+                .bottom-border-1px(#c2c2c2)
+            };
+            .van-dialog__content {
+                >div {
+                    line-height: 50px;
+                    text-align: center;
+                    &:first-child {
+                        .bottom-border-1px(#c2c2c2);
+                        color: #ffbd40;
+                    };
+                    &:last-child {
+                        color: #8e8e8e
+                    }
+                }
             }
         };
 		.content-center {
@@ -360,25 +488,25 @@
             .btn-right {
                 >span {
                     display: inline-block;
-                    &:first-child {
-                        color: #686868;
-                        width: 90px;
-                        height: 30px;
-                        text-align: center;
-                        line-height: 30px;
-                        border-radius: 20px;
-                        background: #00020f
-                    }
-                    &:last-child {
-                        color: black;
-                        width: 90px;
-                        height: 30px;
-                        text-align: center;
-                        line-height: 30px;
-                        border-radius: 20px;
-                        background: #ffbd40;
-                        margin-left: 4px
-                    }
+                };
+                .cancel-order {
+                    color: #686868;
+                    width: 90px;
+                    height: 30px;
+                    text-align: center;
+                    line-height: 30px;
+                    border-radius: 20px;
+                    background: #00020f
+                };
+                .sure-pay {
+                    color: black;
+                    width: 90px;
+                    height: 30px;
+                    text-align: center;
+                    line-height: 30px;
+                    border-radius: 20px;
+                    background: #ffbd40;
+                    margin-left: 4px
                 }
             } 
         }

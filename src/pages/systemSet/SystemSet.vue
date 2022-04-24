@@ -84,11 +84,14 @@
     },
 
     mounted() {
-      console.log(this.isLogin);
       // 控制设备物理返回按键
       if (!IsPC()) {
         pushHistory();
         this.gotoURL(() => {
+          pushHistory();
+					this.$router.push({
+						path: '/myInfo'
+					})
         })
       };
       document.addEventListener('click', (e) => {
@@ -189,6 +192,9 @@
                 message: '退出登录成功',
                 position: 'bottom'
               });
+               this.$router.push({
+                path: '/home'
+              })
             } else {
                 this.$dialog.alert({
                 message: `${res.data.msg}`,

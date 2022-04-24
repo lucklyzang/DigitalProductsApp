@@ -1,6 +1,6 @@
 <template>
   <div class="content-box">
-		<NavBar path="/" />
+		<NavBar path="/login" />
 		<div class="content-top">
 			<span>登录某某</span>
 			<span>发现有趣</span>
@@ -77,7 +77,9 @@ export default {
       pushHistory()
       that.gotoURL(() => {
         pushHistory();
-        this.$router.push({path: '/'});  //输入要返回的上一级路由地址
+         this.$router.push({
+            path: '/login'
+          })
       });
     };
     // 监控键盘弹起

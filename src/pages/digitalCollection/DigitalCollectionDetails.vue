@@ -111,17 +111,30 @@
 		onReady() {},
 		computed: {
 			...mapGetters([
-                'productsId'
+                'productsId',
+                'isLogin',
+                'userInfo'
 			])
 		},
 
 		mounted() {
+            // 控制设备物理返回按键
+            if (!IsPC()) {
+                pushHistory();
+                this.gotoURL(() => {
+                pushHistory();
+                    this.$router.push({
+                        path: '/home'
+                    })
+                })
+            };
             this.queryProductDetails()
 		},
 
 		methods: {
 			...mapMutations([
-                'changeOrderId'
+                'changeOrderId',
+                'changeIsPaying'
 			]),
 
             // 查询作品详情
@@ -149,12 +162,27 @@
 
             // 购买商品
             purchaseEvent () {
-                if (this.isCountDownShow) {
+                // 未登录
+                if (!this.isLogin) {
+                    this.$router.push({
+                        path: '/login'
+                    });
                     return
                 };
+                // 未认证
+                if (this.userInfo.realFlag != 1) {
+                    this.$router.push({
+                        path: '/realNameAuthentication'
+                    });
+                    return
+                };
+                if (this.isCountDownShow) {
+                    return
+                }; 
                 purchaseCommodity(this.productsId).then((res) => {
                     if (res && res.data.code == 0) {
                         this.changeOrderId(res.data.data.orderId);
+                        this.changeIsPaying(false);
                         this.$router.push({path: 'orderFormToPaid'})
                     } else {
                         this.$dialog.alert({

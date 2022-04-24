@@ -298,7 +298,7 @@
                     margin: 0 auto;
                     height: 75px;
                     background: @color-block;
-                    border-radius: 10px;
+                    border-radius: 15px;
                     display: flex;
                     flex-flow: row wrap;
                     .function-zone-icon-list {
@@ -332,7 +332,6 @@
                 margin-top: 10px;
                 padding: 0 6px 6px 6px;
                 box-sizing: border-box;
-                border-radius: 10px;
                 .nick-name {
                     display: flex;
                     flex-flow: row nowrap;
@@ -342,6 +341,7 @@
                     padding: 6px;
                     background: @color-block;
                     margin-bottom: 10px;
+                    border-radius: 10px;
                     .left {
                         font-size: 16px;
                         color: #FFFFFF;
