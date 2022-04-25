@@ -405,11 +405,9 @@
                     > div {
                         &:first-child {
                             width: 45px;
-                            border-radius: 50%;
                             margin-right: 10px;
                             img {
-                                width: 100%;
-                                border-radius: 50%;
+                                width: 100%
                             }
                         };
                         &:last-child {

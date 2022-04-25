@@ -531,7 +531,6 @@
                                     align-items: center;
                                     img {
                                         width: 20px;
-                                        border-radius: 50%;
                                         vertical-align: top;
                                     }
                                     ;

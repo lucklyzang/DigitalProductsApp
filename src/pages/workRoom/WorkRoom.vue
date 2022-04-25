@@ -410,8 +410,7 @@
                   flex-flow: row nowrap;
                   align-items: center;
                   img {
-                    width: 20px;
-                    border-radius: 50%
+                    width: 20px
                   };
                   span {
                     margin-left: 6px;

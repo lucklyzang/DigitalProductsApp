@@ -154,10 +154,8 @@
 				background: @color-block;
 				.img-show {
 					width: 70px;
-                    border-radius: 6px;
                     img {
                         width: 100%;
-                        border-radius: 6px
                     }
 				};
 				.span-show {

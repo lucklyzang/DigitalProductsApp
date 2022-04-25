@@ -392,7 +392,6 @@
                     img {
                        width: 40px;
                        margin-right: 2px;
-                       border-radius: 50%;
                        &:last-child {
                          width: 8px;
                          height: 10px
