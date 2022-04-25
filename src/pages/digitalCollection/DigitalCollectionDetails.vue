@@ -27,8 +27,8 @@
                         </span>
                     </div>
                     <div class="number">
-                        <div class="left" v-show="productsDetails.tags != null && productsDetails.tags.length>0">
-                            <span v-for="(item,index) in productsDetails.tags" :key="index">{{item}}</span>
+                        <div class="left" v-show="productsDetails.tags && !productsDetails.tags.some((tagItem) => {return tagItem == null}) && productsDetails.tags.length>0">
+                            <span v-for="(item,index) in productsDetails.tags" :key="index">{{!item ? '' : item}}</span>
                         </div>
                         <div class="right">
                             <span>限量</span>
@@ -45,7 +45,7 @@
                     </div>
                     <div>
                         <span>{{productsDetails.creator}}</span>
-                        <span>作品 4</span>
+                        <span>{{productsDetails.publisher}}</span>
                     </div>
                 </div>
                 <div class="focus-box">
@@ -142,7 +142,6 @@
                 inquareProductDetails(this.productsId).then((res) => {
                     if (res && res.data.code == 0) {
                         this.productsDetails = res.data.data;
-                        console.log('作品详情',this.productsDetails);
                     } else {
                     this.$dialog.alert({
                         message: `${res.data.msg}`,
@@ -246,22 +245,23 @@
             padding-bottom: 80px;
             box-sizing: border-box;
             .content-top {
+                padding-top: 10px;
+                box-sizing: border-box;
                 .collection-exhibition {
-                    height: 450px;
+                    max-width: 80%;
+                    margin: 0 auto;
                     position: relative;
                     img {
-                        width: 100%;
-                        height: 100%
+                        width: 100%
                     }
                 };
                 .booth {
-                    width: 80%;
+                    max-width: 80%;
                     margin: 0 auto;
                     margin-top: 20px;
                     height: 50px;
                     img {
-                        width: 100%;
-                        height: 100%
+                        width: 100%
                     }
                 };
                 .synopsis {
@@ -352,7 +352,7 @@
                         position: absolute;
                         top: 0;
                         left: 10%;
-                        width: 80%;
+                        max-width: 80%;
                         height: 80px
                     }
                 }
@@ -366,10 +366,10 @@
                 background: @color-block;
                 border-radius: 14px;
                 .img-box {
-                    height: 350px;
+                    max-width: 90%;
+                    margin: 0 auto;
                     img {
-                        width: 100%;
-                        height: 100%;
+                        width: 100%
                     }
                 };
                 .publisher-title {
@@ -405,11 +405,9 @@
                     > div {
                         &:first-child {
                             width: 45px;
-                            height: 45px;
                             border-radius: 50%;
                             margin-right: 10px;
                             img {
-                                height: 100%;
                                 width: 100%;
                                 border-radius: 50%;
                             }

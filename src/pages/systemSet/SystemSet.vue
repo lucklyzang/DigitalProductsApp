@@ -10,9 +10,9 @@
 				<span>头像</span>
 			</div>
 			<div class="right" @click="changeHeadPortrait">
-          <img :src="notLoginPng" v-show="!isLogin" alt="">
-          <img :src="defaultPersonPng" v-show="isLogin && !userInfo.hasOwnProperty('avatarUrl')" alt="">
-          <img :src="userInfo.avatarUrl" v-show="isLogin && userInfo.hasOwnProperty('avatarUrl')" alt="">
+          <img :src="notLoginPng" v-show="!isLogin" class="imgIcon" alt="">
+          <img :src="defaultPersonPng" v-show="isLogin && !userInfo.hasOwnProperty('avatarUrl')" class="imgIcon" alt="">
+          <img :src="userInfo.avatarUrl" v-show="isLogin && userInfo.hasOwnProperty('avatarUrl')" class="imgIcon" alt="">
           <img :src="arrowRightPng" class="imgIcon" alt="">
 			</div>
 		</div>
@@ -44,11 +44,11 @@
         <div class="choose-photo-box" v-show="photoBox">
           <div class="choose-photo">
             <van-icon name="photo" />
-            <input name="uploadImg1" id="demo1" @change="previewFileOne" type="file" accept="image/album"/>从图库中选择
+            <input name="uploadImg1" id="demo1" @change="previewFileOne" type="file" accept="image/*"/>从图库中选择
           </div>
           <div class="photo-graph">
             <van-icon name="photograph" />
-            <input name="uploadImg2" id="demo2"  @change="previewFileTwo" type="file" accept="image/camera"/>拍照
+            <input name="uploadImg2" id="demo2"  @change="previewFileTwo" type="file" accept="image/*" capture="camera"/>拍照
           </div>
           <div class="photo-cancel" @click="photoCancel">取消</div>
         </div>
@@ -130,6 +130,25 @@
         return IsPC()
       },
 
+      //input调取摄像头兼容性处理
+      dealPhotographCompatibleEvent () {
+        let file = document.querySelector('input');
+        if (this.getIos()) {
+          file.removeAttribute("capture");
+        }
+      },
+
+      // 判断是否为ios
+      getIos() {
+        let ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/iPhone\sOS/i) == "iphone os") {
+          return true
+        } else {
+          return false
+        }
+      },
+
+
       // 修改头像事件
       saveChangeAvatarEvent (data) {
         this.loadingShow = true;
@@ -183,11 +202,16 @@
 
       //退出登录事件
       logoutEvent () {
+        this.loadingShow = true;
         logout().then((res) => {
           this.loadingShow = false;
           if (res && res.data.code == 0) {
               this.queryuserInfo();
               this.changeIsLogin(false);
+              // 清空store和localStorage
+              this.$store.commit('resetFabricState');
+              this.$store.commit('resetLoginState');
+              window.localStorage.clear();
               this.$toast({
                 message: '退出登录成功',
                 position: 'bottom'
@@ -225,6 +249,7 @@
 
       // 修改头像事件
       changeHeadPortrait () {
+        this.dealPhotographCompatibleEvent();
         this.photoBox = true;
         this.overlayShow = true
       },
@@ -354,8 +379,7 @@
                        .no-wrap()
                     };
                     img {
-                      width: 8px;
-                      height: 10px
+                      width: 8px
                     }
 				}
 			};
@@ -367,7 +391,6 @@
                     align-items: center;
                     img {
                        width: 40px;
-                       height: 40px;
                        margin-right: 2px;
                        border-radius: 50%;
                        &:last-child {
@@ -393,7 +416,7 @@
           color: #ffbc41;
           font-size: 15px;
         };
-       .choose-photo-box {
+      .choose-photo-box {
         position: fixed;
         margin: auto;
         left: 0;
@@ -405,16 +428,17 @@
           width: 100%;
           text-align: center;
           font-size: 16px;
-          background: #f6f6f6
+          background: #2d2f2e
         }
         .choose-photo {
-          padding: 8px 10px;
-          height: 30px;
-          .bottom-border-1px(#cbcbcb);
-          line-height: 30px;
+          height: 60px;
+          margin-bottom: 2px;
+          line-height: 60px;
           position: relative;
+          border-top-left-radius: 6px;
+          border-top-right-radius: 6px;
           cursor: pointer;
-          color: @color-theme;
+          color: #FFFFFF;
           overflow: hidden;
           display: inline-block;
           *display: inline;
@@ -423,7 +447,7 @@
             vertical-align: top;
             font-size: 20px;
             display: inline-block;
-            line-height: 30px
+            line-height: 60px
           };
           input {
             position: absolute;
@@ -439,18 +463,18 @@
         .photo-graph {
           position: relative;
           display: inline-block;
-          height: 50px;
+          height: 60px;
           overflow: hidden;
-         .bottom-border-1px(#cbcbcb);
-          color: @color-theme;
+          margin-bottom: 5px;
+          color: #FFFFFF;
           text-decoration: none;
           text-indent: 0;
-          line-height: 50px;
+          line-height: 60px;
           /deep/ .van-icon {
             vertical-align: top;
             font-size: 20px;
             display: inline-block;
-            line-height: 50px
+            line-height: 60px
           };
           input {
             position: absolute;
@@ -464,12 +488,12 @@
         .photo-cancel {
           position: relative;
           display: inline-block;
-          padding: 8px 12px;
           overflow: hidden;
-          color: @color-theme;
+          color: #FFFFFF;
           text-decoration: none;
           text-indent: 0;
-          line-height: 30px;
+          height: 70px;
+          line-height: 70px;
           font-weight: bold
         }
       } 

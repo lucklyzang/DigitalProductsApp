@@ -33,7 +33,7 @@
   import Loading from '@/components/Loading'
   import store from '@/store'
   import { mapGetters, mapMutations } from 'vuex'
-  import { formatTime, setStore, getStore, removeStore, IsPC} from '@/common/js/utils'
+  import { IsPC } from '@/common/js/utils'
   let windowTimer
   export default {
     name: 'Home',
@@ -46,7 +46,7 @@
       return {
         noDataShow: false,
         showLoadingHint: false,
-        realNameValue: '活动时间',
+        realNameValue: '',
         phoneNumber: '',
         cardValue: '',
         defaultPersonPng :require("@/common/images/home/default-person.jpg"),
@@ -64,7 +64,10 @@
 						path: '/accountSecurity'
 					})
         })
-      }
+      };
+      this.phoneNumber = this.userInfo.mobile;
+      this.cardValue = this.userInfo.idCard;
+      this.realNameValue = this.userInfo.name
     },
 
     watch: {
@@ -89,13 +92,9 @@
         'changeTitleTxt'
       ]),
 
-      juddgeIspc () {
-        return IsPC()
-      },
-
       //账号注销事件
       cancellationEvent () {
-          this.$router.push({path: '/'})
+        this.$router.push({path: '/'})
       }
     }
   }
@@ -131,8 +130,7 @@
         color: #fff;
         font-size: 12px;
         img {
-          width: 60px;
-          height: 70px
+          width: 60px
         };
         >span {
           margin-top: 20px

@@ -123,6 +123,19 @@
             }
         },
 
+        // created(){
+        //     document.body.addEventListener('touchmove', this.eventListenerHandle, {
+        //         passive: false
+        //     })
+        // },
+
+        //页面离开销毁监听事件
+        // destroyed(){
+        //     document.body.removeEventListener('touchmove',this.eventListenerHandle,{
+        //         passive: false
+        //     })
+        // },
+
         watch: {},
 
         computed: {
@@ -144,6 +157,11 @@
             ...mapMutations([
                 'storeUserInfo'
             ]),
+
+            eventListenerHandle(e){
+                if(e._isScroller) return;
+                e.preventDefault()
+            },
 
             juddgeIspc() {
                 return IsPC()
@@ -248,11 +266,9 @@
                         align-items: center;
                         .person-picture {
                             width: 65px;
-                            height: 65px;
                             border-radius: 50%;
                             img {
                                 width: 100%;
-                                height: 100%;
                                 border-radius: 50%
                             }
                         }
@@ -309,10 +325,8 @@
                         justify-content: center;
                         align-items: center;
                         img {
-                            width: 40px;
-                            height: 40px;
-                        }
-                        ;
+                            width: 30px;
+                        };
                         span {
                             color: #464756;
                             margin-top: 10px;
@@ -353,19 +367,16 @@
                         }
                         ;
                         img {
-                            width: 18px;
-                            height: 18px
+                            width: 18px
                         }
-                    }
-                    ;
+                    };
                     .right {
                         >div {
                             display: flex;
                             flex-direction: column;
                             justify-content: center;
                             img {
-                                width: 8px;
-                                height: 10px
+                                width: 8px
                             }
                         }
                     }

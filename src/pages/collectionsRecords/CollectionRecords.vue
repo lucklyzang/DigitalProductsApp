@@ -12,8 +12,10 @@
 						</div>
 						<div class="span-show">
 							<span>{{item.collectionName}}</span>
-                            <p>
-                             <span v-for="(innerItem,innerIndex) in item.collectionTagsList" :key="innerIndex">{{innerItem}}</span>
+                            <p v-show="item.collectionTagsList && !item.collectionTagsList.some((tagItem) => {return tagItem == null}) && item.collectionTagsList.length>0">
+                             <span 
+							 	v-for="(innerItem,innerIndex) in item.collectionTagsList" :key="innerIndex">{{innerItem}}
+							 </span>
                             </p>
 							<span>{{item.collectionPrice}}</span>
 						</div>
@@ -157,11 +159,9 @@
 						width: 100%;
 						.img-show {
 							width: 70px;
-							height: 70px;
 							border-radius: 6px;
 							img {
 								width: 100%;
-								height: 100%;
 								border-radius: 6px
 							}
 						};

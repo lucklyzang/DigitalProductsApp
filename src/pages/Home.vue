@@ -22,7 +22,7 @@
           </div>
           <div class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="index">
             <div class="sell-info-area">
-              <div class="left" v-show="item.countdownTime > 0">
+              <div class="left" v-show="item.isShowCountDown">
                 <van-icon name="underway" size="14" color="#bd68ff" />
                 <span>即将开售</span>
                 <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
@@ -35,7 +35,7 @@
               <div class="left">
                 <div class="name">
                   <span>{{item.digitalCollectionName}}</span>
-                  <p>
+                  <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
                     <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
                   </p>
                 </div>
@@ -226,7 +226,8 @@
                                         digitalCollectioPrice: item.price,
                                         tagAttributes: item.tags,
                                         id: item.id,
-                                        status: item.status
+                                        status: item.status,
+                                        isShowCountDown: true
                                     })
                                 };
                                 console.log(this.digitalCollectionList);
@@ -279,7 +280,9 @@
             },
 
             //倒计时结束事件
-            countDownEvent(index) {},
+            countDownEvent(index) {
+                this.digitalCollectionList[index]['isShowCountDown'] = false
+            },
 
             //作品访问统计
             productsVisitStatistics(id) {
@@ -395,6 +398,8 @@
                         position: relative;
                         margin-bottom: 20px;
                         background: #100726;
+                        padding-top: 10px;
+                        box-sizing: border-box;
                         .sell-info-area {
                             position: absolute;
                             top: 10px;
@@ -441,10 +446,10 @@
                         }
                         ;
                         .image-area {
-                            height: 350px;
+                            max-width: 80%;
+                            margin: 0 auto;
                             img {
                                 width: 100%;
-                                height: 100%;
                                 border-radius: 10px;
                             }
                         }
@@ -527,7 +532,6 @@
                                     align-items: center;
                                     img {
                                         width: 20px;
-                                        height: 20px;
                                         border-radius: 50%;
                                         vertical-align: top;
                                     }
@@ -640,12 +644,10 @@
                                     >div {
                                         &:first-child {
                                             width: 90px;
-                                            height: 90px;
                                             border-radius: 12px;
                                             margin-right: 12px;
                                             img {
                                                 width: 100%;
-                                                height: 100%;
                                                 border-radius: 12px;
                                             }
                                         }

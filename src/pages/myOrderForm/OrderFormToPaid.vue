@@ -1,10 +1,21 @@
 <template>
 	<div class="content-box">
-		<NavBar path="/myOrderForm" title="待支付"/>
+		<NavBar :path="path" title="支付"/>
         <!-- 支付是否完成确认框 -->
-        <van-dialog v-model="isShowPaySuccess" :showConfirmButton="false" title="请确认微信支付是否已完成" :show-cancel-button="false">
+        <van-dialog v-model="isShowPaySuccess" :show-confirm-button="false" :close-on-popstate="false" title="请确认微信支付是否已完成" :show-cancel-button="false">
             <div @click="completePaymentEvent">已完成支付</div>
             <div @click="paymentIssueEvent">支付遇到问题,重新支付</div>
+        </van-dialog>
+        <!-- 是否取消订单询问框 -->
+        <van-dialog v-model="isShowOrderCancel" title="确定取消订单?" 
+            confirm-button-color="#ffbd40"
+            cancel-button-color="#b7b7b7"
+            confirm-button-text="再想想"
+            :close-on-popstate="false"
+            cancel-button-text="取消订单"
+            @confirm="cancelCancelOrderEvent"
+            @cancel="cancelOrderSureEvent"
+            show-cancel-button>
         </van-dialog>
 		<div class="content-center">
             <div class="top">
@@ -76,7 +87,7 @@
                 </span>
             </div>
             <div class="btn-right">
-                <span class="cancel-order" @click="cancellationOfOrder" v-show="!paymentSuccess && !isPaying">取消订单</span>
+                <span class="cancel-order" @click="isShowOrderCancel = true" v-show="!paymentSuccess && !isPaying">取消订单</span>
                 <span class="sure-pay" @click="surePay" v-show="!paymentSuccess && !isPaying">确认支付</span>
                 <span class="sure-pay" v-show="paymentSuccess || isPaying">
                     {{paymentSuccess ? '支付成功' : isPaying ? '支付中' : '支付成功'}}
@@ -101,8 +112,10 @@
 		data() {
 			return {
                 isShowPaySuccess: false,
+                isShowOrderCancel: false,
                 loadingShow: false,
                 time: '',
+                path: '',
                 paymentSuccess: false,
                 orderFormDetails: {},
                 weixinPayPng: require("@/common/images/home/weixin-pay.png"),
@@ -111,22 +124,37 @@
                 radio: "1"
 			}
 		},
-		onReady() {},
+
 		computed: {
 			...mapGetters([
                 'orderId',
                 'isPaying'
 			])
 		},
+
+         beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.path = from.path
+            })
+        },
+
+        beforeRouteLeave(to, from, next) {
+            if (this.isShowPaySuccess || this.isPaying) {
+                next(false)
+            } else {
+                next()
+            }
+        },
+
 		mounted() {
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
                 this.gotoURL(() => {
-                    if (this.isShowPaySuccess) {return};
+                    if (this.isShowPaySuccess || this.isPaying) {return};
                     pushHistory();
                     this.$router.push({
-                        path: '/myOrderForm'
+                        path: this.path
                     })
                 })
             };
@@ -177,7 +205,7 @@
                             position: 'bottom'
                         });
                         this.$router.push({
-                            path: '/home'
+                            path: this.path
                         })
                     } else {
                         this.$dialog.alert({
@@ -263,7 +291,8 @@
                 createPaymentOrder(data).then((res) => {
                     if (res && res.data.code == 0) {
                         this.changeIsPaying(true);
-                        window.location.href = res.data.data.prepayId
+                        // 跳转到支付页面
+                        location.href = res.data.data.prepayId + '&redirect_url=' + encodeURIComponent(window.location.href)
                     } else {
                     this.$dialog.alert({
                         message: `${res.data.msg}`,
@@ -294,9 +323,19 @@
                 this.changeIsPaying(false)
             },
 
+            //取消订单取消事件
+            cancelCancelOrderEvent () {
+                this.isShowOrderCancel = false
+            },
+
+            //取消订单确定事件
+            cancelOrderSureEvent () {
+                this.isShowOrderCancel = false;
+                this.cancellationOfOrder() 
+            },
+
             // 倒计时结束事件
             cocuntDownEvent () {
-                
             }
 		}
 	}
@@ -375,11 +414,9 @@
 				background: #100726;
 				.img-show {
 					width: 70px;
-                    height: 70px;
                     border-radius: 6px;
                     img {
                         width: 100%;
-                        height: 100%;
                         border-radius: 6px
                     }
 				};
@@ -437,7 +474,6 @@
                                     align-items: center;
                                     img {
                                         width: 22px;
-                                        height: 20px;
                                         margin-right: 6px
                                     }
                                 }

@@ -25,7 +25,7 @@
 </template>
 <script>
   import NavBar from '@/components/NavBar'
-  import {realNameArenhzneuthentication} from '@/api/products.js'
+  import {realNameArenhzneuthentication,inquareUserInfo} from '@/api/products.js'
   import { mapGetters, mapMutations } from 'vuex'
   import {IsPC} from '@/common/js/utils'
   export default {
@@ -74,7 +74,7 @@
 
     methods:{
       ...mapMutations([
-        'changeTitleTxt'
+        'storeUserInfo'
       ]),
 
       juddgeIspc () {
@@ -132,12 +132,10 @@
         realNameArenhzneuthentication({name: this.realNameValue, idCard: this.cardValue}).then((res) => {
             this.loadingShow = false;
             if (res && res.data.code == 0) {
+              this.queryuserInfo();
               this.$toast({
                 message: '实名认证成功',
                 position: 'bottom'
-              });
-              this.$router.push({
-                path: '/home'
               })
             } else {
                 this.$dialog.alert({
@@ -154,6 +152,29 @@
               closeOnPopstate: true
             }).then(() => {
             })
+        })
+      },
+
+      // 查询用户信息
+      queryuserInfo() {
+          inquareUserInfo().then((res) => {
+            if (res && res.data.code == 0) {
+              this.storeUserInfo(res.data.data);
+              this.$router.push({
+                path: `${path}`
+              })
+            } else {
+              this.$dialog.alert({
+                message: `${res.data.msg}`,
+                closeOnPopstate: true
+              }).then(() => {})
+            }
+        })
+        .catch((err) => {
+          this.$dialog.alert({
+              message: `${err.message}`,
+              closeOnPopstate: true
+          }).then(() => {})
         })
       }
     }

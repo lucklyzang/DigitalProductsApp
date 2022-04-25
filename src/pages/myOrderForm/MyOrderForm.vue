@@ -377,11 +377,9 @@
 						flex: 1;
 						.img-show {
 							width: 70px;
-							height: 70px;
 							border-radius: 6px;
 							img {
 								width: 100%;
-								height: 100%;
 								border-radius: 6px
 							}
 						};

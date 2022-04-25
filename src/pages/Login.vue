@@ -1,5 +1,6 @@
 <template>
   <div class="content-box">
+	  	<NavBar :path="path" />
 		<div class="content-top">
 			<span>登录某某</span>
 			<span>发现有趣</span>
@@ -41,16 +42,17 @@
 <script>
 import {sendPhoneAuthCode} from '@/api/login.js'
 import { mapGetters, mapMutations } from 'vuex'
-import Loading from '@/components/Loading'
+import NavBar from '@/components/NavBar'
 import { setStore, getStore, IsPC,} from '@/common/js/utils'
 export default {
   name: 'Login',
   components: {
-    Loading
+	NavBar
   },
   data () {
     return {
       phoneNumber: '',
+	  path: '',
       loadingspan: '登录中,请稍候···',
       showLoadingHint: false,
 	  checked: true,
@@ -76,6 +78,12 @@ export default {
     ...mapGetters([
     ])
   },
+
+   beforeRouteEnter(to, from, next) {
+      next(vm => {
+        vm.path = from.path
+      })
+    },
 
   mounted () {
     // 控制设备物理返回按键
@@ -171,6 +179,13 @@ export default {
    .content-box {
     .content-wrapper();
     background: @color-background;
+	background: @color-background;
+        /deep/ .van-nav-bar {
+            .van-icon {
+                color: #fff !important;
+                font-size: 24px !important
+            }
+        };
 		.content-top {
 			height: 35vh;
 			line-height: 35vh;
@@ -229,7 +244,6 @@ export default {
 					.van-checkbox__icon {
 						img {
 							width: 17px;
-							height: 17px
 						}
 					};
 					.van-checkbox__label {
@@ -265,11 +279,9 @@ export default {
 				};
 				&:last-child {
 					width: 44px;
-					height: 44px;
 					border-radius: 50%;
 					img {
 						width: 100%;
-						height: 100%;
 						border-radius: 50%;
 					}
 				}

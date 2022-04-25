@@ -46,7 +46,9 @@
                   <div class="left">
                     <div class="name">
                       <span>{{item.digitalCollectionName}}</span>
-                      <span>{{item.tagAttributes}}</span>
+                       <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
+                        <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
+                      </p>
                     </div>
                     <div class="number">
                       <span>限量</span>
@@ -97,16 +99,16 @@
             digitalCollectioAuthor: '乔玲',
             digitalCollectioAuthorPhoto: require("@/common/images/home/default-person.jpg"),
             digitalCollectioPrice: '59.90',
-            tagAttributes: '风景画'
+            tagAttributes: ['风景画','限量']
         }, {
             countdownTime: '03:06:00',
-            digitalCollectionName: '新疆喀纳斯之秋',
+            digitalCollectionName: '玄武门',
             digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
             digitalCollectioShare: 8000,
             digitalCollectioAuthor: '乔玲',
             digitalCollectioAuthorPhoto: require("@/common/images/home/default-person.jpg"),
             digitalCollectioPrice: '59.90',
-            tagAttributes: '风景画'
+            tagAttributes: ['春节特惠']
         }],
         defaultPersonPng :require("@/common/images/home/default-person.jpg")
       }
@@ -194,12 +196,10 @@
             flex: 1;
             .work-room-photo {
                 width: 50px;
-                height: 50px;
                 border-radius: 50%;
                 margin-right: 10px;
                 img {
                     width: 100%;
-                    height: 100%;
                     border-radius: 50%
                 }
             };
@@ -295,8 +295,8 @@
             .sell-info-area {
               position: absolute;
               top: 10px;
-              left: 4%;
-              width: 92%;
+              left: 5%;
+              width: 90%;
               display: flex;
               flex-flow: row nowrap;
               justify-content: space-between;
@@ -328,10 +328,10 @@
               }
             };
           .image-area {
-              height: 350px;
+             max-width: 90%;
+             margin: 0 auto;
               img {
                 width: 100%;
-                height: 100%;
                 border-radius: 10px;
               }
           }
@@ -344,7 +344,7 @@
             flex-flow: row nowrap;
             justify-content: space-between;
             .left {
-                width: 65%;
+                width: 80%;
                 .name {
                   font-size: 19px;
                   color: #FFFFFF;
@@ -353,17 +353,33 @@
                   justify-content: space-between;
                   align-items: center;
                   >span {
-                    display: inline-block;
-                    &:last-child {
-                      padding: 0 4px;
-                      height: 20px;
-                      border: 1px solid #bd6aff;
-                      font-size: 10px;
-                      border-radius: 10px;
-                      text-align: center;
-                      line-height: 20px;
-                      color: #bd68ff
-                    }
+                      display: inline-block;
+                      max-width: 120px;
+                      margin-right: 6px;
+                      .no-wrap();
+                  }
+                  >p {
+                      flex: 1;
+                      overflow: auto;
+                      height: 40px;
+                      display: flex;
+                      flex-flow: row nowrap;
+                      align-items: center;
+                      >span {
+                          display: inline-block;
+                          padding: 0 4px;
+                          height: 20px;
+                          border: 1px solid #bd6aff;
+                          font-size: 10px;
+                          border-radius: 10px;
+                          margin-right: 4px;
+                          text-align: center;
+                          line-height: 20px;
+                          color: #bd68ff;
+                          &:last-child {
+                              margin-right: 0
+                          }
+                      }
                   }
                 };
                 .number {
@@ -395,7 +411,6 @@
                   align-items: center;
                   img {
                     width: 20px;
-                    height: 20px;
                     border-radius: 50%
                   };
                   span {
@@ -411,7 +426,7 @@
                 flex-direction: column;
                 justify-content: flex-end;
                 align-items: flex-end;
-                width: 35%;
+                width: 20%;
                 span {
                   font-size: 17px;
                   color: #FFFFFF;

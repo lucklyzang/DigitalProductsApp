@@ -129,8 +129,7 @@
 			justify-content: center;
 			align-items: center;
 			img {
-				width: 100px;
-				height: 100px;	
+				width: 100px
 			};
 			span {
 				&:nth-child(2) {
@@ -155,11 +154,9 @@
 				background: @color-block;
 				.img-show {
 					width: 70px;
-                    height: 70px;
                     border-radius: 6px;
                     img {
                         width: 100%;
-                        height: 100%;
                         border-radius: 6px
                     }
 				};

@@ -39,13 +39,11 @@ export default {
 
          // 保存支付状态
          changeIsPaying(state, playLoad) {
-            if (playLoad && playLoad != 'null') {
-                setStore('isPaying', playLoad);
-                state.isPaying = playLoad
-            }
+            setStore('isPaying', playLoad);
+            state.isPaying = playLoad
         },
 
-        //重置login的store
+        //重置产品的store
         resetProductsState(state) {
             Object.assign(state, getDefaultProductsState())
         }

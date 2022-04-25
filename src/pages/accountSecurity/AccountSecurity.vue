@@ -172,11 +172,10 @@
                     span {
                        font-size: 14px;
                        color: #514a60;
-                       margin: 0 6px;
+                       margin-right: 10px;
                     };
                     img {
-                      width: 8px;
-                      height: 10px
+                      width: 8px
                     }
 				}
 			}
