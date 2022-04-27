@@ -33,10 +33,10 @@
   import NavBar from '@/components/NavBar'
   import NoData from '@/components/NoData'
   import Loading from '@/components/Loading'
-  import store from '@/store'
+  import {inquareUserInfo} from '@/api/products.js'
+  import {cancellatio} from '@/api/login.js'
   import { mapGetters, mapMutations } from 'vuex'
-  import { formatTime, setStore, getStore, removeStore, IsPC} from '@/common/js/utils'
-  let windowTimer
+  import {IsPC} from '@/common/js/utils'
   export default {
     name: 'Home',
     components:{
@@ -86,7 +86,7 @@
 
     methods:{
       ...mapMutations([
-        'changeTitleTxt'
+        'storeUserInfo'
       ]),
 
       juddgeIspc () {
@@ -95,7 +95,49 @@
 
       //账号注销事件
       cancellationEvent () {
-        this.$router.push({path: '/'})
+        cancellatio().then((res) => {
+          if (res && res.data.code == 0) {
+            this.queryuserInfo();
+            this.$toast({
+              message: '账号注销成功',
+              position: 'bottom'
+            })
+          } else {
+            this.$dialog.alert({
+              message: `${res.data.msg}`,
+              closeOnPopstate: true
+            }).then(() => {
+            });
+          }
+        })
+        .catch((err) => {
+          this.$dialog.alert({
+            message: `${err.message}`,
+            closeOnPopstate: true
+          }).then(() => {
+          })
+        })
+      },
+
+       // 查询用户信息
+      queryuserInfo() {
+          inquareUserInfo().then((res) => {
+            if (res && res.data.code == 0) {
+              this.storeUserInfo(res.data.data);
+              this.$router.push({path: '/myInfo'});
+            } else {
+              this.$dialog.alert({
+                message: `${res.data.msg}`,
+                closeOnPopstate: true
+              }).then(() => {})
+            }
+        })
+        .catch((err) => {
+          this.$dialog.alert({
+              message: `${err.message}`,
+              closeOnPopstate: true
+          }).then(() => {})
+        })
       },
 
       //实名认证事件

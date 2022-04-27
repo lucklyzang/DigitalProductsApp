@@ -5,7 +5,7 @@
     <div class="rare-object">
         <img :src="homeBannerPng" alt="">
     </div>
-      <van-sticky :offset-top="45">
+      <van-sticky :offset-top="14">
         <div class="tab-switch">
           <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
             :class="{'active-tab-style': index === currentTabIndex }"
@@ -344,17 +344,25 @@
     @import "../common/stylus/modifyUi.less";
     .page-box {
         .content-wrapper();
+        /deep/ .tabBar-box {
+            .van-nav-bar__placeholder {
+                height: 15px !important;
+                .van-nav-bar__content {
+                    height: 15px !important
+                }
+            }
+        };
         .content {
             flex: 1;
             display: flex;
             flex-direction: column;
             position: relative;
             background: @color-background;
+            margin-top: -1px;
             .rare-object {
-                max-width: 100%;
+                width: 92%;
+                margin: 0 auto;
                 border-radius: 10px;
-                margin-bottom: 10px;
-                margin-top: -1px;
                 img {
                     width: 100%;
                     border-radius: 10px
@@ -366,17 +374,16 @@
                 .tab-switch {
                     background: @color-background;
                     width: 100%;
-                    text-align: center;
+                    text-align: left;
                     span {
                         display: inline-block;
                         color: #777575;
                         font-size: 17px;
                         width: 100px;
-                        height: 60px;
-                        line-height: 60px;
+                        height: 40px;
+                        line-height: 40px;
                         text-align: center;
-                    }
-                    ;
+                    };
                     .active-tab-style {
                         color: #FFFFFF;
                         font-size: 18px;
@@ -387,7 +394,7 @@
                             position: absolute;
                             left: 0;
                             transform: translateX(420%);
-                            bottom: 6px;
+                            bottom: 0;
                             width: 10px;
                             height: 3px;
                             background-image: linear-gradient(to right, #fcbe43, #bf6bfe)
@@ -422,9 +429,8 @@
                                 background: rgba(0, 0, 0, .54);
                                 color: #bd68ff;
                                 border-radius: 16px;
-                                padding: 4px 10px;
-                                height: 20px;
-                                line-height: 20px;
+                                padding: 3px 10px;
+                                box-sizing: border-box;
                                 display: flex;
                                 flex-flow: row nowrap;
                                 justify-content: flex-start;
@@ -437,12 +443,14 @@
                                 ;
                                 /deep/ .van-count-down {
                                     color: #bd68ff;
+                                    font-size: 12px
                                 }
                             };
                             .center {
                                 background:#656565;
                                 border-radius: 14px;
-                                padding: 8px 10px;
+                                padding: 6px 10px;
+                                box-sizing: border-box;
                                 color: #fff;
                                 span {
                                     &:nth-child(1) {
@@ -453,7 +461,8 @@
                             .right {
                                 background: rgba(0, 0, 0, .54);
                                 border-radius: 14px;
-                                padding: 8px 10px;
+                                padding: 6px 10px;
+                                box-sizing: border-box;
                                 color: #e9ad70;
                                 span {
                                     &:nth-child(1) {

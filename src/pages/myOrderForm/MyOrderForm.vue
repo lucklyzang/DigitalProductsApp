@@ -2,7 +2,7 @@
 	<div class="content-box">
 		<NavBar path="/myInfo" title="我的订单"/>
 		<div class="content-top">
-			<van-sticky :offset-top="46">
+			<van-sticky :offset-top="45">
 				<div class="tab-switch" :animation="animationData">
 					<span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
 						:class="{'active-tab-style': index === currentTabIndex }"
@@ -315,7 +315,8 @@
         };
 		.content-top {
 			/deep/ .van-sticky {
-				z-index: 200;
+				z-index: 2000;
+                margin-top: -2px;
 				.tab-switch {
 					background: @color-background;
 					width: 100%;

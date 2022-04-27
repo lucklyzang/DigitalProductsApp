@@ -167,7 +167,13 @@
                 return IsPC()
             },
 
-            toEditPersonPage() {},
+            toEditPersonPage() {
+                if (!this.isLogin) {
+                    this.$router.push({
+                        path: '/login'
+                    })
+                }
+            },
 
             toSetPage() {},
 
@@ -241,11 +247,20 @@
     @import "../common/stylus/modifyUi.less";
     .page-box {
         .content-wrapper();
+        /deep/ .tabBar-box {
+            .van-nav-bar__placeholder {
+                height: 15px !important;
+                .van-nav-bar__content {
+                    height: 15px !important
+                }
+            }
+        };
         .content-box {
             flex: 1;
             display: flex;
             flex-direction: column;
             position: relative;
+            margin-top: -1px;
             background: @color-background;
             .content-top {
                 height: auto;
