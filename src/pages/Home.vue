@@ -2,7 +2,10 @@
   <div class="page-box">
     <NavBar :leftArrow="false" />
     <div class="content">
-      <van-sticky :offset-top="47">
+    <div class="rare-object">
+        <img :src="homeBannerPng" alt="">
+    </div>
+      <van-sticky :offset-top="45">
         <div class="tab-switch">
           <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
             :class="{'active-tab-style': index === currentTabIndex }"
@@ -17,15 +20,20 @@
         <van-loading type="spinner" v-show="loadingShow"/>
         <van-empty :description="descriptionContent" v-show="emptyShow" />
         <div class="object-box" v-show="currentTabIndex === 0 && !emptyShow">
-          <div class="rare-object">
-            <img :src="homeBannerPng" alt="">
-          </div>
           <div class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="index">
             <div class="sell-info-area">
-              <div class="left" v-show="item.isShowCountDown">
+              <div class="left" v-show="item.isShowCountDown && item.status == 0">
                 <van-icon name="underway" size="14" color="#bd68ff" />
                 <span>即将开售</span>
                 <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
+              </div>
+              <div class="center" v-show="!item.isShowCountDown && item.status == 2">
+                <van-icon name="bookmark" size="14" color="#fff" />
+                <span>已售罄</span>
+              </div>
+              <div class="right" v-show="item.isShowCountDown && item.status == 0">
+                <van-icon name="bell" size="14" color="#e9ad70"/>
+                <span>提醒我</span>
               </div>
             </div>
             <div class="image-area">
@@ -342,17 +350,27 @@
             flex-direction: column;
             position: relative;
             background: @color-background;
+            .rare-object {
+                max-width: 100%;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                margin-top: -1px;
+                img {
+                    width: 100%;
+                    border-radius: 10px
+                }
+            }
             /deep/ .van-sticky {
-                z-index: 200;
+                z-index: 2000;
+                margin-top: -2px;
                 .tab-switch {
-                    margin-top: -2px;
                     background: @color-background;
                     width: 100%;
                     text-align: center;
                     span {
                         display: inline-block;
                         color: #777575;
-                        font-size: 18px;
+                        font-size: 17px;
                         width: 100px;
                         height: 60px;
                         line-height: 60px;
@@ -361,7 +379,7 @@
                     ;
                     .active-tab-style {
                         color: #FFFFFF;
-                        font-size: 20px;
+                        font-size: 18px;
                         position: relative;
                         border: none;
                         &:after {
@@ -383,16 +401,6 @@
                 width: 92%;
                 margin: 0 auto;
                 .object-box {
-                    .rare-object {
-                        max-width: 100%;
-                        border-radius: 10px;
-                        margin-bottom: 10px;
-                        img {
-                            width: 100%;
-                            border-radius: 10px
-                        }
-                    }
-                    ;
                     .object-list {
                         border-radius: 10px;
                         position: relative;
@@ -430,12 +438,22 @@
                                 /deep/ .van-count-down {
                                     color: #bd68ff;
                                 }
-                            }
-                            ;
+                            };
+                            .center {
+                                background:#656565;
+                                border-radius: 14px;
+                                padding: 8px 10px;
+                                color: #fff;
+                                span {
+                                    &:nth-child(1) {
+                                        margin: 0 4px
+                                    }
+                                }
+                            };
                             .right {
-                                background: rgb(59 56 56);
-                                border-radius: 16px;
-                                padding: 8px 8px;
+                                background: rgba(0, 0, 0, .54);
+                                border-radius: 14px;
+                                padding: 8px 10px;
                                 color: #e9ad70;
                                 span {
                                     &:nth-child(1) {
