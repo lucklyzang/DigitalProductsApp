@@ -1,5 +1,7 @@
 <template>
 	<div class="page-box">
+        <van-loading type="spinner" v-show="loadingShow"/>
+        <van-overlay :show="overlayShow" />
         <van-nav-bar left-arrow :border="false"
             :placeholder="true"
             :fixed="true"
@@ -54,15 +56,15 @@
             </div>
             <div class="collection-story-box">
                 <div class="img-box">
-                    <img :src="productsDetails.rickText">
+                    <img :src="item" v-for="(item) in productsDetails.describe" :key="item">
                 </div>
                 <div class="publisher-title">
-                    <span>发行方: {{productsDetails.publisher}}</span>
+                    <span>发行方 : {{productsDetails.publisher}}</span>
                 </div>
             </div>
             <div class="purchase-information">
                 <div class="information-title">
-                    <span>购买须知:</span>
+                    <span>购买须知</span>
                 </div>
                 <div class="issure-title">
                     <p>
@@ -99,6 +101,8 @@
 
 		data() {
 			return {
+                loadingShow: false,
+                overlayShow: false,
                 productsDetails: {},
                 isCountDownShow: true,
                 digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
@@ -139,7 +143,9 @@
 
             // 查询作品详情
             queryProductDetails () {
+                this.loadingShow = true;
                 inquareProductDetails(this.productsId).then((res) => {
+                    this.loadingShow = false;
                     if (res && res.data.code == 0) {
                         this.productsDetails = res.data.data;
                     } else {
@@ -151,6 +157,7 @@
                     }
                 })
                 .catch((err) => {
+                    this.loadingShow = false;
                     this.$dialog.alert({
                         message: `${err.message}`,
                         closeOnPopstate: true
@@ -177,8 +184,12 @@
                 };
                 if (this.isCountDownShow) {
                     return
-                }; 
+                };
+                this.loadingShow = true;
+                this.overlayShow = true; 
                 purchaseCommodity(this.productsId).then((res) => {
+                    this.loadingShow = false;
+                    this.overlayShow = false; 
                     if (res && res.data.code == 0) {
                         this.changeOrderId(res.data.data.orderId);
                         this.changeIsPaying(false);
@@ -192,6 +203,8 @@
                     }
                 })
                 .catch((err) => {
+                    this.loadingShow = false;
+                    this.overlayShow = false; 
                     this.$dialog.alert({
                         message: `${err.message}`,
                         closeOnPopstate: true
@@ -366,10 +379,12 @@
                 background: @color-block;
                 border-radius: 14px;
                 .img-box {
-                    max-width: 90%;
+                    width: 100%;
                     margin: 0 auto;
+                    font-size: 0;
                     img {
-                        width: 100%
+                        width: 100%;
+                        margin-top: -1px
                     }
                 };
                 .publisher-title {
@@ -404,10 +419,14 @@
                     flex: 1;
                     > div {
                         &:first-child {
-                            width: 45px;
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
                             margin-right: 10px;
                             img {
-                                width: 100%
+                                width: 100%;
+                                height: 100%;
+                                border-radius: 50%
                             }
                         };
                         &:last-child {

@@ -265,9 +265,11 @@
                         flex-flow: row nowrap;
                         align-items: center;
                         .person-picture {
-                            width: 65px;
+                            width: 70px;
                             img {
-                                width: 100%
+                                width: 100%;
+                                height: 100%;
+                                border-radius: 50%
                             }
                         }
                         ;

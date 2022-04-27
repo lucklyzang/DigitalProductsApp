@@ -8,17 +8,20 @@
       </div>
       <div class="content-bottom">
         <van-field
+          readonly
           v-model="realNameValue"
           label="姓名"
           :border="false"
         />
         <van-field
+          readonly
           v-model="phoneNumber"
           type="tel"
           label="手机号"
           :border="false"
         />
         <van-field
+        readonly
         v-model="cardValue"
         label="证件号"
         :border="false"

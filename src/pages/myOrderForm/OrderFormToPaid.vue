@@ -1,5 +1,7 @@
 <template>
 	<div class="content-box">
+        <van-loading type="spinner" v-show="loadingShow"/>
+        <van-overlay :show="overlayShow" />
 		<NavBar :path="path" title="支付"/>
         <!-- 支付是否完成确认框 -->
         <van-dialog v-model="isShowPaySuccess" :show-confirm-button="false" :close-on-popstate="false" title="请确认微信支付是否已完成" :show-cancel-button="false">
@@ -25,7 +27,6 @@
                 <van-count-down v-show="!paymentSuccess" :time="`${(new Date(orderFormDetails.createTime).getTime() + orderFormDetails.expire*60*1000) - new Date().getTime()}`" format="剩余 mm 分 ss 秒" @finish="cocuntDownEvent"/>
             </div>
 			<div class="center">
-                <van-loading type="spinner" v-show="loadingShow"/>
 				<div class="img-show">
 					<img :src="orderFormDetails.imgPath">
 				</div>
@@ -114,6 +115,7 @@
                 isShowPaySuccess: false,
                 isShowOrderCancel: false,
                 loadingShow: false,
+                overlayShow: false,
                 time: '',
                 path: '',
                 paymentSuccess: false,
@@ -288,7 +290,11 @@
 
             // 创建支付订单
             createPaymentOrderEvent (data) {
+                this.loadingShow = true;
+                this.overlayShow = true;
                 createPaymentOrder(data).then((res) => {
+                    this.loadingShow = false;
+                    this.overlayShow = false;
                     if (res && res.data.code == 0) {
                         this.changeIsPaying(true);
                         // 跳转到支付页面
@@ -302,6 +308,8 @@
                     }
                 })
                 .catch((err) => {
+                    this.loadingShow = false;
+                    this.overlayShow = false;
                     this.$dialog.alert({
                         message: `${err.message}`,
                         closeOnPopstate: true

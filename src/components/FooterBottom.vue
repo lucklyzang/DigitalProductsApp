@@ -55,6 +55,7 @@ export default {
 .tabBar-box {
   /deep/ .van-tabbar {
     background: @color-background;
+    z-index: 10000;
     .van-tabbar-item {
       background: @color-background;
       .van-tabbar-item__text {

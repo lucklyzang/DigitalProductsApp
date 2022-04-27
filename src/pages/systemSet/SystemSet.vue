@@ -431,7 +431,7 @@
         }
         .choose-photo {
           height: 60px;
-          margin-bottom: 2px;
+          margin-bottom: 1px;
           line-height: 60px;
           position: relative;
           border-top-left-radius: 6px;
@@ -464,7 +464,7 @@
           display: inline-block;
           height: 60px;
           overflow: hidden;
-          margin-bottom: 5px;
+          margin-bottom: 4px;
           color: #FFFFFF;
           text-decoration: none;
           text-indent: 0;

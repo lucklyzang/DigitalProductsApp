@@ -2,7 +2,7 @@
   <div class="page-box">
     <NavBar :leftArrow="false" />
     <div class="content">
-      <van-sticky :offset-top="46">
+      <van-sticky :offset-top="47">
         <div class="tab-switch">
           <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
             :class="{'active-tab-style': index === currentTabIndex }"
@@ -344,6 +344,7 @@
             background: @color-background;
             /deep/ .van-sticky {
                 z-index: 200;
+                margin-top: -2px;
                 .tab-switch {
                     background: @color-background;
                     width: 100%;
@@ -401,7 +402,7 @@
                         box-sizing: border-box;
                         .sell-info-area {
                             position: absolute;
-                            top: 10px;
+                            top: 20px;
                             left: 4%;
                             width: 92%;
                             display: flex;
@@ -445,7 +446,7 @@
                         }
                         ;
                         .image-area {
-                            max-width: 80%;
+                            width: 100%;
                             margin: 0 auto;
                             img {
                                 width: 100%;
@@ -531,6 +532,8 @@
                                     align-items: center;
                                     img {
                                         width: 20px;
+                                        height: 20px;
+                                        border-radius: 50%;
                                         vertical-align: top;
                                     }
                                     ;
