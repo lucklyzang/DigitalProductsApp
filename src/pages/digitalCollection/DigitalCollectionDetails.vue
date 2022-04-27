@@ -219,6 +219,7 @@
             },
 
 			toWorkRoomEvent() {
+                return;
                 this.$router.push({path: 'workRoom'})
             },
 

@@ -17,7 +17,7 @@
 				<span>实名认证</span>
 			</div>
 			<div class="right">
-        <van-icon name="passed" size="18" v-show="userInfo.realFlag == 1"/>
+        <van-icon name="passed" size="18" color="#39ef39" v-show="userInfo.realFlag == 1"/>
         <span>{{userInfo.realFlag == 1 ? '已认证' : '去认证'}}</span>
         <img :src="arrowRightPng" alt="">
 			</div>
@@ -172,7 +172,7 @@
                     span {
                        font-size: 14px;
                        color: #514a60;
-                       margin-right: 10px;
+                       margin: 0 10px;
                     };
                     img {
                       width: 8px

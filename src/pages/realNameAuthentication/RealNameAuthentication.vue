@@ -57,7 +57,7 @@
         this.gotoURL(() => {
           pushHistory();
 					this.$router.push({
-						path: '/accountSecurity'
+						path: this.path
 					})
         })
       }
@@ -161,7 +161,7 @@
             if (res && res.data.code == 0) {
               this.storeUserInfo(res.data.data);
               this.$router.push({
-                path: `${path}`
+                path: `${this.path}`
               })
             } else {
               this.$dialog.alert({

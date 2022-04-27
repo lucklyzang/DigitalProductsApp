@@ -26,7 +26,7 @@
 				</van-checkbox>
 			</div>
 		</div>
-		<div class="content-bottom">
+		<!-- <div class="content-bottom">
 			<div>
 				<span>
 					微信登录
@@ -35,7 +35,7 @@
 			<div @click="weixinAuthEvent">
 				<img :src="weixinPng">
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 

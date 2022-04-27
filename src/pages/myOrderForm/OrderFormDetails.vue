@@ -154,8 +154,12 @@
 				background: @color-block;
 				.img-show {
 					width: 70px;
+					height: 70px;
+					border-radius: 100%;
                     img {
                         width: 100%;
+						height: 100%;
+						border-radius: 100%;
                     }
 				};
 				.span-show {

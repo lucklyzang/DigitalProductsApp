@@ -266,6 +266,8 @@
                         align-items: center;
                         .person-picture {
                             width: 70px;
+                            height: 70px;
+                            border-radius: 50%;
                             img {
                                 width: 100%;
                                 height: 100%;

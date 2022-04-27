@@ -344,8 +344,8 @@
             background: @color-background;
             /deep/ .van-sticky {
                 z-index: 200;
-                margin-top: -2px;
                 .tab-switch {
+                    margin-top: -2px;
                     background: @color-background;
                     width: 100%;
                     text-align: center;
