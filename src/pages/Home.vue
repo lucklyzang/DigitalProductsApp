@@ -374,6 +374,7 @@
                 .tab-switch {
                     background: @color-background;
                     width: 100%;
+                    margin: 4px 0;
                     text-align: left;
                     span {
                         display: inline-block;
