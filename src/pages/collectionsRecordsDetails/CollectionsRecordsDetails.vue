@@ -270,13 +270,14 @@
                     }
                 };
                 .hash-value {
+                    width: 100%;
                     span {
                          &:last-child {
                             width: 60%;
                             .no-wrap();
                             height: 30px;
                             line-height: 30px;
-                            font-size: 4px;
+                            font-size: 10px;
                             text-align: center;
                             padding: 0 10px;
                             box-align: border-box;

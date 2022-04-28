@@ -72,6 +72,10 @@
                     </p>
                 </div>
             </div>
+            <div class="blockchain-server">
+                <img :src="blockchainServePng" alt="">
+                <span>提供技术支持</span>
+            </div>
         </div>
         <div class="content-bottom" @click="purchaseEvent">
 			<div>
@@ -108,7 +112,8 @@
                 digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
                 sharePng: require("@/common/images/login/my-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
-                detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png")
+                detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png"),
+                blockchainServePng: require("@/common/images/home/blockchain-service.png")
 			}
 		},
 
@@ -507,6 +512,20 @@
                         text-align: justify
                     }
                 }	
+            };
+            .blockchain-server {
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img {
+                    width: 100px
+                };
+                span {
+                    margin-left: 8px;
+                    font-size: 8px;
+                    color: #c2c2c2
+                }
             }
         };
 		.content-bottom {

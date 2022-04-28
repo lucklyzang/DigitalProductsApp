@@ -32,6 +32,8 @@ const CollectionDetails = () =>
     import ('@/pages/digitalCollection/DigitalCollectionDetails')
 const OrderFormDetails = () =>
     import ('@/pages/myOrderForm/OrderFormDetails')
+const BlockchainAddress = () =>
+    import ('@/pages/blockchainAddress/BlockchainAddress')
 const SystemMessage = () =>
     import ('@/pages/systemMessage/SystemMessage')
 const OrderFormToPaid = () =>
@@ -129,6 +131,11 @@ let baseRoute = [{
         path: '/orderFormDetails',
         name: 'orderFormDetails',
         component: OrderFormDetails
+    },
+    {
+        path: '/blockchainAddress',
+        name: 'blockchainAddress',
+        component: BlockchainAddress
     },
     {
         path: '/orderFormToPaid',

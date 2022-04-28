@@ -1,6 +1,19 @@
 <template>
   <div class="page-box">
-    <NavBar :leftArrow="false" />
+    <van-nav-bar :border="false"
+        :placeholder="true"
+        :fixed="true"
+        z-index="1000"
+        :safe-area-inset-top="true"
+        @click-left="onClickLeft"
+    >
+        <template #left>
+            <p>
+                <img :src="blockchainPng" alt="">
+                <span>区块链地址</span>
+            </p>
+        </template>
+    </van-nav-bar>
     <div class="content-box">
       <div class="content-top">
         <div class="person-message-box">
@@ -113,6 +126,7 @@
                 }],
                 defaultPersonPng: require("@/common/images/home/default-person.jpg"),
                 notLoginPng: require("@/common/images/login/not-login.png"),
+                blockchainPng: require("@/common/images/home/blockchain.png"),
                 blockchainServePng: require("@/common/images/home/blockchain-service.png")
             }
         },
@@ -209,6 +223,17 @@
                 }
             },
 
+            //区块链点击事件
+            onClickLeft () {
+                 if (!this.isLogin) {
+                    this.$router.push({
+                        path: '/login'
+                    });
+                    return
+                };
+                this.$router.push({path: '/blockchainAddress'})
+            },
+
             // 下部区域功能事件
             featureSetEvent(item) {
                 if (!this.isLogin) {
@@ -252,11 +277,31 @@
     @import "../common/stylus/modifyUi.less";
     .page-box {
         .content-wrapper();
-        /deep/ .tabBar-box {
-            .van-nav-bar__placeholder {
-                height: 15px !important;
-                .van-nav-bar__content {
-                    height: 15px !important
+        /deep/ .van-nav-bar {
+            background: @color-background;
+            .van-icon-arrow-left {
+                color: #fff !important;
+                font-size: 24px !important
+            };
+            .van-nav-bar__left {
+                p {
+                    padding: 1px 8px;
+                    background: rgba(0, 0, 0, 0.54);
+                    border-radius: 20px;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    box-sizing: border-box;
+                    justify-content: center;
+                    align-items: center;
+                    img {
+                        width: 15px;
+                        height: 15px;
+                        margin-right: 4px
+                    };
+                    span {
+                        color: #bd68ff;
+                        font-size: 10px
+                    }
                 }
             }
         };
@@ -410,7 +455,7 @@
                 justify-content: center;
                 align-items: center;
                 img {
-                    width: 150px
+                    width: 100px
                 };
                 span {
                     margin-left: 8px;
