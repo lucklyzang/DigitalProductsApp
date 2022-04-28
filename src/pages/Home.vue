@@ -418,8 +418,6 @@
                         position: relative;
                         margin-bottom: 20px;
                         background: #100726;
-                        padding-top: 10px;
-                        box-sizing: border-box;
                         .sell-info-area {
                             position: absolute;
                             top: 20px;
