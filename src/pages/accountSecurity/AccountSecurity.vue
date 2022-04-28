@@ -1,6 +1,11 @@
 <template>
   <div class="page-box">
     <NavBar title="账号与安全" path="myInfo" />
+    <!-- 是否注销确认框 -->
+    <van-dialog v-model="isShowLogout" :show-cancel-button="true"  :close-on-popstate="false" title="确定注销?"
+      @confirm="logoutSureEvent" 
+      @cancel="logoutCancelEvent"
+    />
     <div class="content-box">
       <div class="content-top">
       	<div class="nick-name">
@@ -23,7 +28,7 @@
 			</div>
 		</div>
       </div>
-      <div class="content-bottom" @click="cancellationEvent">
+      <div class="content-bottom" @click="isShowLogout = true">
         <span>账号注销</span>
       </div>
     </div>
@@ -34,7 +39,7 @@
   import NoData from '@/components/NoData'
   import Loading from '@/components/Loading'
   import {inquareUserInfo} from '@/api/products.js'
-  import {cancellatio} from '@/api/login.js'
+  import {cancellatio,logout} from '@/api/login.js'
   import { mapGetters, mapMutations } from 'vuex'
   import {IsPC} from '@/common/js/utils'
   export default {
@@ -46,9 +51,8 @@
     },
     data() {
       return {
-        noDataShow: false,
-        showLoadingHint: false,
-        versionNumber: '1.8',
+        loadingShow: false,
+        isShowLogout: false,
         defaultPersonPng: require("@/common/images/home/default-person.jpg"),
         arrowRightPng: require("@/common/images/login/arrow-right.png")
       }
@@ -86,22 +90,30 @@
 
     methods:{
       ...mapMutations([
-        'storeUserInfo'
+        'storeUserInfo',
+        'changeIsLogin'
       ]),
 
-      juddgeIspc () {
-        return IsPC()
+      // 弹框确定注销
+      logoutSureEvent () {
+        this.isShowPaySuccess = false;
+        this.cancellationEvent()
+      },
+
+      //  弹框取消注销
+      logoutCancelEvent () {
+        this.isShowPaySuccess = false
       },
 
       //账号注销事件
       cancellationEvent () {
         cancellatio().then((res) => {
           if (res && res.data.code == 0) {
-            this.queryuserInfo();
             this.$toast({
               message: '账号注销成功',
               position: 'bottom'
-            })
+            });
+            this.logoutEvent();
           } else {
             this.$dialog.alert({
               message: `${res.data.msg}`,
@@ -119,7 +131,37 @@
         })
       },
 
-       // 查询用户信息
+       //退出登录事件
+      logoutEvent () {
+        this.loadingShow = true;
+        logout().then((res) => {
+          this.loadingShow = false;
+          if (res && res.data.code == 0) {
+              this.queryuserInfo();
+              this.changeIsLogin(false);
+              // 清空store和localStorage
+              this.$store.commit('resetFabricState');
+              this.$store.commit('resetLoginState');
+              window.localStorage.clear()
+            } else {
+                this.$dialog.alert({
+                message: `${res.data.msg}`,
+                closeOnPopstate: true
+                }).then(() => {
+                })
+            }
+        })
+        .catch((err) => {
+            this.loadingShow = false;
+                this.$dialog.alert({
+                message: `${err.message}`,
+                closeOnPopstate: true
+                }).then(() => {
+            })
+        })
+      },
+
+      // 查询用户信息
       queryuserInfo() {
           inquareUserInfo().then((res) => {
             if (res && res.data.code == 0) {

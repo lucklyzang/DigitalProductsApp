@@ -183,6 +183,9 @@
         inquareUserInfo().then((res) => {
           if (res && res.data.code == 0) {
             this.storeUserInfo(res.data.data);
+             this.$router.push({
+                path: '/myInfo'
+              })
           } else {
             this.$dialog.alert({
               message: `${res.data.msg}`,
@@ -216,9 +219,6 @@
                 message: '退出登录成功',
                 position: 'bottom'
               });
-               this.$router.push({
-                path: '/home'
-              })
             } else {
                 this.$dialog.alert({
                 message: `${res.data.msg}`,

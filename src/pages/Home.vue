@@ -5,7 +5,7 @@
     <div class="rare-object">
         <img :src="homeBannerPng" alt="">
     </div>
-      <van-sticky :offset-top="14">
+      <van-sticky :offset-top="12">
         <div class="tab-switch">
           <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
             :class="{'active-tab-style': index === currentTabIndex }"
@@ -27,6 +27,10 @@
                 <span>即将开售</span>
                 <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
               </div>
+              <div class="left" v-show="!item.isShowCountDown && item.status == 1">
+                <van-icon name="underway" size="14" color="#bd68ff" />
+                <span>火爆抢购中</span>
+              </div>
               <div class="center" v-show="!item.isShowCountDown && item.status == 2">
                 <van-icon name="bookmark" size="14" color="#fff" />
                 <span>已售罄</span>
@@ -43,9 +47,9 @@
               <div class="left">
                 <div class="name">
                   <span>{{item.digitalCollectionName}}</span>
-                  <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
+                  <!-- <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
                     <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
-                  </p>
+                  </p> -->
                 </div>
                 <div class="number">
                   <span>限量</span>
@@ -483,7 +487,7 @@
                         }
                         ;
                         .message-area {
-                            padding: 16px 0;
+                            padding: 12px 0;
                             width: 92%;
                             margin: 0 auto;
                             display: flex;
@@ -533,7 +537,7 @@
                                     font-size: 0;
                                     margin: 10px 0;
                                     span {
-                                        font-size: 14px;
+                                        font-size: 13px;
                                         display: inline-block;
                                         height: 20px;
                                         line-height: 20px;
@@ -583,7 +587,7 @@
                                 align-items: flex-end;
                                 width: 30%;
                                 span {
-                                    font-size: 17px;
+                                    font-size: 20px;
                                     color: #FFFFFF;
                                     &:first-child {
                                         margin-right: 4px

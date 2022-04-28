@@ -29,9 +29,9 @@
                         </span>
                     </div>
                     <div class="number">
-                        <div class="left" v-show="productsDetails.tags && !productsDetails.tags.some((tagItem) => {return tagItem == null}) && productsDetails.tags.length>0">
+                        <!-- <div class="left" v-show="productsDetails.tags && !productsDetails.tags.some((tagItem) => {return tagItem == null}) && productsDetails.tags.length>0">
                             <span v-for="(item,index) in productsDetails.tags" :key="index">{{!item ? '' : item}}</span>
-                        </div>
+                        </div> -->
                         <div class="right">
                             <span>限量</span>
                             <span>{{productsDetails.quantity}} 份</span>
@@ -78,7 +78,7 @@
 				<span>¥ {{productsDetails.price}}</span>
 			</div>
 			<div :class="{'sellStyle': !isCountDownShow}">
-				<span>{{isCountDownShow ? '即将开售' : '购 买'}}</span>
+				<span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购买' : '已售罄'}}</span>
 				<van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime)- new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
 			</div>
 		</div>
@@ -143,31 +143,35 @@
 
             // 查询作品详情
             queryProductDetails () {
-                this.loadingShow = true;
-                inquareProductDetails(this.productsId).then((res) => {
-                    this.loadingShow = false;
-                    if (res && res.data.code == 0) {
-                        this.productsDetails = res.data.data;
-                    } else {
-                    this.$dialog.alert({
-                        message: `${res.data.msg}`,
-                        closeOnPopstate: true
-                    }).then(() => {
-                    });
-                    }
-                })
-                .catch((err) => {
-                    this.loadingShow = false;
-                    this.$dialog.alert({
-                        message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
+                return new Promise((resolve,rejrect) => {
+                    this.loadingShow = true;
+                    inquareProductDetails(this.productsId).then((res) => {
+                        this.loadingShow = false;
+                        if (res && res.data.code == 0) {
+                            this.productsDetails = res.data.data;
+                            resolve();
+                            console.log('作品详情',this.productsDetails);
+                        } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        });
+                        }
                     })
-                })
+                    .catch((err) => {
+                        this.loadingShow = false;
+                        this.$dialog.alert({
+                            message: `${err.message}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    })
+                })    
             },
 
             // 购买商品
-            purchaseEvent () {
+            async purchaseEvent () {
                 // 未登录
                 if (!this.isLogin) {
                     this.$router.push({
@@ -185,6 +189,18 @@
                 if (this.isCountDownShow) {
                     return
                 };
+                if (this.productsDetails.status == 0 || this.productsDetails.status == 2) {
+                    return
+                };
+                await this.queryProductDetails();
+                if (this.productsDetails.status == 0 || this.productsDetails.status == 2) {
+                    return
+                };
+                this.buyCommodity()
+            },
+
+            // 购买商品
+            buyCommodity () {
                 this.loadingShow = true;
                 this.overlayShow = true; 
                 purchaseCommodity(this.productsId).then((res) => {
@@ -332,7 +348,7 @@
                             }
                         }
                         .right {
-                            width: 50%;
+                            width: 100%;
                             height: 40px;
                             line-height: 40px;
                             font-size: 0;

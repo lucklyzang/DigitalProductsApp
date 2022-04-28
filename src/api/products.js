@@ -143,3 +143,11 @@ export function queryObjectRecord(data) {
     params: data
   })
 };
+
+// 查询藏品记录详情
+export function queryObjectRecordDetails(id) {
+  return request({
+    url: `app/record/${id}`,
+    method: 'get'
+  })
+};

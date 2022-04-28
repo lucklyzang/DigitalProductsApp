@@ -5,19 +5,18 @@
         <van-empty :description="descriptionContent" v-show="emptyShow" />
 		<div class="content-center" v-show="!emptyShow">
 			<div class="all-order">
-				<div class="order-list" v-for="(item,index) in orderList" :key="index">
+				<div class="order-list" v-for="(item,index) in orderList" :key="index" @click="recordsDetailsEvent(item,index)">
 					<div class="left">
 						<div class="img-show">
 							<img :src="item.collectionUrl">
 						</div>
 						<div class="span-show">
 							<span>{{item.collectionName}}</span>
-                            <p v-show="item.collectionTagsList && !item.collectionTagsList.some((tagItem) => {return tagItem == null}) && item.collectionTagsList.length>0">
-                             <span 
-							 	v-for="(innerItem,innerIndex) in item.collectionTagsList" :key="innerIndex">{{innerItem}}
-							 </span>
+                            <p>
+								<img :src="blockchainPng" alt="">
+								<span>{{item.chain ? item.chain : ''}}</span>
                             </p>
-							<span>{{item.collectionPrice}}</span>
+							<span>{{item.publisher}}</span>
 						</div>
 					</div>
 				</div>
@@ -48,7 +47,8 @@
                 orderList: [],
 				currentTabIndex: 0,
 				animationData: [],
-                defaultPersonPng :require("@/common/images/home/default-person.jpg")
+				blockchainPng: require("@/common/images/home/blockchain.png"),
+                defaultPersonPng: require("@/common/images/home/default-person.jpg")
 			}
 		},
 		onReady() {},
@@ -72,7 +72,9 @@
 		},
 		methods: {
 			...mapMutations([
+				'changeCollectionId'
 			]),
+
 			// 查询藏品记录
 			queryCollectionRecords () {
 				this.loadingShow = true;
@@ -91,7 +93,9 @@
 									collectionPrice: item.price,
 									collectionTagsList: item.tags,
 									id: item.id,
-        							comId: item.comId
+        							comId: item.comId,
+									chain: item.chain,
+									publisher: item.publisher
                                 })
                             }
                         }
@@ -111,6 +115,14 @@
 						closeOnPopstate: true
 					}).then(() => {
 					})
+				})
+			},
+			
+			// 跳转藏品记录详情
+			recordsDetailsEvent (item) {
+				this.changeCollectionId(item.id);
+				this.$router.push({
+					path: '/collectionRecordDetails'
 				})
 			}
 		}
@@ -179,29 +191,33 @@
 									overflow: hidden;
 									text-overflow: ellipsis;
 									white-space: nowrap;
-									height: 30px
 								};
 								&:nth-child(3) {
-									font-size: 16px;
-									color: #FFFFFF
+									font-size: 14px;
+									color: #686866
 								};
 							};
                             p {
-                                overflow: auto;
 								margin: 6px 0;
 								height: 30px;
+								display: flex;
+								flex-flow: row nowrap;
+								align-items: center;
+								img {
+									width: 20px
+								};
                                 span {
                                     display: inline-block;
-                                    padding: 0 8px;
-                                    height: 18px;
+									max-width: 200px;
+                                    padding: 0 20px 0 10px;
+                                    height: 22px;
                                     border: 1px solid #bd6aff;
                                     font-size: 10px;
                                     border-radius: 10px;
                                     box-sizing: border-box;
-                                    text-align: center;
-                                    line-height: 18px;
+                                    line-height: 22px;
                                     color: #bd68ff;
-                                    margin-right: 4px
+									.no-wrap()
                                 }
                             }
 						}

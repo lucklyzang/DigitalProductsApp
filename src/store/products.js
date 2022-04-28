@@ -17,6 +17,11 @@ export default {
         isPaying: (state)  => {
             state.isPaying = getStore('isPaying') ? getStore('isPaying') === 'false' ? false : true : false
             return state.isPaying
+        },
+
+        collectionId: (state)  => {
+            state.collectionId = getStore('collectionId') ? getStore('collectionId') : ''
+            return state.collectionId
         }
     },
 
@@ -37,10 +42,16 @@ export default {
             }
         },
 
-         // 保存支付状态
-         changeIsPaying(state, playLoad) {
+        // 保存支付状态
+        changeIsPaying(state, playLoad) {
             setStore('isPaying', playLoad);
             state.isPaying = playLoad
+        },
+
+        // 保存藏品id状态
+        changeCollectionId(state, playLoad) {
+            setStore('collectionId', playLoad);
+            state.collectionId = playLoad
         },
 
         //重置产品的store

@@ -43,6 +43,10 @@
 			</div>
 		</div>
       </div>
+      <div class="blockchain-server">
+          <img :src="blockchainServePng" alt="">
+          <span>提供技术支持</span>
+      </div>
     </div>
     <FooterBottom></FooterBottom>  
   </div>
@@ -108,7 +112,8 @@
                     span: '分享'
                 }],
                 defaultPersonPng: require("@/common/images/home/default-person.jpg"),
-                notLoginPng: require("@/common/images/login/not-login.png")
+                notLoginPng: require("@/common/images/login/not-login.png"),
+                blockchainServePng: require("@/common/images/home/blockchain-service.png")
             }
         },
 
@@ -397,6 +402,20 @@
                             }
                         }
                     }
+                }
+            };
+            .blockchain-server {
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img {
+                    width: 150px
+                };
+                span {
+                    margin-left: 8px;
+                    font-size: 8px;
+                    color: #c2c2c2
                 }
             }
         }

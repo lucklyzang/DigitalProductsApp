@@ -20,6 +20,8 @@ const VerificationCode = () =>
     import ('@/pages/verification/VerificationCode')
 const CollectionRecords = () =>
     import ('@/pages/collectionsRecords/CollectionRecords')
+const CollectionRecordsDetails = () =>
+    import ('@/pages/collectionsRecordsDetails/CollectionsRecordsDetails')
 const SystemSet = () =>
     import ('@/pages/systemSet/SystemSet')
 const WorkRoom = () =>
@@ -97,6 +99,11 @@ let baseRoute = [{
         path: '/collectionRecords',
         name: 'collectionRecords',
         component: CollectionRecords
+    },
+    {
+        path: '/collectionRecordDetails',
+        name: 'collectionRecordDetails',
+        component: CollectionRecordsDetails
     },
     {
         path: '/systemSet',

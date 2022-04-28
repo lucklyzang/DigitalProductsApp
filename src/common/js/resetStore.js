@@ -10,6 +10,7 @@ export function getDefaultLoginState() {
 export function getDefaultProductsState() {
     return {
         productsId: '', //作品id
+        collectionId: '', //藏品id
         orderId: '', //订单id
         isPaying: false //是否支付中
     }
