@@ -42,12 +42,12 @@
                 </div>  
             </div>
         </div>
-        <div class="content-bottom">
+        <div class="content-bottom" v-show="false">
             <div>
                 <van-icon name="award" />
                 <span>炫耀</span>
             </div>
-            <div>
+            <div  @click="donationFriendEvent">
                 <van-icon name="printer" />
                 <span>转增</span>
             </div>
@@ -112,6 +112,7 @@
 
 		methods: {
 			...mapMutations([
+                'changeDonationProductDetails'
 			]),
 
             // 查询藏品详情
@@ -121,6 +122,7 @@
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
                         this.collectionRecordDetails = res.data.data;
+                        this.changeDonationProductDetails(res.data.data)
                     } else {
                         this.$dialog.alert({
                             message: `${res.data.msg}`,
@@ -137,6 +139,13 @@
                     }).then(() => {
                     })
                 })
+            },
+
+            // 转增好友藏品
+            donationFriendEvent () {
+                 this.$router.push({
+                    path: '/donationFriend'
+                })
             }
 		}
 	}
@@ -148,6 +157,7 @@
     @import "~@/common/stylus/modifyUi.less";
 	.page-box {
 		.content-wrapper();
+        background: @color-background;
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
@@ -162,7 +172,6 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: @color-background;
             padding-bottom: 80px;
             box-sizing: border-box;
             .content-top {
@@ -203,25 +212,29 @@
                         .no-wrap()
                     };
                     .number {
-                        width: 60%;
+                        width: 50%;
                         font-size: 14px;
                         margin-top: 16px;
                         display: flex;
-                        height: 40px;
+                        padding: 0 20px 0 0;
+                        box-sizing: border-box;
+                        height: 22px;
+                        border: 1px solid #bd6aff;
+                        border-top-right-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                        border-top-left-radius: 5px;
+						border-bottom-left-radius: 5px;
+                        display: flex;
                         flex-flow: row nowrap;
                         align-items: center;
-                        justify-content: center;
                         img {
-                            width: 20px
+                            width: 20px;
+                            margin-right: 2px;
                         };
                         span {
                             display: inline-block;
                             max-width: 200px;
-                            padding: 0 20px 0 10px;
-                            height: 22px;
-                            border: 1px solid #bd6aff;
                             font-size: 10px;
-                            border-radius: 10px;
                             box-sizing: border-box;
                             line-height: 22px;
                             color: #bd68ff;
@@ -308,6 +321,7 @@
                 display: flex;
 			    flex-flow: row nowrap;
                 justify-content: center;
+                font-size: 13px;
                 align-items: center;
                 >span {
                     margin-left: 4px

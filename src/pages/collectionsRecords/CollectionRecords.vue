@@ -185,6 +185,7 @@
 							margin-left: 14px;
 							>span {
 								display: inline-block;
+								.no-wrap();
 								&:nth-child(1) {
 									font-size: 16px;
 									color: #FFFFFF;
@@ -200,20 +201,29 @@
                             p {
 								margin: 6px 0;
 								height: 30px;
+								width: 70%;
+								display: flex;
+								flex-flow: row nowrap;
+								align-items: center;
+								padding: 0 20px 0 0;
+								box-sizing: border-box;
+								height: 22px;
+								border: 1px solid #bd6aff;
+								border-top-right-radius: 10px;
+								border-bottom-right-radius: 10px;
+								border-top-left-radius: 5px;
+								border-bottom-left-radius: 5px;
 								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;
 								img {
-									width: 20px
+									width: 20px;
+									margin-right: 2px;
 								};
                                 span {
                                     display: inline-block;
 									max-width: 200px;
-                                    padding: 0 20px 0 10px;
-                                    height: 22px;
-                                    border: 1px solid #bd6aff;
                                     font-size: 10px;
-                                    border-radius: 10px;
                                     box-sizing: border-box;
                                     line-height: 22px;
                                     color: #bd68ff;

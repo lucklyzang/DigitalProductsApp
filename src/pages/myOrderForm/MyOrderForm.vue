@@ -28,11 +28,12 @@
                             <p>
                              {{item.pubName}}
                             </p>
-							<span>{{item.collectionPrice}}</span>
+							<span>¥ {{item.collectionPrice}}</span>
 						</div>
 					</div>
 					<div class="right">
 						<div>
+							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
 							<span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
 						<div v-show="item.collectionStatus == '0'">
@@ -57,11 +58,12 @@
                             <p>
                               {{item.pubName}}
                             </p>
-							<span>{{item.collectionPrice}}</span>
+							<span>¥ {{item.collectionPrice}}</span>
 						</div>
 					</div>
 					<div class="right">
 						<div>
+							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
 							<span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
 						<div v-show="item.collectionStatus == '0'">
@@ -86,11 +88,12 @@
                             <p>
                               {{item.pubName}}
                             </p>
-							<span>{{item.collectionPrice}}</span>
+							<span>¥ {{item.collectionPrice}}</span>
 						</div>
 					</div>
 					<div class="right">
 						<div>
+							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
                            <span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
 						<div v-show="item.collectionStatus == '0'">
@@ -115,11 +118,12 @@
                             <p>
                               {{item.pubName}}
                             </p>
-							<span>{{item.collectionPrice}}</span>
+							<span>¥ {{item.collectionPrice}}</span>
 						</div>
 					</div>
 					<div class="right">
 						<div>
+							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
                             <span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
 						<div v-show="item.collectionStatus == '0'">
@@ -290,7 +294,7 @@
 					this.$router.push({name: 'orderFormDetails',params: {id:item.orderId}})
 				} else {
 					this.changeIsPaying(false);
-					this.$router.push({path: 'orderFormToPaid',params: {id:item.orderId}})
+					this.$router.push({path: 'orderFormDetails',params: {id:item.orderId}})
 				}
 			}
 		}
@@ -365,8 +369,8 @@
 					display: flex;
 					flex-flow: row nowrap;
 					justify-content: space-between;
-                    align-items: center;
-					padding: 0 10px;
+					align-items: center;
+					padding: 0 10px 0 0;
 					border-radius: 10px;
 					background: @color-block;
                     margin-bottom: 10px;
@@ -377,13 +381,13 @@
                         align-items: center;
 						flex: 1;
 						.img-show {
-							width: 70px;
-							height: 70px;
-							border-radius: 50%;
+							width: 100px;
+							height: 100px;
 							img {
 								width: 100%;
 								height: 100%;
-								border-radius: 50%
+								border-top-left-radius: 10px;
+								border-bottom-left-radius: 10px;
 							}
 						};
 						.span-show {
@@ -397,7 +401,7 @@
 							>span {
 								&:nth-child(1) {
 									.no-wrap();
-									font-size: 16px;
+									font-size: 18px;
 									color: #FFFFFF
 								};
 								&:nth-child(3) {
@@ -407,7 +411,7 @@
 							};
                             p {
                                 .no-wrap();
-								font-size: 10px;
+								font-size: 14px;
 								color: #8c8c8c;
                             }
 						}
@@ -420,24 +424,25 @@
 						justify-content: space-between;
 						>div {
 							&:nth-child(1) {
+								display: flex;
+								flex-flow: row nowrap;
+								align-items: center;
 								span {
 									display: inline-block;
-									margin-left: 4px;
-									font-size: 12px;
+									margin-left: 2px;
+									font-size: 15px;
 									color: #fff;
 									width: 50px;
 									height: 20px;
 									text-align: center;
 									line-height: 20px;
-									background-image: linear-gradient(to right, #f2c45f , #e3921a);
-									border-top-right-radius: 10px;
-									border-bottom-right-radius: 10px;
+									color: #e3921a;
 								};
 								.spanPaiedStyle {
-									background-image: linear-gradient(to right, #00d3fe , #0091fd)
+									color: #0091fd
 								};
 								.spanCancelStyle {
-									background-image: linear-gradient(to right, #b1b1b1 , #686868)
+									color: #686868
 								}
 							};
 							&:nth-child(2) {
@@ -448,7 +453,7 @@
 								line-height: 30px;
 								font-size: 14px;
 								border-radius: 18px;
-								background: linear-gradient(to right, #e6c980, #f7c241);
+								background-image: linear-gradient(to right, #fcbe43 ,#f7c241);
 							};
 						}
 					}

@@ -11,7 +11,7 @@
             @click-right="onClickRight"
         >
             <template #right>
-                <img :src="sharePng" alt="">
+                <!-- <img :src="sharePng" alt=""> -->
             </template>
         </van-nav-bar>
         <div class="content">
@@ -29,12 +29,13 @@
                         </span>
                     </div>
                     <div class="number">
-                        <!-- <div class="left" v-show="productsDetails.tags && !productsDetails.tags.some((tagItem) => {return tagItem == null}) && productsDetails.tags.length>0">
-                            <span v-for="(item,index) in productsDetails.tags" :key="index">{{!item ? '' : item}}</span>
-                        </div> -->
-                        <div class="right">
+                        <div class="left">
                             <span>限量</span>
                             <span>{{productsDetails.quantity}} 份</span>
+                        </div>
+                        <div class="right">
+                            <span>剩余</span>
+                            <span>{{productsDetails.surplus}} 份</span>
                         </div>
                     </div>
                     <img :src="detailsTitleWrappper" alt="">
@@ -43,16 +44,16 @@
             <div class="content-middle">
                 <div class="framer" @click="toWorkRoomEvent">
                     <div>
-                        <img :src="productsDetails.path">
+                        <img :src="productsDetails.avatar">
                     </div>
                     <div>
                         <span>{{productsDetails.creator}}</span>
                         <span>{{productsDetails.publisher}}</span>
                     </div>
                 </div>
-                <div class="focus-box">
+                <!-- <div class="focus-box">
                     <span>关注</span>
-                </div>
+                </div> -->
             </div>
             <div class="collection-story-box">
                 <div class="img-box">
@@ -81,7 +82,7 @@
 			<div>
 				<span>¥ {{productsDetails.price}}</span>
 			</div>
-			<div :class="{'sellStyle': !isCountDownShow}">
+			<div :class="{'sellStyle': !isCountDownShow}" v-show="isShowContent">
 				<span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购买' : '已售罄'}}</span>
 				<van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime)- new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
 			</div>
@@ -105,6 +106,7 @@
 
 		data() {
 			return {
+                isShowContent: false,
                 loadingShow: false,
                 overlayShow: false,
                 productsDetails: {},
@@ -154,6 +156,7 @@
                         this.loadingShow = false;
                         if (res && res.data.code == 0) {
                             this.productsDetails = res.data.data;
+                            this.isShowContent = true;
                             resolve();
                             console.log('作品详情',this.productsDetails);
                         } else {
@@ -259,6 +262,7 @@
     @import "~@/common/stylus/modifyUi.less";
 	.page-box {
 		.content-wrapper();
+        background: @color-background;
         /deep/ .van-nav-bar {
             background: @color-background;
             .van-icon-arrow-left {
@@ -276,7 +280,6 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: @color-background;
             padding-bottom: 80px;
             box-sizing: border-box;
             .content-top {
@@ -328,40 +331,13 @@
                         .left {
                             width: 50%;
                             height: 40px;
-                            overflow: auto;
-                            margin-right: 12px;
-                            display: flex;
-                            flex-flow: row wrap;
-                            align-items: center;
-                            justify-content: center;
-                            z-index: 1000;
-                            span {
-                                display: inline-block;
-                                padding: 0 6px;
-                                height: 20px;
-                                border: 1px solid #bd6aff;
-                                font-size: 10px;
-                                border-radius: 10px;
-                                text-align: center;
-                                line-height: 20px;
-                                margin-right: 4px;
-                                margin-bottom: 4px;
-                                color: #bd68ff;
-                                &:nth-child(even) {
-                                    margin-right: 0
-                                }
-                            }
-                        }
-                        .right {
-                            width: 100%;
-                            height: 40px;
                             line-height: 40px;
                             font-size: 0;
                             display: flex;
                             flex-flow: row nowrap;
                             align-items: center;
                             justify-content: center;
-                            span {
+                            >span {
                                 font-size: 14px;
                                 display: inline-block;
                                 height: 20px;
@@ -369,6 +345,36 @@
                                 &:first-child {
                                     background: #febd42;
                                     color: black;
+                                    padding: 1px 4px 1px 4px;
+                                    border-top-left-radius: 2px;
+                                    border-bottom-left-radius: 2px;
+                                };
+                                &:last-child {
+                                    background: #3e3a51;
+                                    color: #ffbc41;
+                                    padding: 1px 4px 1px 4px;
+                                    border-top-right-radius: 2px;
+                                    border-bottom-right-radius: 2px
+                                }
+                            }
+                        }
+                        .right {
+                            width: 50%;
+                            height: 40px;
+                            line-height: 40px;
+                            font-size: 0;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            align-items: center;
+                            justify-content: center;
+                            >span {
+                                font-size: 14px;
+                                display: inline-block;
+                                height: 20px;
+                                line-height: 20px;
+                                &:first-child {
+                                    background: #343434;
+                                    color: #6d6d6d;
                                     padding: 1px 4px 1px 4px;
                                     border-top-left-radius: 2px;
                                     border-bottom-left-radius: 2px;

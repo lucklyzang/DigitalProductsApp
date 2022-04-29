@@ -20,8 +20,8 @@
           <div class="message-left">
             <div class="person-picture" @click="toEditPersonPage">
               <img :src="notLoginPng" v-show="!isLogin" alt="">
-			  <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl')" alt="">
-			  <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl')" alt="">
+			  <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl') || isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && !userInfo.avatarUrl" alt="">
+			  <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && userInfo.avatarUrl" alt="">
             </div>
             <div class="person-name">
 				<div class="top">
@@ -30,7 +30,7 @@
 				</div>
 				<div class="bottom">
 					<span v-show="!isLogin">登录后可以查看更多数字藏品</span>
-					<span v-show="userInfo && !userInfo.signTxt && isLogin">TA很神秘,什么都没有留下,TA很神秘,什么都没有留下</span>
+					<span v-show="userInfo && !userInfo.signTxt && isLogin">TA很神秘,什么都没有留下</span>
         			<span v-show="userInfo && userInfo.signTxt && isLogin">{{userInfo && userInfo.signTxt}}</span>
 				</div>
             </div>
@@ -114,7 +114,7 @@
                 }, {
                     iconLeft: require("@/common/images/login/my-service.png"),
                     iconRight: require("@/common/images/login/arrow-right.png"),
-                    span: '我的客服'
+                    span: '客服'
                 }, {
                     iconLeft: require("@/common/images/login/about.png"),
                     iconRight: require("@/common/images/login/arrow-right.png"),
@@ -246,6 +246,10 @@
                     this.$router.push({
                         path: 'accountSecurity'
                     })
+                } else if (item.span === '关于') {
+                     this.$router.push({
+                        path: 'aboutUs'
+                    })
                 }
             },
 
@@ -277,6 +281,7 @@
     @import "../common/stylus/modifyUi.less";
     .page-box {
         .content-wrapper();
+        background: @color-background;
         /deep/ .van-nav-bar {
             background: @color-background;
             .van-icon-arrow-left {
@@ -286,7 +291,7 @@
             .van-nav-bar__left {
                 p {
                     padding: 1px 8px;
-                    background: rgba(0, 0, 0, 0.54);
+                    background: rgba(81, 81, 81, 0.54);
                     border-radius: 20px;
                     display: flex;
                     flex-flow: row nowrap;
@@ -310,8 +315,6 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            margin-top: -1px;
-            background: @color-background;
             .content-top {
                 height: auto;
                 font-size: 14px;

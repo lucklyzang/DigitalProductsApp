@@ -5,7 +5,7 @@
     <div class="rare-object">
         <img :src="homeBannerPng" alt="">
     </div>
-      <van-sticky :offset-top="12">
+      <van-sticky :offset-top="10">
         <div class="tab-switch">
           <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
             :class="{'active-tab-style': index === currentTabIndex }"
@@ -75,8 +75,8 @@
               <span>近期发售计划</span>
             </div>
             <div class="right">
-              <span>已订阅</span>
-              <span>分 享</span>
+              <!-- <span>已订阅</span>
+              <span>分 享</span> -->
             </div>
           </div>
           <div class="sell-content-list" v-for="(item,index) in digitalCollectionCalendarList" :key="index">
@@ -234,7 +234,7 @@
                                         digitalCollectioShare: item.quantity,
                                         digitalCollectioAuthor: item.publisher,
                                         creator: item.creator,
-                                        digitalCollectioAuthorPhoto: item.path,
+                                        digitalCollectioAuthorPhoto: item.avatar,
                                         digitalCollectioPrice: item.price,
                                         tagAttributes: item.tags,
                                         id: item.id,
@@ -348,6 +348,7 @@
     @import "../common/stylus/modifyUi.less";
     .page-box {
         .content-wrapper();
+        background: @color-background;
         /deep/ .tabBar-box {
             .van-nav-bar__placeholder {
                 height: 15px !important;
@@ -361,8 +362,6 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            background: @color-background;
-            margin-top: -1px;
             .rare-object {
                 width: 92%;
                 margin: 0 auto;
@@ -420,7 +419,8 @@
                         background: #100726;
                         .sell-info-area {
                             position: absolute;
-                            top: 20px;
+                            top: 10px;
+                            font-size: 12px;
                             left: 4%;
                             width: 92%;
                             display: flex;
@@ -432,7 +432,7 @@
                                 background: rgba(0, 0, 0, .54);
                                 color: #bd68ff;
                                 border-radius: 16px;
-                                padding: 3px 10px;
+                                padding: 5px 10px;
                                 box-sizing: border-box;
                                 display: flex;
                                 flex-flow: row nowrap;
@@ -446,11 +446,12 @@
                                 ;
                                 /deep/ .van-count-down {
                                     color: #bd68ff;
-                                    font-size: 12px
+                                    font-size: 12px;
+                                    line-height: 0 !important
                                 }
                             };
                             .center {
-                                background:#656565;
+                                background:rgba(0, 0, 0, 0.54);
                                 border-radius: 14px;
                                 padding: 6px 10px;
                                 box-sizing: border-box;
@@ -757,6 +758,7 @@
                 text-align: center;
                 padding: 0 10px;
                 line-height: 50px;
+                font-size: 10px;
                 display: flex;
                 flex-flow: row nowrap;
                 justify-content: space-between;

@@ -167,7 +167,8 @@
 		},
 		methods: {
 			...mapMutations([
-                'changeIsPaying'
+                'changeIsPaying',
+                'changeOrderId'
 			]),
 
             // 查询订单详情
@@ -206,9 +207,8 @@
                             message: '订单取消成功',
                             position: 'bottom'
                         });
-                        this.$router.push({
-                            path: this.path
-                        })
+                        this.changeOrderId(this.orderId);
+                        this.$router.push({name: 'orderFormDetails'})
                     } else {
                         this.$dialog.alert({
                             message: `${res.data.msg}`,
@@ -238,7 +238,9 @@
                             position: 'bottom'
                         });
                         this.paymentSuccess = true;
-                        this.changeIsPaying(false)
+                        this.changeIsPaying(false);
+                        this.changeOrderId(this.orderId);
+                        this.$router.push({name: 'orderFormDetails'})
                     } else {
                         this.$dialog.alert({
                             message: `${res.data.msg}`,

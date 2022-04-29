@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import router from './router'
 import store from './store'
+import VueClipboard from 'vue-clipboard2'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import moment from 'moment'
@@ -34,7 +35,8 @@ import App from './App'
 let options = {
     fullscreenEl: false
 };
-
+// vue剪切板功能
+Vue.use(VueClipboard);
 Vue.use(Vant);
 Vue.config.productionTip = false;
 if (IsPC()) {

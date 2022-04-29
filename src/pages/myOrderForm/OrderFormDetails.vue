@@ -1,9 +1,25 @@
 <template>
 	<div class="content-box">
 		<NavBar path="/myOrderForm" title="订单详情"/>
+		<van-loading type="spinner" v-show="loadingShow"/>
+		<!-- 是否取消订单询问框 -->
+        <van-dialog v-model="isShowOrderCancel" title="确定取消订单?" 
+            confirm-button-color="#ffbd40"
+            cancel-button-color="#b7b7b7"
+            confirm-button-text="再想想"
+            :close-on-popstate="false"
+            cancel-button-text="取消订单"
+            @confirm="cancelCancelOrderEvent"
+            @cancel="cancelOrderSureEvent"
+            show-cancel-button>
+        </van-dialog>
 		<div class="content-top">
-            <img :src="orderFormDetails.status == 1 ? accountPaidPng : canceledPng " alt="">
-			<span>{{orderFormDetails.status == 1 ? '已支付' : '已取消'}}</span>
+			<van-icon name="underway" size="80" color="#e3921a" v-show="orderFormDetails.status == 0" />
+            <img :src="orderFormDetails.status == 1 ? accountPaidPng : canceledPng " alt="" v-show="orderFormDetails.status != 0">
+			<span>{{orderFormDetails.status == 1 ? '已支付' : orderFormDetails.status == 0 ? '待支付' : '已取消'}}</span>
+			<p>
+				<van-count-down v-show="orderFormDetails.status == 0" :time="`${(new Date(orderFormDetails.createTime).getTime() + orderFormDetails.expire*60*1000) - new Date().getTime()}`" format="支付剩余时间 mm : ss "/>
+			</p>
 		</div>
 		<div class="content-center">
 			<div class="top">
@@ -30,7 +46,15 @@
 					<span>创建时间</span>
 					<span>{{orderFormDetails.createTime}}</span>
 				</div>
+				<div>
+					<span>订单编号</span>
+					<span>{{orderFormDetails.orderNo}}</span>
+				</div>
 			</div>
+		</div>
+		<div class="content-bottom" v-show="orderFormDetails.status == 0">
+			<span @click="cancelOrderEvent">取消订单</span>
+			<span @click="toPaymentEvent">去付款</span>
 		</div>
 		<van-loading type="spinner" v-show="loadingShow"/>
 	</div>
@@ -42,7 +66,7 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
-	import {queryOrderDetails} from '@/api/products.js'
+	import {queryOrderDetails,cancelOrder,createPaymentOrder,queryPaymentResult} from '@/api/products.js'
 	export default {
 		components: {
             NavBar
@@ -50,6 +74,7 @@
 		data() {
 			return {
 				loadingShow: false,
+				isShowOrderCancel: false,
 				orderFormDetails: {},
 				accountPaidPng: require("@/common/images/home/account-paid.png"),
 				canceledPng: require("@/common/images/home/canceled.png")
@@ -76,14 +101,72 @@
 		},
 		methods: {
 			...mapMutations([
+				'changeIsPaying',
+				'changeOrderId'
 			]),
+
 			// 查询订单详情
             inquareOrderDetails(id) {
                 this.loadingShow = true;
                 queryOrderDetails(id).then((res) => {
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
-                       this.orderFormDetails = res.data.data
+                       this.orderFormDetails = res.data.data;
+					   this.orderFormDetails.createTime = this.orderFormDetails.createTime.replace(/-/g,"/");
+                    } else {
+                        this.$dialog.alert({
+                            message: `${res.data.msg}`,
+                            closeOnPopstate: true
+                        }).then(() => {
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.$dialog.alert({
+                        message: `${err.message}`,
+                        closeOnPopstate: true
+                    }).then(() => {
+                    })
+                })
+            },
+
+			// 取消订单事件
+			cancelOrderEvent () {
+				this.isShowOrderCancel = true
+			},
+
+			// 去付款事件
+			toPaymentEvent () {
+				this.changeOrderId(this.orderFormDetails.orderId);
+				this.changeIsPaying(false);
+				this.$router.push({path: '/orderFormToPaid'})
+			},
+
+			//取消订单取消事件
+            cancelCancelOrderEvent () {
+                this.isShowOrderCancel = false
+            },
+
+            //取消订单确定事件
+            cancelOrderSureEvent () {
+                this.isShowOrderCancel = false;
+                this.cancellationOfOrder() 
+            },
+
+			// 取消订单
+            cancellationOfOrder() {
+                this.loadingShow = true;
+                cancelOrder(this.orderFormDetails.orderId).then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                       this.$toast({
+                            message: '订单取消成功',
+                            position: 'bottom'
+                        });
+                        this.$router.push({
+                            path: '/myOrderForm'
+                        })
                     } else {
                         this.$dialog.alert({
                             message: `${res.data.msg}`,
@@ -125,18 +208,27 @@
 		.content-top {
 			height: 200px;
 			display: flex;
+			margin-top: 30px;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			img {
 				width: 100px
 			};
-			span {
-				&:nth-child(2) {
-					font-size: 17px;
+			>span {
+				&:nth-child(3) {
+					font-size: 22px;
 					color: #FFFFFF;
-					margin-top: 20px;
+					margin: 20px 0;
 				};
+			};
+			p {
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: center;
+				/deep/ .count-down {
+					color: #858585 !important
+				}
 			}
 		};
 		.content-center {
@@ -153,13 +245,13 @@
 				border-radius: 10px;
 				background: @color-block;
 				.img-show {
-					width: 70px;
-					height: 70px;
-					border-radius: 100%;
+					width: 100px;
+					height: 100px;
                     img {
                         width: 100%;
 						height: 100%;
-						border-radius: 100%;
+						border-top-left-radius: 10px;
+						border-bottom-left-radius: 10px;
                     }
 				};
 				.span-show {
@@ -172,12 +264,12 @@
 					width: 0;
 					> span {
 						.no-wrap();
-						font-size: 17px;
+						font-size: 18px;
 						color: #FFFFFF
 					};
                     p {
                         .no-wrap();
-						font-size: 12px;
+						font-size: 14px;
 						color: #686868;
                     }
 				}
@@ -188,7 +280,6 @@
 				margin-top: 30px;
                 padding: 0 10px;
 				border-radius: 10px;
-				background: @color-block;
                 box-sizing: border-box;
 				>div {
 					display: flex;
@@ -199,9 +290,36 @@
 					line-height: 30px;
                     >span {
                         &:first-child {
-                            color: #686868
                         }
                     }
+				}
+			}
+		};
+		.content-bottom {
+			width: 94%;
+			margin: 0 auto;
+			margin-top: 40px;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: center;
+			>span {
+				display: inline-block;
+				width: 140px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				font-size: 18px;
+				border-radius: 30px;
+				&:first-child {
+					margin-right: 14px;
+					background: #333;
+					color: #fff;
+				};
+				&:last-child {
+					margin-right: 10px;
+					background: #333;
+					color: #fff;
+					background: #e3921a;
 				}
 			}
 		}

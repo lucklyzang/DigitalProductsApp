@@ -9,7 +9,11 @@
         <div class="content-center">
             {{userInfo.account}}
         </div>
-        <div class="content-bottom">
+        <div class="content-bottom" 
+            v-clipboard:copy="userInfo.account" 
+            v-clipboard:success="onCopySuccess" 
+            v-clipboard:error="onCopyError"
+        >
             复制地址
         </div>
 	</div>
@@ -51,7 +55,13 @@
 		},
 		methods: {
 			...mapMutations([
-			])
+			]),
+            onCopySuccess(){
+                this.$toast("复制成功");
+            },
+            onCopyError(){
+                this.$toast("复制失败");
+            }
 		}
 	}
 </script>

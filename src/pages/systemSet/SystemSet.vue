@@ -48,7 +48,7 @@
           </div>
           <div class="photo-graph">
             <van-icon name="photograph" />
-            <input name="uploadImg2" id="demo2"  @change="previewFileTwo" type="file" accept="image/*" capture="camera"/>拍照
+            <input name="uploadImg2" id="demo2"  @change="previewFileTwo" type="file" accept="image/camera" capture="camera"/>拍照
           </div>
           <div class="photo-cancel" @click="photoCancel">取消</div>
         </div>
@@ -429,7 +429,7 @@
           width: 100%;
           text-align: center;
           font-size: 16px;
-          background: #2d2f2e
+          background: #121212
         }
         .choose-photo {
           height: 60px;

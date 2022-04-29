@@ -22,6 +22,11 @@ export default {
         collectionId: (state)  => {
             state.collectionId = getStore('collectionId') ? getStore('collectionId') : ''
             return state.collectionId
+        },
+
+        donationProductDetails: (state)  => {
+            state.donationProductDetails = getStore('donationProductDetails') ? JSON.parse(getStore('donationProductDetails')) : null
+            return state.donationProductDetails
         }
     },
 
@@ -52,6 +57,12 @@ export default {
         changeCollectionId(state, playLoad) {
             setStore('collectionId', playLoad);
             state.collectionId = playLoad
+        },
+
+        // 保存赠送产品的信息
+        changeDonationProductDetails(state, playLoad) {
+            setStore('donationProductDetails', playLoad);
+            state.donationProductDetails = playLoad
         },
 
         //重置产品的store

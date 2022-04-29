@@ -26,6 +26,8 @@ const SystemSet = () =>
     import ('@/pages/systemSet/SystemSet')
 const WorkRoom = () =>
     import ('@/pages/workRoom/WorkRoom')
+const AboutUs = () =>
+    import ('@/pages/aboutUs/AboutUs')    
 const MyOrderForm = () =>
     import ('@/pages/myOrderForm/MyOrderForm')
 const CollectionDetails = () =>
@@ -36,6 +38,8 @@ const BlockchainAddress = () =>
     import ('@/pages/blockchainAddress/BlockchainAddress')
 const SystemMessage = () =>
     import ('@/pages/systemMessage/SystemMessage')
+const DonationFriend = () =>
+    import ('@/pages/donationFriend/DonationFriend')
 const OrderFormToPaid = () =>
     import ('@/pages/myOrderForm/OrderFormToPaid')
 const IndividualitySignature = () =>
@@ -103,6 +107,11 @@ let baseRoute = [{
         component: CollectionRecords
     },
     {
+        path: '/donationFriend',
+        name: 'donationFriend',
+        component: DonationFriend
+    },
+    {
         path: '/collectionRecordDetails',
         name: 'collectionRecordDetails',
         component: CollectionRecordsDetails
@@ -146,6 +155,11 @@ let baseRoute = [{
         path: '/workRoom',
         name: 'WorkRoom',
         component: WorkRoom
+    },
+    {
+        path: '/aboutUs',
+        name: 'aboutUs',
+        component: AboutUs
     }
 ];
 let router = new Router({

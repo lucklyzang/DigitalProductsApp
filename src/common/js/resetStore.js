@@ -12,6 +12,7 @@ export function getDefaultProductsState() {
         productsId: '', //作品id
         collectionId: '', //藏品id
         orderId: '', //订单id
-        isPaying: false //是否支付中
+        isPaying: false, //是否支付中
+        donationProductDetails: null //赠送商品详情
     }
 };

@@ -31,4 +31,8 @@
   },false)
 </script>
 <style lang="less" scoped>
+@import "~@/common/stylus/reset.less";
+#app {
+  font-size: 0
+}
 </style>
