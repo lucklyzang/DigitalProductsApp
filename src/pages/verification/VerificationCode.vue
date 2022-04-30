@@ -5,7 +5,7 @@
 			<span>请输入验证码</span>
 			<span>已发送到手机号 {{phoneNumber}}</span>
 			<span v-show="showCountDownTime">
-				<van-count-down :time="time" format="ss" @finish="countDownEnd" />
+				<van-count-down :time="countdownTime - new Date().getTime()" format="ss" @finish="countDownEnd" />
 				<span>s后重新发送</span>
 			</span>
 		</div>
@@ -47,7 +47,6 @@
 		},
 		data() {
 			return {
-				time: 60000,
 				codeOne: '',
 				codeTwo: '',
 				codeThree: '',
@@ -61,6 +60,7 @@
 		onReady() {},
 		computed: {
 			...mapGetters([
+				'countdownTime'
 			])
 		},
 		mounted() {

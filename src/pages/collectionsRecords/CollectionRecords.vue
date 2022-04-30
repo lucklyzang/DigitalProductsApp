@@ -13,8 +13,12 @@
 						<div class="span-show">
 							<span>{{item.collectionName}}</span>
                             <p>
-								<img :src="blockchainPng" alt="">
-								<span>{{item.chain ? item.chain : ''}}</span>
+								<span class="blockchain-img">
+									<img :src="blockchainPng" alt="">
+								</span>
+								<span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
+								<!-- <img :src="blockchainPng" alt="">
+								<span>{{item.chain ? item.chain : ''}}</span> -->
                             </p>
 							<span>{{item.publisher}}</span>
 						</div>
@@ -200,35 +204,36 @@
 							};
                             p {
 								margin: 6px 0;
-								height: 30px;
-								width: 70%;
+								height: 25px;
+								width: 90%;
 								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;
-								padding: 0 20px 0 0;
-								box-sizing: border-box;
-								height: 22px;
-								border: 1px solid #bd6aff;
-								border-top-right-radius: 10px;
-								border-bottom-right-radius: 10px;
-								border-top-left-radius: 5px;
-								border-bottom-left-radius: 5px;
 								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;
-								img {
-									width: 20px;
-									margin-right: 2px;
+								.blockchain-img {
+									width: 25px;
+									img {
+										width: 100%;
+										margin-right: 2px
+									}
 								};
-                                span {
-                                    display: inline-block;
-									max-width: 200px;
-                                    font-size: 10px;
-                                    box-sizing: border-box;
-                                    line-height: 22px;
-                                    color: #bd68ff;
+								.blockchain-chain {
+									display: inline-block;
+									padding: 0 16px 0 6px;
+									border-top-right-radius: 10px;
+									border-bottom-right-radius: 10px;
+									border-top-left-radius: 8px;
+									border-bottom-left-radius: 8px;
+									margin-left: -2px;
+									font-size: 10px;
+									box-sizing: border-box;
+									line-height: 22px;
+									background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
+									color: black;
 									.no-wrap()
-                                }
+								}
                             }
 						}
 					}

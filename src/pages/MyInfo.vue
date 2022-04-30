@@ -462,7 +462,7 @@
                 };
                 span {
                     margin-left: 8px;
-                    font-size: 8px;
+                    font-size: 10px;
                     color: #c2c2c2
                 }
             }

@@ -13,6 +13,8 @@ export function getDefaultProductsState() {
         collectionId: '', //藏品id
         orderId: '', //订单id
         isPaying: false, //是否支付中
-        donationProductDetails: null //赠送商品详情
+        donationProductDetails: null, //赠送商品详情
+        isCanSendPhoneCode: true, //是否能发送验证码
+        countdownTime: 0 //过期时间
     }
 };

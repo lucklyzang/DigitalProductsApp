@@ -17,8 +17,10 @@
                         </span>
                     </div>
                     <div class="number">
-                        <img :src="blockchainPng" alt="">
-                        <span>{{collectionRecordDetails.chain}}</span>
+                        <span class="blockchain-img">
+                            <img :src="blockchainPng" alt="">
+                        </span>
+                        <span class="blockchain-chain">{{collectionRecordDetails.chain}}</span>
                     </div>
                     <img :src="detailsTitleWrappper" alt="">
                 </div>
@@ -178,7 +180,7 @@
                 padding-top: 10px;
                 box-sizing: border-box;
                 .collection-exhibition {
-                    max-width: 80%;
+                    width: 80%;
                     margin: 0 auto;
                     position: relative;
                     img {
@@ -186,25 +188,25 @@
                     }
                 };
                 .booth {
-                    max-width: 80%;
+                    width: 80%;
                     margin: 0 auto;
                     margin-top: 20px;
-                    height: 50px;
                     img {
                         width: 100%
                     }
                 };
                 .synopsis {
-                    width: 100%;
+                    width: 80%;
                     display: flex;
                     height: 80px;
-                    margin-top: 30px;
+                    margin: 0 auto;
+                    margin-top: 20px;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
                     position: relative;
                     .title {
-                        width: 60%;
+                        width: 80%;
                         font-size: 24px;
                         color: #FFFFFF;
                         text-align: center;
@@ -212,41 +214,47 @@
                         .no-wrap()
                     };
                     .number {
-                        width: 50%;
+                        width: 80%;
                         font-size: 14px;
                         margin-top: 16px;
                         display: flex;
-                        padding: 0 20px 0 0;
                         box-sizing: border-box;
-                        height: 22px;
-                        border: 1px solid #bd6aff;
-                        border-top-right-radius: 10px;
-                        border-bottom-right-radius: 10px;
-                        border-top-left-radius: 5px;
-						border-bottom-left-radius: 5px;
+                        height: 25px;
                         display: flex;
                         flex-flow: row nowrap;
                         align-items: center;
-                        img {
-                            width: 20px;
-                            margin-right: 2px;
+                        justify-content: center;
+                        position: relative;
+                        display: flex;
+                        flex-flow: row nowrap;
+                        .blockchain-img {
+                           width: 25px;
+                            img {
+                                width: 100%;
+                                margin-right: 2px
+                            }
                         };
-                        span {
+                        .blockchain-chain {
                             display: inline-block;
-                            max-width: 200px;
+                            padding: 0 16px 0 6px;
+                            border-top-right-radius: 10px;
+                            border-bottom-right-radius: 10px;
+                            border-top-left-radius: 8px;
+                            border-bottom-left-radius: 8px;
+                            margin-left: -2px;
                             font-size: 10px;
                             box-sizing: border-box;
                             line-height: 22px;
-                            color: #bd68ff;
+                            background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
+                            color: black;
                             .no-wrap()
                         }
                     };
                     >img {
                         position: absolute;
                         top: 0;
-                        left: 10%;
-                        max-width: 80%;
-                        height: 80px
+                        left: 0%;
+                        width: 100%
                     }
                 }
 		    };

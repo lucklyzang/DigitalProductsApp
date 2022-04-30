@@ -14,14 +14,24 @@ export default {
             return state.orderId
         },
 
-        isPaying: (state)  => {
+        isPaying: (state)  => { 
             state.isPaying = getStore('isPaying') ? getStore('isPaying') === 'false' ? false : true : false
             return state.isPaying
+        },
+
+        isCanSendPhoneCode: (state)  => {
+            state.isCanSendPhoneCode = getStore('isCanSendPhoneCode') ? getStore('isCanSendPhoneCode') === 'false' ? false : true : true
+            return state.isCanSendPhoneCode
         },
 
         collectionId: (state)  => {
             state.collectionId = getStore('collectionId') ? getStore('collectionId') : ''
             return state.collectionId
+        },
+
+        countdownTime: (state)  => {
+            state.countdownTime = getStore('countdownTime') ? getStore('countdownTime') : 0
+            return state.countdownTime
         },
 
         donationProductDetails: (state)  => {
@@ -65,7 +75,19 @@ export default {
             state.donationProductDetails = playLoad
         },
 
-        //重置产品的store
+        // 保存是否可以发送手机验证码的状态
+        changeIsCanSendPhoneCode(state, playLoad) {
+            setStore('isCanSendPhoneCode', playLoad);
+            state.isCanSendPhoneCode = playLoad
+        },
+
+        // 存储倒计时过期时间
+        changeCountdownTime(state, playLoad) {
+            setStore('countdownTime', playLoad);
+            state.countdownTime = playLoad
+        },
+
+        //重置产品的storeisCanSendPhoneCode
         resetProductsState(state) {
             Object.assign(state, getDefaultProductsState())
         }

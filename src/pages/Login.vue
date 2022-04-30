@@ -9,8 +9,11 @@
 			<div class="phone-number">
 				<van-field class="uni-input" v-model="phoneNumber" @input="inputEvent" type="tel" placeholder="请输入手机号码" />
 			</div>
-			<div class="send-auth-box" @click="loginToIndex" :class="{'sendAuthBoxStyle': !checked || !phoneNumberUsable}">
+			<div class="send-auth-box" @click="loginToIndex" :class="{'sendAuthBoxStyle': !checked || !phoneNumberUsable || !isCanSendPhoneCode}">
 				<span>发送短信验证码</span>
+			</div>
+			<div class="countDown-box" v-show="!isCanSendPhoneCode">
+				<van-count-down :time="countdownTime - new Date().getTime()" format=" ss秒后重新发送" @finish="countDownEnd" />
 			</div>
 			<div class="tip-info">
 				<van-checkbox v-model="checked">
@@ -76,6 +79,8 @@ export default {
 
   computed: {
     ...mapGetters([
+		'isCanSendPhoneCode',
+		'countdownTime'
     ])
   },
 
@@ -86,13 +91,14 @@ export default {
     },
 
   mounted () {
+	  console.log(this.isCanSendPhoneCode);
     // 控制设备物理返回按键
     if (!IsPC()) {
       let that = this;
       pushHistory()
       that.gotoURL(() => {
         pushHistory();
-        this.$router.push({path: '/'});  //输入要返回的上一级路由地址
+        this.$router.push({path: '/home'})
       });
     };
     // 监控键盘弹起
@@ -111,9 +117,9 @@ export default {
 
   methods: {
     ...mapMutations([
-      'storeUserInfo',
-      'changeTitleTxt',
-      'changeOverDueWay'
+		'storeUserInfo',
+		'changeIsCanSendPhoneCode',
+		'changeCountdownTime'
     ]),
     // 输入框值改变事件
     inputEvent (value) {
@@ -136,13 +142,21 @@ export default {
 			}	  
 		}
     },
+
+	// 倒计时结束事件
+	countDownEnd () {
+		this.changeIsCanSendPhoneCode(true);
+		this.changeCountdownTime(0)
+		
+	},
+
 	//微信登录
 	weixinAuthEvent () {
 		this.$router.push({path:'/weixinLogin'})
 	},
     // 验证码
     loginToIndex () {
-		if (!this.checked || !this.phoneNumberUsable) {
+		if (!this.checked || !this.phoneNumberUsable || !this.isCanSendPhoneCode) {
 			return
 		};
 		this.sendCode()
@@ -152,6 +166,8 @@ export default {
 	sendCode () {
 		sendPhoneAuthCode(this.phoneNumber).then((res) => {
 			if (res && res.data.code == 0) {
+				this.changeIsCanSendPhoneCode(false);
+				this.changeCountdownTime(new Date().getTime()+60000);
 				this.$router.push({name:'verificationCode',params: {phoneNumber: this.phoneNumber}})
             } else {
               this.$dialog.alert({
@@ -228,13 +244,24 @@ export default {
 				border-radius: 30px;
 				font-size: 18px;
 				background: #ffbd40;
-				margin: 30px 0;
+				margin: 30px 0 10px 0;
 				text-align: center;
 				line-height: 50px;
 				color: #1e1d1c;
 			};
 			.sendAuthBoxStyle {
 				background: #7e7e7e
+			};
+			.countDown-box {
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: center;
+				align-items: center;
+				margin-bottom: 10px;
+				/deep/ .van-count-down {
+					color: #404040;
+					font-size: 12px
+				}
 			};
 			.tip-info {
 				font-size: 12px;

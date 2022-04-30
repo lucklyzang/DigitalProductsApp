@@ -286,7 +286,7 @@
                 padding-top: 10px;
                 box-sizing: border-box;
                 .collection-exhibition {
-                    max-width: 80%;
+                    width: 80%;
                     margin: 0 auto;
                     position: relative;
                     img {
@@ -294,19 +294,18 @@
                     }
                 };
                 .booth {
-                    max-width: 80%;
+                    width: 80%;
                     margin: 0 auto;
                     margin-top: 20px;
-                    height: 50px;
                     img {
                         width: 100%
                     }
                 };
                 .synopsis {
-                    width: 100%;
+                    width: 80%;
                     display: flex;
-                    height: 80px;
-                    margin-top: 30px;
+                    margin: 0 auto;
+                    margin-top: 20px;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
@@ -320,7 +319,7 @@
                         .no-wrap()
                     };
                     .number {
-                        width: 60%;
+                        width: 80%;
                         font-size: 14px;
                         margin-top: 16px;
                         display: flex;
@@ -329,11 +328,11 @@
                         justify-content: center;
                         align-items: center;
                         .left {
-                            width: 50%;
                             height: 40px;
                             line-height: 40px;
                             font-size: 0;
                             display: flex;
+                            margin-right: 10px;
                             flex-flow: row nowrap;
                             align-items: center;
                             justify-content: center;
@@ -359,7 +358,6 @@
                             }
                         }
                         .right {
-                            width: 50%;
                             height: 40px;
                             line-height: 40px;
                             font-size: 0;
@@ -392,9 +390,8 @@
                     img {
                         position: absolute;
                         top: 0;
-                        left: 10%;
-                        max-width: 80%;
-                        height: 80px
+                        left: 0;
+                        width: 100%
                     }
                 }
 		    };
@@ -529,7 +526,7 @@
                 };
                 span {
                     margin-left: 8px;
-                    font-size: 8px;
+                    font-size: 10px;
                     color: #c2c2c2
                 }
             }
