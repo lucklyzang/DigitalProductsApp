@@ -479,6 +479,7 @@
                             width: 100%;
                             margin: 0 auto;
                             img {
+                                pointer-events: none;
                                 width: 100%;
                                 border-radius: 10px;
                             }
@@ -678,6 +679,7 @@
                                             border-radius: 12px;
                                             margin-right: 12px;
                                             img {
+                                                pointer-events: none;
                                                 width: 100%;
                                                 border-radius: 12px;
                                             }

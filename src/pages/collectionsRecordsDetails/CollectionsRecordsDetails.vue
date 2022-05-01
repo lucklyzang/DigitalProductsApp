@@ -186,6 +186,7 @@
                     margin: 0 auto;
                     position: relative;
                     img {
+                        pointer-events: none;
                         width: 100%
                     }
                 };

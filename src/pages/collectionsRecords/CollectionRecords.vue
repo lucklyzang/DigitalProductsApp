@@ -176,6 +176,7 @@
 						.img-show {
 							width: 70px;
 							img {
+								pointer-events: none;
 								width: 100%;
 							}
 						};

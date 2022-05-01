@@ -182,6 +182,10 @@
 
             // 购买商品
             async purchaseEvent () {
+                //未开售和已售罄
+                if (this.productsDetails.status == 0 || this.productsDetails.status == 2) {
+                    return
+                };
                 // 未登录
                 if (!this.isLogin) {
                     this.$router.push({
@@ -292,6 +296,7 @@
                     margin: 0 auto;
                     position: relative;
                     img {
+                        pointer-events: none;
                         width: 100%
                     }
                 };
@@ -410,6 +415,7 @@
                     margin: 0 auto;
                     font-size: 0;
                     img {
+                        pointer-events: none;
                         width: 100%;
                         margin-top: -1px
                     }

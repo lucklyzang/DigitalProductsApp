@@ -248,6 +248,7 @@
 					width: 100px;
 					height: 100px;
                     img {
+						pointer-events: none;
                         width: 100%;
 						height: 100%;
 						border-top-left-radius: 10px;
