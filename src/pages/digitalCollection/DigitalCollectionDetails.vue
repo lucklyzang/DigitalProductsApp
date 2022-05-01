@@ -1,6 +1,6 @@
 <template>
 	<div class="page-box">
-        <van-loading type="spinner" v-show="loadingShow"/>
+        <!-- <van-loading type="spinner" v-show="loadingShow"/> -->
         <van-overlay :show="overlayShow" />
         <van-nav-bar left-arrow :border="false"
             :placeholder="true"
@@ -17,7 +17,8 @@
         <div class="content">
             <div class="content-top">
                 <div class="collection-exhibition">
-                    <img :src="productsDetails.imgPath">
+                    <img :src="imgLoadingGif" v-show="loadingShow">
+                    <img :src="productsDetails.imgPath" v-show="!loadingShow">
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -56,8 +57,8 @@
                 </div> -->
             </div>
             <div class="collection-story-box">
-                <div class="img-box">
-                    <img :src="item" v-for="(item) in productsDetails.describe" :key="item">
+                <div class="img-box" v-lazy-container="{ selector: 'img' }">
+                    <img :data-src="item" v-for="(item) in productsDetails.describe" :key="item">
                 </div>
                 <div class="publisher-title">
                     <span>发行方 : {{productsDetails.publisher}}</span>
@@ -111,6 +112,7 @@
                 overlayShow: false,
                 productsDetails: {},
                 isCountDownShow: true,
+                imgLoadingGif: require("../../../static/img/img-loading.gif"),
                 digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
                 sharePng: require("@/common/images/login/my-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),

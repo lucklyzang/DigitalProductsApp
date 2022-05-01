@@ -23,7 +23,7 @@
 		</div>
 		<div class="content-center">
 			<div class="top">
-				<div class="img-show">
+				<div class="img-show" >
 					<img :src="orderFormDetails.imgPath">
 				</div>
 				<div class="span-show">

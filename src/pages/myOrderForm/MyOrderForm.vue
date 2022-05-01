@@ -20,8 +20,8 @@
 			<div class="all-order" v-show="currentTabIndex === 0">
 				<div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
 					<div class="left">
-						<div class="img-show">
-							<img :src="item.collectionUrl">
+						<div class="img-show" v-lazy-container="{ selector: 'img' }">
+							<img :data-src="item.collectionUrl">
 						</div>
 						<div class="span-show">
 							<span>{{item.collectionName}}</span>
@@ -50,8 +50,8 @@
             <div class="all-order to-pay" v-show="currentTabIndex === 1">
                 <div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
 					<div class="left">
-						<div class="img-show">
-							<img :src="item.collectionUrl">
+						<div class="img-show" v-lazy-container="{ selector: 'img' }">
+							<img :data-src="item.collectionUrl">
 						</div>
 						<div class="span-show">
 							<span>{{item.collectionName}}</span>
@@ -80,8 +80,8 @@
             <div class="all-order to-pay" v-show="currentTabIndex === 2">
                 <div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
 					<div class="left">
-						<div class="img-show">
-							<img :src="item.collectionUrl">
+						<div class="img-show" v-lazy-container="{ selector: 'img' }">
+							<img :data-src="item.collectionUrl">
 						</div>
 						<div class="span-show">
 							<span>{{item.collectionName}}</span>
@@ -110,8 +110,8 @@
             <div class="all-order to-pay" v-show="currentTabIndex === 3">
                 <div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
 					<div class="left">
-						<div class="img-show">
-							<img :src="item.collectionUrl">
+						<div class="img-show" v-lazy-container="{ selector: 'img' }">
+							<img :data-src="item.collectionUrl">
 						</div>
 						<div class="span-show">
 							<span>{{item.collectionName}}</span>

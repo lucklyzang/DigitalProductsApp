@@ -1,11 +1,12 @@
 <template>
 	<div class="page-box">
         <NavBar path="/collectionRecords" title="藏品详情"/>
-        <van-loading type="spinner" v-show="loadingShow"/>
+        <!-- <van-loading type="spinner" v-show="loadingShow"/> -->
         <div class="content">
             <div class="content-top">
                 <div class="collection-exhibition">
-                    <img :src="collectionRecordDetails.path">
+                    <img :src="imgLoadingGif" v-show="loadingShow">
+                    <img :src="collectionRecordDetails.path" v-show="!loadingShow">
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -82,6 +83,7 @@
                 loadingShow: false,
                 collectionRecordDetails: {},
                 isCountDownShow: true,
+                imgLoadingGif: require("../../../static/img/img-loading.gif"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),
                 sharePng: require("@/common/images/login/my-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
@@ -124,7 +126,7 @@
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
                         this.collectionRecordDetails = res.data.data;
-                        this.changeDonationProductDetails(res.data.data)
+                        this.changeDonationProductDetails(res.data.data);
                     } else {
                         this.$dialog.alert({
                             message: `${res.data.msg}`,

@@ -7,8 +7,8 @@
 			<div class="all-order">
 				<div class="order-list" v-for="(item,index) in orderList" :key="index" @click="recordsDetailsEvent(item,index)">
 					<div class="left">
-						<div class="img-show">
-							<img :src="item.collectionUrl">
+						<div class="img-show" v-lazy-container="{ selector: 'img' }">
+							<img :data-src="item.collectionUrl">
 						</div>
 						<div class="span-show">
 							<span>{{item.collectionName}}</span>

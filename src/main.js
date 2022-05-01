@@ -5,14 +5,13 @@ import VueClipboard from 'vue-clipboard2'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import moment from 'moment'
-import { setStore, getStore, IsPC } from '@/common/js/utils.js'
-import echarts, { init } from 'echarts'
+import {  IsPC } from '@/common/js/utils.js'
 if (process.env.NODE_ENV == 'development') {
     Vue.config.devtools = true;
 } else {
     Vue.config.devtools = false;
 };
-Vue.prototype.$echarts = echarts
+import { Lazyload } from 'vant';
 Vue.prototype.Base64 = require('js-base64').Base64;
 // 全局挂载时间格式化方法
 Vue.filter('dateformat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
@@ -38,6 +37,13 @@ let options = {
 // vue剪切板功能
 Vue.use(VueClipboard);
 Vue.use(Vant);
+// 图片懒加载
+Vue.use(Lazyload, {
+    preLoad: 1.3,
+    loading: './static/img/img-loading.gif',
+    error: './static/img/img-error.jpeg',
+    attempt: 1
+});
 Vue.config.productionTip = false;
 if (IsPC()) {
     // Vue.use(new VueSocketIO({

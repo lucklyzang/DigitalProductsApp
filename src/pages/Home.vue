@@ -40,8 +40,8 @@
                 <span>提醒我</span>
               </div>
             </div>
-            <div class="image-area">
-              <img :src="item.digitalCollectioUrl">
+            <div class="image-area" v-lazy-container="{ selector: 'img' }">
+              <img :data-src="item.digitalCollectioUrl">
             </div>
             <div class="message-area">
               <div class="left">
@@ -90,8 +90,8 @@
               </div>
               <div class="object-details-list" v-for="(lastItem, lastIndex) in innerItem.commodityList" :key="lastIndex">
                 <div class="object-details">
-                  <div>
-                    <img :src="lastItem.imgPath">
+                  <div v-lazy-container="{ selector: 'img' }">
+                    <img :data-src="lastItem.imgPath">
                   </div>
                   <div>
                     <div>
