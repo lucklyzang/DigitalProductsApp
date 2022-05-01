@@ -241,8 +241,7 @@
                                         status: item.status,
                                         isShowCountDown: true
                                     })
-                                };
-                                console.log(this.digitalCollectionList);
+                                }
                             }
                         } else {
                             this.$dialog.alert({

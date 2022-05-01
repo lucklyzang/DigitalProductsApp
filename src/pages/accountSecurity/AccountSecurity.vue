@@ -2,7 +2,8 @@
   <div class="page-box">
     <NavBar title="账号与安全" path="myInfo" />
     <!-- 是否注销确认框 -->
-    <van-dialog v-model="isShowLogout" :show-cancel-button="true"  :close-on-popstate="false" title="确定注销?"
+    <van-dialog v-model="isShowLogout" :show-cancel-button="true"  :close-on-popstate="false" title="确认注销账号?"
+      confirm-button-text="确认注销"
       @confirm="logoutSureEvent" 
       @cancel="logoutCancelEvent"
     />
@@ -96,13 +97,13 @@
 
       // 弹框确定注销
       logoutSureEvent () {
-        this.isShowPaySuccess = false;
+        this.isShowLogout = false;
         this.cancellationEvent()
       },
 
       //  弹框取消注销
       logoutCancelEvent () {
-        this.isShowPaySuccess = false
+        this.isShowLogout = false
       },
 
       //账号注销事件
@@ -210,6 +211,24 @@
             color: #fff !important;
             font-size: 18px !important
         }
+    };
+    /deep/ .van-dialog {
+      background: @color-block;
+      .van-dialog__header {
+        color: #fff
+      };
+      .van-dialog__footer {
+        .van-button--default {
+          background: @color-block;
+        };
+        .van-dialog__cancel {
+          color: #cbcbcb
+        };
+        .van-dialog__confirm {
+          color: #bd68ff;
+          font-weight: bold
+        }
+      }
     };
     .content-box {
       flex: 1;

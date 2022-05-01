@@ -1,6 +1,12 @@
 <template>
   <div class="page-box">
     <NavBar title="设置" path="myInfo" />
+     <!-- 是否退出登录确认框 -->
+    <van-dialog v-model="isShowLogout" :show-cancel-button="true"  :close-on-popstate="false" title="确认要退出登录吗"
+      confirm-button-text="退出登录"
+      @confirm="logoutSureEvent" 
+      @cancel="logoutCancelEvent"
+    />
     <van-loading type="spinner" v-show="loadingShow"/>
     <van-overlay :show="overlayShow" />
     <div class="content-box">
@@ -36,7 +42,7 @@
 			</div>
 		</div>
       </div>
-      <div class="content-bottom" @click="logoutEvent">
+      <div class="content-bottom" @click="isShowLogout=true">
         <span>退出登录</span>
       </div>
       <!-- 拍照选择 -->
@@ -75,6 +81,7 @@
     data() {
       return {
         photoBox: false,
+        isShowLogout: false,
         overlayShow: false,
         loadingShow: false,
         defaultPersonPng :require("@/common/images/home/default-person.jpg"),
@@ -203,6 +210,17 @@
         })
       },
 
+      // 弹框确定注销
+      logoutSureEvent () {
+        this.isShowLogout = false;
+        this.logoutEvent()
+      },
+
+      //  弹框取消注销
+      logoutCancelEvent () {
+        this.isShowLogout = false
+      },
+
       //退出登录事件
       logoutEvent () {
         this.loadingShow = true;
@@ -325,6 +343,24 @@
             color: #fff !important;
             font-size: 18px !important
         }
+    };
+    /deep/ .van-dialog {
+      background: @color-block;
+      .van-dialog__header {
+        color: #fff
+      };
+      .van-dialog__footer {
+        .van-button--default {
+          background: @color-block;
+        };
+        .van-dialog__cancel {
+          color: #cbcbcb
+        };
+        .van-dialog__confirm {
+          color: #ffbc41;
+          font-weight: bold
+        }
+      }
     };
     .content-box {
       flex: 1;
