@@ -20,6 +20,7 @@
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
 	export default {
+		name: 'AboutUs',
 		components: {
             NavBar
 		},
@@ -62,11 +63,11 @@
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
-                font-size: 24px !important
+                font-size: 18px !important
             };
             .van-nav-bar__title {
                 color: #fff !important;
-                font-size: 18px !important
+                font-size: 16px !important
             }
         };
 		.content-top {

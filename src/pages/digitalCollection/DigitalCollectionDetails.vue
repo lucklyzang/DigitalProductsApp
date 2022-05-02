@@ -96,12 +96,9 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex'
-	import {
-		setCache,
-		removeAllLocalStorage
-	} from '@/common/js/utils'
-	import {inquareProductDetails,purchaseCommodity} from '@/api/products.js'
+	import {inquareProductDetails,purchaseCommodity,inquareUserInfo} from '@/api/products.js'
 	export default {
+        name: 'DigitalCollectionDetails',
 		components: {
 		},
 
@@ -147,7 +144,8 @@
 		methods: {
 			...mapMutations([
                 'changeOrderId',
-                'changeIsPaying'
+                'changeIsPaying',
+                'storeUserInfo'
 			]),
 
             // 查询作品详情
@@ -160,7 +158,11 @@
                             this.productsDetails = res.data.data;
                             this.isShowContent = true;
                             resolve();
-                            console.log('作品详情',this.productsDetails);
+                            if (this.isLogin) {
+                                if (!this.userInfo) {
+                                    this.queryuserInfo()
+                                }
+                            };
                         } else {
                         this.$dialog.alert({
                             message: `${res.data.msg}`,
@@ -211,6 +213,26 @@
                     return
                 };
                 this.buyCommodity()
+            },
+
+            // 查询用户信息
+            queryuserInfo() {
+                inquareUserInfo().then((res) => {
+                        if (res && res.data.code == 0) {
+                            this.storeUserInfo(res.data.data);
+                        } else {
+                            this.$dialog.alert({
+                                message: `${res.data.msg}`,
+                                closeOnPopstate: true
+                            }).then(() => {})
+                        }
+                    })
+                    .catch((err) => {
+                        this.$dialog.alert({
+                            message: `${err.message}`,
+                            closeOnPopstate: true
+                        }).then(() => {})
+                    })
             },
 
             // 购买商品
@@ -273,7 +295,7 @@
             background: @color-background;
             .van-icon-arrow-left {
                 color: #fff !important;
-                font-size: 24px !important
+                font-size: 18px !important
             };
             .van-nav-bar__right {
                 img {

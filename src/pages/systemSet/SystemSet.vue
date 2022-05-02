@@ -11,15 +11,15 @@
     <van-overlay :show="overlayShow" />
     <div class="content-box">
       <div class="content-top">
-      	<div class="nick-name photo-box">
+      <div class="nick-name photo-box">
 			<div class="left">
 				<span>头像</span>
 			</div>
 			<div class="right" @click="changeHeadPortrait">
           <img :src="notLoginPng" v-show="!isLogin" class="imgIcon" alt="">
-          <img :src="defaultPersonPng" v-show="isLogin && !userInfo.hasOwnProperty('avatarUrl')" class="imgIcon" alt="">
-          <img :src="userInfo.avatarUrl" v-show="isLogin && userInfo.hasOwnProperty('avatarUrl')" class="imgIcon" alt="">
-          <img :src="arrowRightPng" class="imgIcon" alt="">
+          <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl')" class="imgIcon" alt="">
+          <img :src="userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl')" class="imgIcon" alt="">
+          <img :src="arrowRightPng" class="imgIcon" alt="" width="8">
 			</div>
 		</div>
         <div class="nick-name">
@@ -64,19 +64,14 @@
 </template>
 <script>
   import NavBar from '@/components/NavBar'
-  import NoData from '@/components/NoData'
-  import Loading from '@/components/Loading'
   import { mapGetters, mapMutations } from 'vuex'
   import {logout} from '@/api/login.js'
   import {changeAvatar,inquareUserInfo} from '@/api/products.js'
   import { IsPC} from '@/common/js/utils'
-  let windowTimer
   export default {
-    name: 'Home',
+    name: 'SystemSet',
     components:{
-      NoData,
-      Loading,
-	  NavBar
+	    NavBar
     },
     data() {
       return {
@@ -189,10 +184,7 @@
       queryuserInfo () {
         inquareUserInfo().then((res) => {
           if (res && res.data.code == 0) {
-            this.storeUserInfo(res.data.data);
-             this.$router.push({
-                path: '/myInfo'
-              })
+            this.storeUserInfo(res.data.data)
           } else {
             this.$dialog.alert({
               message: `${res.data.msg}`,
@@ -227,12 +219,14 @@
         logout().then((res) => {
           this.loadingShow = false;
           if (res && res.data.code == 0) {
-              this.queryuserInfo();
               this.changeIsLogin(false);
               // 清空store和localStorage
-              this.$store.commit('resetFabricState');
-              this.$store.commit('resetLoginState');
+              this.$store.dispatch('resetFabricState');
+              this.$store.dispatch('resetLoginState');
               window.localStorage.clear();
+              this.$router.push({
+                path: '/myInfo'
+              });
               this.$toast({
                 message: '退出登录成功',
                 position: 'bottom'
@@ -337,11 +331,11 @@
      /deep/ .van-nav-bar {
         .van-icon {
             color: #fff !important;
-            font-size: 24px !important
+            font-size: 18px !important
         };
         .van-nav-bar__title {
             color: #fff !important;
-            font-size: 18px !important
+            font-size: 16px !important
         }
     };
     /deep/ .van-dialog {
@@ -431,8 +425,8 @@
                        border-radius: 50%;
                        margin-right: 2px;
                        &:last-child {
-                         width: 8px;
-                         height: 10px
+                        width: 8px !important;
+                        height: auto !important
                        }
                     }
 				}
@@ -451,7 +445,7 @@
           height: 55px;
           background: @color-block;
           color: #ffbc41;
-          font-size: 15px;
+          font-size: 18px;
         };
       .choose-photo-box {
         position: fixed;

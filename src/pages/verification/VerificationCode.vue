@@ -42,6 +42,7 @@
 		phoneAuthCodeLogin
 	} from '@/api/login.js'
 	export default {
+		name: 'VerificationCode',
 		components: {
 			NavBar
 		},
@@ -180,7 +181,7 @@
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
-                font-size: 24px !important
+                font-size: 18px !important
             }
         };
 		.content-top {

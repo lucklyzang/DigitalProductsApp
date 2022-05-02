@@ -26,6 +26,8 @@ const SystemSet = () =>
     import ('@/pages/systemSet/SystemSet')
 const WorkRoom = () =>
     import ('@/pages/workRoom/WorkRoom')
+const CancelAccount = () =>
+    import ('@/pages/cancelAccount/CancelAccount')
 const AboutUs = () =>
     import ('@/pages/aboutUs/AboutUs')    
 const MyOrderForm = () =>
@@ -110,6 +112,11 @@ let baseRoute = [{
         path: '/donationFriend',
         name: 'donationFriend',
         component: DonationFriend
+    },
+    {
+        path: '/cancelAccount',
+        name: 'cancelAccount',
+        component: CancelAccount
     },
     {
         path: '/collectionRecordDetails',

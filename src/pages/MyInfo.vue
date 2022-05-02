@@ -67,8 +67,6 @@
 <script>
     import FooterBottom from '../components/FooterBottom'
     import NavBar from '@/components/NavBar'
-    import NoData from '@/components/NoData'
-    import Loading from '@/components/Loading'
     import {
         mapGetters,
         mapMutations
@@ -79,21 +77,14 @@
     import {
         IsPC
     } from '@/common/js/utils'
-    let windowTimer
     export default {
         name: 'Home',
         components: {
-            NoData,
-            Loading,
             FooterBottom,
             NavBar
         },
         data() {
             return {
-                noDataShow: false,
-                showLoadingHint: false,
-                versionNumber: '1.8',
-                iconName: 'gear-filled',
                 zoneIconList: [{
                     icon: require("@/common/images/login/my-order.png"),
                     span: '我的订单'
@@ -138,7 +129,9 @@
                 this.gotoURL(() => {})
             };
             if (this.isLogin) {
-                this.queryuserInfo()
+                if (!this.userInfo) {
+                    this.queryuserInfo()
+                }
             }
         },
 

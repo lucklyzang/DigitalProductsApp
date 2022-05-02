@@ -127,14 +127,11 @@
 <script>
     import FooterBottom from '../components/FooterBottom'
     import NavBar from '@/components/NavBar'
-    import NoData from '@/components/NoData'
-    import Loading from '@/components/Loading'
     import {
         inquareProductList,
         inquareSellCalendar,
         productVisitRecord
     } from '@/api/products.js'
-    import store from '@/store'
     import {
         mapGetters,
         mapMutations
@@ -142,12 +139,9 @@
     import {
         IsPC
     } from '@/common/js/utils'
-    let windowTimer
     export default {
         name: 'Home',
         components: {
-            NoData,
-            Loading,
             FooterBottom,
             NavBar
         },

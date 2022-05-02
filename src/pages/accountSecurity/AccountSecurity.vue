@@ -1,12 +1,6 @@
 <template>
   <div class="page-box">
     <NavBar title="账号与安全" path="myInfo" />
-    <!-- 是否注销确认框 -->
-    <van-dialog v-model="isShowLogout" :show-cancel-button="true"  :close-on-popstate="false" title="确认注销账号?"
-      confirm-button-text="确认注销"
-      @confirm="logoutSureEvent" 
-      @cancel="logoutCancelEvent"
-    />
     <div class="content-box">
       <div class="content-top">
       	<div class="nick-name">
@@ -29,7 +23,7 @@
 			</div>
 		</div>
       </div>
-      <div class="content-bottom" @click="isShowLogout = true">
+      <div class="content-bottom" @click="toCancelAccountPageEvent">
         <span>账号注销</span>
       </div>
     </div>
@@ -37,23 +31,15 @@
 </template>
 <script>
   import NavBar from '@/components/NavBar'
-  import NoData from '@/components/NoData'
-  import Loading from '@/components/Loading'
-  import {inquareUserInfo} from '@/api/products.js'
-  import {cancellatio,logout} from '@/api/login.js'
   import { mapGetters, mapMutations } from 'vuex'
   import {IsPC} from '@/common/js/utils'
   export default {
-    name: 'Home',
+    name: 'AccountSecurity',
     components:{
-      NoData,
-      Loading,
-	  NavBar
+	    NavBar
     },
     data() {
       return {
-        loadingShow: false,
-        isShowLogout: false,
         defaultPersonPng: require("@/common/images/home/default-person.jpg"),
         arrowRightPng: require("@/common/images/login/arrow-right.png")
       }
@@ -91,107 +77,22 @@
 
     methods:{
       ...mapMutations([
-        'storeUserInfo',
-        'changeIsLogin'
       ]),
-
-      // 弹框确定注销
-      logoutSureEvent () {
-        this.isShowLogout = false;
-        this.cancellationEvent()
-      },
-
-      //  弹框取消注销
-      logoutCancelEvent () {
-        this.isShowLogout = false
-      },
-
-      //账号注销事件
-      cancellationEvent () {
-        cancellatio().then((res) => {
-          if (res && res.data.code == 0) {
-            this.$toast({
-              message: '账号注销成功',
-              position: 'bottom'
-            });
-            this.logoutEvent();
-          } else {
-            this.$dialog.alert({
-              message: `${res.data.msg}`,
-              closeOnPopstate: true
-            }).then(() => {
-            });
-          }
-        })
-        .catch((err) => {
-          this.$dialog.alert({
-            message: `${err.message}`,
-            closeOnPopstate: true
-          }).then(() => {
-          })
-        })
-      },
-
-       //退出登录事件
-      logoutEvent () {
-        this.loadingShow = true;
-        logout().then((res) => {
-          this.loadingShow = false;
-          if (res && res.data.code == 0) {
-              this.queryuserInfo();
-              this.changeIsLogin(false);
-              // 清空store和localStorage
-              this.$store.commit('resetFabricState');
-              this.$store.commit('resetLoginState');
-              window.localStorage.clear()
-            } else {
-                this.$dialog.alert({
-                message: `${res.data.msg}`,
-                closeOnPopstate: true
-                }).then(() => {
-                })
-            }
-        })
-        .catch((err) => {
-            this.loadingShow = false;
-                this.$dialog.alert({
-                message: `${err.message}`,
-                closeOnPopstate: true
-                }).then(() => {
-            })
-        })
-      },
-
-      // 查询用户信息
-      queryuserInfo() {
-          inquareUserInfo().then((res) => {
-            if (res && res.data.code == 0) {
-              this.storeUserInfo(res.data.data);
-              this.$router.push({path: '/myInfo'});
-            } else {
-              this.$dialog.alert({
-                message: `${res.data.msg}`,
-                closeOnPopstate: true
-              }).then(() => {})
-            }
-        })
-        .catch((err) => {
-          this.$dialog.alert({
-              message: `${err.message}`,
-              closeOnPopstate: true
-          }).then(() => {})
-        })
-      },
 
       //实名认证事件
       realNameAuthenticationEvent () {
-          // 未认证
-          if (this.userInfo.realFlag != 1) {
-            this.$router.push({path: '/realNameAuthentication'})
-          } else {
-            //已认证
-            this.$router.push({path: '/realNameAythenticationCertified'})
-          }
+        // 未认证
+        if (this.userInfo.realFlag != 1) {
+          this.$router.push({path: '/realNameAuthentication'})
+        } else {
+          //已认证
+          this.$router.push({path: '/realNameAythenticationCertified'})
+        }
+      },
+
+      //去往注销账号登录页事件
+      toCancelAccountPageEvent () {
+        this.$router.push({path: '/cancelAccount'})
       }
     }
   }
@@ -205,30 +106,12 @@
      /deep/ .van-nav-bar {
         .van-icon {
             color: #fff !important;
-            font-size: 24px !important
+            font-size: 18px !important
         };
         .van-nav-bar__title {
             color: #fff !important;
-            font-size: 18px !important
+            font-size: 16px !important
         }
-    };
-    /deep/ .van-dialog {
-      background: @color-block;
-      .van-dialog__header {
-        color: #fff
-      };
-      .van-dialog__footer {
-        .van-button--default {
-          background: @color-block;
-        };
-        .van-dialog__cancel {
-          color: #cbcbcb
-        };
-        .van-dialog__confirm {
-          color: #bd68ff;
-          font-weight: bold
-        }
-      }
     };
     .content-box {
       flex: 1;
@@ -296,7 +179,7 @@
             height: 55px;
             background: @color-block;
             color: #bd68ff;
-            font-size: 15px;
+            font-size: 18px;
         }
     }
   }

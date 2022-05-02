@@ -66,8 +66,9 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
-	import {queryOrderDetails,cancelOrder,createPaymentOrder,queryPaymentResult} from '@/api/products.js'
+	import {queryOrderDetails,cancelOrder} from '@/api/products.js'
 	export default {
+		name: 'OrderFormDetails',
 		components: {
             NavBar
 		},
@@ -198,11 +199,29 @@
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
-                font-size: 24px !important
+                font-size: 18px !important
             };
             .van-nav-bar__title {
                 color: #fff !important;
-                font-size: 18px !important
+                font-size: 16px !important
+            }
+        };
+		/deep/ .van-dialog {
+            background: @color-block;
+            .van-dialog__header {
+                color: #fff
+            };
+            .van-dialog__footer {
+                .van-button--default {
+                background: @color-block;
+                };
+                .van-dialog__cancel {
+                color: #cbcbcb
+                };
+                .van-dialog__confirm {
+                color: #ffbc41;
+                font-weight: bold
+                }
             }
         };
 		.content-top {

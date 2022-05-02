@@ -74,6 +74,7 @@
     import NavBar from '@/components/NavBar'
 	import {queryObjectRecordDetails} from '@/api/products.js'
 	export default {
+        name: 'CollectionsRecordsDetails',
 		components: {
             NavBar
 		},
@@ -165,11 +166,11 @@
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
-                font-size: 24px !important
+                font-size: 18px !important
             };
             .van-nav-bar__title {
                 color: #fff !important;
-                font-size: 18px !important
+                font-size: 16px !important
             }
         };
         .content {

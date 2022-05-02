@@ -34,12 +34,10 @@
   import NavBar from '@/components/NavBar'
   import NoData from '@/components/NoData'
   import Loading from '@/components/Loading'
-  import store from '@/store'
   import { mapGetters, mapMutations } from 'vuex'
   import { IsPC } from '@/common/js/utils'
-  let windowTimer
   export default {
-    name: 'Home',
+    name: 'RealNameAythenticationCertified',
     components:{
       NoData,
       Loading,
@@ -47,8 +45,6 @@
     },
     data() {
       return {
-        noDataShow: false,
-        showLoadingHint: false,
         realNameValue: '',
         phoneNumber: '',
         cardValue: '',
@@ -111,11 +107,11 @@
      /deep/ .van-nav-bar {
         .van-icon {
             color: #fff !important;
-            font-size: 24px !important
+            font-size: 18px !important
         };
         .van-nav-bar__title {
             color: #fff !important;
-            font-size: 18px !important
+            font-size: 16px !important
         }
     };
     .content-box {

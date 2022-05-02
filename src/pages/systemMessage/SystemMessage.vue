@@ -18,23 +18,15 @@
 </template>
 <script>
   import NavBar from '@/components/NavBar'
-  import NoData from '@/components/NoData'
-  import Loading from '@/components/Loading'
-  import store from '@/store'
   import { mapGetters, mapMutations } from 'vuex'
-  import { formatTime, setStore, getStore, removeStore, IsPC} from '@/common/js/utils'
-  let windowTimer
+  import {IsPC} from '@/common/js/utils'
   export default {
-    name: 'Home',
+    name: 'SystemMessage',
     components:{
-      NoData,
-      Loading,
-	  NavBar
+	    NavBar
     },
     data() {
       return {
-        noDataShow: false,
-        showLoadingHint: false,
         messageList: [
             {
                 messageTitle: '系统消息',
@@ -100,11 +92,11 @@
      /deep/ .van-nav-bar {
         .van-icon {
             color: #fff !important;
-            font-size: 24px !important
+            font-size: 18px !important
         };
         .van-nav-bar__title {
             color: #fff !important;
-            font-size: 18px !important
+            font-size: 16px !important
         }
     };
     .content-box {

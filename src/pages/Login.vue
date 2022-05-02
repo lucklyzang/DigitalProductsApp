@@ -46,7 +46,7 @@
 import {sendPhoneAuthCode} from '@/api/login.js'
 import { mapGetters, mapMutations } from 'vuex'
 import NavBar from '@/components/NavBar'
-import { setStore, getStore, IsPC,} from '@/common/js/utils'
+import {IsPC} from '@/common/js/utils'
 export default {
   name: 'Login',
   components: {
@@ -56,8 +56,6 @@ export default {
     return {
       phoneNumber: '',
 	  path: '',
-      loadingspan: '登录中,请稍候···',
-      showLoadingHint: false,
 	  checked: true,
 	  phoneNumberUsable: false,
       weixinPng: require("@/common/images/login/weixin-login.png"),
@@ -199,7 +197,7 @@ export default {
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
-                font-size: 24px !important
+                font-size: 18px !important
             }
         };
 		.content-top {

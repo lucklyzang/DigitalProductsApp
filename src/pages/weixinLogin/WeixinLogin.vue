@@ -38,21 +38,16 @@
 </template>
 
 <script>
-import {logIn} from '@/api/login.js'
 import { mapGetters, mapMutations } from 'vuex'
-import Loading from '@/components/Loading'
 import NavBar from '@/components/NavBar'
-import { setStore, getStore, IsPC, scanCode } from '@/common/js/utils'
+import { IsPC } from '@/common/js/utils'
 export default {
-  name: 'Login',
+  name: 'WeixinLogin',
   components: {
-    Loading,
 	NavBar
   },
   data () {
     return {
-      loadingspan: '登录中,请稍候···',
-      showLoadingHint: false,
       weixinPng :require("@/common/images/login/weixin-fast-login.png"),
 	  phonePng :require("@/common/images/login/phone-login.png"),
 	  checked: false,
@@ -122,7 +117,7 @@ export default {
 	/deep/ .van-nav-bar {
 		.van-icon {
 			color: #fff !important;
-			font-size: 24px !important
+			font-size: 18px !important
 		}
 	};
     background: @color-background;
