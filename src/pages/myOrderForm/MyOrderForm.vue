@@ -36,14 +36,14 @@
 							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
 							<span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
-						<div v-show="item.collectionStatus == '0'">
+						<div v-show="item.collectionStatus == '0'" @click.stop="toPayEvent(item)">
 							<span>
 								去付款
 							</span>
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data">
+				<div class="no-more-data" v-show="!emptyShow">
 					<span>没有更多数据</span>
 				</div>
 			</div>
@@ -66,14 +66,14 @@
 							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
 							<span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
-						<div v-show="item.collectionStatus == '0'">
+						<div v-show="item.collectionStatus == '0'"  @click.stop="toPayEvent(item)">
 							<span>
 								去付款
 							</span>
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data">
+				<div class="no-more-data" v-show="!emptyShow">
 					<span>没有更多数据</span>
 				</div>
             </div>
@@ -103,7 +103,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data">
+				<div class="no-more-data" v-show="!emptyShow">
 					<span>没有更多数据</span>
 				</div>
             </div>
@@ -133,7 +133,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data">
+				<div class="no-more-data" v-show="!emptyShow">
 					<span>没有更多数据</span>
 				</div>
             </div>			
@@ -157,7 +157,7 @@
 			return {
 				emptyShow: false,
                 loadingShow: false,
-				descriptionContent: '空空如也',
+				descriptionContent: '暂无订单',
 				tabTitlelList: [
 					{name: '全部'},
 					{name: '待付款'},
@@ -284,15 +284,18 @@
                 })
             },
 
+			// 去往支付页面
+			toPayEvent (item) {
+				this.changeOrderId(item.orderId);
+				if (item.collectionStatus === 0 ) {
+					this.$router.push({name: 'orderFormToPaid',params: {id:item.orderId}})
+				}
+			},
+
 			// 跳转订单详情页面
 			orderDetailsEvent (item) {
 				this.changeOrderId(item.orderId);
-				if (item.collectionStatus != 0 ) {
-					this.$router.push({name: 'orderFormDetails',params: {id:item.orderId}})
-				} else {
-					this.changeIsPaying(false);
-					this.$router.push({path: 'orderFormDetails',params: {id:item.orderId}})
-				}
+				this.$router.push({name: 'orderFormDetails',params: {id:item.orderId}})
 			}
 		}
 	}

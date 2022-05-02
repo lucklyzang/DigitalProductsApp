@@ -24,7 +24,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data">
+				<div class="no-more-data" v-show="!emptyShow">
 					<span>没有更多数据</span>
 				</div>
 			</div>

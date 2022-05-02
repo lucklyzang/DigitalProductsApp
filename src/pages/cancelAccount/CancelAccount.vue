@@ -4,6 +4,7 @@
         <!-- 是否注销确认框 -->
         <van-dialog v-model="isShowLogout" :show-cancel-button="true"  :close-on-popstate="false" title="确认注销账号?"
         confirm-button-text="确认注销"
+        cancel-button-text="再想想"
         @confirm="logoutSureEvent" 
         @cancel="logoutCancelEvent"
         />
