@@ -68,6 +68,7 @@
               </div>
             </div>
           </div>
+          <span class="expect">- 更多内容敬请期待 -</span>
         </div>
         <div class="sell-date-box" v-show="currentTabIndex === 1 && !emptyShow">
           <div class="sell-title">
@@ -110,6 +111,7 @@
               </div>  
             </div>  
           </div>
+          <span class="expect">- 更多内容敬请期待 -</span>
         </div>
       </div>
       <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0">
@@ -405,6 +407,17 @@
                 width: 92%;
                 margin: 0 auto;
                 .object-box {
+                    padding: 0 0 50px 0;
+                    box-sizing: border-box;
+                    .expect {
+                        display: inline-block;
+                        color: #484848;
+                        font-size: 13px;
+                        height: 30px;
+                        width: 100%;
+                        text-align: center;
+                        line-height: 30px
+                    };
                     .object-list {
                         border-radius: 10px;
                         position: relative;
@@ -560,8 +573,7 @@
                                         height: 20px;
                                         border-radius: 50%;
                                         vertical-align: top;
-                                    }
-                                    ;
+                                    };
                                     span {
                                         flex: 1;
                                         margin-left: 6px;
@@ -589,9 +601,19 @@
                             }
                         }
                     }
-                }
-                ;
+                };
                 .sell-date-box {
+                    padding: 0 0 50px 0;
+                    box-sizing: border-box;
+                    .expect {
+                        display: inline-block;
+                        color: #484848;
+                        font-size: 13px;
+                        height: 30px;
+                        width: 100%;
+                        text-align: center;
+                        line-height: 30px
+                    };
                     .sell-title {
                         display: flex;
                         flex-flow: row nowrap;
