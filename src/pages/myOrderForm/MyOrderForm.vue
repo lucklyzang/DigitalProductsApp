@@ -43,7 +43,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data" v-show="!emptyShow">
+				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
 					<span>没有更多数据</span>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data" v-show="!emptyShow">
+				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
 					<span>没有更多数据</span>
 				</div>
             </div>
@@ -103,7 +103,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data" v-show="!emptyShow">
+				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
 					<span>没有更多数据</span>
 				</div>
             </div>
@@ -133,7 +133,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data" v-show="!emptyShow">
+				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
 					<span>没有更多数据</span>
 				</div>
             </div>			
@@ -155,6 +155,7 @@
 		},
 		data() {
 			return {
+				isShowLoadFail: false,
 				emptyShow: false,
                 loadingShow: false,
 				descriptionContent: '暂无订单',
@@ -217,6 +218,7 @@
 
 			// 查询订单列表
             queryProductsList (index) {
+				this.isShowLoadFail = false;
                 this.loadingShow = true;
                 this.emptyShow = false;
                 this.orderList = [];
@@ -266,21 +268,21 @@
 							}
                         }
                     } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
+						this.isShowLoadFail = true;
+						this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
                     }
                 })
                 .catch((err) => {
+					this.isShowLoadFail = true;
                     this.loadingShow = false;
                     this.emptyShow = false;
-                    this.$dialog.alert({
-                        message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
-                    })
+					this.$toast({
+						message: `${err.message}`,
+						position: 'bottom'
+					})
                 })
             },
 

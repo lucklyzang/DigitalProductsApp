@@ -115,20 +115,18 @@
                        this.orderFormDetails = res.data.data;
 					   this.orderFormDetails.createTime = this.orderFormDetails.createTime.replace(/-/g,"/");
                     } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
+						this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                    this.$dialog.alert({
-                        message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
-                    })
+					this.$toast({
+						message: `${err.message}`,
+						position: 'bottom'
+					})
                 })
             },
 
@@ -169,20 +167,18 @@
                             path: '/myOrderForm'
                         })
                     } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
+						this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                    this.$dialog.alert({
-                        message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
-                    })
+					this.$toast({
+						message: `${err.message}`,
+						position: 'bottom'
+					})
                 })
             }
 		}

@@ -163,20 +163,18 @@
                 });
                 this.queryuserInfo()
             } else {
-                this.$dialog.alert({
-                  message: `${res.data.msg}`,
-                  closeOnPopstate: true
-                }).then(() => {
-                })
+              this.$toast({
+                message: `${res.data.msg}`,
+                position: 'bottom'
+              })
             }
         })
         .catch((err) => {
-            this.loadingShow = false;
-              this.$dialog.alert({
-                message: `${err.message}`,
-                closeOnPopstate: true
-              }).then(() => {
-            })
+          this.loadingShow = false;
+          this.$toast({
+            message: `${err.message}`,
+            position: 'bottom'
+          })
         })
       },
 
@@ -186,18 +184,16 @@
           if (res && res.data.code == 0) {
             this.storeUserInfo(res.data.data)
           } else {
-            this.$dialog.alert({
+            this.$toast({
               message: `${res.data.msg}`,
-              closeOnPopstate: true
-            }).then(() => {
+              position: 'bottom'
             })
           }
         })
         .catch((err) => {
-          this.$dialog.alert({
+          this.$toast({
             message: `${err.message}`,
-            closeOnPopstate: true
-          }).then(() => {
+            position: 'bottom'
           })
         })
       },
@@ -232,20 +228,18 @@
                 position: 'bottom'
               });
             } else {
-                this.$dialog.alert({
+              this.$toast({
                 message: `${res.data.msg}`,
-                closeOnPopstate: true
-                }).then(() => {
-                })
+                position: 'bottom'
+              })
             }
         })
         .catch((err) => {
-            this.loadingShow = false;
-                this.$dialog.alert({
-                message: `${err.message}`,
-                closeOnPopstate: true
-                }).then(() => {
-            })
+          this.$toast({
+            message: `${err.message}`,
+            position: 'bottom'
+          })
+          this.loadingShow = false
         })
       },
 
@@ -273,10 +267,9 @@
         let reader = new FileReader();
         let isLt2M = file.size/1024/1024 < 16;
         if (!isLt2M) {
-          this.$dialog.alert({
+          _this.$toast({
             message: '上传图片大小不能超过16MB!',
-            closeOnPopstate: true
-          }).then(() => {
+            position: 'bottom'
           });
           return
         };  
@@ -297,10 +290,9 @@
         let reader = new FileReader();
         let isLt2M = file.size/1024/1024 < 16;
         if (!isLt2M) {
-          _this.$dialog.alert({
+          _this.$toast({
             message: '上传图片大小不能超过16MB!',
-            closeOnPopstate: true
-          }).then(() => {
+            position: 'bottom'
           });
           return
         };  

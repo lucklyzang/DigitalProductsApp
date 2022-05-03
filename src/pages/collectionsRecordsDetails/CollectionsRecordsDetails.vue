@@ -129,19 +129,17 @@
                         this.collectionRecordDetails = res.data.data;
                         this.changeDonationProductDetails(res.data.data);
                     } else {
-                        this.$dialog.alert({
+                        this.$toast({
                             message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
+                            position: 'bottom'
                         })
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                    this.$dialog.alert({
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
+                        position: 'bottom'
                     })
                 })
             },

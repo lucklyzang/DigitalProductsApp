@@ -141,11 +141,10 @@
 						this.codeFour = '';
 						this.codeFive = '';
 						this.codeSix = '';
-						this.$dialog.alert({
-							message: `${res.data.msg}`,
-							closeOnPopstate: true
-						}).then(() => {
-						})
+						this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
 					}
 				})
 				.catch((err) => {
@@ -155,10 +154,9 @@
 					this.codeFour = '';
 					this.codeFive = '';
 					this.codeSix = '';
-					this.$dialog.alert({
+					this.$toast({
 						message: `${err.message}`,
-						closeOnPopstate: true
-					}).then(() => {
+						position: 'bottom'
 					})
 				})
 			},

@@ -20,15 +20,19 @@
         <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
         <van-empty :description="descriptionContent" v-show="emptyShow" />
         <div class="object-box" v-show="currentTabIndex === 0 && !emptyShow">
-          <div class="object-skeleton-list" v-show="loadingShow" v-for="(item) in objectSkeletonList" :key="item.id">
-              <div class="top"></div>
-              <div class="bottom">
-                  <div class="one"></div>
-                  <div class="two"></div>
-                  <div class="three"></div>
-                  <div class="four"></div>
-              </div>
-          </div>  
+            
+        <!-- 产品列表骨架 -->
+        <div class="object-skeleton-list" v-show="loadingShow" v-for="(item) in objectSkeletonList" :key="item.id">
+            <div class="top"></div>
+            <div class="bottom">
+                <div class="one"></div>
+                <div class="two"></div>
+                <div class="three"></div>
+                <div class="four"></div>
+            </div>
+          </div>
+
+          <!-- 产品列表 -->
           <div v-show="!loadingShow" class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="item.id">
             <div class="sell-info-area">
               <div class="left" v-show="item.isShowCountDown && item.status == 0">
@@ -77,7 +81,16 @@
               </div>
             </div>
           </div>
-          <span class="expect" v-show="!loadingShow">- 更多内容敬请期待 -</span>
+
+          <!-- 内容加载失败 -->
+          <div class="object-content-load-fail" v-show="isShowLoadFail">
+              <van-icon name="warning" size="70" color="#5f5f5f"/>
+              <span>内容加载失败, 点击刷新重试</span>
+              <span @click="loadFailFreshEvent()">刷新</span>
+          </div>
+
+          <!-- 更多内容提示 -->
+          <span class="expect" v-show="!isShowLoadFail && !loadingShow">- 更多内容敬请期待 -</span>
         </div>
         <div class="sell-date-box" v-show="currentTabIndex === 1 && !emptyShow">
           <div class="sell-title">
@@ -120,7 +133,16 @@
               </div>  
             </div>  
           </div>
-          <span class="expect" v-show="!loadingShow">- 更多内容敬请期待 -</span>
+
+           <!-- 内容加载失败 -->
+          <div class="object-content-load-fail" v-show="isShowLoadFail">
+              <van-icon name="warning" size="70" color="#5f5f5f"/>
+              <span>内容加载失败, 点击刷新重试</span>
+              <span  @click="loadFailFreshEvent()">刷新</span>
+          </div>
+
+          <!-- 更多内容提示 -->
+          <span class="expect" v-show="!isShowLoadFail && !loadingShow">- 更多内容敬请期待 -</span>
         </div>
       </div>
       <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0">
@@ -158,6 +180,7 @@
         },
         data() {
             return {
+                isShowLoadFail: false,
                 homeBannerPng: require("@/common/images/home/home-banner.png"),
                 emptyShow: false,
                 objectSkeletonList: [{id:1},{id:2},{id:3},{id:4},{id:5}],
@@ -221,8 +244,18 @@
                 }
             },
 
+            // 日历和产品列表加载失败后刷新事件
+            loadFailFreshEvent () {
+                if (this.currentTabIndex == 0) {
+                    this.queryProductsList()
+                } else if (this.currentTabIndex == 1) {
+                    this.querySaleCalendar()
+                }
+            },
+
             // 查询作品列表
             queryProductsList() {
+                this.isShowLoadFail = false;
                 this.loadingShow = true;
                 this.emptyShow = false;
                 this.digitalCollectionList = [];
@@ -250,24 +283,27 @@
                                 }
                             }
                         } else {
-                            this.$dialog.alert({
+                            this.isShowLoadFail = true;
+                            this.$toast({
                                 message: `${res.data.msg}`,
-                                closeOnPopstate: true
-                            }).then(() => {})
+                                position: 'bottom'
+                            })
                         }
                     })
                     .catch((err) => {
                         this.loadingShow = false;
+                        this.isShowLoadFail = true;
                         this.emptyShow = false;
-                        this.$dialog.alert({
+                        this.$toast({
                             message: `${err.message}`,
-                            closeOnPopstate: true
-                        }).then(() => {})
+                            position: 'bottom'
+                        })
                     })
             },
 
             // 查询发售日历
             querySaleCalendar() {
+                this.isShowLoadFail = false;
                 this.loadingShow = true;
                 this.emptyShow = false;
                 this.digitalCollectionCalendarList = [];
@@ -280,19 +316,21 @@
                                 this.digitalCollectionCalendarList = res.data.list
                             }
                         } else {
-                            this.$dialog.alert({
+                            this.isShowLoadFail = true;
+                            this.$toast({
                                 message: `${res.data.msg}`,
-                                closeOnPopstate: true
-                            }).then(() => {})
+                                position: 'bottom'
+                            })
                         }
                     })
                     .catch((err) => {
+                        this.isShowLoadFail = true;
                         this.loadingShow = false;
                         this.emptyShow = false;
-                        this.$dialog.alert({
+                        this.$toast({
                             message: `${err.message}`,
-                            closeOnPopstate: true
-                        }).then(() => {})
+                            position: 'bottom'
+                        })
                     })
             },
 
@@ -312,17 +350,17 @@
                             }
                         });
                         if (res && res.data.code == 0) {} else {
-                            this.$dialog.alert({
+                            this.$toast({
                                 message: `${res.data.msg}`,
-                                closeOnPopstate: true
-                            }).then(() => {})
+                                position: 'bottom'
+                            })
                         }
                     })
                     .catch((err) => {
-                        this.$dialog.alert({
+                        this.$toast({
                             message: `${err.message}`,
-                            closeOnPopstate: true
-                        }).then(() => {})
+                            position: 'bottom'
+                        })
                     })
             },
 
@@ -475,6 +513,31 @@
                                 position: absolute;
                                 bottom: 10px;
                                 right: 10px;
+                            }
+                        }
+                    };
+                    .object-content-load-fail {
+                        height: 60vh;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 12px;
+                        color: #fff;
+                        >span {
+                            &:nth-child(2) {
+                                color: #686868;
+                                margin: 20px 0 15px 0;
+                            };
+                             &:nth-child(3) {
+                                font-size: 14px;
+                                display: inline-block;
+                                width: 110px;
+                                height: 30px;
+                                text-align: center;
+                                line-height: 30px;
+                                border: 1px solid #fff;
+                                border-radius: 20px
                             }
                         }
                     };
@@ -673,6 +736,31 @@
                         width: 100%;
                         text-align: center;
                         line-height: 30px
+                    };
+                     .object-content-load-fail {
+                        height: 60vh;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 12px;
+                        color: #fff;
+                        >span {
+                            &:nth-child(2) {
+                                color: #686868;
+                                margin: 20px 0 15px 0;
+                            };
+                             &:nth-child(3) {
+                                font-size: 14px;
+                                display: inline-block;
+                                width: 110px;
+                                height: 30px;
+                                text-align: center;
+                                line-height: 30px;
+                                border: 1px solid #fff;
+                                border-radius: 20px
+                            }
+                        }
                     };
                     .sell-title {
                         display: flex;

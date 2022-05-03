@@ -164,19 +164,17 @@
                                 }
                             };
                         } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        });
+                             this.$toast({
+                                message: `${res.data.msg}`,
+                                position: 'bottom'
+                            })
                         }
                     })
                     .catch((err) => {
                         this.loadingShow = false;
-                        this.$dialog.alert({
+                         this.$toast({
                             message: `${err.message}`,
-                            closeOnPopstate: true
-                        }).then(() => {
+                            position: 'bottom'
                         })
                     })
                 })    
@@ -221,17 +219,17 @@
                         if (res && res.data.code == 0) {
                             this.storeUserInfo(res.data.data);
                         } else {
-                            this.$dialog.alert({
+                            this.$toast({
                                 message: `${res.data.msg}`,
-                                closeOnPopstate: true
-                            }).then(() => {})
+                                position: 'bottom'
+						    })
                         }
                     })
                     .catch((err) => {
-                        this.$dialog.alert({
+                         this.$toast({
                             message: `${err.message}`,
-                            closeOnPopstate: true
-                        }).then(() => {})
+                            position: 'bottom'
+                        })
                     })
             },
 
@@ -247,21 +245,19 @@
                         this.changeIsPaying(false);
                         this.$router.push({path: 'orderFormToPaid'})
                     } else {
-                        this.$dialog.alert({
+                        this.$toast({
                             message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
+                            position: 'bottom'
                         })
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                    this.overlayShow = false; 
-                    this.$dialog.alert({
+                    this.overlayShow = false;
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
-                    })
+                        position: 'bottom'
+                    }) 
                 })
             },
 

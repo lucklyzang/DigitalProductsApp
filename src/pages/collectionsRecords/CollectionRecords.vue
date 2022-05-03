@@ -24,7 +24,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="no-more-data" v-show="!emptyShow">
+				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
 					<span>没有更多数据</span>
 				</div>
 			</div>
@@ -46,6 +46,7 @@
 		},
 		data() {
 			return {
+				isShowLoadFail: false,
 				emptyShow: false,
                 loadingShow: false,
 				descriptionContent: '暂无藏品',
@@ -82,6 +83,7 @@
 
 			// 查询藏品记录
 			queryCollectionRecords () {
+				this.isShowLoadFail = false;
 				this.loadingShow = true;
                 this.emptyShow = false;
                 this.orderList = [];
@@ -105,20 +107,20 @@
                             }
                         }
                     } else {
-                        this.$dialog.alert({
+						this.isShowLoadFail = true;
+                        this.$toast({
                             message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
+                            position: 'bottom'
                         })
                     }
 				})
 				.catch((err) => {
+					this.isShowLoadFail = true;
 					this.loadingShow = false;
                     this.emptyShow = false;
-					this.$dialog.alert({
+					this.$toast({
 						message: `${err.message}`,
-						closeOnPopstate: true
-					}).then(() => {
+						position: 'bottom'
 					})
 				})
 			},

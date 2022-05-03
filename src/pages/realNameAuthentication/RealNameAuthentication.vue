@@ -138,20 +138,18 @@
                 position: 'bottom'
               })
             } else {
-                this.$dialog.alert({
-                  message: `${res.data.msg}`,
-                  closeOnPopstate: true
-                }).then(() => {
-                })
+              this.$toast({
+                message: `${res.data.msg}`,
+                position: 'bottom'
+              })
             }
         })
         .catch((err) => {
-            this.loadingShow = false;
-            this.$dialog.alert({
-              message: `${err.message}`,
-              closeOnPopstate: true
-            }).then(() => {
-            })
+          this.loadingShow = false;
+          this.$toast({
+            message: `${err.message}`,
+            position: 'bottom'
+          })
         })
       },
 
@@ -164,17 +162,17 @@
                 path: `${this.path}`
               })
             } else {
-              this.$dialog.alert({
+              this.$toast({
                 message: `${res.data.msg}`,
-                closeOnPopstate: true
-              }).then(() => {})
+                position: 'bottom'
+              })
             }
         })
         .catch((err) => {
-          this.$dialog.alert({
-              message: `${err.message}`,
-              closeOnPopstate: true
-          }).then(() => {})
+          this.$toast({
+            message: `${err.message}`,
+            position: 'bottom'
+          })
         })
       }
     }

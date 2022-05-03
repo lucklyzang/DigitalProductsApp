@@ -78,26 +78,24 @@
             //账号注销事件
             cancellationEvent () {
                 cancellatio().then((res) => {
-                if (res && res.data.code == 0) {
-                    this.$toast({
-                    message: '账号注销成功',
-                    position: 'bottom'
-                    });
-                    this.logoutEvent();
-                } else {
-                    this.$dialog.alert({
-                    message: `${res.data.msg}`,
-                    closeOnPopstate: true
-                    }).then(() => {
-                    });
-                }
+                    if (res && res.data.code == 0) {
+                        this.$toast({
+                        message: '账号注销成功',
+                        position: 'bottom'
+                        });
+                        this.logoutEvent();
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
                 })
                 .catch((err) => {
-                this.$dialog.alert({
-                    message: `${err.message}`,
-                    closeOnPopstate: true
-                }).then(() => {
-                })
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    })
                 })
             },
 
@@ -114,19 +112,17 @@
                     window.localStorage.clear();
                     this.$router.push({path: '/myInfo'})
                     } else {
-                        this.$dialog.alert({
-                        message: `${res.data.msg}`,
-                        closeOnPopstate: true
-                        }).then(() => {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
                         })
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                        this.$dialog.alert({
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                        }).then(() => {
+                        position: 'bottom'
                     })
                 })
             }

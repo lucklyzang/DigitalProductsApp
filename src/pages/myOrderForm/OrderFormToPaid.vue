@@ -181,19 +181,17 @@
                        this.orderFormDetails = res.data.data;
                        this.orderFormDetails.createTime = this.orderFormDetails.createTime.replace(/-/g,"/");
                     } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
+                        this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                    this.$dialog.alert({
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
+                        position: 'bottom'
                     })
                 })
             },
@@ -211,19 +209,17 @@
                         this.changeOrderId(this.orderId);
                         this.$router.push({name: 'orderFormDetails'})
                     } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
+                        this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                    this.$dialog.alert({
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
+                        position: 'bottom'
                     })
                 })
             },
@@ -243,19 +239,17 @@
                         this.changeOrderId(this.orderId);
                         this.$router.push({name: 'orderFormDetails'})
                     } else {
-                        this.$dialog.alert({
-                            message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
+                        this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                    this.$dialog.alert({
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
+                        position: 'bottom'
                     })
                 })
             },
@@ -303,21 +297,19 @@
                         // 跳转到支付页面
                         location.href = res.data.data.prepayId + '&redirect_url=' + encodeURIComponent(window.location.href)
                     } else {
-                    this.$dialog.alert({
-                        message: `${res.data.msg}`,
-                        closeOnPopstate: true
-                    }).then(() => {
-                    })
+                        this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
                     this.overlayShow = false;
-                    this.$dialog.alert({
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
-                    })
+                        position: 'bottom'
+					})
                 })
             },
 

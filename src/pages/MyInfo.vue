@@ -252,17 +252,17 @@
                         if (res && res.data.code == 0) {
                             this.storeUserInfo(res.data.data);
                         } else {
-                            this.$dialog.alert({
+                            this.$toast({
                                 message: `${res.data.msg}`,
-                                closeOnPopstate: true
-                            }).then(() => {})
+                                position: 'bottom'
+                            })
                         }
                     })
                     .catch((err) => {
-                        this.$dialog.alert({
+                        this.$toast({
                             message: `${err.message}`,
-                            closeOnPopstate: true
-                        }).then(() => {})
+                            position: 'bottom'
+                        })
                     })
             }
         }

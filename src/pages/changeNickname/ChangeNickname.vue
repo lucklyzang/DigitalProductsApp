@@ -79,19 +79,17 @@
                         });
                         this.queryuserInfo()
                     } else {
-                        this.$dialog.alert({
-                        message: `${res.data.msg}`,
-                        closeOnPopstate: true
-                        }).then(() => {
-                        })
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+					    })
                     }
                 })
                 .catch((err) => {
                     this.loadingShow = false;
-                        this.$dialog.alert({
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                        }).then(() => {
+                        position: 'bottom'
                     })
                 })
             },
@@ -105,18 +103,16 @@
                             path: 'systemSet'
                         })
                     } else {
-                        this.$dialog.alert({
+                        this.$toast({
                             message: `${res.data.msg}`,
-                            closeOnPopstate: true
-                        }).then(() => {
-                        })
+                            position: 'bottom'
+					    })
                     }
                 })
                 .catch((err) => {
-                    this.$dialog.alert({
+                    this.$toast({
                         message: `${err.message}`,
-                        closeOnPopstate: true
-                    }).then(() => {
+                        position: 'bottom'
                     })
                 })
             },
