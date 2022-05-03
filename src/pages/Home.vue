@@ -17,10 +17,19 @@
         </div>
       </van-sticky>
       <div class="switch-content">
-        <van-loading type="spinner" v-show="loadingShow"/>
+        <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
         <van-empty :description="descriptionContent" v-show="emptyShow" />
         <div class="object-box" v-show="currentTabIndex === 0 && !emptyShow">
-          <div class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="index">
+          <div class="object-skeleton-list" v-show="loadingShow" v-for="(item) in objectSkeletonList" :key="item.id">
+              <div class="top"></div>
+              <div class="bottom">
+                  <div class="one"></div>
+                  <div class="two"></div>
+                  <div class="three"></div>
+                  <div class="four"></div>
+              </div>
+          </div>  
+          <div v-show="!loadingShow" class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="item.id">
             <div class="sell-info-area">
               <div class="left" v-show="item.isShowCountDown && item.status == 0">
                 <van-icon name="underway" size="14" color="#bd68ff" />
@@ -68,7 +77,7 @@
               </div>
             </div>
           </div>
-          <span class="expect">- 更多内容敬请期待 -</span>
+          <span class="expect" v-show="!loadingShow">- 更多内容敬请期待 -</span>
         </div>
         <div class="sell-date-box" v-show="currentTabIndex === 1 && !emptyShow">
           <div class="sell-title">
@@ -111,7 +120,7 @@
               </div>  
             </div>  
           </div>
-          <span class="expect">- 更多内容敬请期待 -</span>
+          <span class="expect" v-show="!loadingShow">- 更多内容敬请期待 -</span>
         </div>
       </div>
       <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0">
@@ -151,6 +160,7 @@
             return {
                 homeBannerPng: require("@/common/images/home/home-banner.png"),
                 emptyShow: false,
+                objectSkeletonList: [{id:1},{id:2},{id:3},{id:4},{id:5}],
                 loadingShow: false,
                 descriptionContent: '暂无产品',
                 tabTitlelList: [{
@@ -417,6 +427,53 @@
                         width: 100%;
                         text-align: center;
                         line-height: 30px
+                    };
+                    .object-skeleton-list {
+                        border-radius: 10px;
+                        position: relative;
+                        margin-bottom: 20px;
+                        background: #100726;
+                        position: relative;
+                        .top {
+                            width: 100%;
+                            margin: 0 auto;
+                            background: #444444;
+                            border-radius: 10px;
+                            height: 380px
+                        };
+                        .bottom {
+                            width: 92%;
+                            margin: 0 auto;
+                            .one {
+                                height: 20px;
+                                border-radius: 6px;
+                                width: 35%;
+                                background: #5e5d5d;
+                                margin-top: 10px;
+                            };
+                            .two {
+                                border-radius: 6px;
+                                height: 20px;
+                                width: 30%;
+                                background: #5e5d5d;
+                                margin: 10px 0;
+                            };
+                            .three {
+                                border-radius: 6px;
+                                height: 20px;
+                                width: 40%;
+                                background: #5e5d5d
+                            };
+                            .four {
+                                border-radius: 6px;
+                                height: 20px;
+                                width: 40px;
+                                background: #5e5d5d;
+                                position: absolute;
+                                bottom: 0;
+                                right: 0;
+                            }
+                        }
                     };
                     .object-list {
                         border-radius: 10px;
