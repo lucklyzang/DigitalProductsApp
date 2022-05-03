@@ -13,11 +13,17 @@ if (process.env.NODE_ENV == 'development') {
 };
 import { Lazyload } from 'vant';
 Vue.prototype.Base64 = require('js-base64').Base64;
+
 // 全局挂载时间格式化方法
 Vue.filter('dateformat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
     return moment(dataStr).format(pattern)
 });
+
+//处理移动端click事件300ms延迟
+import FastClick from 'fastclick'
+FastClick.attach(document.body);
 Vue.prototype.$moment = moment;
+
 // 全局挂载监听设备物理返回按键的方法
 function gotoURL(callback) {
     window.onpopstate = null;
@@ -26,17 +32,19 @@ function gotoURL(callback) {
     }
 }
 Vue.prototype.gotoURL = gotoURL;
+
 //初始化样式
 import './common/stylus/index.less'
+
 //移动端适配
 import 'lib-flexible/flexible.js'
 import App from './App'
-let options = {
-    fullscreenEl: false
-};
+
 // vue剪切板功能
 Vue.use(VueClipboard);
+
 Vue.use(Vant);
+
 // 图片懒加载
 Vue.use(Lazyload, {
     preLoad: 1.3,
@@ -44,7 +52,9 @@ Vue.use(Lazyload, {
     error: './static/img/img-error.jpeg',
     attempt: 1
 });
+
 Vue.config.productionTip = false;
+
 if (IsPC()) {
     // Vue.use(new VueSocketIO({
     //    debug: true,

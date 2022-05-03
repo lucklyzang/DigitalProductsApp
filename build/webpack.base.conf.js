@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
@@ -44,7 +45,14 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: vueLoaderConfig
+                // options: vueLoaderConfig
+                options: {
+                    loaders: {
+                      scss: ExtractTextPlugin.extract({ fallback: 'vue-style-loader', use: 'css-loader!sass-loader' }),
+                      less: ExtractTextPlugin.extract({ fallback: 'vue-style-loader', use: 'css-loader!less-loader' }),
+                      css: ExtractTextPlugin.extract({ fallback: 'vue-style-loader', use: 'css-loader' }),
+                    }
+                }
             },
             {
                 test: /\.css$/,
@@ -85,6 +93,12 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new ExtractTextPlugin({
+            filename: 'css/[name].[contenthash].css',
+            allChunks: true
+        })
+    ],
     node: {
         // prevent webpack from injecting useless setImmediate polyfill because Vue
         // source contains it (although only uses it if it's native).

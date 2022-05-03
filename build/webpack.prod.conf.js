@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin')
 
 const env = require('../config/prod.env')
 
@@ -115,7 +116,22 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new SkeletonWebpackPlugin({
+      webpackConfig: require('./webpack.skeleton.conf'),
+      quiet: true,
+      minimize: true,
+      //给对应的路由设置对应的骨架屏组件，skeletonId的值根据组件设置的id
+      router: {
+        mode: 'history',
+        routes: [
+          {
+            path: '/home',
+            skeletonId: 'skeleton-home'
+          }
+        ]
+      }
+    })
   ]
 })
 
