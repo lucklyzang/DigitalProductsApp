@@ -372,6 +372,7 @@
                 margin: 0 auto;
                 border-radius: 10px;
                 img {
+                    pointer-events: none;
                     width: 100%;
                     border-radius: 10px
                 }
@@ -433,11 +434,13 @@
                         position: relative;
                         margin-bottom: 20px;
                         background: #100726;
+                        padding-bottom: 10px;
+                        box-sizing: border-box;
                         position: relative;
                         .top {
                             width: 100%;
                             margin: 0 auto;
-                            background: #444444;
+                            background: #2d2d2d;
                             border-radius: 10px;
                             height: 380px
                         };
@@ -445,33 +448,33 @@
                             width: 92%;
                             margin: 0 auto;
                             .one {
-                                height: 20px;
+                                height: 25px;
                                 border-radius: 6px;
                                 width: 35%;
-                                background: #5e5d5d;
+                                background: #353535;
                                 margin-top: 10px;
                             };
                             .two {
                                 border-radius: 6px;
-                                height: 20px;
+                                height: 25px;
                                 width: 30%;
-                                background: #5e5d5d;
+                                background: #353535;
                                 margin: 10px 0;
                             };
                             .three {
                                 border-radius: 6px;
-                                height: 20px;
+                                height: 25px;
                                 width: 40%;
-                                background: #5e5d5d
+                                background: #353535
                             };
                             .four {
                                 border-radius: 6px;
                                 height: 20px;
                                 width: 40px;
-                                background: #5e5d5d;
+                                background: #353535;
                                 position: absolute;
-                                bottom: 0;
-                                right: 0;
+                                bottom: 10px;
+                                right: 10px;
                             }
                         }
                     };
