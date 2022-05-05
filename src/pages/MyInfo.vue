@@ -451,7 +451,7 @@
                 justify-content: center;
                 align-items: center;
                 img {
-                    width: 120px
+                    width: 100px
                 };
                 span {
                     margin-left: 8px;
