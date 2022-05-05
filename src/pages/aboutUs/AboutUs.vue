@@ -101,6 +101,7 @@
 			color: #686868;
 			font-size: 15px;
 			line-height: 20px;
+			text-indent: 2em;
 			text-align: justify
 		};
 		.content-bottom {
