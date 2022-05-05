@@ -451,10 +451,11 @@
                 justify-content: center;
                 align-items: center;
                 img {
-                    width: 100px
+                    width: 120px
                 };
                 span {
                     margin-left: 8px;
+                    margin-top: 1px;
                     font-size: 10px;
                     color: #c2c2c2
                 }

@@ -83,7 +83,7 @@
 			<div>
 				<span>¥ {{productsDetails.price}}</span>
 			</div>
-			<div :class="{'sellStyle': !isCountDownShow}" v-show="isShowContent">
+			<div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}" v-show="isShowContent">
 				<span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购买' : '已售罄'}}</span>
 				<van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime)- new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
 			</div>
@@ -548,12 +548,13 @@
                 justify-content: center;
                 align-items: center;
                 img {
-                    width: 100px
+                    width: 120px
                 };
                 span {
                     margin-left: 8px;
                     font-size: 10px;
-                    color: #c2c2c2
+                    color: #c2c2c2;
+                    margin-top: 1px;
                 }
             }
         };
@@ -599,6 +600,9 @@
             .sellStyle {
                 justify-content: center !important;
                 font-size: 18px !important
+            };
+            .purchaseStyle {
+                background: #bd68ff !important
             }
 		}
 	}
