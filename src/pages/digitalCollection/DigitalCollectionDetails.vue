@@ -1,6 +1,6 @@
 <template>
 	<div class="page-box">
-        <!-- <van-loading type="spinner" v-show="loadingShow"/> -->
+        <van-loading type="spinner" v-show="loadingShow"/>
         <van-overlay :show="overlayShow" />
         <van-nav-bar left-arrow :border="false"
             :placeholder="true"
@@ -262,7 +262,7 @@
             },
 
             // 作品分享
-            productionEvent() {
+            productionShareEvent() {
                 return new Promise((resolve,rejrect) => {
                     this.loadingShow = true;
                     productionShare(this.productsId).then((res) => {
@@ -301,7 +301,8 @@
             },
 
             async onClickRight () {
-                let shareUrl = await this.productionEvent();
+                let shareUrl = await this.productionShareEvent();
+                 debugger;
                 window.android.setShareUrl(`${shareUrl}`)
             }
 		}

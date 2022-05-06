@@ -3,167 +3,175 @@ import request from '@/utils/request'
 // 查询用户信息
 export function inquareUserInfo() {
     return request({
-      url: 'app/purchaser/info',
-      method: 'get'
+        url: 'app/purchaser/info',
+        method: 'get'
     })
 };
 
 // 修改昵称
 export function changeNickname(data) {
     return request({
-      url: 'app/purchaser/nickName',
-      method: 'put',
-      params: data
+        url: 'app/purchaser/nickName',
+        method: 'put',
+        params: data
     })
 };
 
 // 修改签名
 export function changeSignature(data) {
-  return request({
-    url: 'app/purchaser/signTxt',
-    method: 'put',
-    params: data
-  })
+    return request({
+        url: 'app/purchaser/signTxt',
+        method: 'put',
+        params: data
+    })
 };
 
 // 修改头像
 export function changeAvatar(data) {
     return request({
-      url: 'app/purchaser/avatar',
-      method: 'post',
-      data
+        url: 'app/purchaser/avatar',
+        method: 'post',
+        data
     })
 };
 
 // 实名认证
 export function realNameArenhzneuthentication(data) {
     return request({
-      url: 'app/purchaser/authentication',
-      method: 'post',
-      data
+        url: 'app/purchaser/authentication',
+        method: 'post',
+        data
     })
 };
 
 // 查询首页作品列表
 export function inquareProductList(data) {
     return request({
-      url: 'app/index',
-      method: 'get',
-      params: data
+        url: 'app/index',
+        method: 'get',
+        params: data
     })
 };
 
 // 作品访问记录
 export function productVisitRecord(id) {
-  return request({
-    url: `app/visit/${id}`,
-    method: 'get'
-  })
+    return request({
+        url: `app/visit/${id}`,
+        method: 'get'
+    })
 };
 
 // 查询作品详情
 export function inquareProductDetails(id) {
     return request({
-      url: `app/one/${id}`,
-      method: 'get'
+        url: `app/one/${id}`,
+        method: 'get'
     })
 };
 
 // 查询发售日厉
 export function inquareSellCalendar() {
     return request({
-      url: 'app/sale',
-      method: 'get'
+        url: 'app/sale',
+        method: 'get'
     })
 };
 
 // 作品访问记录
 export function productsAccessRecord(id) {
-  debugger;
-  return request({
-    url: `app/visit/${id}`,
-    method: 'get'
-  })
+    debugger;
+    return request({
+        url: `app/visit/${id}`,
+        method: 'get'
+    })
 };
 
 // 购买商品
 export function purchaseCommodity(commId) {
-  return request({
-    url: `app/order/${commId}`,
-    method: 'post'
-  })
+    return request({
+        url: `app/order/${commId}`,
+        method: 'post'
+    })
 };
 
 // 创建支付订单
 export function createPaymentOrder(data) {
-  return request({
-    url: 'app/pay',
-    method: 'post',
-    data
-  })
+    return request({
+        url: 'app/pay',
+        method: 'post',
+        data
+    })
 };
 
 // 取消订单
 export function cancelOrder(orderId) {
-  return request({
-    url: `app/cancel/${orderId}`,
-    method: 'post'
-  })
+    return request({
+        url: `app/cancel/${orderId}`,
+        method: 'post'
+    })
 };
 
 // 查询支付结果
 export function queryPaymentResult(orderId) {
-  return request({
-    url: `/app/pay/${orderId}`,
-    method: 'get'
-  })
+    return request({
+        url: `/app/pay/${orderId}`,
+        method: 'get'
+    })
 };
 
 // 查询订单列表
 export function queryOrderList() {
-  return request({
-    url: 'app/orders',
-    method: 'get'
-  })
+    return request({
+        url: 'app/orders',
+        method: 'get'
+    })
 };
 
 // 查询订单详情
 export function queryOrderDetails(id) {
-  return request({
-    url: `app/order/${id}`,
-    method: 'get'
-  })
+    return request({
+        url: `app/order/${id}`,
+        method: 'get'
+    })
 };
 
 // 查询藏品记录
 export function queryObjectRecord(data) {
-  return request({
-    url: 'app/record',
-    method: 'get',
-    params: data
-  })
+    return request({
+        url: 'app/record',
+        method: 'get',
+        params: data
+    })
 };
 
 // 查询藏品记录详情
 export function queryObjectRecordDetails(id) {
-  return request({
-    url: `app/record/${id}`,
-    method: 'get'
-  })
+    return request({
+        url: `app/record/${id}`,
+        method: 'get'
+    })
 };
 
 //藏品转增
-export function transferObject(id,receiver) {
-  return request({
-    url: `/app/transfer/${id}?receiver=${receiver}`,
-    method: 'post'
-  })
+export function transferObject(id, receiver) {
+    return request({
+        url: `/app/transfer/${id}?receiver=${receiver}`,
+        method: 'post'
+    })
 };
 
 //产品分享
 export function productionShare(id) {
-  return request({
-    url: `/app/share/${id}`,
-    method: 'get'
-  })
+    return request({
+        url: `/app/share/${id}`,
+        method: 'get'
+    })
+};
+
+//我的app分享
+export function appShare() {
+    return request({
+        url: '/app/shareApp',
+        method: 'get'
+    })
 };

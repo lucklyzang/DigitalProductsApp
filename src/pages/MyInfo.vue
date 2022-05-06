@@ -1,5 +1,6 @@
 <template>
   <div class="page-box">
+    <van-loading type="spinner" v-show="loadingShow"/>
     <van-nav-bar :border="false"
         :placeholder="true"
         :fixed="true"
@@ -9,7 +10,7 @@
     >
         <template #left>
             <p>
-                <img :src="blockchainPng" alt="">
+                <img :src="blockchainAdress" alt="">
                 <span>区块链地址</span>
             </p>
         </template>
@@ -72,7 +73,8 @@
         mapMutations
     } from 'vuex'
     import {
-        inquareUserInfo
+        inquareUserInfo,
+        appShare
     } from '@/api/products.js'
     import {
         IsPC
@@ -85,6 +87,7 @@
         },
         data() {
             return {
+                loadingShow: false,
                 zoneIconList: [{
                     icon: require("@/common/images/login/my-order.png"),
                     span: '我的订单'
@@ -118,6 +121,7 @@
                 defaultPersonPng: require("@/common/images/home/default-person.jpg"),
                 notLoginPng: require("@/common/images/login/not-login.png"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),
+                blockchainAdress: require("@/common/images/home/blockchain-adress.png"),
                 blockchainServePng: require("@/common/images/home/blockchain-service.png")
             }
         },
@@ -243,6 +247,8 @@
                      this.$router.push({
                         path: 'aboutUs'
                     })
+                } else if (item.span == '分享') {
+                    this.myShareEvent()
                 }
             },
 
@@ -264,6 +270,36 @@
                             position: 'bottom'
                         })
                     })
+            },
+
+            // App分享
+            appShareEvent() {
+                return new Promise((resolve,rejrect) => {
+                    this.loadingShow = true;
+                    appShare().then((res) => {
+                        this.loadingShow = false;
+                        if (res && res.data.code == 0) {
+                            resolve(res.data.url)
+                        } else {
+                            this.$toast({
+                                message: `${res.data.msg}`,
+                                position: 'bottom'
+                            })
+                        }
+                    })
+                    .catch((err) => {
+                        this.loadingShow = false;
+                        this.$toast({
+                            message: `${err.message}`,
+                            position: 'bottom'
+                        })
+                    })
+                })
+            },
+
+             async myShareEvent () {
+                let shareUrl = await this.appShareEvent();
+                window.android.setShareUrl(`${shareUrl}`)
             }
         }
     }
