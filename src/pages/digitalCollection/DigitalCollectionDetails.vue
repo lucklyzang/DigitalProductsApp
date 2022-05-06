@@ -11,7 +11,7 @@
             @click-right="onClickRight"
         >
             <template #right>
-                <!-- <img :src="sharePng" alt=""> -->
+                <img :src="sharePng" alt="">
             </template>
         </van-nav-bar>
         <div class="content">
@@ -96,7 +96,7 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex'
-	import {inquareProductDetails,purchaseCommodity,inquareUserInfo} from '@/api/products.js'
+	import {inquareProductDetails,purchaseCommodity,inquareUserInfo,productionShare} from '@/api/products.js'
 	export default {
         name: 'DigitalCollectionDetails',
 		components: {
@@ -261,6 +261,31 @@
                 })
             },
 
+            // 作品分享
+            productionEvent() {
+                return new Promise((resolve,rejrect) => {
+                    this.loadingShow = true;
+                    productionShare(this.productsId).then((res) => {
+                        this.loadingShow = false;
+                        if (res && res.data.code == 0) {
+                            resolve(res.data.data)
+                        } else {
+                            this.$toast({
+                                message: `${res.data.msg}`,
+                                position: 'bottom'
+                            })
+                        }
+                    })
+                    .catch((err) => {
+                        this.loadingShow = false;
+                        this.$toast({
+                            message: `${err.message}`,
+                            position: 'bottom'
+                        })
+                    })
+                })
+            },
+
             // 倒计时结束事件
             countDownEvent () {
                 this.isCountDownShow = false
@@ -275,7 +300,10 @@
                 this.$router.push({path: 'home'})
             },
 
-            onClickRight () {}
+            async onClickRight () {
+                let shareUrl = await this.productionEvent();
+                window.android.setShareUrl(`${shareUrl}`)
+            }
 		}
 	}
 </script>

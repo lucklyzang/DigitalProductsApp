@@ -18,10 +18,12 @@
                         </span>
                     </div>
                     <div class="number">
-                        <span class="blockchain-img">
-                            <img :src="blockchainPng" alt="">
-                        </span>
-                        <span class="blockchain-chain">{{collectionRecordDetails.chain}}</span>
+                        <div class="number-content">
+                            <span class="blockchain-img">
+                                <img :src="blockchainPng" alt="">
+                            </span>
+                            <span class="blockchain-chain">{{collectionRecordDetails.chain}}</span>
+                        </div>    
                     </div>
                     <img :src="detailsTitleWrappper" alt="">
                 </div>
@@ -224,33 +226,35 @@
                         height: 25px;
                         display: flex;
                         flex-flow: row nowrap;
-                        align-items: center;
                         justify-content: center;
-                        position: relative;
+                        align-items: center;
                         display: flex;
                         flex-flow: row nowrap;
-                        .blockchain-img {
-                           width: 25px;
-                            img {
-                                width: 100%;
-                                margin-right: 2px
+                        .number-content {
+                            position: relative;
+                            .blockchain-img {
+                                width: 30px;
+                                position: absolute;
+                                left: 0;
+                                top: -6px;
+                                img {
+                                    width: 100%;
+                                }
+                            };
+                            .blockchain-chain {
+                                display: inline-block;
+                                max-width: 200px;
+                                padding: 0 16px;
+                                border-radius: 10px;
+                                margin-left: 17px;
+                                font-size: 10px;
+                                box-sizing: border-box;
+                                line-height: 22px;
+                                background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
+                                color: black;
+                                .no-wrap()
                             }
-                        };
-                        .blockchain-chain {
-                            display: inline-block;
-                            padding: 0 16px 0 6px;
-                            border-top-right-radius: 10px;
-                            border-bottom-right-radius: 10px;
-                            border-top-left-radius: 8px;
-                            border-bottom-left-radius: 8px;
-                            margin-left: -2px;
-                            font-size: 10px;
-                            box-sizing: border-box;
-                            line-height: 22px;
-                            background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
-                            color: black;
-                            .no-wrap()
-                        }
+                        }    
                     };
                     >img {
                         position: absolute;

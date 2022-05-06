@@ -177,7 +177,7 @@
                         align-items: center;
 						width: 100%;
 						.img-show {
-							width: 70px;
+							width: 80px;
 							img {
 								pointer-events: none;
 								width: 100%;
@@ -185,17 +185,16 @@
 						};
 						.span-show {
 							display: flex;
-                            height: 70px;
 							flex: 1;
 							width: 0;
 							flex-direction: column;
 							justify-content: space-between;
-							margin-left: 14px;
+							margin-left: 26px;
 							>span {
 								display: inline-block;
 								.no-wrap();
 								&:nth-child(1) {
-									font-size: 16px;
+									font-size: 17px;
 									color: #FFFFFF;
 									overflow: hidden;
 									text-overflow: ellipsis;
@@ -208,32 +207,32 @@
 							};
                             p {
 								margin: 6px 0;
-								height: 25px;
 								width: 90%;
 								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;
+								height: 35px;
 								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;
+								position: relative;
 								.blockchain-img {
-									width: 25px;
+									width: 30px;
+									position: absolute;
+									top: 1px;
+									left: 0;
 									img {
 										width: 100%;
-										margin-right: 2px
 									}
 								};
 								.blockchain-chain {
 									display: inline-block;
-									padding: 0 16px 0 6px;
-									border-top-right-radius: 10px;
-									border-bottom-right-radius: 10px;
-									border-top-left-radius: 8px;
-									border-bottom-left-radius: 8px;
-									margin-left: -2px;
+									padding: 0 16px;
+									border-radius: 10px;
 									font-size: 10px;
 									box-sizing: border-box;
 									line-height: 22px;
+									margin-left: 17px;
 									background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
 									color: black;
 									.no-wrap()

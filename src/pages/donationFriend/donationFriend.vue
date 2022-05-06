@@ -1,6 +1,7 @@
 <template>
 	<div class="content-box">
 		<NavBar path="/collectionRecordDetails" title="转增好友"/>
+        <van-loading type="spinner" v-show="loadingShow"/>
 		<div class="content-top">
            <p>将以下藏品转增给好友</p>
            <div class="collection-details-box">
@@ -10,11 +11,13 @@
                     </div>
                     <div class="span-show">
                         <span>{{donationProductDetails.name}}</span>
-                        <p>
-                            <img :src="blockchainPng" alt="">
-                            <span>{{donationProductDetails.chain}}</span>
-                        </p>
-                        <span>{{donationProductDetails.publisher}}</span>
+                            <p>
+								<span class="blockchain-img">
+									<img :src="blockchainPng" alt="">
+								</span>
+								<span class="blockchain-chain">{{donationProductDetails.chain}}</span>
+                            </p>
+						<span>{{donationProductDetails.publisher}}</span>
                     </div>
                 </div>
            </div>
@@ -28,7 +31,7 @@
                 type="textarea"
             />
         </div>
-        <div class="content-btn">
+        <div class="content-btn" @click="transferObjectEvent">
             确认转增
         </div>
         <div class="donation-explain">
@@ -48,6 +51,7 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
+    import {transferObject} from '@/api/products.js'
 	export default {
         name: 'DonationFriend',
 		components: {
@@ -56,6 +60,7 @@
 		data() {
 			return {
                 adreeMessage: '',
+                loadingShow: false,
 				blockchainPng: require("@/common/images/home/blockchain.png")
 			}
 		},
@@ -82,11 +87,38 @@
 		methods: {
 			...mapMutations([
 			]),
-            onCopySuccess(){
-                this.$toast("复制成功");
-            },
-            onCopyError(){
-                this.$toast("复制失败");
+
+            // 转增方法
+            transferObjectEvent() {
+                if (!this.adreeMessage) {
+                    this.$toast({
+                        message: '请输入好友的区块链地址/手机号',
+                        position: 'bottom'
+                    });
+                    return
+                };
+                this.loadingShow = true;
+                transferObject(this.donationProductDetails.id,this.adreeMessage).then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                        this.$toast({
+                            message: '转赠成功',
+                            position: 'bottom'
+                        })
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    })
+                })
             }
 		}
 	}
@@ -133,24 +165,23 @@
                     align-items: center;
                     width: 100%;
                     .img-show {
-                        width: 110px;
+                        width: 100px;
                         img {
                             width: 100%;
                         }
                     };
-                    .span-show {
+                   .span-show {
                         display: flex;
-                        height: 100px;
                         flex: 1;
                         width: 0;
                         flex-direction: column;
                         justify-content: space-between;
-                        margin-left: 14px;
+                        margin-left: 26px;
                         >span {
-                            .no-wrap();
                             display: inline-block;
+                            .no-wrap();
                             &:nth-child(1) {
-                                font-size: 18px;
+                                font-size: 17px;
                                 color: #FFFFFF;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
@@ -163,32 +194,34 @@
                         };
                         p {
                             margin: 6px 0;
-                            height: 30px;
+                            width: 90%;
                             display: flex;
                             flex-flow: row nowrap;
                             align-items: center;
-                            padding: 0 20px 0 0;
-                            box-sizing: border-box;
-                            height: 22px;
-                            border: 1px solid #bd6aff;
-                            border-top-right-radius: 10px;
-                            border-bottom-right-radius: 10px;
-                            border-top-left-radius: 5px;
-                            border-bottom-left-radius: 5px;
+                            height: 35px;
                             display: flex;
                             flex-flow: row nowrap;
                             align-items: center;
-                            img {
-                                width: 20px;
-                                margin-right: 2px;
+                            position: relative;
+                            .blockchain-img {
+                                width: 30px;
+                                position: absolute;
+                                top: 1px;
+                                left: 0;
+                                img {
+                                    width: 100%;
+                                }
                             };
-                            span {
+                            .blockchain-chain {
                                 display: inline-block;
-                                max-width: 200px;
+                                padding: 0 16px;
+                                border-radius: 10px;
                                 font-size: 10px;
                                 box-sizing: border-box;
                                 line-height: 22px;
-                                color: #bd68ff;
+                                margin-left: 17px;
+                                background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
+                                color: black;
                                 .no-wrap()
                             }
                         }

@@ -151,3 +151,19 @@ export function queryObjectRecordDetails(id) {
     method: 'get'
   })
 };
+
+//藏品转增
+export function transferObject(id,receiver) {
+  return request({
+    url: `/app/transfer/${id}?receiver=${receiver}`,
+    method: 'post'
+  })
+};
+
+//产品分享
+export function productionShare(id) {
+  return request({
+    url: `/app/share/${id}`,
+    method: 'get'
+  })
+};
