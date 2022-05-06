@@ -19,7 +19,7 @@
           <img :src="notLoginPng" v-show="!isLogin" class="imgIcon" alt="">
           <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl')" class="imgIcon" alt="">
           <img :src="userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl')" class="imgIcon" alt="">
-          <img :src="arrowRightPng" class="imgIcon" alt="" width="8">
+          <img :src="arrowRightPng" class="imgIcon" alt="">
 			</div>
 		</div>
         <div class="nick-name">
@@ -391,10 +391,11 @@
                     display: flex;
                     flex-flow: row nowrap;
                     justify-content: flex-end;
+                    align-items: center;
                     span {
                        font-size: 14px;
                        color: #514a60;
-                       margin: -2px 6px 0 8px;
+                       margin-right: 8px;
                        width: 120px;
                        flex: 1;
                        text-align: right;
@@ -417,7 +418,7 @@
                        border-radius: 50%;
                        margin-right: 2px;
                        &:last-child {
-                        width: 8px !important;
+                        width: 10px !important;
                         height: auto !important
                        }
                     }
