@@ -302,7 +302,6 @@
 
             async onClickRight () {
                 let shareUrl = await this.productionShareEvent();
-                 debugger;
                 window.android.setShareUrl(`${shareUrl}`)
             }
 		}
