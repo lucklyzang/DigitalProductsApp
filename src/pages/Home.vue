@@ -1,5 +1,6 @@
 <template>
   <div class="page-box">
+    <NavBar :leftArrow="false" />
     <van-pull-refresh
         v-model="isRefresh"
         pulling-text="下拉刷新"
@@ -7,7 +8,6 @@
         success-text="刷新成功"
         @refresh="onRefresh"
     >
-        <NavBar :leftArrow="false" />
         <div class="content">
             <div class="rare-object">
                 <img :src="homeBannerPng" alt="">
