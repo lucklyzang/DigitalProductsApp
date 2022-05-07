@@ -6,7 +6,7 @@
             </div>
             <div class="bottom">
                 <img src="../../static/img/blockchain-service.png" style="width:100px" alt="">
-                <span>提供技术支持</span>
+                <span style=" margin-left:8px;font-size:10px;">提供技术支持</span>
             </div>
         </div>
 </template>
@@ -37,8 +37,6 @@ export default {
             justify-content: center;
             align-items: center;
             >span {
-                margin-left: 8px;
-                font-size: 10px;
                 color: #c2c2c2
             }
         }
