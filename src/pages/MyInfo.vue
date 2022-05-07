@@ -15,53 +15,61 @@
             </p>
         </template>
     </van-nav-bar>
-    <div class="content-box">
-      <div class="content-top">
-        <div class="person-message-box">
-          <div class="message-left">
-            <div class="person-picture" @click="toEditPersonPage">
-              <img :src="notLoginPng" v-show="!isLogin" alt="">
-			  <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl') || isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && !userInfo.avatarUrl" alt="">
-			  <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && userInfo.avatarUrl" alt="">
+    <van-pull-refresh
+        v-model="isRefresh"
+        pulling-text="下拉刷新"
+        loosing-text="释放立即刷新"
+        success-text="刷新成功"
+        @refresh="onRefresh"
+    >  
+        <div class="content-box">
+        <div class="content-top">
+            <div class="person-message-box">
+            <div class="message-left">
+                <div class="person-picture" @click="toEditPersonPage">
+                <img :src="notLoginPng" v-show="!isLogin" alt="">
+                <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl') || isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && !userInfo.avatarUrl" alt="">
+                <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && userInfo.avatarUrl" alt="">
+                </div>
+                <div class="person-name">
+                    <div class="top">
+                        <div v-if="isLogin">{{userInfo && userInfo.nickName}}</div>
+                        <div v-else>未登录</div>
+                    </div>
+                    <div class="bottom">
+                        <span v-show="!isLogin">登录后可以查看更多数字藏品</span>
+                        <span v-show="userInfo && !userInfo.signTxt && isLogin">TA很神秘,什么都没有留下</span>
+                        <span v-show="userInfo && userInfo.signTxt && isLogin">{{userInfo && userInfo.signTxt}}</span>
+                    </div>
+                </div>
             </div>
-            <div class="person-name">
-				<div class="top">
-					<div v-if="isLogin">{{userInfo && userInfo.nickName}}</div>
-					<div v-else>未登录</div>
-				</div>
-				<div class="bottom">
-					<span v-show="!isLogin">登录后可以查看更多数字藏品</span>
-					<span v-show="userInfo && !userInfo.signTxt && isLogin">TA很神秘,什么都没有留下</span>
-        			<span v-show="userInfo && userInfo.signTxt && isLogin">{{userInfo && userInfo.signTxt}}</span>
-				</div>
             </div>
-          </div>
+            <div class="function-zone">
+            <div class="function-zone-icon-list" v-for="(item,index) in zoneIconList" :key="index" @click="featureSetTopEvent(item)">
+                <img :src="item.icon" alt="">
+                <span>{{item.span}}</span>
+            </div>
+            </div>
+            </div>
+        <div class="content-bottom">
+            <div class="nick-name" v-for="(item,index) in featureSetList" :key="index" @click="featureSetEvent(item)">
+                <div class="left">
+                    <img :src="item.iconLeft" alt="">
+                    <span>{{item.span}}</span>
+                </div>
+                <div class="right">
+                    <div>
+                        <img :src="item.iconRight" alt="">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="function-zone">
-          <div class="function-zone-icon-list" v-for="(item,index) in zoneIconList" :key="index" @click="featureSetTopEvent(item)">
-            <img :src="item.icon" alt="">
-            <span>{{item.span}}</span>
-          </div>
+        <div class="blockchain-server">
+            <img :src="blockchainServePng" alt="">
+            <span>提供技术支持</span>
         </div>
-		  </div>
-      <div class="content-bottom">
-      	<div class="nick-name" v-for="(item,index) in featureSetList" :key="index" @click="featureSetEvent(item)">
-			<div class="left">
-				<img :src="item.iconLeft" alt="">
-				<span>{{item.span}}</span>
-			</div>
-			<div class="right">
-				<div>
-					<img :src="item.iconRight" alt="">
-				</div>
-			</div>
-		</div>
-      </div>
-      <div class="blockchain-server">
-          <img :src="blockchainServePng" alt="">
-          <span>提供技术支持</span>
-      </div>
-    </div>
+        </div>
+    </van-pull-refresh>  
     <FooterBottom></FooterBottom>  
   </div>
 </template>
@@ -87,6 +95,7 @@
         },
         data() {
             return {
+                isRefresh: false,
                 loadingShow: false,
                 zoneIconList: [{
                     icon: require("@/common/images/login/my-order.png"),
@@ -193,6 +202,11 @@
 
             toSetPage() {},
 
+            //我的页面下拉刷新事件
+            onRefresh () {
+                this.queryuserInfo()
+            },
+
             // 上部区域功能事件
             featureSetTopEvent(item) {
                 if (!this.isLogin) {
@@ -255,6 +269,7 @@
             // 查询用户信息
             queryuserInfo() {
                 inquareUserInfo().then((res) => {
+                        this.isRefresh = false;
                         if (res && res.data.code == 0) {
                             this.storeUserInfo(res.data.data);
                         } else {
@@ -265,6 +280,7 @@
                         }
                     })
                     .catch((err) => {
+                        this.isRefresh = false;
                         this.$toast({
                             message: `${err.message}`,
                             position: 'bottom'
@@ -339,8 +355,16 @@
                 }
             }
         };
-        .content-box {
+        /deep/ .van-pull-refresh {
             flex: 1;
+            display: flex;
+            .van-pull-refresh__track {
+                flex: 1;
+                height: auto;
+            }
+        };
+        .content-box {
+            height: 100%;
             display: flex;
             flex-direction: column;
             position: relative;

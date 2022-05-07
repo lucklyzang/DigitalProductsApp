@@ -207,7 +207,7 @@
 							};
                             p {
 								margin: 6px 0;
-								width: 90%;
+								width: 70%;
 								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;
@@ -227,7 +227,8 @@
 								};
 								.blockchain-chain {
 									display: inline-block;
-									padding: 0 16px;
+									padding: 0 6px 0 16px;
+									flex: 1;
 									border-radius: 10px;
 									font-size: 10px;
 									box-sizing: border-box;
