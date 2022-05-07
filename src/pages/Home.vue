@@ -422,6 +422,15 @@
                 }
             }
         };
+        /deep/ .van-pull-refresh {
+            flex: 1;
+            display: flex;
+            .van-pull-refresh__track {
+                flex: 1;
+                display: flex;
+                height: auto;
+            }
+        };
         .content {
             flex: 1;
             display: flex;
