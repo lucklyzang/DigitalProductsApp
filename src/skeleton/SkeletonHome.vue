@@ -5,7 +5,7 @@
                 <img src="../../static/img/default-person.jpg" style="width: 100px" alt="">
             </div>
             <div class="bottom">
-                <img src="../../static/img/blockchain-service.png" alt="">
+                <img src="../../static/img/blockchain-service.png" style="width:100px" alt="">
                 <span>提供技术支持</span>
             </div>
         </div>
@@ -36,9 +36,6 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            img {
-                width:100px
-            };
             >span {
                 margin-left: 8px;
                 font-size: 10px;
