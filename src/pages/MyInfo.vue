@@ -204,6 +204,7 @@
 
             //我的页面下拉刷新事件
             onRefresh () {
+                if (!this.isLogin) { this.isRefresh = false; return };
                 this.queryuserInfo()
             },
 
