@@ -79,7 +79,6 @@ export function inquareSellCalendar() {
 
 // 作品访问记录
 export function productsAccessRecord(id) {
-    debugger;
     return request({
         url: `app/visit/${id}`,
         method: 'get'
