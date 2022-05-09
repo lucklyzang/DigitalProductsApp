@@ -5,7 +5,8 @@ export function getDefaultLoginState() {
         isLogin: false, //是否登录
         token: null, //请求token
         isShowLoginHint: true, //是否展示登录提示框状态
-        isShowNameAuthHint: true //是否展示实名认证提示框状态
+        isShowNameAuthHint: true, //是否展示实名认证提示框状态
+        isTokenExpired: '' // token是否过期
     }
 };
 // 产品信息store的初始值

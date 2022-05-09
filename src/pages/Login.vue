@@ -78,7 +78,8 @@ export default {
   computed: {
     ...mapGetters([
 		'isCanSendPhoneCode',
-		'countdownTime'
+		'countdownTime',
+		'isTokenExpired'
     ])
   },
 
@@ -89,14 +90,17 @@ export default {
     },
 
   mounted () {
-	  console.log(this.isCanSendPhoneCode);
     // 控制设备物理返回按键
     if (!IsPC()) {
       let that = this;
       pushHistory()
       that.gotoURL(() => {
         pushHistory();
-        this.$router.push({path: '/home'})
+		if (this.isTokenExpired === true) {
+			this.$router.push({path: 'home'})
+		} else {
+			this.$router.push({path: this.path})
+		}
       });
     };
     // 监控键盘弹起

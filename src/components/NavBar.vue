@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'NavBar',
   props:{
@@ -61,9 +62,20 @@ export default {
       default: ''
     }
   },
+
+  computed:{
+    ...mapGetters([
+      'isTokenExpired'
+    ])
+  },
+
   methods: {
      onClickLeft() {
-      this.$router.push({path: this.path})
+      if (this.isTokenExpired === true) {
+        this.$router.push({path: 'home'})
+      } else {
+        this.$router.push({path: this.path})
+      }
     },
     onClickRight() {
     }

@@ -174,8 +174,35 @@
 
             // 使用图片
             async useObjectImgEvent () {
-                let imgUrl = await this.queryObjectImgInfo()
+                // let imgUrl = await this.queryObjectImgInfo();
+                let dataUrl = 'http://fidesum-1256093638.cos.ap-beijing.myqcloud.com/nft/20220426/da69239006614fbba310ed2423cecd80.jpg';
+                this.getUrlBase64(dataUrl).then((base64) => {
+                    let a = document.createElement("a");
+                    a.style.display = "none";
+                    a.download = 'img';
+                    a.href = base64;
+                    document.body.appendChild(a);
+                    a.click();
+                })
             },
+
+            getUrlBase64(url) {
+                return new Promise((resolve) => {
+                    let canvas = document.createElement("canvas");
+                    let ctx = canvas.getContext("2d");
+                    let img = new Image();
+                    img.setAttribute("crossOrigin", "anonymous"); //允许跨域
+                    img.src = url;
+                    img.onload = function () {
+                        canvas.height = 300;
+                        canvas.width = 300;
+                        ctx.drawImage(img, 0, 0, 300, 300);
+                        let dataURL = canvas.toDataURL("image/png");
+                        canvas = null;
+                        resolve(dataURL);
+                    }
+                });
+            },    
 
             // 转增好友藏品
             donationFriendEvent () {

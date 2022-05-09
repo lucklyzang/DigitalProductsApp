@@ -27,6 +27,11 @@ export default {
         isShowNameAuthHint: (state) => {
             state.isShowNameAuthHint = getStore('isShowNameAuthHint') ? getStore('isShowNameAuthHint') === 'false' ? false : true : true;
             return state.isShowNameAuthHint
+        },
+
+        isTokenExpired: (state) => {
+            state.isTokenExpired = getStore('isTokenExpired') ? getStore('isTokenExpired') === 'false' ? false : true : '';
+            return state.isTokenExpired
         }
     },
 
@@ -69,13 +74,21 @@ export default {
             }
         },
 
-         // 保存实名认证提示框的状态
-         changeIsShowNameAuthHint(state, playLoad) {
+        // 保存实名认证提示框的状态
+        changeIsShowNameAuthHint(state, playLoad) {
             if (playLoad != 'null') {
                 setStore('isShowNameAuthHint', playLoad);
                 state.isShowNameAuthHint = playLoad
             }
-        }
+        },
+
+        // 保存token状态
+        changeIsTokenExpired(state, playLoad) {
+            if (playLoad != 'null') {
+                setStore('isTokenExpired', playLoad);
+                state.isTokenExpired = playLoad
+            }
+        },
     },
 
     actions: {

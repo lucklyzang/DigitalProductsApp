@@ -2,7 +2,6 @@ import axios from 'axios'
 import store from '@/store'
 import router from '../router'
 import Vue from 'vue';
-import { removeAllLocalStorage,getStore } from '@/common/js/utils'
 import { Dialog, Toast } from 'vant';
 // 全局注册
 Vue.use(Dialog);
@@ -37,9 +36,21 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    return response
+    return response;
   },
   (err) => {
+    // token过期后，重新登录
+    if (err.message == 'Request failed with status code 401') {
+       // 清空store和localStorage
+       store.dispatch('resetFabricState');
+       store.dispatch('resetLoginState');
+       window.localStorage.clear();
+       store.commit('changeIsTokenExpired',true);
+       Toast('token已过期,请重新登录');
+       router.push({
+        path: '/login'
+       });
+    };
     var config = err.config;
     // 判断是否配置了重试
     if(!config || !config.retry) {

@@ -81,7 +81,8 @@
 		methods: {
 			...mapMutations([
 				'changeToken',
-				'changeIsLogin'
+				'changeIsLogin',
+				'changeIsTokenExpired'
 			]),
 
 			// 输入框变化事件
@@ -133,6 +134,7 @@
 					if (res && res.data.code == 0) {
 						this.changeToken(res.data.token);
 						this.changeIsLogin(true);
+						this.changeIsTokenExpired(false);
 						this.$router.push({name:'home'})
 					} else {
 						this.codeOne = '';
