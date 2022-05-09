@@ -72,7 +72,11 @@ export default {
   methods: {
      onClickLeft() {
       if (this.isTokenExpired === true) {
-        this.$router.push({path: 'home'})
+        if (this.path == '/myInfo' || this.path == '/collectionDetails') {
+          this.$router.push({path: this.path})
+        } else {
+          this.$router.push({path: 'home'})
+        }
       } else {
         this.$router.push({path: this.path})
       }
