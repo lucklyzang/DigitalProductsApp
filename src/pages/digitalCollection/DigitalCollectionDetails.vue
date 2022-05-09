@@ -597,8 +597,8 @@
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: space-between;
-            align-items: flex-start;
-            padding: 10px 20px;
+            align-items: center;
+            padding: 0 20px;
             box-sizing: border-box;
 			> div {
 				&:first-child {
