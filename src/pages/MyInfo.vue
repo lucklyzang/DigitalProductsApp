@@ -313,7 +313,7 @@
                 })
             },
 
-             async myShareEvent () {
+            async myShareEvent () {
                 let shareUrl = await this.appShareEvent();
                 window.android.setShareUrl(`${shareUrl}`)
             }
@@ -490,7 +490,8 @@
                         }
                         ;
                         img {
-                            width: 18px
+                            width: 18px;
+                            height: 18px
                         }
                     };
                     .right {

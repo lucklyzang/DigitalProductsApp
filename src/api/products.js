@@ -175,3 +175,11 @@ export function appShare() {
         method: 'get'
     })
 };
+
+// 使用图片
+export function useObjectImg(id) {
+    return request({
+        url: `/app/use/${id}`,
+        method: 'get'
+    })
+};

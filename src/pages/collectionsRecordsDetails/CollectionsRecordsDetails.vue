@@ -56,7 +56,7 @@
                 <van-icon name="printer" />
                 <span>转增</span>
             </div>
-            <div>
+            <div @click="useObjectImgEvent">
                 <van-icon name="good-job" />
                 <span>使用</span>
             </div>
@@ -74,7 +74,7 @@
 		mapMutations
 	} from 'vuex'
     import NavBar from '@/components/NavBar'
-	import {queryObjectRecordDetails} from '@/api/products.js'
+	import {queryObjectRecordDetails,useObjectImg} from '@/api/products.js'
 	export default {
         name: 'CollectionsRecordsDetails',
 		components: {
@@ -144,6 +144,37 @@
                         position: 'bottom'
                     })
                 })
+            },
+
+            //查询下载图片地址
+            queryObjectImgInfo () {
+                return new Promise((resolve,rejrect) => {
+                    this.loadingShow = true;
+                    useObjectImg(this.collectionId).then((res) => {
+                        console.log('图片地址',res);
+                        this.loadingShow = false;
+                        if (res && res.data.code == 0) {
+                            resolve(res.data.url)
+                        } else {
+                            this.$toast({
+                                message: `${res.data.msg}`,
+                                position: 'bottom'
+                            })
+                        }
+                    })
+                    .catch((err) => {
+                        this.loadingShow = false;
+                        this.$toast({
+                            message: `${err.message}`,
+                            position: 'bottom'
+                        })
+                    })
+                })
+            },
+
+            // 使用图片
+            async useObjectImgEvent () {
+                let imgUrl = await this.queryObjectImgInfo()
             },
 
             // 转增好友藏品
