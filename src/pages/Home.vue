@@ -152,13 +152,15 @@
                 <span class="expect" v-show="!isShowLoadFail && !loadingShow">- 更多内容敬请期待 -</span>
                 </div>
             </div>
-            <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0">
+            <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0 && isShowNameAuthHint">
                 <span>实名认证后才可以购买数字藏品</span>
                 <span @click="goAuthNameEvent">去认证</span>
+                <van-icon name="clear" size="25" color="#5f5f5f" @click="clearNameAuthHintEvent"/>
             </div>
-            <div class="name-auth login-hint" v-show="!isLogin">
+            <div class="name-auth login-hint" v-show="!isLogin && isShowLoginHint">
                 <span>去登录,开启新的体验</span>
                 <span @click="goLoginEvent">登录</span>
+                <van-icon name="clear" size="25" color="#5f5f5f" @click="clearLoginHintEvent"/>
             </div>
         </div>
     </van-pull-refresh>   
@@ -214,8 +216,6 @@
                 pushHistory();
                 this.gotoURL(() => {})
             };
-            // this.$store.dispatch("resetLoginState");
-            // window.localStorage.clear();
             //查询藏品列表
             this.queryProductsList()
         },
@@ -225,7 +225,9 @@
         computed: {
             ...mapGetters([
                 'userInfo',
-                'isLogin'
+                'isLogin',
+                'isShowLoginHint',
+                'isShowNameAuthHint'
             ])
         },
 
@@ -239,7 +241,9 @@
 
         methods: {
             ...mapMutations([
-                'changeProductsId'
+                'changeProductsId',
+                'changeIsShowLoginHint',
+                'changeIsShowNameAuthHint'
             ]),
 
             tabSwitchEvent(index) {
@@ -251,6 +255,16 @@
                     this.descriptionContent = '暂无发售计划';
                     this.querySaleCalendar()
                 }
+            },
+
+            // 关闭登录提示框事件
+            clearLoginHintEvent () {
+                this.changeIsShowLoginHint(false)
+            },
+
+            // 关闭实名认证提示框事件
+            clearNameAuthHintEvent () {
+                this.changeIsShowNameAuthHint(false)
             },
 
             // 日历和产品列表加载失败后刷新事件
@@ -962,11 +976,11 @@
                 box-sizing: border-box;
                 >span {
                     display: inline-block;
-                    &:first-child {
+                    &:nth-child(1) {
                         font-weight: bold
                     }
                     ;
-                    &:last-child {
+                    &:nth-child(2) {
                         text-align: center;
                         line-height: 36px;
                         height: 36px;
@@ -976,6 +990,14 @@
                         font-size: 14px;
                         background: rgb(40, 40, 40);
                         color: #f3ad2b;
+                        margin-left: 10px
+                    }
+                }
+            };
+            .login-hint {
+                 >span {
+                    &:nth-child(2) {
+                        margin-left: 70px
                     }
                 }
             }
