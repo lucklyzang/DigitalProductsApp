@@ -18,7 +18,7 @@
             <div class="content-top">
                 <div class="collection-exhibition">
                     <img :src="imgLoadingGif" v-show="loadingImgGifShow">
-                    <img :src="productsDetails.imgPath" v-show="!loadingShow">
+                    <img :src="productsDetails.imgPath" v-show="!loadingImgGifShow">
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -83,7 +83,7 @@
 			<div>
 				<span>¥ {{productsDetails.price}}</span>
 			</div>
-			<div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}" v-show="isShowContent">
+			<div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}">
 				<span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购买' : '已售罄'}}</span>
 				<van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime)- new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
 			</div>
@@ -183,8 +183,12 @@
 
             // 购买商品
             async purchaseEvent () {
-                //未开售和已售罄
-                if (this.productsDetails.status == 0 || this.productsDetails.status == 2) {
+                //未开售
+                if (this.isCountDownShow) {
+                    return
+                };
+                //已售罄
+                if (this.productsDetails.status == 2) {
                     return
                 };
                 // 未登录
@@ -201,14 +205,8 @@
                     });
                     return
                 };
-                if (this.isCountDownShow) {
-                    return
-                };
-                if (this.productsDetails.status == 0 || this.productsDetails.status == 2) {
-                    return
-                };
                 await this.queryProductDetails();
-                if (this.productsDetails.status == 0 || this.productsDetails.status == 2) {
+                if (this.productsDetails.status == 2) {
                     return
                 };
                 this.buyCommodity()
@@ -460,10 +458,10 @@
                 .img-box {
                     width: 100%;
                     margin: 0 auto;
-                    font-size: 0;
                     img {
                         pointer-events: none;
                         width: 100%;
+                        vertical-align: bottom;
                         margin-top: -1px;
                         &:first-child {
                             margin-top: 0
