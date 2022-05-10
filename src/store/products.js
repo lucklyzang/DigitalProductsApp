@@ -37,7 +37,17 @@ export default {
         donationProductDetails: (state)  => {
             state.donationProductDetails = getStore('donationProductDetails') ? JSON.parse(getStore('donationProductDetails')) : null
             return state.donationProductDetails
-        }
+        },
+
+        isEnterVerificationCodePage: (state)  => {
+            state.isPaying = getStore('isEnterVerificationCodePage') ? getStore('isEnterVerificationCodePage') === 'false' ? false : true : false
+            return state.isEnterVerificationCodePage
+        },
+
+        isEnterLoginPageSource: (state)  => {
+            state.isEnterLoginPageSource = getStore('isEnterLoginPageSource') ? getStore('isEnterLoginPageSource') : ''
+            return state.isEnterLoginPageSource
+        },
     },
 
     mutations: {
@@ -87,7 +97,19 @@ export default {
             state.countdownTime = playLoad
         },
 
-        //重置产品的storeisCanSendPhoneCode
+        // 保存是否进入手机验证码页的状态
+        changeIsEnterVerificationCodePage(state, playLoad) {
+            setStore('isEnterVerificationCodePage', playLoad);
+            state.isEnterVerificationCodePage = playLoad
+        }, 
+
+        // 保存进入登录页的来源页路径
+        changeIsEnterLoginPageSource(state, playLoad) {
+            setStore('isEnterLoginPageSource', playLoad);
+            state.isEnterLoginPageSource = playLoad
+        }, 
+
+        //重置产品的状态
         resetProductsState(state) {
             Object.assign(state, getDefaultProductsState())
         }

@@ -81,15 +81,28 @@ export default {
     ...mapGetters([
 		'isCanSendPhoneCode',
 		'countdownTime',
-		'isTokenExpired'
+		'isTokenExpired',
+		'isEnterVerificationCodePage',
+		'isEnterLoginPageSource'
     ])
   },
 
    beforeRouteEnter(to, from, next) {
-      next(vm => {
-        vm.path = from.path
-      })
+		next(vm => {
+			if (vm.isEnterVerificationCodePage) {
+				vm.path = vm.isEnterLoginPageSource
+			} else {
+				vm.path = from.path
+			}
+		})
     },
+
+	beforeRouteLeave(to, from, next) {
+		if (to.path !== '/verificationCode') {
+			this.changeIsEnterVerificationCodePage(false)
+		};
+		next()
+	},
 
   mounted () {
     // 控制设备物理返回按键
@@ -133,7 +146,8 @@ export default {
     ...mapMutations([
 		'storeUserInfo',
 		'changeIsCanSendPhoneCode',
-		'changeCountdownTime'
+		'changeCountdownTime',
+		'changeIsEnterVerificationCodePage'
     ]),
     // 输入框值改变事件
     inputEvent (value) {
@@ -186,6 +200,7 @@ export default {
 		sendPhoneAuthCode(this.phoneNumber).then((res) => {
 			if (res && res.data.code == 0) {
 				this.changeIsCanSendPhoneCode(false);
+				this.changeIsEnterVerificationCodePage(true);
 				this.changeCountdownTime(new Date().getTime()+60000);
 				this.$router.push({name:'verificationCode',params: {phoneNumber: this.phoneNumber}})
             } else {

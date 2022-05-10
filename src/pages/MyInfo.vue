@@ -180,7 +180,8 @@
 
         methods: {
             ...mapMutations([
-                'storeUserInfo'
+                'storeUserInfo',
+                'changeIsEnterLoginPageSource'
             ]),
 
             eventListenerHandle(e){
@@ -194,6 +195,7 @@
 
             toEditPersonPage() {
                 if (!this.isLogin) {
+                    this.changeIsEnterLoginPageSource('/myInfo');
                     this.$router.push({
                         path: '/login'
                     })
@@ -211,6 +213,7 @@
             // 上部区域功能事件
             featureSetTopEvent(item) {
                 if (!this.isLogin) {
+                    this.changeIsEnterLoginPageSource('/myInfo');
                     this.$router.push({
                         path: '/login'
                     });
@@ -238,6 +241,7 @@
             //区块链点击事件
             onClickLeft () {
                  if (!this.isLogin) {
+                    this.changeIsEnterLoginPageSource('/myInfo');
                     this.$router.push({
                         path: '/login'
                     });
@@ -249,6 +253,7 @@
             // 下部区域功能事件
             featureSetEvent(item) {
                 if (!this.isLogin) {
+                    this.changeIsEnterLoginPageSource('/myInfo');
                     this.$router.push({
                         path: '/login'
                     });

@@ -15,6 +15,8 @@ export function getDefaultProductsState() {
         productsId: '', //作品id
         collectionId: '', //藏品id
         orderId: '', //订单id
+        isEnterVerificationCodePage: false, //是否进入过手机验证码页
+        isEnterLoginPageSource: '', // 从哪个页面进入的登录页
         isPaying: false, //是否支付中
         donationProductDetails: null, //赠送商品详情
         isCanSendPhoneCode: true, //是否能发送验证码

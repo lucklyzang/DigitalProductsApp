@@ -255,7 +255,8 @@
             ...mapMutations([
                 'changeProductsId',
                 'changeIsShowLoginHint',
-                'changeIsShowNameAuthHint'
+                'changeIsShowNameAuthHint',
+                'changeIsEnterLoginPageSource'
             ]),
 
             tabSwitchEvent(index) {
@@ -426,6 +427,7 @@
 
             //去登陆事件
             goLoginEvent() {
+                this.changeIsEnterLoginPageSource('/home');
                 this.$router.push({
                     path: '/login'
                 })

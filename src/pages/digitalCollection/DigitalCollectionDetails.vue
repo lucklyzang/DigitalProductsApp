@@ -146,7 +146,8 @@
 			...mapMutations([
                 'changeOrderId',
                 'changeIsPaying',
-                'storeUserInfo'
+                'storeUserInfo',
+                'changeIsEnterLoginPageSource'
 			]),
 
             // 查询作品详情
@@ -193,6 +194,7 @@
                 };
                 // 未登录
                 if (!this.isLogin) {
+                    this.changeIsEnterLoginPageSource('/collectionDetails');
                     this.$router.push({
                         path: '/login'
                     });
