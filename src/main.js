@@ -39,7 +39,7 @@ Vue.prototype.gotoURL = gotoURL;
 import './common/stylus/index.less'
 
 //移动端适配
-import 'lib-flexible/flexible.js'
+import 'lib-flexible/flexible'
 import App from './App'
 
 // vue剪切板功能

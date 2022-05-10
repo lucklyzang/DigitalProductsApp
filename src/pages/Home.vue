@@ -680,7 +680,6 @@
                                     display: inline-block;
                                     flex: 1;
                                     width: 0;
-                                    margin-right: 6px;
                                     .no-wrap();
                                 }
                                 >p {

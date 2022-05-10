@@ -460,10 +460,10 @@
                 .img-box {
                     width: 100%;
                     margin: 0 auto;
+                    font-size: 0;
                     img {
                         pointer-events: none;
                         width: 100%;
-                        vertical-align: bottom;
                         margin-top: -1px;
                         &:first-child {
                             margin-top: 0
