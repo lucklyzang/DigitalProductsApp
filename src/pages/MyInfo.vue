@@ -25,8 +25,8 @@
         <div class="content-box">
         <div class="content-top">
             <div class="person-message-box">
-            <div class="message-left">
-                <div class="person-picture" @click="toEditPersonPage">
+            <div class="message-left" @click="toEditPersonPage">
+                <div class="person-picture">
                 <img :src="notLoginPng" v-show="!isLogin" alt="">
                 <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl') || isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && !userInfo.avatarUrl" alt="">
                 <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && userInfo.avatarUrl" alt="">

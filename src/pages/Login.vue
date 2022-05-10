@@ -56,6 +56,8 @@ export default {
     return {
       phoneNumber: '',
 	  path: '',
+	  isDisabled: false,
+	  timer: null,
 	  checked: true,
 	  phoneNumberUsable: false,
       weixinPng: require("@/common/images/login/weixin-login.png"),
@@ -121,6 +123,12 @@ export default {
     };
   },
 
+  beforeDestroy() {
+    if(this.timer) { 
+        clearTimeout(timer)
+    }
+  },
+
   methods: {
     ...mapMutations([
 		'storeUserInfo',
@@ -170,6 +178,11 @@ export default {
 
 	// 发送验证码
 	sendCode () {
+		if (this.isDisabled) {return};
+		if (!this.isDisabled) {
+			this.isDisabled = true;
+			this.timer = setTimeout(() => {this.isDisabled = false},10000)
+		};
 		sendPhoneAuthCode(this.phoneNumber).then((res) => {
 			if (res && res.data.code == 0) {
 				this.changeIsCanSendPhoneCode(false);
