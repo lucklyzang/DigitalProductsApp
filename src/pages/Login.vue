@@ -125,7 +125,7 @@ export default {
 
   beforeDestroy() {
     if(this.timer) { 
-        clearTimeout(timer)
+        clearTimeout(this.timer)
     }
   },
 
