@@ -157,14 +157,22 @@
                 </div>
             </div>
             <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0 && isShowNameAuthHint">
-                <span>实名认证后才可以购买数字藏品</span>
-                <span @click="goAuthNameEvent">去认证</span>
-                <van-icon name="clear" size="25" color="#5f5f5f" @click="clearNameAuthHintEvent"/>
+                <div class="left">
+                    <span>实名认证后才可以购买数字藏品</span>
+                </div>
+                <div class="right">
+                    <span @click="goAuthNameEvent">去认证</span>
+                    <van-icon name="clear" size="25" color="#5f5f5f" @click="clearNameAuthHintEvent"/>
+                </div>
             </div>
-            <div class="name-auth login-hint" v-show="!isLogin && isShowLoginHint">
-                <span>去登录,开启新的体验</span>
-                <span @click="goLoginEvent">登录</span>
-                <van-icon name="clear" size="25" color="#5f5f5f" @click="clearLoginHintEvent"/>
+            <div class="name-auth" v-show="!isLogin && isShowLoginHint">
+                <div class="left">
+                    <span>去登录,开启新的体验</span>
+                </div>
+                <div class="right">
+                    <span @click="goLoginEvent">登录</span>
+                    <van-icon name="clear" size="25" color="#5f5f5f" @click="clearLoginHintEvent"/>
+                </div>
             </div>
         </div>
     </van-pull-refresh>   
@@ -980,13 +988,26 @@
                 justify-content: space-between;
                 align-items: center;
                 box-sizing: border-box;
-                >span {
-                    display: inline-block;
-                    &:nth-child(1) {
-                        font-weight: bold
+                .left {
+                    flex: 1;
+                    height: 50px;
+                    width: 0;
+                    text-align: left;
+                    >span {
+                        width: 100%;
+                        display: inline-block;
+                        font-weight: bold;
+                        font-size: 12px;
+                        .no-wrap()
                     }
-                    ;
-                    &:nth-child(2) {
+                };
+                .right {
+                    width: 40%;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    justify-content: flex-end;
+                    align-items: center;
+                    >span {
                         text-align: center;
                         line-height: 36px;
                         height: 36px;
@@ -996,14 +1017,7 @@
                         font-size: 14px;
                         background: rgb(40, 40, 40);
                         color: #f3ad2b;
-                        margin-left: 10px
-                    }
-                }
-            };
-            .login-hint {
-                 >span {
-                    &:nth-child(2) {
-                        margin-left: 70px
+                        margin-right: 10px
                     }
                 }
             }
