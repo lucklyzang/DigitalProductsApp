@@ -17,7 +17,7 @@
         <div class="content">
             <div class="content-top">
                 <div class="collection-exhibition">
-                    <img :src="imgLoadingGif" v-show="loadingShow">
+                    <img :src="imgLoadingGif" v-show="loadingImgGifShow">
                     <img :src="productsDetails.imgPath" v-show="!loadingShow">
                 </div>
                 <div class="booth">
@@ -105,6 +105,7 @@
 		data() {
 			return {
                 isShowContent: false,
+                loadingImgGifShow: false,
                 loadingShow: false,
                 overlayShow: false,
                 productsDetails: {},
@@ -151,9 +152,9 @@
             // 查询作品详情
             queryProductDetails () {
                 return new Promise((resolve,rejrect) => {
-                    this.loadingShow = true;
+                    this.loadingImgGifShow = true;
                     inquareProductDetails(this.productsId).then((res) => {
-                        this.loadingShow = false;
+                        this.loadingImgGifShow = false;
                         if (res && res.data.code == 0) {
                             this.productsDetails = res.data.data;
                             this.isShowContent = true;
@@ -171,7 +172,7 @@
                         }
                     })
                     .catch((err) => {
-                        this.loadingShow = false;
+                        this.loadingImgGifShow = false;
                          this.$toast({
                             message: `${err.message}`,
                             position: 'bottom'
@@ -459,11 +460,14 @@
                 .img-box {
                     width: 100%;
                     margin: 0 auto;
-                    font-size: 0;
                     img {
                         pointer-events: none;
                         width: 100%;
-                        margin-top: -1px
+                        vertical-align: bottom;
+                        margin-top: -1px;
+                        &:first-child {
+                            margin-top: 0
+                        }
                     }
                 };
                 .publisher-title {

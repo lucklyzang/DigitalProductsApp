@@ -11,7 +11,9 @@ if (process.env.NODE_ENV == 'development') {
 } else {
     Vue.config.devtools = false;
 };
-import { Lazyload } from 'vant';
+
+import VueLazyLoad from 'vue-lazyload';
+
 Vue.prototype.Base64 = require('js-base64').Base64;
 
 // 全局挂载时间格式化方法
@@ -46,11 +48,11 @@ Vue.use(VueClipboard);
 Vue.use(Vant);
 
 // 图片懒加载
-Vue.use(Lazyload, {
+Vue.use(VueLazyLoad, {
     preLoad: 1.3,
     loading: './static/img/img-loading.gif',
     error: './static/img/img-error.jpeg',
-    attempt: 1
+    attempt: 2
 });
 
 Vue.config.productionTip = false;

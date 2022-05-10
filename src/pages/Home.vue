@@ -64,28 +64,32 @@
                     <img :data-src="item.digitalCollectioUrl">
                     </div>
                     <div class="message-area">
-                    <div class="left">
-                        <div class="name">
-                        <span>{{item.digitalCollectionName}}</span>
-                        <!-- <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
-                            <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
-                        </p> -->
+                        <div class="message-top">
+                            <span>{{item.digitalCollectionName}}</span>
                         </div>
-                        <div class="number">
-                        <span>限量</span>
-                        <span>{{item.digitalCollectioShare}}份</span>
-                        </div>
-                        <div class="author">
-                        <img :src="item.digitalCollectioAuthorPhoto">
-                        <span>{{item.digitalCollectioAuthor}}</span>
-                        </div>
-                    </div>
-                    <div class="right">
-                        <div>
-                        <span>¥</span>
-                        <span>{{item.digitalCollectioPrice}}</span>
-                        </div>
-                    </div>
+                        <div class="message-bottom">
+                            <div class="left">
+                                <!-- <div class="name">
+                                <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
+                                    <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
+                                </p>
+                                </div> -->
+                                <div class="number">
+                                <span>限量</span>
+                                <span>{{item.digitalCollectioShare}}份</span>
+                                </div>
+                                <div class="author">
+                                <img :src="item.digitalCollectioAuthorPhoto">
+                                <span>{{item.digitalCollectioAuthor}}</span>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div>
+                                <span>¥</span>
+                                <span>{{item.digitalCollectioPrice}}</span>
+                                </div>
+                            </div>
+                        </div>    
                     </div>
                 </div>
 
@@ -664,109 +668,112 @@
                             padding: 12px 0;
                             width: 92%;
                             margin: 0 auto;
-                            display: flex;
-                            flex-flow: row nowrap;
-                            justify-content: space-between;
-                            .left {
-                                width: 70%;
-                                .name {
-                                    font-size: 19px;
-                                    color: #FFFFFF;
+                            .message-top {
+                                width: 100%;
+                                font-size: 19px;
+                                color: #FFFFFF;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                justify-content: flex-start;
+                                align-items: center;
+                                >span {
+                                    display: inline-block;
+                                    flex: 1;
+                                    width: 0;
+                                    margin-right: 6px;
+                                    .no-wrap();
+                                }
+                                >p {
+                                    flex: 1;
+                                    overflow: auto;
+                                    height: 40px;
                                     display: flex;
                                     flex-flow: row nowrap;
-                                    justify-content: flex-start;
                                     align-items: center;
                                     >span {
                                         display: inline-block;
-                                        max-width: 120px;
-                                        margin-right: 6px;
-                                        .no-wrap();
+                                        padding: 0 4px;
+                                        height: 20px;
+                                        border: 1px solid #bd6aff;
+                                        font-size: 10px;
+                                        border-radius: 10px;
+                                        margin-right: 4px;
+                                        text-align: center;
+                                        line-height: 20px;
+                                        color: #bd68ff;
+                                        &:last-child {
+                                            margin-right: 0
+                                        }
                                     }
-                                    >p {
-                                        flex: 1;
-                                        overflow: auto;
-                                        height: 40px;
-                                        display: flex;
-                                        flex-flow: row nowrap;
-                                        align-items: center;
-                                        >span {
+                                }
+                            };
+                            .message-bottom {
+                                display: flex;
+                                flex-flow: row nowrap;
+                                justify-content: space-between;
+                                .left {
+                                    width: 75%;
+                                    .number {
+                                        font-size: 0;
+                                        margin: 10px 0;
+                                        span {
+                                            font-size: 13px;
                                             display: inline-block;
-                                            padding: 0 4px;
                                             height: 20px;
-                                            border: 1px solid #bd6aff;
-                                            font-size: 10px;
-                                            border-radius: 10px;
-                                            margin-right: 4px;
-                                            text-align: center;
                                             line-height: 20px;
-                                            color: #bd68ff;
+                                            padding: 1px 4px;
+                                            &:first-child {
+                                                background: #febd42;
+                                                color: black;
+                                                border-top-left-radius: 2px;
+                                                border-bottom-left-radius: 2px;
+                                            }
+                                            ;
                                             &:last-child {
-                                                margin-right: 0
+                                                background: #3e3a51;
+                                                color: #ffbc41;
+                                                border-top-right-radius: 2px;
+                                                border-bottom-right-radius: 2px
                                             }
                                         }
                                     }
-                                }
-                                ;
-                                .number {
-                                    font-size: 0;
-                                    margin: 10px 0;
-                                    span {
-                                        font-size: 13px;
-                                        display: inline-block;
-                                        height: 20px;
-                                        line-height: 20px;
-                                        padding: 1px 4px;
-                                        &:first-child {
-                                            background: #febd42;
-                                            color: black;
-                                            border-top-left-radius: 2px;
-                                            border-bottom-left-radius: 2px;
-                                        }
-                                        ;
-                                        &:last-child {
-                                            background: #3e3a51;
-                                            color: #ffbc41;
-                                            border-top-right-radius: 2px;
-                                            border-bottom-right-radius: 2px
+                                    ;
+                                    .author {
+                                        display: flex;
+                                        flex-flow: row nowrap;
+                                        align-items: center;
+                                        img {
+                                            width: 20px;
+                                            height: 20px;
+                                            border-radius: 50%;
+                                            vertical-align: top;
+                                        };
+                                        span {
+                                            flex: 1;
+                                            margin-left: 6px;
+                                            font-size: 13px;
+                                            color: #686866;
+                                            margin-top: 2px;
+                                            .no-wrap()
                                         }
                                     }
                                 }
                                 ;
-                                .author {
+                                .right {
                                     display: flex;
-                                    flex-flow: row nowrap;
-                                    align-items: center;
-                                    img {
-                                        width: 20px;
-                                        height: 20px;
-                                        border-radius: 50%;
-                                        vertical-align: top;
-                                    };
+                                    flex-direction: column;
+                                    justify-content: flex-end;
+                                    align-items: flex-end;
+                                    width: 25%;
                                     span {
-                                        flex: 1;
-                                        margin-left: 6px;
-                                        font-size: 13px;
-                                        color: #686866;
-                                        margin-top: 2px;
-                                        .no-wrap()
+                                        font-size: 20px;
+                                        color: #FFFFFF;
+                                        &:first-child {
+                                            margin-right: 4px
+                                        }
                                     }
                                 }
-                            }
-                            ;
-                            .right {
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: flex-end;
-                                align-items: flex-end;
-                                width: 30%;
-                                span {
-                                    font-size: 20px;
-                                    color: #FFFFFF;
-                                    &:first-child {
-                                        margin-right: 4px
-                                    }
-                                }
-                            }
+                            }    
                         }
                     }
                 };
