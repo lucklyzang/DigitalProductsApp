@@ -50,11 +50,11 @@
         <div class="choose-photo-box" v-show="photoBox">
           <div class="choose-photo">
             <van-icon name="photo" />
-            <input name="uploadImg1" id="demo1" @change="previewFileOne" type="file" accept="image/*"/>从图库中选择
+            <input name="uploadImg1" id="demo1" @change="previewFileOne" type="file" accept="image/album"/>从图库中选择
           </div>
           <div class="photo-graph">
             <van-icon name="photograph" />
-            <input name="uploadImg2" id="demo2"  @change="previewFileTwo" type="file" accept="image/camera" capture="camera"/>拍照
+            <input name="uploadImg2" id="demo2"  @change="previewFileTwo" type="file" accept="image/camera"/>拍照
           </div>
           <div class="photo-cancel" @click="photoCancel">取消</div>
         </div>
@@ -142,9 +142,12 @@
 
       //input调取摄像头兼容性处理
       dealPhotographCompatibleEvent () {
-        let file = document.querySelector('input');
+        let demo1 = document.getElementById('demo1');
+        let demo2 = document.getElementById('demo2');
         if (this.getIos()) {
-          file.removeAttribute("capture");
+          demo1.setAttribute("accept","image/*");
+          demo2.setAttribute("accept","image/*");
+          demo2.setAttribute("capture","camera")
         }
       },
 
@@ -266,9 +269,9 @@
 
       // 修改头像事件
       changeHeadPortrait () {
-        this.dealPhotographCompatibleEvent();
         this.photoBox = true;
-        this.overlayShow = true
+        this.overlayShow = true;
+        this.dealPhotographCompatibleEvent()
       },
 
       // 图片上传预览

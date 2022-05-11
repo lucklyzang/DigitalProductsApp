@@ -70,7 +70,7 @@
                 </div>
                 <div class="issure-title">
                     <p>
-                        数字藏品为虚拟数字商品，而非实物，仅限实名认证为年满14周岁的中国大陆用户购买。数字藏品的版权有发行方或原创者拥有，除另行取得版权拥有者书面同意外，用户不得将数字藏品用于任何商业用途。本商品一经售出，不支持退换。本商品源文件不支持本地下载。请勿对数字藏品进行炒作、场外交易、欺诈，或以上任何其他非法方式进行使用。
+                        数字藏品为虚拟数字商品，而非实物，仅限实名认证为年满14周岁的中国大陆用户购买。数字藏品的版权由发行方或原创者拥有，除另行取得版权拥有者书面同意外，用户不得将数字藏品用于任何商业用途。本商品一经售出，不支持退换。本商品源文件不支持本地下载。请勿对数字藏品进行炒作、场外交易、欺诈，或以上任何其他非法方式进行使用。
                     </p>
                 </div>
             </div>
@@ -105,6 +105,7 @@
 		data() {
 			return {
                 isDisabled: false,
+                isShareDisabled: false,
 	            timer: null,
                 isShowContent: false,
                 loadingImgGifShow: false,
@@ -314,9 +315,9 @@
             },
 
             async onClickRight () {
-                if(this.isDisabled) return;
-                this.isDisabled = !this.isDisabled;
-                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
+                if(this.isShareDisabled) return;
+                this.isShareDisabled = !this.isShareDisabled;
+                this.timer = setTimeout(() => {this.isShareDisabled = !this.isShareDisabled;},3000);
                 let shareUrl = await this.productionShareEvent();
                 window.android.setShareUrl(`${shareUrl}`)
             }
