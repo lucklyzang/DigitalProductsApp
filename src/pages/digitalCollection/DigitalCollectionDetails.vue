@@ -104,6 +104,8 @@
 
 		data() {
 			return {
+                isDisabled: false,
+	            timer: null,
                 isShowContent: false,
                 loadingImgGifShow: false,
                 loadingShow: false,
@@ -141,6 +143,12 @@
             };
             this.queryProductDetails()
 		},
+
+        beforeDestroy() {
+            if(this.timer) { 
+                clearTimeout(this.timer)
+            }
+        },
 
 		methods: {
 			...mapMutations([
@@ -184,6 +192,10 @@
 
             // 购买商品
             async purchaseEvent () {
+                // 防止多次快速点击
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 //未开售
                 if (this.isCountDownShow) {
                     return
@@ -302,6 +314,9 @@
             },
 
             async onClickRight () {
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 let shareUrl = await this.productionShareEvent();
                 window.android.setShareUrl(`${shareUrl}`)
             }

@@ -75,6 +75,8 @@
 		data() {
 			return {
 				loadingShow: false,
+				isDisabled: false,
+				timer: null,
 				isShowOrderCancel: false,
 				orderFormDetails: {},
 				accountPaidPng: require("@/common/images/home/account-paid.png"),
@@ -100,6 +102,11 @@
             };
 			this.inquareOrderDetails(this.orderId)
 		},
+		beforeDestroy() {
+            if(this.timer) { 
+                clearTimeout(this.timer)
+            }
+        },
 		methods: {
 			...mapMutations([
 				'changeIsPaying',
@@ -155,6 +162,9 @@
 
 			// 取消订单
             cancellationOfOrder() {
+				if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 this.loadingShow = true;
                 cancelOrder(this.orderFormDetails.orderId).then((res) => {
                     this.loadingShow = false;

@@ -6,6 +6,7 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import moment from 'moment'
 import {  IsPC } from '@/common/js/utils.js'
+import '@/directives/preventReClick.js'
 if (process.env.NODE_ENV == 'development') {
     Vue.config.devtools = true;
 } else {

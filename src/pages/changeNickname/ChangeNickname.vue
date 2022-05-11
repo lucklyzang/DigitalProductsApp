@@ -32,6 +32,8 @@
 		data() {
 			return {
 				nicknameContent: '',
+                timer: null,
+                isDisabled: false,
                 loadingShow: false
 			}
 		},
@@ -57,6 +59,11 @@
                 this.nicknameContent = this.userInfo.nickName
             }
 		},
+        beforeDestroy() {
+            if(this.timer) { 
+                clearTimeout(this.timer)
+            }
+        },
 		methods: {
 			...mapMutations([
                 'storeUserInfo'
@@ -70,6 +77,16 @@
                     });
                     return
                 };
+                if (this.nicknameContent == this.userInfo.nickName) {
+                    this.$toast({
+                        message: '昵称不能和当前的昵称相同',
+                        position: 'bottom'
+                    });
+                    return
+                };
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 changeNickname({nickName: this.nicknameContent}).then((res) => {
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {

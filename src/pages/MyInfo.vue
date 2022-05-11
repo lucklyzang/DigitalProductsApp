@@ -96,6 +96,8 @@
         data() {
             return {
                 isRefresh: false,
+                isDisabled: false,
+                timer: null,
                 loadingShow: false,
                 zoneIconList: [{
                     icon: require("@/common/images/login/my-order.png"),
@@ -146,6 +148,14 @@
                     this.queryuserInfo()
                 }
             }
+        },
+
+        beforeDestroy() {
+            console.log(this.timer);
+            if(this.timer) { 
+                clearTimeout(this.timer)
+            };
+            console.log(this.timer);
         },
 
         // created(){
@@ -268,6 +278,9 @@
                         path: 'aboutUs'
                     })
                 } else if (item.span == '分享') {
+                    if(this.isDisabled) return;
+                    this.isDisabled = !this.isDisabled;
+                    this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                     this.myShareEvent()
                 }
             },

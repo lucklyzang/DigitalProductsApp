@@ -192,11 +192,9 @@ export default {
 
 	// 发送验证码
 	sendCode () {
-		if (this.isDisabled) {return};
-		if (!this.isDisabled) {
-			this.isDisabled = true;
-			this.timer = setTimeout(() => {this.isDisabled = false},10000)
-		};
+		if(this.isDisabled) return;
+		this.isDisabled = !this.isDisabled;
+		this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
 		sendPhoneAuthCode(this.phoneNumber).then((res) => {
 			if (res && res.data.code == 0) {
 				this.changeIsCanSendPhoneCode(false);

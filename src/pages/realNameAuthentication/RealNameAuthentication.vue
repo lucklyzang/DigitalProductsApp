@@ -38,6 +38,8 @@
         loadingShow: false,
         phoneRealNameUsable: false,
         phoneCardUsable: false,
+        isDisabled: false,
+        timer: null,
         realNameValue: '',
         cardValue: '',
         path: ''
@@ -60,6 +62,12 @@
 						path: this.path
 					})
         })
+      }
+    },
+
+    beforeDestroy() {
+      if(this.timer) { 
+        clearTimeout(this.timer)
       }
     },
 
@@ -129,6 +137,9 @@
           });
           return
         };
+        if(this.isDisabled) return;
+        this.isDisabled = !this.isDisabled;
+        this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
         realNameArenhzneuthentication({name: this.realNameValue, idCard: this.cardValue}).then((res) => {
             this.loadingShow = false;
             if (res && res.data.code == 0) {

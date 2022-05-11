@@ -76,6 +76,8 @@
     data() {
       return {
         photoBox: false,
+        isDisabled: false,
+        timer: null,
         isShowLogout: false,
         overlayShow: false,
         loadingShow: false,
@@ -102,6 +104,12 @@
           this.overlayShow = false
         }
       })
+    },
+
+    beforeDestroy() {
+      if(this.timer) { 
+          clearTimeout(this.timer)
+      }
     },
 
     watch: {
@@ -198,19 +206,22 @@
         })
       },
 
-      // 弹框确定注销
+      // 弹框确定退出登录
       logoutSureEvent () {
         this.isShowLogout = false;
         this.logoutEvent()
       },
 
-      //  弹框取消注销
+      //  弹框取消登录
       logoutCancelEvent () {
         this.isShowLogout = false
       },
 
       //退出登录事件
       logoutEvent () {
+        if(this.isDisabled) return;
+        this.isDisabled = !this.isDisabled;
+        this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
         this.loadingShow = true;
         logout().then((res) => {
           this.loadingShow = false;

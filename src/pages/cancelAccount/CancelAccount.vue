@@ -37,6 +37,8 @@
 		data() {
 			return {
                 loadingShow: false,
+                isDisabled: false,
+                timer: null,
                 isShowLogout: false
 			}
 		},
@@ -58,6 +60,11 @@
                 })
             }
 		},
+        beforeDestroy() {
+            if(this.timer) { 
+                clearTimeout(this.timer)
+            }
+        },
 		methods: {
 			...mapMutations([
                 'storeUserInfo',
@@ -77,6 +84,9 @@
 
             //账号注销事件
             cancellationEvent () {
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 cancellatio().then((res) => {
                     if (res && res.data.code == 0) {
                         this.$toast({

@@ -118,6 +118,8 @@
                 loadingShow: false,
                 overlayShow: false,
                 time: '',
+                isDisabled: false,
+                timer: null,
                 path: '',
                 paymentSuccess: false,
                 orderFormDetails: {},
@@ -166,6 +168,13 @@
             };
             this.inquareOrderDetails(this.orderId)
 		},
+
+        beforeDestroy() {
+            if(this.timer) { 
+                clearTimeout(this.timer)
+            }
+        },
+
 		methods: {
 			...mapMutations([
                 'changeIsPaying',
@@ -198,6 +207,9 @@
 
             // 取消订单
             cancellationOfOrder() {
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 this.loadingShow = true;
                 cancelOrder(this.orderId).then((res) => {
                     this.loadingShow = false;
@@ -226,6 +238,9 @@
 
             // 查询支付结果
             queryPayResult() {
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 this.loadingShow = true;
                 queryPaymentResult(this.orderId).then((res) => {
                     this.loadingShow = false;
@@ -256,6 +271,9 @@
 
             // 确认支付事件
             surePay () {
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 if ((new Date(this.orderFormDetails.createTime).getTime() + this.orderFormDetails.expire*60*1000) - new Date().getTime() <=0 ) {
                     this.$toast({
                         message: '订单已过期,请重新下单',

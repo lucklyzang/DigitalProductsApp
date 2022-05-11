@@ -32,6 +32,8 @@
 		data() {
 			return {
                 loadingShow: false,
+                isDisabled: false,
+                timer: null,
 				signatureContent: ''
 			}
 		},
@@ -57,6 +59,11 @@
                 this.signatureContent = this.userInfo.signTxt
             }
 		},
+        beforeDestroy() {
+            if(this.timer) { 
+                clearTimeout(this.timer)
+            }
+        },
 		methods: {
 			...mapMutations([
                 'storeUserInfo'
@@ -71,7 +78,16 @@
                     });
                     return
                 };
-
+                if (this.signatureContent == this.userInfo.signTxt) {
+                    this.$toast({
+                        message: '签名不能与当前的签名相同',
+                        position: 'bottom'
+                    });
+                    return
+                };
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 changeSignature({sign: this.signatureContent}).then((res) => {
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
