@@ -7,7 +7,9 @@
       @confirm="logoutSureEvent" 
       @cancel="logoutCancelEvent"
     />
-    <van-loading type="spinner" v-show="loadingShow"/>
+    <van-loading type="spinner" vertical v-show="loadingShow">
+      {{loadingText}}
+    </van-loading>
     <van-overlay :show="overlayShow" />
     <div class="content-box">
       <div class="content-top">
@@ -77,6 +79,7 @@
       return {
         photoBox: false,
         isDisabled: false,
+        loadingText: '',
         timer: null,
         isShowLogout: false,
         overlayShow: false,
@@ -165,11 +168,15 @@
       // 修改头像事件
       saveChangeAvatarEvent (data) {
         this.loadingShow = true;
+        this.overlayShow = true;
+        this.loadingText = '头像上传中';
         changeAvatar(data).then((res) => {
             this.loadingShow = false;
+            this.overlayShow = false;
+            this.loadingText = '';
             if (res && res.data.code == 0) {
                 this.$toast({
-                  message: '头像修改成功',
+                  message: '头像上传成功',
                   position: 'bottom'
                 });
                 this.queryuserInfo()
@@ -181,7 +188,9 @@
             }
         })
         .catch((err) => {
+          this.overlayShow = true;
           this.loadingShow = false;
+          this.loadingText = '';
           this.$toast({
             message: `${err.message}`,
             position: 'bottom'
@@ -279,10 +288,10 @@
         let file = document.getElementById("demo1").files[0];
         let _this = this;
         let reader = new FileReader();
-        let isLt2M = file.size/1024/1024 < 16;
+        let isLt2M = file.size/1024/1024 < 10;
         if (!isLt2M) {
           _this.$toast({
-            message: '上传图片大小不能超过16MB!',
+            message: '上传图片大小不能超过10MB!',
             position: 'bottom'
           });
           return
@@ -302,10 +311,10 @@
         let file = document.getElementById("demo2").files[0];
         let _this = this;
         let reader = new FileReader();
-        let isLt2M = file.size/1024/1024 < 16;
+        let isLt2M = file.size/1024/1024 < 10;
         if (!isLt2M) {
           _this.$toast({
-            message: '上传图片大小不能超过16MB!',
+            message: '上传图片大小不能超过10MB!',
             position: 'bottom'
           });
           return
