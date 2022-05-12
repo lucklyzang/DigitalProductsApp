@@ -422,7 +422,7 @@
                 .booth {
                     width: 80%;
                     margin: 0 auto;
-                    margin-top: 10px;
+                    margin-top: 20px;
                     img {
                         width: 100%
                     }
