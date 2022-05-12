@@ -17,8 +17,9 @@
         <div class="content">
             <div class="content-top">
                 <div class="collection-exhibition">
-                    <img :src="imgLoadingGif" v-show="loadingImgGifShow">
+                    <img :src="imgLoadingGif" class="loading-img" v-show="loadingImgGifShow">
                     <img :src="productsDetails.imgPath" v-show="!loadingImgGifShow">
+                    <!-- <model-obj  :lights="lights" :controllable="false" src="static/models/test.obj" :width="150" :height="200" backgroundColor="#020416"></model-obj> -->
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -96,12 +97,15 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex'
+    import {
+        ModelObj
+    } from "vue-3d-model";
 	import {inquareProductDetails,purchaseCommodity,inquareUserInfo,productionShare} from '@/api/products.js'
 	export default {
         name: 'DigitalCollectionDetails',
-		components: {
-		},
-
+		components: { 
+            ModelObj 
+        },
 		data() {
 			return {
                 isDisabled: false,
@@ -113,6 +117,38 @@
                 overlayShow: false,
                 productsDetails: {},
                 isCountDownShow: true,
+                lights: [
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: 1, y: 1, z: 1 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: -1, y: 1, z: 1 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: 1, y: 1, z: -1 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: -1, y: 1, z: -1 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: 0, y: -1, z: 0 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    }
+                ],
                 imgLoadingGif: require("../../../static/img/img-loading.gif"),
                 digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
                 sharePng: require("@/common/images/login/my-share.png"),
@@ -358,15 +394,29 @@
                     width: 80%;
                     margin: 0 auto;
                     position: relative;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    align-items: center;
+                    justify-content: center;
+                    height: 50vh;
                     img {
                         pointer-events: none;
                         width: 100%
-                    }
+                    };
+                    .loading-img {
+                        width: 100px;
+                    };
+                    >div {
+                        display: flex;
+                        flex-flow: row nowrap;
+                        justify-content: center;
+                        align-items: center;
+                    };
                 };
                 .booth {
                     width: 80%;
                     margin: 0 auto;
-                    margin-top: 20px;
+                    margin-top: 10px;
                     img {
                         width: 100%
                     }

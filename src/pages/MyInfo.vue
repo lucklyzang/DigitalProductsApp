@@ -141,7 +141,12 @@
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
-                this.gotoURL(() => {})
+                this.gotoURL(() => {
+                    pushHistory();
+					this.$router.push({
+						path: '/myInfo'
+					})
+                })
             };
             if (this.isLogin) {
                 if (!this.userInfo) {
