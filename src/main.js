@@ -72,4 +72,4 @@ new Vue({
     components: { App },
     created() {},
     template: '<App/>'
-});
+})

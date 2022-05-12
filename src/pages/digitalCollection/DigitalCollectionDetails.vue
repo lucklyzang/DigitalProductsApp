@@ -14,11 +14,11 @@
                 <img :src="sharePng" alt="">
             </template>
         </van-nav-bar>
-        <div class="content">
+        <div class="content" id="top-content">
             <div class="content-top">
                 <div class="collection-exhibition">
                     <img :src="imgLoadingGif" class="loading-img" v-show="loadingImgGifShow">
-                    <img :src="productsDetails.imgPath" v-show="!loadingImgGifShow">
+                    <img :src="productsDetails.path" v-show="!loadingImgGifShow">
                     <!-- <model-obj  :lights="lights" :controllable="false" src="static/models/test.obj" :width="150" :height="200" backgroundColor="#020416"></model-obj> -->
                 </div>
                 <div class="booth">
@@ -111,6 +111,7 @@
                 isDisabled: false,
                 isShareDisabled: false,
 	            timer: null,
+                collectionExhibitionHeight: '',
                 isShowContent: false,
                 loadingImgGifShow: false,
                 loadingShow: false,
@@ -178,6 +179,7 @@
                     })
                 })
             };
+            this.toTop();
             this.queryProductDetails()
 		},
 
@@ -194,6 +196,11 @@
                 'storeUserInfo',
                 'changeIsEnterLoginPageSource'
 			]),
+
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
 
             // 查询作品详情
             queryProductDetails () {
@@ -389,7 +396,6 @@
             box-sizing: border-box;
             .content-top {
                 padding-top: 10px;
-                box-sizing: border-box;
                 .collection-exhibition {
                     width: 80%;
                     margin: 0 auto;
