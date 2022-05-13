@@ -2,10 +2,10 @@
 	<div class="page-box">
         <NavBar path="/collectionRecords" title="藏品详情"/>
         <!-- <van-loading type="spinner" v-show="loadingShow"/> -->
-        <div class="content">
+        <div class="content" id="top-content">
             <div class="content-top">
                 <div class="collection-exhibition">
-                    <img :src="imgLoadingGif" v-show="loadingShow">
+                    <img :src="imgLoadingGif" v-show="loadingShow" class="loading-img">
                     <img :src="collectionRecordDetails.path" v-show="!loadingShow">
                 </div>
                 <div class="booth">
@@ -114,6 +114,7 @@
                     })
                 })
             };
+            this.toTop();
             this.queryCollectionDetails()
 		},
 
@@ -121,6 +122,12 @@
 			...mapMutations([
                 'changeDonationProductDetails'
 			]),
+
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
+
 
             // 查询藏品详情
             queryCollectionDetails () {
@@ -244,10 +251,18 @@
                     width: 80%;
                     margin: 0 auto;
                     position: relative;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    align-items: center;
+                    justify-content: center;
+                    height: 50vh;
                     img {
                         pointer-events: none;
                         width: 100%
-                    }
+                    };
+                    .loading-img {
+                        width: 100px;
+                    };
                 };
                 .booth {
                     width: 80%;

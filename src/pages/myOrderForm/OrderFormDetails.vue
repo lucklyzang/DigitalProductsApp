@@ -261,7 +261,6 @@
 				width: 94%;
 				margin: 0 auto;
 				box-sizing: border-box;
-				height: 100px;
 				display: flex;
 				flex-flow: row nowrap;
 				justify-content: flex-start;
@@ -271,11 +270,9 @@
 				background: @color-block;
 				.img-show {
 					width: 100px;
-					height: 100px;
                     img {
 						pointer-events: none;
-                        width: 100%;
-						height: 100%;
+                        width: 100px;
 						border-top-left-radius: 10px;
 						border-bottom-left-radius: 10px;
                     }
@@ -283,7 +280,7 @@
 				.span-show {
 					display: flex;
 					flex-direction: column;
-                    height: 60px;
+                    height: 70px;
 					justify-content: space-between;
 					margin-left: 20px;
 					flex: 1;

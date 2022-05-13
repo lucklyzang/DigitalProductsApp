@@ -180,7 +180,7 @@
 							width: 80px;
 							img {
 								pointer-events: none;
-								width: 100%;
+								width: 80px;
 							}
 						};
 						.span-show {

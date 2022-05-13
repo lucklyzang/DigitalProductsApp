@@ -367,7 +367,6 @@
 			position: relative;
 			.all-order {
 				.order-list {
-					height: 100px;
 					display: flex;
 					flex-flow: row nowrap;
 					justify-content: space-between;
@@ -384,11 +383,9 @@
 						flex: 1;
 						.img-show {
 							width: 100px;
-							height: 100px;
 							img {
 								pointer-events: none;
-								width: 100%;
-								height: 100%;
+								width: 100px;
 								border-top-left-radius: 10px;
 								border-bottom-left-radius: 10px;
 							}

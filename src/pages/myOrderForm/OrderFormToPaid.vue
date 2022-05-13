@@ -443,7 +443,6 @@
 				margin: 0 auto;
                 margin-top: 10px;
 				box-sizing: border-box;
-				height: 100px;
 				display: flex;
 				flex-flow: row nowrap;
 				justify-content: flex-start;
@@ -452,21 +451,25 @@
 				border-radius: 10px;
 				background: #100726;
 				.img-show {
-					width: 70px;
+					width: 100px;
                     img {
                         pointer-events: none;
-                        width: 100%
+                        width: 100px;
+						border-top-left-radius: 10px;
+						border-bottom-left-radius: 10px;
                     }
 				};
 				.span-show {
 					display: flex;
 					flex-direction: column;
-                    height: 60px;
+                    height: 70px;
 					justify-content: space-between;
 					margin-left: 20px;
 					flex: 1;
+                    width: 0;
 					> span {
 						&:nth-child(1) {
+                            .no-wrap();
 							font-size: 16px;
 							color: #FFFFFF
 						};
