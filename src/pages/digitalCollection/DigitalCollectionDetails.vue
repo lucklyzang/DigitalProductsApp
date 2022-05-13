@@ -18,7 +18,7 @@
             <div class="content-top">
                 <div class="collection-exhibition">
                     <img :src="imgLoadingGif" class="loading-img" v-show="loadingImgGifShow">
-                    <img :src="productsDetails.path" v-show="!loadingImgGifShow">
+                    <img :src="productsDetails.path" class="abbr-img" v-show="!loadingImgGifShow">
                     <!-- <model-obj  :lights="lights" :controllable="false" src="static/models/test.obj" :width="150" :height="200" backgroundColor="#020416"></model-obj> -->
                 </div>
                 <div class="booth">
@@ -372,6 +372,17 @@
 	@import "~@/common/stylus/variable.less";
     @import "~@/common/stylus/mixin.less";
     @import "~@/common/stylus/modifyUi.less";
+    @keyframes product-animation{
+        0% {
+            transform: rotateY(15deg)
+        }
+        50% {
+            transform: rotateY(-15deg)
+        }
+        100% {
+            transform: rotateY(15deg)
+        }
+    };
 	.page-box {
 		.content-wrapper();
         background: @color-background;
@@ -397,6 +408,9 @@
             .content-top {
                 padding-top: 10px;
                 .collection-exhibition {
+                    perspective: 500px;
+                    perspective-origin: 50% 50%;
+                    transform-style: preserve-3d;
                     width: 80%;
                     margin: 0 auto;
                     position: relative;
@@ -408,6 +422,11 @@
                     img {
                         pointer-events: none;
                         width: 100%
+                    };
+                    .abbr-img {
+                        animation-name: product-animation;
+                        animation-duration: 14s;
+                        animation-iteration-count: infinite;
                     };
                     .loading-img {
                         width: 100px;

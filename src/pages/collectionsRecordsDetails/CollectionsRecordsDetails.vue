@@ -6,7 +6,7 @@
             <div class="content-top">
                 <div class="collection-exhibition">
                     <img :src="imgLoadingGif" v-show="loadingShow" class="loading-img">
-                    <img :src="collectionRecordDetails.path" v-show="!loadingShow">
+                    <img :src="collectionRecordDetails.path" class="abbr-img" v-show="!loadingShow">
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -225,6 +225,17 @@
 	@import "~@/common/stylus/variable.less";
     @import "~@/common/stylus/mixin.less";
     @import "~@/common/stylus/modifyUi.less";
+    @keyframes product-animation{
+        0% {
+            transform: rotateY(15deg)
+        }
+        50% {
+            transform: rotateY(-15deg)
+        }
+        100% {
+            transform: rotateY(15deg)
+        }
+    };
 	.page-box {
 		.content-wrapper();
         background: @color-background;
@@ -249,6 +260,9 @@
                 box-sizing: border-box;
                 .collection-exhibition {
                     width: 80%;
+                    perspective: 500px;
+                    perspective-origin: 50% 50%;
+                    transform-style: preserve-3d;
                     margin: 0 auto;
                     position: relative;
                     display: flex;
@@ -259,6 +273,11 @@
                     img {
                         pointer-events: none;
                         width: 100%
+                    };
+                    .abbr-img {
+                        animation-name: product-animation;
+                        animation-duration: 14s;
+                        animation-iteration-count: infinite;
                     };
                     .loading-img {
                         width: 100px;
