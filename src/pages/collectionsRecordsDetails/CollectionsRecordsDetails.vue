@@ -5,8 +5,24 @@
         <div class="content" id="top-content">
             <div class="content-top">
                 <div class="collection-exhibition">
-                    <img :src="imgLoadingGif" v-show="loadingShow" class="loading-img">
-                    <img :src="collectionRecordDetails.path" class="abbr-img" v-show="!loadingShow">
+                    <div class="loading-img-wrapper">
+                        <img :src="imgLoadingGif" v-show="loadingImgGifShow || threeDimensionalShow" class="loading-img">
+                    </div>
+                    <div class="abbr-img">
+                        <img :src="collectionRecordDetails.path" v-show="!loadingImgGifShow">
+                    </div>
+                    <!-- <div class="three-dimensional-img" v-show="!loadingImgGifShow">
+                        <model-obj  :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            src="static/models/testTwo.obj" 
+                            :width="180" :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-obj>
+                    </div> -->
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -75,22 +91,72 @@
 	} from 'vuex'
     import NavBar from '@/components/NavBar'
 	import {queryObjectRecordDetails,useObjectImg} from '@/api/products.js'
+    import {
+        ModelObj
+    } from "vue-3d-model";
 	export default {
         name: 'CollectionsRecordsDetails',
 		components: {
-            NavBar
+            NavBar,
+            ModelObj
 		},
 
 		data() {
 			return {
+                rotation: {
+                    x: 0,
+                    y: 0,
+                    z: 0
+                },
                 loadingShow: false,
+                loadingImgGifShow: false,
+                threeDimensionalShow: false,
                 collectionRecordDetails: {},
                 isCountDownShow: true,
                 imgLoadingGif: require("../../../static/img/img-loading.gif"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),
                 sharePng: require("@/common/images/login/my-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
-                detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png")
+                detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png"),
+                  lights: [
+                    {
+                        type: 'HemisphereLight',
+                        position: { x: 0, y: 1, z: 0 },
+                        skyColor: 0xffffff,
+                        groundColor: 0xFF0000, // 此代码为灯光后颜色
+                        intensity: 1,
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: 1, y: 1, z: 1 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: -1, y: 1, z: 1 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: 1, y: 1, z: -1 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: -1, y: 1, z: -1 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    },
+                    {
+                        type: 'DirectionalLight',
+                        position: { x: 0, y: -1, z: 0 },
+                        color: 0xffffff,
+                        intensity: 0.8
+                    }
+                ]
 			}
 		},
 
@@ -123,17 +189,40 @@
                 'changeDonationProductDetails'
 			]),
 
+            rotate () {
+                this.rotation.y += 0.01;
+                requestAnimationFrame(this.rotate)
+            },
+
             //让页面滚动到顶部
             toTop() {
                 document.querySelector('#top-content').scrollIntoView(true)
             },
 
+            //3d模型加载完成事件
+            threeDimensionalLoaded () {
+                this.threeDimensionalShow = false;
+                this.rotate()
+            },
+
+            //3d模型加载过程
+            threeDimensionProgress () {
+            },
+
+            //3d模型加载失败
+            threeDimensionalError () {
+                this.threeDimensionalShow = false;
+                this.$toast({
+                    message: '3D模型加载失败!',
+                    position: 'bottom'
+                })
+            },
 
             // 查询藏品详情
             queryCollectionDetails () {
-                this.loadingShow = true;
-                queryObjectRecordDetails(this.collectionId).then((res) => {
-                    this.loadingShow = false;
+                this.loadingImgGifShow = true;
+                queryObjectRecordDetails(this.collectionId.id).then((res) => {
+                    this.loadingImgGifShow = false;
                     if (res && res.data.code == 0) {
                         this.collectionRecordDetails = res.data.data;
                         this.changeDonationProductDetails(res.data.data);
@@ -145,7 +234,7 @@
                     }
                 })
                 .catch((err) => {
-                    this.loadingShow = false;
+                    this.loadingImgGifShow = false;
                     this.$toast({
                         message: `${err.message}`,
                         position: 'bottom'
@@ -157,7 +246,7 @@
             queryObjectImgInfo () {
                 return new Promise((resolve,rejrect) => {
                     this.loadingShow = true;
-                    useObjectImg(this.collectionId).then((res) => {
+                    useObjectImg(this.collectionId.id).then((res) => {
                         console.log('图片地址',res);
                         this.loadingShow = false;
                         if (res && res.data.code == 0) {
@@ -256,11 +345,9 @@
             padding-bottom: 80px;
             box-sizing: border-box;
             .content-top {
-                padding-top: 10px;
-                box-sizing: border-box;
                 .collection-exhibition {
                     width: 80%;
-                    perspective: 500px;
+                    perspective: 400px;
                     perspective-origin: 50% 50%;
                     transform-style: preserve-3d;
                     margin: 0 auto;
@@ -275,10 +362,25 @@
                         width: 100%
                     };
                     .abbr-img {
+                        width: 250px;
+                        margin-top: 60px;
                         animation-name: product-animation;
                         animation-duration: 14s;
                         animation-iteration-count: infinite;
                     };
+                    .three-dimensional-img {
+                        margin-top: 60px;
+                    };
+                    .loading-img-wrapper {
+                        position: absolute;
+                        width: 100px;
+                        height: 100px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        .loading-img {
+                            width: 100px;
+                        }
+                    };    
                     .loading-img {
                         width: 100px;
                     };

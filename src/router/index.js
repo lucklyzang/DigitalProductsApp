@@ -52,121 +52,194 @@ Vue.use(Router)
 let baseRoute = [{
         path: '/login',
         name: 'login',
-        component: Login
+        component: Login,
+        meta: {
+            index: 0
+        }
     },
     {
         path: '/',
-        redirect: '/home'
+        redirect: '/home',
+        meta: {
+            index: 0
+        }
     },
     {
         path: '/home',
         name: 'home',
-        component: Home
+        component: Home,
+        meta: {
+            index: 0
+        }
     },
     {
         path: '/myInfo',
         name: 'myInfo',
-        component: MyInfo
+        component: MyInfo,
+        meta: {
+            index: 0
+        }
     },
     {
         path: '/verificationCode',
         name: 'verificationCode',
-        component: VerificationCode
+        component: VerificationCode,
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/collectionDetails',
         name: 'collectionDetails',
-        component: CollectionDetails
+        component: CollectionDetails,
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/weixinLogin',
         name: 'weixinLogin',
-        component: WeixinLogin
+        component: WeixinLogin,
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/accountSecurity',
         name: 'accountSecurity',
-        component: AccountSecurity
+        component: AccountSecurity,
+        meta: {
+            index: 1
+        }
     },
+    
     {
         path: '/myOrderForm',
         name: 'myOrderForm',
-        component: MyOrderForm
+        component: MyOrderForm,
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/realNameAuthentication',
         name: 'realNameAuthentication',
-        component: RealNameAuthentication
+        component: RealNameAuthentication,
+        meta: {
+            index: 2
+        }
     },
     {
         path: '/realNameAythenticationCertified',
         name: 'realNameAythenticationCertified',
-        component: RealNameAythenticationCertified
+        component: RealNameAythenticationCertified,
+        meta: {
+            index: 2
+        }
     },
     {
         path: '/collectionRecords',
         name: 'collectionRecords',
-        component: CollectionRecords
+        component: CollectionRecords,
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/donationFriend',
         name: 'donationFriend',
-        component: DonationFriend
+        component: DonationFriend,
+        meta: {
+            index: 3
+        }
     },
     {
         path: '/cancelAccount',
         name: 'cancelAccount',
-        component: CancelAccount
+        component: CancelAccount,
+        meta: {
+            index: 3
+        }
     },
     {
         path: '/collectionRecordDetails',
         name: 'collectionRecordDetails',
-        component: CollectionRecordsDetails
+        component: CollectionRecordsDetails,
+        meta: {
+            index: 2
+        }
     },
     {
         path: '/systemSet',
         name: 'systemSet',
-        component: SystemSet
+        component: SystemSet,
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/systemMessage',
         name: 'systemMessage',
-        component: SystemMessage
+        component: SystemMessage,
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/individualitySignature',
         name: 'individualitySignature',
-        component: IndividualitySignature
+        component: IndividualitySignature,
+        meta: {
+            index: 2
+        }
     },
     {
         path: '/changeNickname',
         name: 'changeNickname',
-        component: ChangeNickname
+        component: ChangeNickname,
+        meta: {
+            index: 2
+        }
     },
     {
         path: '/orderFormDetails',
         name: 'orderFormDetails',
-        component: OrderFormDetails
+        component: OrderFormDetails,
+        meta: {
+            index: 2
+        }
     },
     {
         path: '/blockchainAddress',
         name: 'blockchainAddress',
-        component: BlockchainAddress
+        component: BlockchainAddress,
+        meta: {
+            index: 1
+        }
     },
     {
         path: '/orderFormToPaid',
         name: 'orderFormToPaid',
-        component: OrderFormToPaid
+        component: OrderFormToPaid,
+        meta: {
+            index: 3
+        }
     },
     {
         path: '/workRoom',
         name: 'WorkRoom',
-        component: WorkRoom
+        component: WorkRoom,
+        meta: {
+            index: 2
+        }
     },
     {
         path: '/aboutUs',
         name: 'aboutUs',
-        component: AboutUs
+        component: AboutUs,
+        meta: {
+            index: 1
+        }
     }
 ];
 let router = new Router({

@@ -35,6 +35,10 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
+    // 获取响应头token,并存储到vuex中
+    if (response.headers['token']) {
+      store.commit('changeToken', response.headers['token'])
+    };
     return response;
   },
   (err) => {

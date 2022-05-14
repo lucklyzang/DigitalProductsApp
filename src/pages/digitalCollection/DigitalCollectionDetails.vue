@@ -17,9 +17,25 @@
         <div class="content" id="top-content">
             <div class="content-top">
                 <div class="collection-exhibition">
-                    <img :src="imgLoadingGif" class="loading-img" v-show="loadingImgGifShow">
-                    <img :src="productsDetails.path" class="abbr-img" v-show="!loadingImgGifShow">
-                    <!-- <model-obj  :lights="lights" :controllable="false" src="static/models/test.obj" :width="150" :height="200" backgroundColor="#020416"></model-obj> -->
+                    <div class="loading-img-wrapper">
+                        <img :src="imgLoadingGif" class="loading-img" v-show="loadingImgGifShow || threeDimensionalShow">
+                    </div>
+                    <div class="abbr-img">
+                        <img :src="productsDetails.path"  v-show="!loadingImgGifShow">
+                    </div>
+                    <!-- <div class="three-dimensional-img" v-show="!loadingImgGifShow">
+                        <model-obj :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            src="./static/models/testTwo.obj" 
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-obj>
+                    </div> -->
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -108,46 +124,59 @@
         },
 		data() {
 			return {
+                rotation: {
+                    x: 0,
+                    y: 0,
+                    z: 0
+                },
                 isDisabled: false,
                 isShareDisabled: false,
 	            timer: null,
                 collectionExhibitionHeight: '',
                 isShowContent: false,
                 loadingImgGifShow: false,
+                threeDimensionalShow: false,
                 loadingShow: false,
                 overlayShow: false,
                 productsDetails: {},
                 isCountDownShow: true,
                 lights: [
                     {
+                        type: 'HemisphereLight',
+                        position: { x: 0, y: 1, z: 0 },
+                        skyColor: 0xffffff,
+                        groundColor: 0xFF0000, // 此代码为灯光后颜色
+                        intensity: 0.1,
+                    },
+                    {
                         type: 'DirectionalLight',
                         position: { x: 1, y: 1, z: 1 },
                         color: 0xffffff,
-                        intensity: 0.8
+                        intensity: 0.1
                     },
                     {
                         type: 'DirectionalLight',
                         position: { x: -1, y: 1, z: 1 },
                         color: 0xffffff,
-                        intensity: 0.8
+                        intensity: 0.1
                     },
                     {
                         type: 'DirectionalLight',
                         position: { x: 1, y: 1, z: -1 },
                         color: 0xffffff,
-                        intensity: 0.8
+                        intensity: 0.1
                     },
                     {
                         type: 'DirectionalLight',
                         position: { x: -1, y: 1, z: -1 },
                         color: 0xffffff,
-                        intensity: 0.8
+                        intensity: 0.1
                     },
                     {
                         type: 'DirectionalLight',
                         position: { x: 0, y: -1, z: 0 },
                         color: 0xffffff,
-                        intensity: 0.8
+                        intensity: 0.1
                     }
                 ],
                 imgLoadingGif: require("../../../static/img/img-loading.gif"),
@@ -169,6 +198,7 @@
 		},
 
 		mounted() {
+            console.log(this.productsId.id);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -197,16 +227,42 @@
                 'changeIsEnterLoginPageSource'
 			]),
 
+            rotate () {
+                this.rotation.y += 0.01;
+                requestAnimationFrame(this.rotate)
+            },
+
             //让页面滚动到顶部
             toTop() {
                 document.querySelector('#top-content').scrollIntoView(true)
+            },
+
+            //3d模型加载完成事件
+            threeDimensionalLoaded () {
+                console.log('加载完毕');
+                this.threeDimensionalShow = false;
+                this.rotate();
+            },
+
+            //3d模型加载过程
+            threeDimensionProgress (e) {
+                console.log(e)
+            },
+
+            //3d模型加载失败
+            threeDimensionalError () {
+                this.threeDimensionalShow = false;
+                this.$toast({
+                    message: '3D模型加载失败!',
+                    position: 'bottom'
+                })
             },
 
             // 查询作品详情
             queryProductDetails () {
                 return new Promise((resolve,rejrect) => {
                     this.loadingImgGifShow = true;
-                    inquareProductDetails(this.productsId).then((res) => {
+                    inquareProductDetails(this.productsId.id).then((res) => {
                         this.loadingImgGifShow = false;
                         if (res && res.data.code == 0) {
                             this.productsDetails = res.data.data;
@@ -218,7 +274,7 @@
                                 }
                             };
                         } else {
-                             this.$toast({
+                            this.$toast({
                                 message: `${res.data.msg}`,
                                 position: 'bottom'
                             })
@@ -294,7 +350,7 @@
             buyCommodity () {
                 this.loadingShow = true;
                 this.overlayShow = true; 
-                purchaseCommodity(this.productsId).then((res) => {
+                purchaseCommodity(this.productsId.id).then((res) => {
                     this.loadingShow = false;
                     this.overlayShow = false; 
                     if (res && res.data.code == 0) {
@@ -322,7 +378,7 @@
             productionShareEvent() {
                 return new Promise((resolve,rejrect) => {
                     this.loadingShow = true;
-                    productionShare(this.productsId).then((res) => {
+                    productionShare(this.productsId.id).then((res) => {
                         this.loadingShow = false;
                         if (res && res.data.code == 0) {
                             resolve(res.data.data)
@@ -373,14 +429,14 @@
     @import "~@/common/stylus/mixin.less";
     @import "~@/common/stylus/modifyUi.less";
     @keyframes product-animation{
-        0% {
-            transform: rotateY(15deg)
+       0% {
+            transform: translateX(-1px) translateZ(10px) rotateY(15deg)
         }
         50% {
-            transform: rotateY(-15deg)
+            transform: translateX(-1px) translateZ(10px) rotateY(-15deg)
         }
         100% {
-            transform: rotateY(15deg)
+            transform: translateX(-1px) translateZ(10px) rotateY(15deg)
         }
     };
 	.page-box {
@@ -406,9 +462,8 @@
             padding-bottom: 80px;
             box-sizing: border-box;
             .content-top {
-                padding-top: 10px;
                 .collection-exhibition {
-                    perspective: 500px;
+                    transform: perspective(400px);
                     perspective-origin: 50% 50%;
                     transform-style: preserve-3d;
                     width: 80%;
@@ -421,16 +476,25 @@
                     height: 50vh;
                     img {
                         pointer-events: none;
-                        width: 100%
+                        width: 100%;
                     };
                     .abbr-img {
+                        width: 250px;
+                        margin-top: 60px;
                         animation-name: product-animation;
                         animation-duration: 14s;
                         animation-iteration-count: infinite;
                     };
-                    .loading-img {
+                    .loading-img-wrapper {
+                        position: absolute;
                         width: 100px;
-                    };
+                        height: 100px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        .loading-img {
+                            width: 100px;
+                        }
+                    };    
                     >div {
                         display: flex;
                         flex-flow: row nowrap;

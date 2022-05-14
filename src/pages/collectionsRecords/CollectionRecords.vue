@@ -127,7 +127,7 @@
 			
 			// 跳转藏品记录详情
 			recordsDetailsEvent (item) {
-				this.changeCollectionId(item.id);
+				this.changeCollectionId(item);
 				this.$router.push({
 					path: '/collectionRecordDetails'
 				})
@@ -178,9 +178,11 @@
 						width: 100%;
 						.img-show {
 							width: 80px;
+							height: 90px;
 							img {
 								pointer-events: none;
 								width: 80px;
+								height: 90px;
 							}
 						};
 						.span-show {
@@ -207,7 +209,7 @@
 							};
                             p {
 								margin: 6px 0;
-								width: 70%;
+								width: 75%;
 								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;

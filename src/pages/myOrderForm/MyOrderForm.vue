@@ -383,9 +383,11 @@
 						flex: 1;
 						.img-show {
 							width: 100px;
+							height: 113px;
 							img {
 								pointer-events: none;
 								width: 100px;
+								height: 113px;
 								border-top-left-radius: 10px;
 								border-bottom-left-radius: 10px;
 							}

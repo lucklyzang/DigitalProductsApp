@@ -5,7 +5,7 @@ export default {
 
     getters: {
         productsId: (state) => {
-            state.productsId = getStore('productsId') ? getStore('productsId') : '';
+            state.productsId = getStore('productsId') ? JSON.parse(getStore('productsId')) : null;
             return state.productsId
         },
 
@@ -25,7 +25,7 @@ export default {
         },
 
         collectionId: (state)  => {
-            state.collectionId = getStore('collectionId') ? getStore('collectionId') : ''
+            state.collectionId = getStore('collectionId') ? JSON.parse(getStore('collectionId')) : null
             return state.collectionId
         },
 

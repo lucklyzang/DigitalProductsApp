@@ -12,8 +12,8 @@ export function getDefaultLoginState() {
 // 产品信息store的初始值
 export function getDefaultProductsState() {
     return {
-        productsId: '', //作品id
-        collectionId: '', //藏品id
+        productsId: null, //作品id
+        collectionId: null, //藏品id
         orderId: '', //订单id
         isEnterVerificationCodePage: false, //是否进入过手机验证码页
         isEnterLoginPageSource: '', // 从哪个页面进入的登录页
