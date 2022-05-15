@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 发送手机验证码
+// 发送手机验证码(登录)
 export function sendPhoneAuthCode(mobile) {
     return request({
         url: `app/verify/${mobile}`,

@@ -152,10 +152,11 @@ export function queryObjectRecordDetails(id) {
 };
 
 //藏品转增
-export function transferObject(id, receiver) {
+export function transferObject(data) {
     return request({
-        url: `/app/transfer/${id}?receiver=${receiver}`,
-        method: 'post'
+        url: 'app/transfer',
+        method: 'post',
+        data
     })
 };
 
@@ -180,5 +181,13 @@ export function useObjectImg(id) {
     return request({
         url: `/app/use/${id}`,
         method: 'get'
+    })
+};
+
+// 发送手机验证码(藏品转赠)
+export function collectSendPhoneAuthCode() {
+    return request({
+        url: 'app/verify',
+        method: 'post'
     })
 };

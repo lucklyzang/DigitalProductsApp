@@ -1,5 +1,5 @@
 <template>
-  <div class="page-box">
+  <div class="page-box" ref="wrapper">
     <NavBar :leftArrow="false" />
     <van-pull-refresh
         v-model="isRefresh"
@@ -202,6 +202,7 @@
         },
         data() {
             return {
+                scrollTop: 0, // 储存滚动位置 
                 isShowLoadFail: false,
                 isRefresh: false,
                 homeBannerPng: require("@/common/images/home/home-banner.png"),
@@ -237,6 +238,23 @@
             this.queryProductsList()
         },
 
+        activated() {
+            // 控制设备物理返回按键
+            if (!IsPC()) {
+                pushHistory();
+                this.gotoURL(() => {
+                    pushHistory();
+					this.$router.push({
+						path: '/home'
+					})
+                })
+            };
+            this.$nextTick(() => {
+                document.documentElement.scrollTop = this.scrollTop
+            })
+        },
+
+
         watch: {},
 
         computed: {
@@ -253,7 +271,8 @@
         },
 
         beforeRouteLeave(to, from, next) {
-            next()
+            this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+            next() 
         },
 
         methods: {

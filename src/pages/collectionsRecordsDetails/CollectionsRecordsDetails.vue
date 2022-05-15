@@ -8,21 +8,102 @@
                     <div class="loading-img-wrapper">
                         <img :src="imgLoadingGif" v-show="loadingImgGifShow || threeDimensionalShow" class="loading-img">
                     </div>
-                    <div class="abbr-img">
+                    <div class="abbr-img" v-if="collectionRecordDetails.three === '0'">
                         <img :src="collectionRecordDetails.path" v-show="!loadingImgGifShow">
                     </div>
-                    <!-- <div class="three-dimensional-img" v-show="!loadingImgGifShow">
-                        <model-obj  :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                    <div class="three-dimensional-img" v-else>
+                       <model-obj
+                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'obj'" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            src="static/models/testTwo.obj" 
-                            :width="180" :height="230" 
+                            :src="collectionRecordDetails.path"
+                            :width="180" 
+                            :height="230" 
                             :backgroundAlpha="1" 
                             backgroundColor="#020416">
                         </model-obj>
-                    </div> -->
+                        <model-fbx
+                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'fbx'" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="collectionRecordDetails.path" 
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-fbx>
+                        <model-three
+                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'json'" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="collectionRecordDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-three>
+                        <model-stl
+                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'stl'"  
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="collectionRecordDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-stl>
+                        <model-collada
+                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'dae'"  
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="collectionRecordDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-collada>
+                        <model-ply
+                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'ply'"  
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="collectionRecordDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-ply>
+                        <model-gltf
+                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf(2.0)'"  
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="collectionRecordDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-gltf>
+                    </div>
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -63,7 +144,7 @@
                 </div>  
             </div>
         </div>
-        <div class="content-bottom" v-show="false">
+        <div class="content-bottom" v-if="false">
             <div>
                 <van-icon name="award" />
                 <span>炫耀</span>
@@ -92,13 +173,25 @@
     import NavBar from '@/components/NavBar'
 	import {queryObjectRecordDetails,useObjectImg} from '@/api/products.js'
     import {
-        ModelObj
+        ModelObj,
+        ModelThree,
+        ModelFbx,
+        ModelCollada,
+        ModelStl,
+        ModelPly,
+        ModelGltf
     } from "vue-3d-model";
 	export default {
         name: 'CollectionsRecordsDetails',
 		components: {
             NavBar,
-            ModelObj
+            ModelObj,
+            ModelThree,
+            ModelFbx,
+            ModelCollada,
+            ModelStl,
+            ModelPly,
+            ModelGltf
 		},
 
 		data() {
@@ -223,6 +316,9 @@
                 this.loadingImgGifShow = true;
                 queryObjectRecordDetails(this.collectionId.id).then((res) => {
                     this.loadingImgGifShow = false;
+                     if (res.data.data.three !== '0') {
+                        this.threeDimensionalShow = true
+                    };
                     if (res && res.data.code == 0) {
                         this.collectionRecordDetails = res.data.data;
                         this.changeDonationProductDetails(res.data.data);

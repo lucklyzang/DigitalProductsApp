@@ -6,7 +6,8 @@ import { Dialog, Toast } from 'vant';
 // 全局注册
 Vue.use(Dialog);
 // http://39.100.74.225/nft 测试地址本地
-// http://show.blinktech.cn 测试地址线上
+// http://show.blinktech.cn/nft 测试地址线上 域名
+// http://47.99.237.183/nft 测试地址线上 ip
 const service = axios.create({
   baseURL: 'http://39.100.74.225/nft', //接口基础地址
   retry: 2, // 网络请求异常后，重试次数

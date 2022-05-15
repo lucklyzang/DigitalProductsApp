@@ -31,9 +31,36 @@
                 type="textarea"
             />
         </div>
-        <div class="content-btn" @click="transferObjectEvent">
-            确认转增
+        <div class="content-btn" @click="transferObjectEvent" :class="{'contentBtnStyle': isShowCountDown || !isCanSendPhoneCode}">
+            <span v-if="!isShowCountDown">
+                确认转赠
+            </span>
+            <van-count-down v-else :time="`${donationProductDetails.expire - new Date().getTime()}`" format="DD天HH小时mm分ss秒后可以赠送" @finish="cocuntDownEvent"/>
         </div>
+        <div class="countDown-box" v-show="!isCanSendPhoneCode">
+            <span>{{`请输入手机号${userInfo.mobile}接收到的验证码完成赠送`}}</span>
+            <van-count-down :time="countdownTime - new Date().getTime()" format="ss秒后再次赠送" @finish="countDownEnd" />
+        </div>
+        <div class="content-code" v-show="isShowCodeInput">
+			<div>
+                <van-field class="uni-input" ref="inputOne" v-model="codeOne" @input="inputEventOne" maxlength="1" type="number"/>
+			</div>
+			<div>
+				<van-field class="uni-input" ref="inputTwo" v-model="codeTwo" @input="inputEventTwo" maxlength="1" type="number"/>
+			</div>
+			<div>
+				<van-field class="uni-input" ref="inputThree" v-model="codeThree" @input="inputEventThree" maxlength="1" type="number"/>
+			</div>
+			<div>
+				<van-field class="uni-input" ref="inputFour" v-model="codeFour" @input="inputEventFour" maxlength="1" type="number"/>
+			</div>
+			<div>
+				<van-field class="uni-input" ref="inputFive" v-model="codeFive" @input="inputEventFive" maxlength="1" type="number"/>
+			</div>
+			<div>
+				<van-field class="uni-input" ref="inputSix" v-model="codeSix" @input="inputEventSix" maxlength="1" type="number"/>
+			</div>
+		</div>
         <div class="donation-explain">
             <p>转赠说明</p>
             <div>1、请您确认您具备赠送数字藏品的民事行为能力;</div>
@@ -51,7 +78,7 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
-    import {transferObject} from '@/api/products.js'
+    import {transferObject, collectSendPhoneAuthCode} from '@/api/products.js'
 	export default {
         name: 'DonationFriend',
 		components: {
@@ -60,6 +87,16 @@
 		data() {
 			return {
                 adreeMessage: '',
+                countdownTime: 0,
+                isCanSendPhoneCode: true,
+                codeOne: '',
+				codeTwo: '',
+				codeThree: '',
+				codeFour: '',
+				codeFive: '',
+				codeSix: '',
+                isShowCountDown: true,
+                isShowCodeInput: false,
                 loadingShow: false,
 				blockchainPng: require("@/common/images/home/blockchain.png")
 			}
@@ -68,11 +105,11 @@
 		computed: {
 			...mapGetters([
                 'userInfo',
+                'collectTransferCodeMessage',
                 'donationProductDetails'
 			])
 		},
 		mounted() {
-            console.log('昌平星系',this.donationProductDetails.id);
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -82,14 +119,143 @@
                         path: '/collectionRecordDetails'
                     })
                 })
-            }
+            };
+            this.extractCollectPhoneCode()
 		},
 		methods: {
 			...mapMutations([
+                'changeCollectTransferCodeMessage'
 			]),
+
+            //转赠倒计时结束事件
+            cocuntDownEvent () {
+                this.isShowCountDown = false
+            },
+
+            //发送验证码倒计时结束事件
+            countDownEnd () {
+                this.storeCollectCodeMessage(0,true,false,'')
+            },
+
+            //提取存储的该藏品手机验证码是否过了60s的信息
+            extractCollectPhoneCode () {
+                if (this.collectTransferCodeMessage.length > 0 ) {
+                    let temporaryMessage = this.collectTransferCodeMessage.filter((item) => {return item.collectId == this.donationProductDetails.id});
+                    if (temporaryMessage.length > 0) {
+                        this.countdownTime = temporaryMessage[0]['countdownTime'];
+                        this.isCanSendPhoneCode = temporaryMessage[0]['isCanSendPhoneCode'];
+                        this.isShowCodeInput = temporaryMessage[0]['isShowCodeInput']
+                    }
+                }
+            },
+
+            //存储该藏品的手机验证码是否过了60秒信息
+            storeCollectCodeMessage (time,text,inputShow,type) {
+                let temporaryOfficeList = this.collectTransferCodeMessage;
+                if (this.collectTransferCodeMessage.length > 0 ) {
+                    let temporaryIndex = this.collectTransferCodeMessage.indexOf(this.collectTransferCodeMessage.filter((item) => {return item.collectId == this.donationProductDetails.id})[0]);
+                    if (temporaryIndex != -1) {
+                        if (type == '展示验证码框') {
+                            temporaryOfficeList[temporaryIndex]['isShowCodeInput'] = inputShow
+                        } else {
+                            temporaryOfficeList[temporaryIndex]['countdownTime'] = time;
+                            temporaryOfficeList[temporaryIndex]['isCanSendPhoneCode'] = text;
+                            temporaryOfficeList[temporaryIndex]['isShowCodeInput'] = inputShow
+                        }
+                    } else {
+                        temporaryOfficeList.push(
+                            { 
+                                collectId: this.donationProductDetails.id,
+                                countdownTime: time,
+                                isCanSendPhoneCode: text,
+                                isShowCodeInput: inputShow
+                            }
+                        )
+                    }
+                } else {
+                    temporaryOfficeList.push(
+                        { 
+                            collectId: this.donationProductDetails.id,
+                            countdownTime: time,
+                            isCanSendPhoneCode: text,
+                            isShowCodeInput: inputShow
+                        }
+                    )
+                }
+                this.changeCollectTransferCodeMessage(temporaryOfficeList);
+                this.extractCollectPhoneCode()
+            },
+
+
+            // 输入框变化事件
+			inputEventOne (event) {
+				if (event) {
+					this.$refs.inputOne.blur();
+					this.$refs.inputTwo.focus()
+				}
+			},
+			inputEventTwo (event) {
+				if (event) {
+					this.$refs.inputTwo.blur();
+					this.$refs.inputThree.focus()
+				}
+			},
+			inputEventThree (event) {
+				if (event) {
+					this.$refs.inputThree.blur();
+					this.$refs.inputFour.focus()
+				}
+			},
+			inputEventFour (event) {
+				if (event) {
+					this.$refs.inputFour.blur();
+					this.$refs.inputFive.focus()
+				}
+			},
+			inputEventFive (event) {
+				if (event) {
+					this.$refs.inputFive.blur();
+					this.$refs.inputSix.focus()
+				}
+			},
+			inputEventSix (event) {
+				if (!this.codeSix) {return};
+				this.$refs.inputSix.blur();
+				if (this.codeOne && this.codeTwo && this.codeThree && this.codeFour && this.codeFive) {
+                    this.storeCollectCodeMessage('','',false,'展示验证码框');
+					let code = `${this.codeOne}${this.codeTwo}${this.codeThree}${this.codeFour}${this.codeFive}${this.codeSix}`;
+					transferObject({
+                        id: this.donationProductDetails.id,
+                        receiver: this.adreeMessage,
+                        code
+                    })
+                    .then((res) => {
+                        this.loadingShow = false;
+                        if (res && res.data.code == 0) {
+                            this.$toast({
+                                message: '转赠成功',
+                                position: 'bottom'
+                            })
+                        } else {
+                            this.$toast({
+                                message: `${res.data.msg}`,
+                                position: 'bottom'
+                            })
+                        }
+                    })
+                    .catch((err) => {
+                        this.loadingShow = false;
+                        this.$toast({
+                            message: `${err.message}`,
+                            position: 'bottom'
+                        })
+                    })
+				}
+			},
 
             // 转增方法
             transferObjectEvent() {
+                if (this.isShowCountDown || !this.isCanSendPhoneCode) { return };
                 if (!this.adreeMessage) {
                     this.$toast({
                         message: '请输入好友的区块链地址/手机号',
@@ -98,13 +264,17 @@
                     return
                 };
                 this.loadingShow = true;
-                transferObject(this.donationProductDetails.id,this.adreeMessage).then((res) => {
+                this.sendPhoneCode()
+            },
+
+            //发送短信验证码
+            sendPhoneCode () {
+                this.loadingShow = true;
+                collectSendPhoneAuthCode().then((res) => {
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
-                        this.$toast({
-                            message: '转赠成功',
-                            position: 'bottom'
-                        })
+                        this.isShowCodeInput = true;
+                        this.storeCollectCodeMessage(new Date().getTime()+60000,false,true,'')
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -253,11 +423,65 @@
             margin-top: 20px;
             border-radius: 20px;
             height: 50px;
-            line-height: 50px;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             color: black;
             font-size: 18px;
             background-image: linear-gradient(to right, #f2c460 ,#e29119)
+        };
+        .countDown-box {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /deep/ .van-count-down {
+                color: #404040;
+                font-size: 13px
+            };
+            >span {
+               color: #404040;
+                font-size: 13px 
+            }
+		};
+        .content-code {
+            width: 90%;
+            margin: 0 auto;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: center;
+			> div {
+				width: 40px;
+				margin-right: 16px;
+                .bottom-border-1px(#32343c,5px);
+				&:last-child {
+					margin-right: 0;
+				};
+				/deep/ .uni-input {
+					color: #fff;
+					height: 50px;
+					text-align: center;
+					font-size: 18px;
+                    background: transparent;
+					padding: 0 !important;
+                    .van-field__control {
+                        color: #fff !important;
+                        text-align: center !important
+                    };
+					.van-cell__value {
+						display: flex
+					}
+				}
+			}
+		};
+        .contentBtnStyle {
+            background-image: linear-gradient(to right, #f1f0ee ,#555453);
+            color: #666
         };
         .donation-explain {
             width: 90%;

@@ -20,22 +20,102 @@
                     <div class="loading-img-wrapper">
                         <img :src="imgLoadingGif" class="loading-img" v-show="loadingImgGifShow || threeDimensionalShow">
                     </div>
-                    <div class="abbr-img">
+                    <div class="abbr-img" v-if="productsDetails.three === '0'">
                         <img :src="productsDetails.path"  v-show="!loadingImgGifShow">
                     </div>
-                    <!-- <div class="three-dimensional-img" v-show="!loadingImgGifShow">
-                        <model-obj :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                    <div class="three-dimensional-img" v-else>
+                        <model-obj
+                            v-if="!loadingImgGifShow && productsDetails.three === 'obj'" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            src="./static/models/testTwo.obj" 
+                            :src="productsDetails.path"
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
                             backgroundColor="#020416">
                         </model-obj>
-                    </div> -->
+                        <model-fbx
+                            v-if="!loadingImgGifShow && productsDetails.three === 'fbx'" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="productsDetails.path" 
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-fbx>
+                        <model-three
+                            v-if="!loadingImgGifShow && productsDetails.three === 'json'" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="productsDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-three>
+                        <model-stl
+                            v-if="!loadingImgGifShow && productsDetails.three === 'stl'"  
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="productsDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-stl>
+                        <model-collada
+                            v-if="!loadingImgGifShow && productsDetails.three === 'dae'"  
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="productsDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-collada>
+                        <model-ply
+                            v-if="!loadingImgGifShow && productsDetails.three === 'ply'"  
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="productsDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-ply>
+                        <model-gltf
+                            v-if="!loadingImgGifShow && productsDetails.three === 'gltf(2.0)'"  
+                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :rotation="rotation"
+                            @on-error="threeDimensionalError" 
+                            @on-load="threeDimensionalLoaded"
+                            @on-progress="threeDimensionProgress" 
+                            :src="productsDetails.path"  
+                            :width="180" 
+                            :height="230" 
+                            :backgroundAlpha="1" 
+                            backgroundColor="#020416">
+                        </model-gltf>
+                    </div>
                 </div>
                 <div class="booth">
                     <img :src="boothPng" alt="">
@@ -114,13 +194,25 @@
 		mapMutations
 	} from 'vuex'
     import {
-        ModelObj
+        ModelObj,
+        ModelThree,
+        ModelFbx,
+        ModelCollada,
+        ModelStl,
+        ModelPly,
+        ModelGltf
     } from "vue-3d-model";
 	import {inquareProductDetails,purchaseCommodity,inquareUserInfo,productionShare} from '@/api/products.js'
 	export default {
         name: 'DigitalCollectionDetails',
 		components: { 
-            ModelObj 
+            ModelObj,
+            ModelThree,
+            ModelFbx,
+            ModelCollada,
+            ModelStl,
+            ModelPly,
+            ModelGltf
         },
 		data() {
 			return {
@@ -264,6 +356,9 @@
                     this.loadingImgGifShow = true;
                     inquareProductDetails(this.productsId.id).then((res) => {
                         this.loadingImgGifShow = false;
+                        if (res.data.data.three !== '0') {
+                            this.threeDimensionalShow = true
+                        };
                         if (res && res.data.code == 0) {
                             this.productsDetails = res.data.data;
                             this.isShowContent = true;

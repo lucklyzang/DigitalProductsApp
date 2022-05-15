@@ -1,8 +1,13 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
-      <router-view class="child-view" />
-    </transition>
+    <!-- <transition :name="transitionName"> -->
+      <keep-alive >
+        <router-view v-if="$route.meta.keepAlive" class="child-view"></router-view>
+      </keep-alive>
+    <!-- </transition> -->
+    <!-- <transition :name="transitionName"> -->
+      <router-view v-if="!$route.meta.keepAlive" class="child-view" />
+    <!-- </transition> -->
   </div>
 </template>
 <script>
@@ -36,6 +41,10 @@
           this.transitionName = '';
           return
         };
+        if (to.name == 'home' && !from.name) {
+          this.transitionName = 'slide-right';
+          return
+        };
         const toDepth = to.meta.index;
         const fromDepth = from.meta.index;
         if (toDepth > fromDepth) {
@@ -67,23 +76,19 @@
   #app {
     font-size: 0;
     position: relative;
-    width: 100%;
     min-height: 100vh;
+    width: 100%;
     background: @color-background
-  };
-  .child-view {
-    position: relative;
-    min-height: 100%;
   };
   .slide-right-enter {
     position: absolute;
     width: 100%;
     min-height: 100vh;
-    transform: translateX(-100%);
+    transform: translateX(100%);
     background: @color-background
   };
   .slide-right-enter-active {
-    transition: all 0.4s;
+    transition: all 0.3s;
     position: absolute;
     width: 100%;
     min-height: 100vh;
@@ -94,9 +99,9 @@
     position: absolute;
     width: 100%;
     min-height: 100vh;
-    transition: all 0.4s;
+    transition: all 0.3s;
     position: absolute;
-    background:#020416
+    background: @color-background;
   };
   .slide-right-leave-to {
     display:none;
@@ -113,7 +118,7 @@
     width: 100%;
     min-height: 100vh;
     background: @color-background;
-    transform: translateX(100%);
+    transform: translateX(-100%);
   };
   .slide-left-leave-to {
     display:none;
@@ -126,13 +131,13 @@
   .slide-left-enter-active {
     width: 100%;
     min-height: 100vh;
-    transition: all 0.4s;
+    transition: all 0.3s;
     position: absolute;
     background: @color-background
   }
   .slide-left-leave-active {
     display: none;
-    transition: all 0.4s;
+    transition: all 0.3s;
     position: absolute;
     width: 100%;
     min-height: 100vh;

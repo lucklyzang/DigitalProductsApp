@@ -48,6 +48,10 @@ export default {
             state.isEnterLoginPageSource = getStore('isEnterLoginPageSource') ? getStore('isEnterLoginPageSource') : ''
             return state.isEnterLoginPageSource
         },
+        collectTransferCodeMessage: (state)  => {
+            state.collectTransferCodeMessage = getStore('collectTransferCodeMessage') ? JSON.parse(getStore('collectTransferCodeMessage')) : []
+            return state.collectTransferCodeMessage
+        }
     },
 
     mutations: {
@@ -107,6 +111,12 @@ export default {
         changeIsEnterLoginPageSource(state, playLoad) {
             setStore('isEnterLoginPageSource', playLoad);
             state.isEnterLoginPageSource = playLoad
+        }, 
+
+        // 保存藏品赠送发送的验证码是否超过60s的状态
+        changeCollectTransferCodeMessage(state, playLoad) {
+            setStore('collectTransferCodeMessage', playLoad);
+            state.collectTransferCodeMessage = playLoad
         }, 
 
         //重置产品的状态

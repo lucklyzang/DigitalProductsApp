@@ -54,14 +54,16 @@ let baseRoute = [{
         name: 'login',
         component: Login,
         meta: {
-            index: 0
+            index: 0,
+            keepAlive: false
         }
     },
     {
         path: '/',
         redirect: '/home',
         meta: {
-            index: 0
+            index: 0,
+            keepAlive: true
         }
     },
     {
@@ -69,7 +71,8 @@ let baseRoute = [{
         name: 'home',
         component: Home,
         meta: {
-            index: 0
+            index: 0,
+            keepAlive: true
         }
     },
     {
@@ -77,7 +80,8 @@ let baseRoute = [{
         name: 'myInfo',
         component: MyInfo,
         meta: {
-            index: 0
+            index: 0,
+            keepAlive: false
         }
     },
     {
@@ -85,7 +89,8 @@ let baseRoute = [{
         name: 'verificationCode',
         component: VerificationCode,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     {
@@ -93,7 +98,8 @@ let baseRoute = [{
         name: 'collectionDetails',
         component: CollectionDetails,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     {
@@ -101,7 +107,8 @@ let baseRoute = [{
         name: 'weixinLogin',
         component: WeixinLogin,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     {
@@ -109,7 +116,8 @@ let baseRoute = [{
         name: 'accountSecurity',
         component: AccountSecurity,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     
@@ -118,7 +126,8 @@ let baseRoute = [{
         name: 'myOrderForm',
         component: MyOrderForm,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     {
@@ -126,7 +135,8 @@ let baseRoute = [{
         name: 'realNameAuthentication',
         component: RealNameAuthentication,
         meta: {
-            index: 2
+            index: 2,
+            keepAlive: false
         }
     },
     {
@@ -134,7 +144,8 @@ let baseRoute = [{
         name: 'realNameAythenticationCertified',
         component: RealNameAythenticationCertified,
         meta: {
-            index: 2
+            index: 2,
+            keepAlive: false
         }
     },
     {
@@ -142,7 +153,8 @@ let baseRoute = [{
         name: 'collectionRecords',
         component: CollectionRecords,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     {
@@ -150,7 +162,8 @@ let baseRoute = [{
         name: 'donationFriend',
         component: DonationFriend,
         meta: {
-            index: 3
+            index: 3,
+            keepAlive: false
         }
     },
     {
@@ -158,7 +171,8 @@ let baseRoute = [{
         name: 'cancelAccount',
         component: CancelAccount,
         meta: {
-            index: 3
+            index: 3,
+            keepAlive: false
         }
     },
     {
@@ -166,7 +180,8 @@ let baseRoute = [{
         name: 'collectionRecordDetails',
         component: CollectionRecordsDetails,
         meta: {
-            index: 2
+            index: 2,
+            keepAlive: false
         }
     },
     {
@@ -174,7 +189,8 @@ let baseRoute = [{
         name: 'systemSet',
         component: SystemSet,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     {
@@ -182,7 +198,8 @@ let baseRoute = [{
         name: 'systemMessage',
         component: SystemMessage,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     {
@@ -190,7 +207,8 @@ let baseRoute = [{
         name: 'individualitySignature',
         component: IndividualitySignature,
         meta: {
-            index: 2
+            index: 2,
+            keepAlive: false
         }
     },
     {
@@ -198,7 +216,8 @@ let baseRoute = [{
         name: 'changeNickname',
         component: ChangeNickname,
         meta: {
-            index: 2
+            index: 2,
+            keepAlive: false
         }
     },
     {
@@ -206,7 +225,8 @@ let baseRoute = [{
         name: 'orderFormDetails',
         component: OrderFormDetails,
         meta: {
-            index: 2
+            index: 2,
+            keepAlive: false
         }
     },
     {
@@ -214,7 +234,8 @@ let baseRoute = [{
         name: 'blockchainAddress',
         component: BlockchainAddress,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     },
     {
@@ -222,7 +243,8 @@ let baseRoute = [{
         name: 'orderFormToPaid',
         component: OrderFormToPaid,
         meta: {
-            index: 3
+            index: 3,
+            keepAlive: false
         }
     },
     {
@@ -230,7 +252,8 @@ let baseRoute = [{
         name: 'WorkRoom',
         component: WorkRoom,
         meta: {
-            index: 2
+            index: 2,
+            keepAlive: false
         }
     },
     {
@@ -238,7 +261,8 @@ let baseRoute = [{
         name: 'aboutUs',
         component: AboutUs,
         meta: {
-            index: 1
+            index: 1,
+            keepAlive: false
         }
     }
 ];
