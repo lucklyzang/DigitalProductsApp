@@ -671,6 +671,7 @@
                         ;
                         .image-area {
                             width: 100%;
+                            min-height: 350px;
                             margin: 0 auto;
                             img {
                                 pointer-events: none;

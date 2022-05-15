@@ -463,9 +463,9 @@
             box-sizing: border-box;
             .content-top {
                 .collection-exhibition {
-                    transform: perspective(400px);
-                    perspective-origin: 50% 50%;
-                    transform-style: preserve-3d;
+                    // transform: perspective(400px);
+                    // perspective-origin: 50% 50%;
+                    // transform-style: preserve-3d;
                     width: 80%;
                     margin: 0 auto;
                     position: relative;
@@ -481,9 +481,9 @@
                     .abbr-img {
                         width: 250px;
                         margin-top: 60px;
-                        animation-name: product-animation;
-                        animation-duration: 14s;
-                        animation-iteration-count: infinite;
+                        // animation-name: product-animation;
+                        // animation-duration: 14s;
+                        // animation-iteration-count: infinite;
                     };
                     .loading-img-wrapper {
                         position: absolute;

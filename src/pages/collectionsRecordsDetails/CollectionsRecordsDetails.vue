@@ -347,9 +347,9 @@
             .content-top {
                 .collection-exhibition {
                     width: 80%;
-                    perspective: 400px;
-                    perspective-origin: 50% 50%;
-                    transform-style: preserve-3d;
+                    // perspective: 400px;
+                    // perspective-origin: 50% 50%;
+                    // transform-style: preserve-3d;
                     margin: 0 auto;
                     position: relative;
                     display: flex;
@@ -364,9 +364,9 @@
                     .abbr-img {
                         width: 250px;
                         margin-top: 60px;
-                        animation-name: product-animation;
-                        animation-duration: 14s;
-                        animation-iteration-count: infinite;
+                        // animation-name: product-animation;
+                        // animation-duration: 14s;
+                        // animation-iteration-count: infinite;
                     };
                     .three-dimensional-img {
                         margin-top: 60px;
