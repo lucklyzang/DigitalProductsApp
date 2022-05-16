@@ -270,7 +270,7 @@
             ])
         },
         
-        destroyed() {
+        deactivated() {
             window.removeEventListener('scroll', this.handleScroll);
         },
 
