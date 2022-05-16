@@ -99,7 +99,7 @@ export default {
 
 	beforeRouteLeave(to, from, next) {
 		if (to.path !== '/verificationCode') {
-			this.changeIsEnterVerificationCodePage(false)
+			this.changeIsEnterVerificationCodePage(false);
 		};
 		next()
 	},
@@ -125,18 +125,34 @@ export default {
     // 监控键盘弹起
     let originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
     window.onresize = ()=> {
-      let resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;
-      if (resizeHeight < originalHeight) {
-        return (()=>{
-          this.$refs['bgIconWrapper'].style.cssspan='flex:none;height:220px'
-        })()
-      } else {
-        this.$refs['bgIconWrapper'].style.cssspan='flex:1;height:0'
-      }
     };
   },
 
-  beforeDestroy() {
+  activated () {
+	// 控制设备物理返回按键
+    if (!IsPC()) {
+      let that = this;
+      pushHistory()
+      that.gotoURL(() => {
+        pushHistory();
+		if (this.isTokenExpired === true) {
+			if (this.path == '/myInfo' || this.path == '/collectionDetails') {
+				this.$router.push({path: this.path})
+			} else {
+				this.$router.push({path: 'home'})
+			}
+		} else {
+			this.$router.push({path: this.path})
+		}
+      });
+    };
+    // 监控键盘弹起
+    let originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
+    window.onresize = ()=> {
+    };
+  },
+
+  deactivated() {
     if(this.timer) { 
         clearTimeout(this.timer)
     }

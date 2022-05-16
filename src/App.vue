@@ -1,11 +1,14 @@
 <template>
   <div id="app">
     <transition :name="transitionName" mode="out-in">
-      <keep-alive  :max="10">
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-        <router-view v-if="!$route.meta.keepAlive" :key="new Date().getTime()"></router-view>
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive" class="child-view"></router-view>
+        <router-view v-if="!$route.meta.keepAlive" :key="Math.random()" class="child-view"></router-view>
       </keep-alive>
     </transition>
+    <!-- <transition :name="transitionName" mode="out-in">
+      <router-view v-if="!$route.meta.keepAlive" :key="Math.random()" class="child-view"></router-view>
+    </transition> -->
   </div>
 </template>
 <script>
