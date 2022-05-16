@@ -1,13 +1,11 @@
 <template>
   <div id="app">
-    <!-- <transition :name="transitionName"> -->
-      <!-- <keep-alive> -->
-        <router-view></router-view>
-      <!-- </keep-alive> -->
-    <!-- </transition> -->
-    <!-- <transition :name="transitionName"> -->
-      <!-- <router-view v-if="!$route.meta.keepAlive"></router-view> -->
-    <!-- </transition> -->
+    <transition :name="transitionName" mode="out-in">
+      <keep-alive  :max="10">
+        <router-view v-if="$route.meta.keepAlive" class="child-view"></router-view>
+        <router-view v-if="!$route.meta.keepAlive" :key="new Date().getTime()" class="child-view"></router-view>
+      </keep-alive>
+    </transition>
   </div>
 </template>
 <script>
@@ -80,67 +78,32 @@
     width: 100%;
     background: @color-background
   };
-  .slide-right-enter {
+  .child-view {
     position: absolute;
-    width: 100%;
-    min-height: 100vh;
-    transform: translateX(100%);
-    background: @color-background
-  };
-  .slide-right-enter-active {
-    transition: all 0.3s;
-    position: absolute;
-    width: 100%;
-    min-height: 100vh;
-    background: @color-background;
-  };
-  .slide-right-leave-active {
-    display: none;
-    position: absolute;
-    width: 100%;
-    min-height: 100vh;
-    transition: all 0.3s;
-    position: absolute;
-    background: @color-background;
-  };
-  .slide-right-leave-to {
-    display:none;
-    position: absolute;
-    width: 100%;
-    min-height: 100vh;
-    background: @color-background;
-    transform: translateX(-100%);
+    width:100%;
   }
-
-
-  .slide-left-enter {
-    position: absolute;
-    width: 100%;
-    min-height: 100vh;
-    background: @color-background;
-    transform: translateX(-100%);
-  };
-  .slide-left-leave-to {
-    display:none;
-    width: 100%;
-    min-height: 100vh;
-    transform: translateX(100%);
-    position: absolute;
-    background: @color-background
-  } 
-  .slide-left-enter-active {
-    width: 100%;
-    min-height: 100vh;
-    transition: all 0.3s;
-    position: absolute;
-    background: @color-background
+  .slide-left-enter, .slide-right-leave-active {
+    opacity: 0;
+    transition: all 0.3s ease;
+    -webkit-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
   }
-  .slide-left-leave-active {
-    display: none;
-    transition: all 0.3s;
-    position: absolute;
-    width: 100%;
-    min-height: 100vh;
-    background: @color-background
+  .slide-left-leave-active, .slide-right-enter {
+    opacity: 0;
+    transition: all 0.3s ease;
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+  }
+  .slide-right-enter, .slide-left-leave-active {
+    opacity: 0;
+    transition: all 0.3s ease;
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+  }
+  .slide-right-leave-active, .slide-left-enter {
+    opacity: 0;
+    transition: all 0.3s ease;
+    -webkit-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
   }
 </style>

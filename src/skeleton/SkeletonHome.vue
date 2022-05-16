@@ -23,6 +23,7 @@ export default {
     @import "../common/stylus/modifyUi.less";
     .main {
         .content-wrapper();
+        min-height: 100vh;
         background: @color-background;
         .top {
             flex:1;
