@@ -8,7 +8,7 @@ Vue.directive('preventReClick', {
         if(openDalay) return;
         openDalay = !openDalay;
         setTimeout(() => {
-            openDalay = !openDalay
+          openDalay = !openDalay
         }, binding.value || 3000)
     })
   }

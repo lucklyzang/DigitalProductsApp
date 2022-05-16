@@ -95,6 +95,8 @@
 				codeFour: '',
 				codeFive: '',
 				codeSix: '',
+                isDisabled: false,
+                timer: null,
                 isShowCountDown: true,
                 isShowCodeInput: false,
                 loadingShow: false,
@@ -122,6 +124,11 @@
             };
             this.extractCollectPhoneCode()
 		},
+        beforeDestroy() {
+            if(this.timer) { 
+                clearTimeout(this.timer)
+            }
+        },
 		methods: {
 			...mapMutations([
                 'changeCollectTransferCodeMessage'
@@ -255,6 +262,9 @@
 
             // 转增方法
             transferObjectEvent() {
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},2000);
                 if (this.isShowCountDown || !this.isCanSendPhoneCode) { return };
                 if (!this.adreeMessage) {
                     this.$toast({

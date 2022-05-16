@@ -8,7 +8,7 @@ export default {
             state.productsId = getStore('productsId') ? JSON.parse(getStore('productsId')) : null;
             return state.productsId
         },
-
+        
         orderId: (state) => {
             state.orderId = getStore('orderId') ? getStore('orderId') : '';
             return state.orderId
@@ -17,6 +17,11 @@ export default {
         isPaying: (state)  => { 
             state.isPaying = getStore('isPaying') ? getStore('isPaying') === 'false' ? false : true : false
             return state.isPaying
+        },
+
+        isRefreshHomePage: (state) => {
+            state.isRefreshHomePage = getStore('isRefreshHomePage') ? getStore('isRefreshHomePage') === 'false' ? false : true : false
+            return state.isRefreshHomePage
         },
 
         isCanSendPhoneCode: (state)  => {
@@ -69,6 +74,12 @@ export default {
                 setStore('orderId', playLoad);
                 state.orderId = playLoad
             }
+        },
+
+        // 保存是否刷新首页的状态
+        changeIsRefreshHomePage (state, playLoad) {
+            setStore('isRefreshHomePage', playLoad);
+            state.isRefreshHomePage = playLoad
         },
 
         // 保存支付状态

@@ -178,7 +178,8 @@
 		methods: {
 			...mapMutations([
                 'changeIsPaying',
-                'changeOrderId'
+                'changeOrderId',
+                'changeIsRefreshHomePage'
 			]),
 
             // 查询订单详情
@@ -212,6 +213,7 @@
                 this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 this.loadingShow = true;
                 cancelOrder(this.orderId).then((res) => {
+                    this.changeIsRefreshHomePage(true);
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
                        this.$toast({
@@ -243,6 +245,7 @@
                 this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 this.loadingShow = true;
                 queryPaymentResult(this.orderId).then((res) => {
+                    this.changeIsRefreshHomePage(true);
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
                        this.$toast({

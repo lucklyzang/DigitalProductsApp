@@ -180,7 +180,7 @@
 			<div>
 				<span>¥ {{productsDetails.price}}</span>
 			</div>
-			<div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}">
+			<div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}" v-show="!this.loadingImgGifShow">
 				<span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购买' : '已售罄'}}</span>
 				<van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime)- new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
 			</div>
@@ -290,7 +290,6 @@
 		},
 
 		mounted() {
-            console.log(this.productsId.id);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -316,6 +315,7 @@
                 'changeOrderId',
                 'changeIsPaying',
                 'storeUserInfo',
+                'changeIsRefreshHomePage',
                 'changeIsEnterLoginPageSource'
 			]),
 
@@ -449,6 +449,7 @@
                     this.loadingShow = false;
                     this.overlayShow = false; 
                     if (res && res.data.code == 0) {
+                        this.changeIsRefreshHomePage(true);
                         this.changeOrderId(res.data.data.orderId);
                         this.changeIsPaying(false);
                         this.$router.push({path: 'orderFormToPaid'})

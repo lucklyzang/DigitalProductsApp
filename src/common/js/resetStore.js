@@ -13,6 +13,7 @@ export function getDefaultLoginState() {
 export function getDefaultProductsState() {
     return {
         productsId: null, //作品id
+        isRefreshHomePage: false, //是否刷新首页
         collectTransferCodeMessage: [], //藏品转增手机验证码是否能重发的信息
         collectionId: null, //藏品id
         orderId: '', //订单id

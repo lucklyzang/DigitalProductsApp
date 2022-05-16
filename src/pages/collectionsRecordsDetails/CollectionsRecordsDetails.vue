@@ -19,7 +19,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.path"
+                            :src="collectionRecordDetails.url"
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
@@ -32,7 +32,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.path" 
+                            :src="collectionRecordDetails.url" 
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
@@ -45,7 +45,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.path"  
+                            :src="collectionRecordDetails.url"  
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
@@ -58,7 +58,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.path"  
+                            :src="collectionRecordDetails.url"  
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
@@ -71,7 +71,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.path"  
+                            :src="collectionRecordDetails.url"  
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
@@ -84,7 +84,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.path"  
+                            :src="collectionRecordDetails.url"  
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
@@ -97,7 +97,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.path"  
+                            :src="collectionRecordDetails.url"  
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
@@ -144,7 +144,7 @@
                 </div>  
             </div>
         </div>
-        <div class="content-bottom" v-if="false">
+        <div class="content-bottom">
             <div>
                 <van-icon name="award" />
                 <span>炫耀</span>

@@ -12,7 +12,7 @@
             <div class="rare-object">
                 <img :src="homeBannerPng" alt="">
             </div>
-            <van-sticky :offset-top="10">
+            <!-- <van-sticky :offset-top="4"> -->
                 <div class="tab-switch">
                 <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
                     :class="{'active-tab-style': index === currentTabIndex }"
@@ -22,7 +22,7 @@
                     }}
                 </span>
                 </div>
-            </van-sticky>
+            <!-- </van-sticky> -->
             <div class="switch-content">
                 <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
@@ -55,7 +55,7 @@
                         <van-icon name="bookmark" size="14" color="#fff" />
                         <span>已售罄</span>
                     </div>
-                    <div class="right" v-show="item.isShowCountDown && item.status == 0">
+                    <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
                         <van-icon name="bell" size="14" color="#e9ad70"/>
                         <span>提醒我</span>
                     </div>
@@ -234,7 +234,6 @@
 					})
                 })
             };
-            //查询藏品列表
             this.queryProductsList()
         },
 
@@ -249,6 +248,10 @@
 					})
                 })
             };
+            if (this.isRefreshHomePage) {
+                //查询藏品列表
+                this.queryProductsList()
+            };
             this.$nextTick(() => {
                 document.documentElement.scrollTop = this.scrollTop
             })
@@ -261,13 +264,22 @@
             ...mapGetters([
                 'userInfo',
                 'isLogin',
+                'isRefreshHomePage',
                 'isShowLoginHint',
                 'isShowNameAuthHint'
             ])
         },
+        
+        destroyed() {
+            window.removeEventListener('scroll', this.handleScroll);
+        },
 
         beforeRouteEnter(to, from, next) {
-            next()
+            next((vm) => {
+                if (from.name == 'verificationCode') {
+                    this.changeIsRefreshHomePage(true)
+                }
+            })
         },
 
         beforeRouteLeave(to, from, next) {
@@ -280,8 +292,10 @@
                 'changeProductsId',
                 'changeIsShowLoginHint',
                 'changeIsShowNameAuthHint',
-                'changeIsEnterLoginPageSource'
+                'changeIsEnterLoginPageSource',
+                'changeIsRefreshHomePage'
             ]),
+
 
             tabSwitchEvent(index) {
                 this.currentTabIndex = index;
@@ -313,6 +327,12 @@
                 }
             },
 
+            //提醒我事件
+            remindMeEvent () {
+                console.log(1);
+
+            },
+
             //首页下拉刷新事件
             onRefresh () {
                 if (this.currentTabIndex == 0) {
@@ -329,6 +349,7 @@
                 this.emptyShow = false;
                 this.digitalCollectionList = [];
                 inquareProductList().then((res) => {
+                        this.changeIsRefreshHomePage(false);
                         this.isRefresh = false;
                         this.loadingShow = false;
                         if (res && res.data.code == 0) {
@@ -498,10 +519,13 @@
                     border-radius: 10px
                 }
             }
-            /deep/ .van-sticky {
-                z-index: 2000;
-                margin-top: -2px;
+            // /deep/ .van-sticky {
+			// 	z-index: 2000;
+            //     margin-top: 2px;
                 .tab-switch {
+                    position: sticky;
+                    top: 10px;
+                    z-index: 99999;
                     background: @color-background;
                     width: 100%;
                     margin: 4px 0;
@@ -532,8 +556,7 @@
                         }
                     }
                 }
-            }
-            ;
+            // };    
             .switch-content {
                 flex: 1;
                 width: 92%;
