@@ -55,7 +55,7 @@ let baseRoute = [{
         component: Login,
         meta: {
             index: 0,
-            keepAlive: false
+            keepAlive: true
         }
     },
     {
