@@ -144,7 +144,7 @@
                 </div>  
             </div>
         </div>
-        <div class="content-bottom">
+        <div class="content-bottom" v-if="false">
             <div>
                 <van-icon name="award" />
                 <span>炫耀</span>
