@@ -144,23 +144,23 @@
                 </div>  
             </div>
         </div>
-        <div class="content-bottom" v-if="false">
-            <div>
+        <div class="content-bottom">
+            <!-- <div>
                 <van-icon name="award" />
                 <span>炫耀</span>
-            </div>
+            </div> -->
             <div  @click="donationFriendEvent">
                 <van-icon name="printer" />
                 <span>转增</span>
             </div>
-            <div @click="useObjectImgEvent">
+            <!-- <div @click="useObjectImgEvent">
                 <van-icon name="good-job" />
                 <span>使用</span>
             </div>
             <div>
                 <van-icon name="label" />
                 <span>证书</span>
-            </div>
+            </div> -->
 		</div>
 	</div>
 </template>
