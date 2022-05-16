@@ -89,7 +89,7 @@ export default {
 
    beforeRouteEnter(to, from, next) {
 		next(vm => {
-			if (vm.isEnterVerificationCodePage) {
+			if (!vm.isEnterVerificationCodePage) {
 				vm.path = vm.isEnterLoginPageSource
 			} else {
 				vm.path = from.path

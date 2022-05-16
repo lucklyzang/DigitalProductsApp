@@ -2,8 +2,8 @@
   <div id="app">
     <transition :name="transitionName" mode="out-in">
       <keep-alive  :max="10">
-        <router-view v-if="$route.meta.keepAlive" class="child-view"></router-view>
-        <router-view v-if="!$route.meta.keepAlive" :key="new Date().getTime()" class="child-view"></router-view>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+        <router-view v-if="!$route.meta.keepAlive" :key="new Date().getTime()"></router-view>
       </keep-alive>
     </transition>
   </div>
@@ -78,10 +78,6 @@
     width: 100%;
     background: @color-background
   };
-  .child-view {
-    position: absolute;
-    width:100%;
-  }
   .slide-left-enter, .slide-right-leave-active {
     opacity: 0;
     transition: all 0.3s ease;
