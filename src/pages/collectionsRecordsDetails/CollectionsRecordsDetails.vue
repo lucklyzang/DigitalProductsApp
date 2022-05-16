@@ -151,7 +151,7 @@
             </div> -->
             <div  @click="donationFriendEvent">
                 <van-icon name="printer" />
-                <span>转增</span>
+                <span>转赠</span>
             </div>
             <!-- <div @click="useObjectImgEvent">
                 <van-icon name="good-job" />
