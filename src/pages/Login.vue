@@ -89,7 +89,7 @@ export default {
 
    beforeRouteEnter(to, from, next) {
 		next(vm => {
-			if (!vm.isEnterVerificationCodePage) {
+			if (vm.isEnterVerificationCodePage) {
 				vm.path = vm.isEnterLoginPageSource
 			} else {
 				vm.path = from.path
@@ -100,6 +100,11 @@ export default {
 	beforeRouteLeave(to, from, next) {
 		if (to.path !== '/verificationCode') {
 			this.changeIsEnterVerificationCodePage(false);
+		};
+		if (this.isEnterVerificationCodePage) {
+			this.path = this.isEnterLoginPageSource
+		} else {
+			this.path = from.path
 		};
 		next()
 	},
@@ -126,36 +131,6 @@ export default {
     let originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
     window.onresize = ()=> {
     };
-  },
-
-  activated () {
-	// 控制设备物理返回按键
-    if (!IsPC()) {
-      let that = this;
-      pushHistory()
-      that.gotoURL(() => {
-        pushHistory();
-		if (this.isTokenExpired === true) {
-			if (this.path == '/myInfo' || this.path == '/collectionDetails') {
-				this.$router.push({path: this.path})
-			} else {
-				this.$router.push({path: 'home'})
-			}
-		} else {
-			this.$router.push({path: this.path})
-		}
-      });
-    };
-    // 监控键盘弹起
-    let originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
-    window.onresize = ()=> {
-    };
-  },
-
-  deactivated() {
-    if(this.timer) { 
-        clearTimeout(this.timer)
-    }
   },
 
   methods: {
