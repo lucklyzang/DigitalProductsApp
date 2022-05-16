@@ -12,7 +12,7 @@
             <div class="rare-object">
                 <img :src="homeBannerPng" alt="">
             </div>
-            <!-- <van-sticky :offset-top="4"> -->
+            <van-sticky :offset-top="4">
                 <div class="tab-switch">
                 <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
                     :class="{'active-tab-style': index === currentTabIndex }"
@@ -22,7 +22,7 @@
                     }}
                 </span>
                 </div>
-            <!-- </van-sticky> -->
+            </van-sticky>
             <div class="switch-content">
                 <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
@@ -519,9 +519,9 @@
                     border-radius: 10px
                 }
             }
-            // /deep/ .van-sticky {
-			// 	z-index: 2000;
-            //     margin-top: 2px;
+            /deep/ .van-sticky {
+				z-index: 2000;
+                margin-top: 2px;
                 .tab-switch {
                     position: sticky;
                     top: 10px;
@@ -556,7 +556,7 @@
                         }
                     }
                 }
-            // };    
+            };    
             .switch-content {
                 flex: 1;
                 width: 92%;

@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <!-- <transition :name="transitionName"> -->
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
+      <!-- <keep-alive> -->
+        <router-view></router-view>
+      <!-- </keep-alive> -->
     <!-- </transition> -->
     <!-- <transition :name="transitionName"> -->
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+      <!-- <router-view v-if="!$route.meta.keepAlive"></router-view> -->
     <!-- </transition> -->
   </div>
 </template>
@@ -76,7 +76,7 @@
   #app {
     font-size: 0;
     position: relative;
-    min-height: 100vh;
+    height: 100vh;
     width: 100%;
     background: @color-background
   };
