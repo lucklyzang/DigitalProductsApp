@@ -48,6 +48,8 @@ const IndividualitySignature = () =>
     import ('@/pages/individualitySignature/IndividualitySignature')
 const ChangeNickname = () =>
     import ('@/pages/changeNickname/ChangeNickname')
+const MyObject = () =>
+    import ('@/pages/exhibitionHall/MyObject')
 Vue.use(Router)
 let baseRoute = [{
         path: '/login',
@@ -262,6 +264,15 @@ let baseRoute = [{
         component: AboutUs,
         meta: {
             index: 1,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/myObject',
+        name: 'myObject',
+        component: MyObject,
+        meta: {
+            index: 0,
             keepAlive: false
         }
     }

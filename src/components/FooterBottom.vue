@@ -1,14 +1,19 @@
 <template>
   <div class="tabBar-box">
     <van-tabbar route v-model="active" placeholder  @change="onChange" active-color="#ffbc41" inactive-color="#808188" :border="false" :safe-area-inset-bottom="true">
-      <!-- <van-tabbar-item replace to="/home" icon="wap-home">首页</van-tabbar-item> -->
-       <van-tabbar-item replace to="/home">
+      <van-tabbar-item replace to="/home">
         <span>首页</span>
         <template #icon="props">
           <img :src="props.active ? icon.homeActive : icon.homeInactive" />
         </template>
       </van-tabbar-item>
-       <van-tabbar-item replace to="/myInfo">
+      <van-tabbar-item replace to="/myObject">
+        <span>藏品</span>
+        <template #icon="props">
+          <img :src="props.active ? icon.homeActive : icon.homeInactive" />
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item replace to="/myInfo">
         <span>我的</span>
         <template #icon="props">
           <img :src="props.active ? icon.mineActive : icon.mineInactive" />
