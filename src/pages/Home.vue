@@ -277,7 +277,7 @@
         beforeRouteEnter(to, from, next) {
             next((vm) => {
                 if (from.name == 'verificationCode') {
-                    this.changeIsRefreshHomePage(true)
+                    vm.changeIsRefreshHomePage(true)
                 }
             })
         },
