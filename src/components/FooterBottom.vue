@@ -48,7 +48,7 @@ export default {
   methods: {
     ...mapMutations([
     ]),
-     onChange(index) {
+    onChange(index) {
     }
   }
 }

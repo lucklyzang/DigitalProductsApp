@@ -1,19 +1,18 @@
 <template>
 	<div class="content-box">
+        <van-nav-bar :border="false"
+            :placeholder="true"
+            title="选择展品"
+            :fixed="true"
+            z-index="1000"
+            :safe-area-inset-top="true"
+            @click-left="onClickLeft"
+        >
+             <template #left>
+                <span>取消</span>
+            </template>
+        </van-nav-bar>
         <van-loading type="spinner" v-show="loadingShow"/>
-        <div class="my-hall">
-            <div class="my-hall-content">
-                <img :src="notLoginPng" alt="">
-                <div class="hall-tit">
-                    <span>我的展馆</span>
-                    <span>NO.0000039586</span>
-                </div>
-                <div class="create-hall" @click="createHallEvent">
-                    <span>创建展览</span>
-                    <van-icon name="arrow" size="10" color="#9c9c9c"/>
-                </div>
-            </div>
-        </div>
         <div class="my-object">
             <van-loading type="spinner" v-show="loadingShow"/>
             <van-empty :description="descriptionContent" v-show="emptyShow" />
@@ -32,12 +31,11 @@
                     </p>
                     <p class="publisher">{{item.publisher}}</p>
                 </div>
-                <div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
-                    <span>没有更多数据</span>
-                </div>
             </div>
         </div>
-        <FooterBottom></FooterBottom>   
+        <div class="btn-area">
+            <span :class="{'spanStyle':!isCanClick}" @click="sureEvent">确定</span>
+        </div>
 	</div>
 </template>
 
@@ -55,6 +53,7 @@
 		},
 		data() {
 			return {
+                isCanClick: false,
                 isShowLoadFail: false,
 				emptyShow: false,
                 loadingShow: false,
@@ -122,10 +121,17 @@
 				})
 			},
 
-            // 创建展馆事件
-            createHallEvent () {
-                this.$router.push({path: '/createHall'})
-            }
+            // 确定事件
+            sureEvent () {
+                if (!this.isCanClick) {
+                    return
+                };
+                this.$router.push({path: '/editNewHall'})
+            },
+
+            onClickLeft () {
+                this.$router.push({path: '/editNewHall'})
+            },
 		}
 	}
 </script>
@@ -137,76 +143,51 @@
 	.content-box {
 		.content-wrapper();
         background: @color-background;
-        .my-hall {
-            width: 100%;
-            height: 200px;
-            .my-hall-content {
-                width: 100%;
-                height: 200px;
-                position: relative;
-                img {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    height: 200px;
-                    width: 100%
-                };
-                .hall-tit {
-                    margin-left: 15px;
-                    display: flex;
-                    flex-direction: column;
-                    margin-top: 20px;
-                    span {
-                        z-index: 1;
-                        &:first-child {
-                            color: #fff;
-                            font-size: 18px;
-                            margin-bottom: 6px
-                        };
-                        &:last-child {
-                            color: rgb(156, 154, 154);
-                            font-size: 14px
-                        }
-                    }
-                };
-                .create-hall {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%,-50%);
-                    width: 120px;
-                    height: 35px;
-                    background-image: linear-gradient(to right, rgb(121, 121, 121), rgb(94, 94, 94));
-                    color: #fff;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 8px;
-                    >span {
-                        font-size: 14px;
-                        z-index: 1
-                    };
-                    /deep/ .van-icon {
-                        position: absolute;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        right: 4px;
-                    }
+         /deep/ .van-nav-bar {
+            background: @color-background;
+            .van-nav-bar__title {
+                color: #fff !important
+            };
+            .van-nav-bar__left {
+                width: 60px;
+                height: 30px;
+                line-height: 30px;
+                border-radius: 20px;
+                color: #b9b9b9 !important;
+                padding: 0 6px 0 0;
+                text-align: left;
+                font-size: 16px;
+                top: 10px;
+                left: 8px;
+                box-sizing: border-box;
+                span {
+                    width: 100%;
+                    height: 100%
+                }
+            };
+            .van-nav-bar__right {
+                width: 60px;
+                height: 30px;
+                line-height: 30px;
+                border-radius: 20px;
+                background: #f5f5c4;
+                color: black !important;
+                padding: 0 6px;
+                top: 10px;
+                right: 8px;
+                box-sizing: border-box;
+                span {
+                    width: 100%;
+                    height: 100%
                 }
             }
         };
         .my-object {
             width: 100%;
-            position: fixed;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            flex: 1;
             padding: 15px;
             box-sizing: border-box;
-            top: 200px;
-            left: 0;
-            background: #373737;
             display: flex;
-            height: 100vh;
             overflow: auto;
             z-index: 100;
             flex-direction: column;
@@ -293,16 +274,30 @@
                         .no-wrap()
                     }
                 };
-                .no-more-data {
-					height: 40px;
-					width: 100%;
-					text-align: center;
-					line-height: 40px;
-					font-size: 14px;
-					color: #c0c0c0;
-                    margin-right: 0;
-                    margin-bottom: 0
-				}
+            }
+        };
+        .btn-area {
+            display: flex;
+			flex-direction: column;
+			justify-content: center;
+            align-items: center;
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 20px;
+            > span {
+                display: inline-block;
+                width: 100%;
+                color: #383737;
+                height: 50px;
+                font-size: 18px;
+                text-align: center;
+                font-weight: bold;
+                line-height: 50px;
+                background: #f5f5c4;
+                border-radius: 30px
+            };
+            .spanStyle {
+                background: #696968;
             }
         }
 	}
