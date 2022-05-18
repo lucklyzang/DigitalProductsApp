@@ -58,8 +58,10 @@ const ChooseHallTemplate = () =>
     import ('@/pages/exhibitionHall/chooseHallTemplate')
 const ChooseExhibits = () =>
     import ('@/pages/exhibitionHall/ChooseExhibits')
-const ExhibitionTheme =() => 
-    import ('@/pages/exhibitionHall/ExhibitionTheme')    
+const ExhibitionTheme = () => 
+    import ('@/pages/exhibitionHall/ExhibitionTheme')
+const MyObjectDetails =  () =>
+    import ('@/pages/exhibitionHall/MyObjectDetails')
 Vue.use(Router)
 let baseRoute = [{
         path: '/login',
@@ -328,6 +330,15 @@ let baseRoute = [{
         component: ExhibitionTheme,
         meta: {
             index: 3,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/myObjectDetails',
+        name: 'myObjectDetails',
+        component: MyObjectDetails,
+        meta: {
+            index: 2,
             keepAlive: false
         }
     }

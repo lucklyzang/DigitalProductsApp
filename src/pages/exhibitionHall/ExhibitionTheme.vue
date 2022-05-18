@@ -77,9 +77,6 @@
                         path: '/editNewHall'
                     })
                 })
-            };
-            if (this.isLogin) {
-                this.signatureContent = this.userInfo.signTxt
             }
 		},
 		methods: {
@@ -91,14 +88,6 @@
             },
             onClickRight () {
 
-            },
-            
-            // 签名修改取消事件
-            cancelChangeEvent () {
-                this.signatureContent = '';
-                this.$router.push({
-                    path: 'systemSet'
-                })
             }
 		}
 	}

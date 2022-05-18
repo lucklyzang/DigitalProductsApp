@@ -45,24 +45,20 @@
 		data() {
 			return {
                 currentIndex: 0,
-                checkedTemplateImg: require("@/common/images/login/account-security.png"),
+                checkedTemplateImg: require("@/common/images/home/theme-one.png"),
                 checkedTemplateText: '默认',
 				templateList: [
                     {
-                        imgPath: require("@/common/images/login/account-security.png"),
+                        imgPath: require("@/common/images/home/theme-one.png"),
                         text: '默认'
                     }, 
                     {
-                        imgPath: require("@/common/images/login/my-service.png"),
+                        imgPath: require("@/common/images/home/theme-two.png"),
                         text: '极简画廊'
                     }, 
                     {
-                        imgPath: require("@/common/images/login/about.png"),
+                        imgPath: require("@/common/images/home/theme-three.png"),
                         text: '北国风光'
-                    }, 
-                    {
-                        imgPath: require("@/common/images/login/my-share.png"),
-                        text: '江南水乡'
                     }
                 ]
 			}

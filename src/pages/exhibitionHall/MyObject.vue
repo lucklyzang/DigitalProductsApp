@@ -8,13 +8,20 @@
                     <span>我的展馆</span>
                     <span>NO.0000039586</span>
                 </div>
-                <div class="create-hall" @click="createHallEvent">
+                <!-- <div class="create-hall" @click="createHallEvent">
                     <span>创建展览</span>
+                    <van-icon name="arrow" size="10" color="#9c9c9c"/>
+                </div> -->
+                <div class="create-hall" @click="enterHallEvent">
+                    <span>进入展馆</span>
                     <van-icon name="arrow" size="10" color="#9c9c9c"/>
                 </div>
             </div>
         </div>
-        <div class="my-object">
+        <div class="my-object" ref="myObject"
+            @touchstart="touchstartHandle"
+            @touchmove="touchmoveHandle"
+        >
             <van-loading type="spinner" v-show="loadingShow"/>
             <van-empty :description="descriptionContent" v-show="emptyShow" />
             <div class="object-tit">我的藏品</div>
@@ -56,7 +63,12 @@
 		data() {
 			return {
                 isShowLoadFail: false,
+                myObjectOffsetTop: '',
 				emptyShow: false,
+                moveInfo: {
+                    startY: 0,
+                    y: 0
+                },
                 loadingShow: false,
 				descriptionContent: '暂无藏品',
                 orderList: [],
@@ -72,6 +84,7 @@
 			])
 		},
 		mounted() {
+            this.myObjectOffsetTop = this.$refs.myObject.offsetTop;
             // 查询藏品记录
 			this.queryCollectionRecords()
 		},
@@ -125,6 +138,44 @@
             // 创建展馆事件
             createHallEvent () {
                 this.$router.push({path: '/createHall'})
+            },
+            // 进入我的展馆
+            enterHallEvent () {
+                this.$router.push({path: '/myObjectDetails'})
+            },
+
+            // 滑动开始
+            touchstartHandle(e) {
+                this.moveInfo.startY = e.targetTouches[0].pageY;
+                this.moveInfo.y = this.$refs.myObject.offsetTop;
+            },
+            
+            // 滑动中
+            touchmoveHandle(e) {
+                let moveY = e.targetTouches[0].pageY - this.moveInfo.startY;
+                //上滑
+                if (moveY < 0) {
+                    if (this.$refs.myObject.offsetTop <= 0) {
+                        this.$refs.myObject.style.top = 0 + 'px'
+                        this.moveInfo.y = this.$refs.myObject.offsetTop;
+                        this.moveInfo.startY = e.targetTouches[0].pageY;
+                        return
+                    }
+                    if (this.$refs.myObject.offsetTop > 0) {
+                        this.$refs.myObject.style.top = this.moveInfo.y - Math.abs(moveY) + 'px'
+                    }
+                } else {
+                    if (this.$refs.myObject.offsetTop >= this.myObjectOffsetTop) {
+                        this.$refs.myObject.style.top = this.myObjectOffsetTop + 'px';
+                        this.moveInfo.y = this.$refs.myObject.offsetTop;
+                        this.moveInfo.startY = e.targetTouches[0].pageY;
+                        return
+                    }
+                    if (this.$refs.myObject.offsetTop < this.myObjectOffsetTop) {
+                        this.$refs.myObject.style.top = this.moveInfo.y + moveY + 'px'
+                    }    
+                };
+                e.preventDefault()
             }
 		}
 	}
