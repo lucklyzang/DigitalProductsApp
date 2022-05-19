@@ -9,11 +9,15 @@
             @click-left="onClickLeft"
         >
         </van-nav-bar>
-        <van-loading type="spinner" v-show="loadingShow"/>
-        <img :src="checkedTemplateImg" alt="">
-		<div class="content">
-            <div class="content-center">
-                <div class="content-left">
+        <van-loading type="spinner" v-show="loadingShow" color="#333" />
+        <img :src="checkedTemplateImg" alt="" ref="backgroundImg">
+		<div class="content" ref="content">
+            <div class="content-center"
+                ref="contentCenter"
+                @touchstart="touchstartHandle"
+                @touchmove="touchmoveHandle"
+            >
+                <div class="content-left" ref="contentLeft">
                     <div class="title">
                         纪元
                     </div>
@@ -22,7 +26,7 @@
                     </div>
                 </div>
                 <div class="content-right">
-                   <div class="exhibition-list" v-for="(item,index) in orderList" :key="index">
+                   <div class="exhibition-list" v-for="(item,index) in orderList" :key="index" :ref="'exhibitionList'+ index">
                        <div class="exhibits-top" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
                            <img :data-src="item.collectionUrl" alt="">
                        </div>
@@ -61,6 +65,14 @@
 		data() {
 			return {
                 orderList: [],
+                moveInfo: {
+                    startX: 0,
+                    x: 0,
+                    imgX: 0
+                },
+                myObjectOffsetLeft: '',
+                isRenderComplete: false,
+                backgroundImgLeft: '',
                 loadingShow: false,
                 hallBothPng: require("@/common/images/home/hall-both.png"),
                 blockchainPng: require("@/common/images/home/hall-chain.png"),
@@ -76,6 +88,8 @@
 			])
 		},
 		mounted() {
+            this.myObjectOffsetLeft = this.$refs.contentCenter.offsetLeft;
+            this.backgroundImgLeft = this.$refs.backgroundImg.offsetLeft;
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -89,6 +103,11 @@
             // 查询藏品记录
 			this.queryCollectionRecords()
 		},
+        updated() {
+            if (this.isRenderComplete) {
+                this.calculateContentWidth(this.orderList.length)
+            }
+        },
 		methods: {
 			...mapMutations([
 			]),
@@ -110,8 +129,9 @@
                                 comId: item.comId,
                                 chain: item.chain,
                                 publisher: item.publisher
-                            })
-                        }
+                            });
+                            this.isRenderComplete = true
+                        };
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -130,6 +150,79 @@
 
             onClickLeft () {
                 this.$router.push({path: '/myObject'})
+            },
+
+            // 计算展品总长度
+            calculateContentWidth (length) {
+                if (length == 0) {return};
+                let rightWidth = 0;
+                if (length == 1 || length == 2) {
+                    rightWidth = this.$refs['exhibitionList0'][0].offsetWidth + 40
+                } else {
+                    let num = 0;
+                    num = Math.ceil(length/2);
+                    rightWidth = (this.$refs['exhibitionList0'][0].offsetWidth + 40)*num
+                };
+                this.$refs.contentCenter.style.width =  this.$refs.contentLeft.offsetWidth + rightWidth + 'px'
+            },
+
+            // 滑动开始
+            touchstartHandle(e) {
+                this.moveInfo.startX = e.targetTouches[0].pageX;
+                this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
+            },
+            
+            // 滑动中
+            touchmoveHandle(e) {
+                console.log(this.$refs.contentCenter.style.left);
+                // 滑动距离
+                let moveX = e.targetTouches[0].pageX - this.moveInfo.startX;
+                //左滑
+                if (moveX < 0) {
+                    // 展品转动
+                    if (this.$refs.contentCenter.offsetLeft <= -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth)) {
+                        this.$refs.contentCenter.style.left = -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth) + 'px';
+                        this.moveInfo.startX = e.targetTouches[0].pageX;
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        return
+                    }
+                    if (this.$refs.contentCenter.offsetLeft > -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth)) {
+                        this.$refs.contentCenter.style.left = -this.moveInfo.x - Math.abs(moveX) + 'px'
+                    };
+                //     // 背景图转动
+                //     if (this.$refs.backgroundImg.offsetLeft <= -500) {
+                //         this.$refs.backgroundImg.style.left = -500 + 'px';
+                //         this.moveInfo.startX = e.targetTouches[0].pageX;
+                //         this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
+                //         return
+                //     }
+                //     if (this.$refs.backgroundImg.offsetLeft > -500) {
+                //         this.$refs.backgroundImg.style.left = -this.moveInfo.x - (Math.abs(moveX)/2) + 'px';
+                //     };
+                // } else {
+                //  //展品转动
+                    if (this.$refs.contentCenter.offsetLeft >= this.myObjectOffsetLeft) {
+                        this.$refs.contentCenter.style.left = this.myObjectOffsetLeft + 'px';
+                        this.moveInfo.startX = e.targetTouches[0].pageX;
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        return
+                    }
+                    if (this.$refs.contentCenter.offsetLeft < this.myObjectOffsetLeft) {
+                        this.$refs.contentCenter.style.right = this.moveInfo.X + moveX + 'px'
+                    };
+                //     // 背景图转动
+                //     if (this.$refs.backgroundImg.offsetLeft >= this.backgroundImgLeft) {
+                //         this.$refs.backgroundImg.style.left = this.backgroundImgLeft + 'px';
+                //         this.moveInfo.startX = e.targetTouches[0].pageX;
+                //         this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
+                //         return
+                //     }
+                //     if (this.$refs.backgroundImg.offsetLeft < this.backgroundImgLeft) {
+                //         this.$refs.backgroundImg.style.left = this.moveInfo.x + (moveX/2) + 'px';
+                //     };   
+                };
+                // e.preventDefault()
             }
 		}
 	}
@@ -170,18 +263,20 @@
         };
 		.content{
             flex: 1;
-            position: relative;
+            width: 100%;
             .content-center {
                 position: absolute;
                 display: flex;
                 flex-flow: row nowrap;
-                top: 80px;
-                left: 40px;
-                height: 60vh;
+                top: 15vh;
+                left: 0;
+                height: 72vh;
                 .content-left {
                     width: 220px;
                     display: flex;
-                    height: 60vh;
+                    height: 72vh;
+                    padding-left: 40px;
+                    box-sizing: border-box;
                     flex-direction: column;
                     margin-right: 20px;
                     .title {
@@ -203,22 +298,24 @@
                 .content-right {
                     color: #fff;
                     font-size: 22px;
-                    height: 60vh;
+                    height: 72vh;
                     display: flex;
                     flex-direction: column;
                     flex-wrap: wrap;
                     .exhibition-list {
                         width: 140px;
                         box-sizing: border-box;
-                        height: 30vh;
-                        // margin-bottom: 40px;
+                        height: 34vh;
+                        margin-bottom: 2vh;
                         margin-right: 40px;
                         .exhibits-top {
                             position: relative;
-                            width: 100px;
+                            // width: 100px;
+                            height: 20vh;
                             padding: 5px;
-                            height: 110px;
+                            // height: 110px;
                             margin: 0 auto;
+                            box-sizing: border-box;
                             border-radius: 10px;
                             > img {
                                 border-radius: 6px;
@@ -228,12 +325,14 @@
                         };
                         .exhibits-line {
                             width: 140px;
+                            height: 4vh;
                             margin-top: 8px;
                             img {
                                 width: 140px
                             }
                         };
                         .exhibits-bottom {
+                            height: 10vh;
                             margin-top: -4px;
                             >p {
                                 width: 100%;

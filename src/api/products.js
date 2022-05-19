@@ -191,3 +191,37 @@ export function collectSendPhoneAuthCode() {
         method: 'post'
     })
 };
+
+// 查询展馆模板
+export function queryHallTemplates(type) {
+    return request({
+        url: `app/templates?type=${type}`,
+        method: 'get'
+    })
+};
+
+// 查询展馆信息
+export function queryHallMessage(type) {
+    return request({
+        url: 'app/gallery',
+        method: 'get'
+    })
+};
+
+// 发布展馆
+export function publishHall(data) {
+    return request({
+        url: 'app/publish',
+        method: 'put',
+        data
+    })
+};
+
+// 编辑展馆
+export function edithHall(data) {
+    return request({
+        url: 'app/modify',
+        method: 'put',
+        data
+    })
+};

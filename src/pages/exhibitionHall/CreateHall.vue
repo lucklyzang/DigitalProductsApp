@@ -1,6 +1,6 @@
 <template>
 	<div class="content-box">
-        <NavBar path="/myObject" title="创建新展览"/>
+        <NavBar path="/myObject" :title="queryHallMessage.type == -1 ? '创建新展览' : '编辑展览'"/>
 		<div class="content-top">
            <div class="hall-type-list" v-for="(item,index) in hallTypeList" :key="item.text" @click="hallTypeClickEvent(index)">
                <img :src="item.imgPath" alt="">
@@ -44,6 +44,8 @@
 		onReady() {},
 		computed: {
 			...mapGetters([
+                'hallMessage',
+                'queryHallMessage'
 			])
 		},
 		mounted() {
@@ -63,6 +65,7 @@
 		},
 		methods: {
 			...mapMutations([
+                'changeHallMessage'
 			]),
             //展览类型点击事件
             hallTypeClickEvent (index) {
@@ -78,6 +81,10 @@
                 if (!this.isCanClick) {
                     return
                 };
+                let type = this.hallTypeList.filter((item) => {return item.isChecked == true})[0];
+                let temporaryHallMessage = this.hallMessage;
+                temporaryHallMessage['hallType'] = type.text == '2D展览' ? 0 : 1;
+                this.changeHallMessage(temporaryHallMessage);
                 this.$router.push({path: '/editNewHall'})
             }
 		}

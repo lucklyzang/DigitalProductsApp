@@ -16,6 +16,7 @@
                 <span>保存</span>
             </template>
         </van-nav-bar>
+        <van-loading type="spinner" v-show="loadingShow"/>
 		<div class="content-top">
            <img :src="checkedTemplateImg" alt="">
            <span>{{checkedTemplateText}}</span>
@@ -25,8 +26,8 @@
                 2D
             </div>
             <div class="template-list-wrapper">
-                <div class="template-list" :class="{'listStyle': index == currentIndex}" v-for="(item,index) in templateList" :key="index" @click="templateClickEvent(item,index)">
-                    <img :src="item.imgPath" alt="">
+                <div class="template-list" v-lazy-container="{ selector: 'img' }"  :class="{'listStyle': index == currentIndex}" v-for="(item,index) in templateList" :key="index" @click="templateClickEvent(item,index)">
+                    <img :data-src="item.path" alt="">
                 </div>
             </div>
         </div>
@@ -38,6 +39,9 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex'
+    import {
+       queryHallTemplates
+    } from '@/api/products.js'
 	export default {
         name: 'ChooseHallTemplate',
 		components: {
@@ -45,27 +49,16 @@
 		data() {
 			return {
                 currentIndex: 0,
-                checkedTemplateImg: require("@/common/images/home/theme-one.png"),
-                checkedTemplateText: '默认',
-				templateList: [
-                    {
-                        imgPath: require("@/common/images/home/theme-one.png"),
-                        text: '默认'
-                    }, 
-                    {
-                        imgPath: require("@/common/images/home/theme-two.png"),
-                        text: '极简画廊'
-                    }, 
-                    {
-                        imgPath: require("@/common/images/home/theme-three.png"),
-                        text: '北国风光'
-                    }
-                ]
+                loadingShow: false,
+                checkedTemplateImg: '',
+                checkedTemplateText: '',
+				templateList: []
 			}
 		},
 		onReady() {},
 		computed: {
 			...mapGetters([
+                'hallMessage'
 			])
 		},
 		mounted() {
@@ -78,23 +71,55 @@
                         path: '/editNewHall'
                     })
                 })
-            }
-
+            };
+            this.queryHallTemplatesEvent()
 		},
 		methods: {
 			...mapMutations([
+                'changeHallMessage'
 			]),
+
             //模板点击事件
             templateClickEvent (item,index) {
                 this.currentIndex = index;
-                this.checkedTemplateImg = item.imgPath;
-                this.checkedTemplateText = item.text
+                this.checkedTemplateImg = item.path;
+                this.checkedTemplateText = item.name
             },
+
+            //查询展管
+            queryHallTemplatesEvent () {
+                this.loadingShow = true;
+                queryHallTemplates(0).then((res) => {
+                    this.loadingShow = false;
+                    this.templateList = [];
+                    if (res && res.data.code == 0) {
+                        this.templateList = res.data.list;
+                        this.templateClickEvent(this.templateList[0],0)
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    })
+                })
+            },
+
             onClickLeft () {
                 this.$router.push({path: '/editNewHall'})
             },
+            //保存模板类型
             onClickRight () {
-
+               let temporaryHallMessage = this.hallMessage;
+               temporaryHallMessage['hallTemplate'] = this.checkedTemplateImg;
+               this.changeHallMessage(temporaryHallMessage);
+               this.$router.push({path: '/editNewHall'})
             }
 		}
 	}

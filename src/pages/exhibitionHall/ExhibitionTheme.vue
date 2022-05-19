@@ -64,7 +64,8 @@
 		computed: {
 			...mapGetters([
                 'userInfo',
-                'isLogin'
+                'isLogin',
+                'hallMessage'
 			])
 		},
 		mounted() {
@@ -81,13 +82,18 @@
 		},
 		methods: {
 			...mapMutations([
+                'changeHallMessage'
 			]),
 
             onClickLeft () {
                 this.$router.push({path: '/editNewHall'})
             },
             onClickRight () {
-
+               let temporaryHallMessage = this.hallMessage;
+               temporaryHallMessage['hallTheme'] = this.exhibitionTheme;
+               temporaryHallMessage['hallIntroduce'] = this.exhibitionIntroduce;
+               this.changeHallMessage(temporaryHallMessage);
+               this.$router.push({path: '/editNewHall'})
             }
 		}
 	}

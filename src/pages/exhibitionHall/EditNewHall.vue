@@ -2,7 +2,7 @@
 	<div class="content-box">
         <van-nav-bar left-arrow :border="false"
             :placeholder="true"
-            title="创建新展览"
+            :title="queryHallMessage.type == -1 ? '创建新展览' : '编辑展览'"
             :fixed="true"
             z-index="1000"
             :safe-area-inset-top="true"
@@ -13,6 +13,12 @@
                 <span>发布</span>
             </template>
         </van-nav-bar>
+        <van-dialog v-model="isShowHint" :show-cancel-button="true"  :close-on-popstate="false" title="你确定要离开该页面? 离开之后当前内容无法保存。"
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            @confirm="sureEvent" 
+            @cancel="cancelEvent"
+        />
 		<div class="content-top">
           <div class="left" @click="exhibitionThemeEvent">
               <div class="hall-title">
@@ -50,21 +56,26 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex'
+    import {publishHall,edithHall} from '@/api/products.js'
 	export default {
         name: 'CreateHall',
 		components: {
 		},
 		data() {
 			return {
-				
+				isShowHint: false
 			}
 		},
 		onReady() {},
 		computed: {
 			...mapGetters([
+                'hallMessage',
+                'queryHallMessage'
 			])
 		},
+
 		mounted() {
+            console.log(this.hallMessage);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -77,14 +88,29 @@
             }
 
 		},
+
+        beforeRouteLeave(to, from, next) {
+            if (to.path == '/createHall') {
+                this.isShowHint = true;
+                next(false)
+            };
+            next()
+        },
+        
 		methods: {
 			...mapMutations([
+                'changeHallMessage'
 			]),
             onClickLeft () {
                 this.$router.push({path: '/createHall'})
             },
+            //发布
             onClickRight () {
-
+                if(this.queryHallMessage.type == -1) {
+                    this.publishHallEvent()
+                } else {
+                    this.edithHallEvent()
+                }
             },
             // 选择展览模板事件
             chooseHallTemplateEvent () {
@@ -97,6 +123,66 @@
             //展览主题事件
             exhibitionThemeEvent () {
                 this.$router.push({path: '/exhibitionTheme'})
+            },
+
+            // 发布展馆
+            publishHallEvent (data) {
+                publishHall(data).then((res) => {
+					if (res && res.data.code == 0) {
+                        this.$toast({
+                            message: '发布成功',
+                            position: 'bottom'
+                        })
+                        
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+				})
+				.catch((err) => {
+					this.$toast({
+						message: `${err.message}`,
+						position: 'bottom'
+					})
+				})
+            },
+
+            // 编辑展馆
+            edithHallEvent (data) {
+                edithHall(data).then((res) => {
+					if (res && res.data.code == 0) {
+                        this.$toast({
+                            message: '发布成功',
+                            position: 'bottom'
+                        })
+                        
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+				})
+				.catch((err) => {
+					this.$toast({
+						message: `${err.message}`,
+						position: 'bottom'
+					})
+				})
+            },
+
+            //弹框确定事件
+            sureEvent () {
+                this.$router.push({
+                    path: '/createHall'
+                })
+
+            },
+            //弹框取消事件
+            cancelEvent () {
+                
             }
 		}
 	}
@@ -132,6 +218,27 @@
                 span {
                     width: 100%;
                     height: 100%
+                }
+            }
+        };
+        /deep/ .van-dialog {
+            width: 70%;
+            background: #fff;
+            .van-dialog__header {
+                color: #333;
+                padding: 14px;
+                font-size: 12px
+            };
+            .van-dialog__footer {
+                .van-button--default {
+                    background: #fff;
+                };
+                .van-dialog__cancel {
+                    color: blue;
+                    font-weight: bolder
+                };
+                .van-dialog__confirm {
+                    color: blue;
                 }
             }
         };

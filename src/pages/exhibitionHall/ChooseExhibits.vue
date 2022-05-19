@@ -16,19 +16,18 @@
         <div class="my-object">
             <van-loading type="spinner" v-show="loadingShow"/>
             <van-empty :description="descriptionContent" v-show="emptyShow" />
-            <div class="object-tit">我的藏品</div>
             <div class="object-list-box">
                 <div class="object-list" v-for="(item,index) in orderList" :key="index">
-                    <div class="img-show" v-lazy-container="{ selector: 'img' }">
+                    <div class="img-show" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
 						<img :data-src="item.collectionUrl">
 					</div>
-                    <p class="author">{{item.collectionName}}</p>
                     <p class="chain">
                         <span class="blockchain-img">
                             <img :src="blockchainPng" alt="">
                         </span>
                         <span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
                     </p>
+                    <p class="author">{{item.collectionName}}</p>
                     <p class="publisher">{{item.publisher}}</p>
                 </div>
             </div>
@@ -59,7 +58,8 @@
                 loadingShow: false,
 				descriptionContent: '暂无藏品',
                 orderList: [],
-                blockchainPng: require("@/common/images/home/blockchain.png"),
+                blockchainPng: require("@/common/images/home/hall-chain.png"),
+                imgBorderImg: require("@/common/images/home/img-border.png"),
                 notLoginPng: require("@/common/images/login/not-login.png")
 			}
 		},
@@ -67,7 +67,8 @@
 		computed: {
 			...mapGetters([
                 'userInfo',
-                'isLogin'
+                'isLogin',
+                'hallMessage'
 			])
 		},
 		mounted() {
@@ -76,6 +77,7 @@
 		},
 		methods: {
 			...mapMutations([
+                'changeHallMessage'
 			]),
             // 查询藏品记录
 			queryCollectionRecords () {
@@ -142,6 +144,7 @@
     @import "~@/common/stylus/modifyUi.less";
 	.content-box {
 		.content-wrapper();
+        height: 100vh !important;
         background: @color-background;
          /deep/ .van-nav-bar {
             background: @color-background;
@@ -185,42 +188,39 @@
         .my-object {
             width: 100%;
             flex: 1;
-            padding: 15px;
+            padding: 20px 20px 10px 20px;
             box-sizing: border-box;
             display: flex;
             overflow: auto;
             z-index: 100;
             flex-direction: column;
-            .object-tit {
-                color: #fff;
-                font-size: 18px
-            };
             .object-list-box {
                 flex: 1;
                 width: 100%;
-                margin-top: 10px;
                 overflow: auto;
                 display: flex;
                 flex-flow: row wrap;
                 >div {
-                    margin-right: 4%;
-                    margin-bottom: 4%;
+                    margin-right: 10%;
+                    margin-bottom: 5%;
                     &:nth-child(even) {
                         margin-right: 0
                     }
                 }
                 .object-list {
-                    width: 48%;
-                    background: #484848;
+                    width: 45%;
                     border-radius: 10px;
                     padding-bottom: 10px;
                     box-sizing: border-box;
                     .img-show {
+                        position: relative;
                         width: 100%;
-                        >img {
-                            border-top-left-radius: 10px;
-                            border-top-right-radius: 10px;
-                            width: 100%
+                        padding: 6px;
+                        border-radius: 10px;
+                        box-sizing: border-box;
+                        > img {
+                            border-radius: 6px;
+                            width: 100%;
                         }
                     };
                     >p {
@@ -229,48 +229,50 @@
                         box-sizing: border-box;
                     }
                     .author {
-                        font-size: 13px;
+                        font-size: 12px;
                         color: #fff;
-                        margin-top: 10px;
+                        margin: 8px 0;
                         .no-wrap()
                     };
                     .chain {
-                        margin: 10px 0;
-                        width: 90%;
                         display: flex;
                         flex-flow: row nowrap;
                         align-items: center;
-                        height: 26px;
+                        height: 28px;
+                        margin-top: 12px;
                         display: flex;
                         flex-flow: row nowrap;
                         align-items: center;
                         position: relative;
                         .blockchain-img {
                             width: 26px;
+                            height: 28px;
                             position: absolute;
-                            top: -1px;
-                            left: 8px;
+                            top: 1px;
+                            left: 0;
                             img {
-                                width: 100%;
+                                width: 26px;
+                                height: 28px
                             }
                         };
                         .blockchain-chain {
                             display: inline-block;
-                            padding: 0 6px 0 16px;
+                            padding: 0 6px 0 12px;
                             flex: 1;
                             border-radius: 10px;
                             font-size: 10px;
                             box-sizing: border-box;
-                            line-height: 18px;
-                            margin-left: 17px;
-                            background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
-                            color: black;
+                            height: 16px;
+                            line-height: 16px;
+                            margin-left: 8px;
+                            background-image: linear-gradient(to right, #fbd2a5, #f1c593);
+                            color: #9f7c0f;
                             .no-wrap()
                         }
                     }
                     .publisher {
-                        font-size: 12px;
-                        color: rgb(126, 126, 126);
+                        font-size: 11px;
+                        color: #cecbcb;
                         .no-wrap()
                     }
                 };
@@ -281,9 +283,9 @@
 			flex-direction: column;
 			justify-content: center;
             align-items: center;
+            height: 60px;
             width: 80%;
             margin: 0 auto;
-            margin-top: 20px;
             > span {
                 display: inline-block;
                 width: 100%;
