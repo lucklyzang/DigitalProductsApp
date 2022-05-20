@@ -2,15 +2,18 @@
 	<div class="content-box">
          <van-nav-bar left-arrow :border="false"
             :placeholder="true"
-            title="风中残影"
             :fixed="true"
             z-index="1000"
             :safe-area-inset-top="true"
             @click-left="onClickLeft"
         >
+            <template #title>
+                <img :src="userInfo.avatarUrl" alt="">
+                <span>{{userInfo.nickName}}</span>
+            </template>
         </van-nav-bar>
         <van-loading type="spinner" v-show="loadingShow" color="#333" />
-        <img :src="checkedTemplateImg" alt="" ref="backgroundImg">
+        <img :src="myHallDetails.path" alt="" ref="backgroundImg">
 		<div class="content" ref="content">
             <div class="content-center"
                 ref="contentCenter"
@@ -19,16 +22,16 @@
             >
                 <div class="content-left" ref="contentLeft">
                     <div class="title">
-                        纪元
+                        {{myHallDetails.name}}
                     </div>
                     <div class="introduce">
-                        NFT宇宙藏品玩家
+                        {{myHallDetails.signTxt}}
                     </div>
                 </div>
                 <div class="content-right">
-                   <div class="exhibition-list" v-for="(item,index) in orderList" :key="index" :ref="'exhibitionList'+ index">
+                   <div class="exhibition-list" v-for="(item,index) in myHallDetails.exhibits" :key="index" :ref="'exhibitionList'+ index" @click="recordsDetailsEvent(item)">
                        <div class="exhibits-top" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
-                           <img :data-src="item.collectionUrl" alt="">
+                           <img :data-src="item.path" alt="">
                        </div>
                        <div class="exhibits-line">
                            <img :src="hallBothPng" alt="">
@@ -40,8 +43,8 @@
                                 </span>
                                 <span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
                             </p>
-                           <p class="author">{{item.collectionName}}</p>
-                            <p class="publisher">{{item.publisher}}</p>
+                           <p class="author">{{item.commName}}</p>
+                            <p class="publisher">{{item.pubName}}</p>
                        </div>
                    </div>
                 </div>
@@ -56,7 +59,7 @@
 		mapGetters,
 		mapMutations
 	} from 'vuex'
-	import {queryObjectRecord} from '@/api/products.js'
+	import {queryHallMessage} from '@/api/products.js'
 	export default {
         name: 'IndividualitySignature',
 		components: {
@@ -70,21 +73,24 @@
                     x: 0,
                     imgX: 0
                 },
+                myHallDetails: '',
+                isRotate: true,
                 myObjectOffsetLeft: '',
                 isRenderComplete: false,
                 backgroundImgLeft: '',
                 loadingShow: false,
                 hallBothPng: require("@/common/images/home/hall-both.png"),
-                blockchainPng: require("@/common/images/home/hall-chain.png"),
-                checkedTemplateImg: require("@/common/images/home/theme-one.png"),
+                blockchainPng: require("@/common/images/hall/hall-chain.png"),
                 imgBorderImg: require("@/common/images/home/img-border.png")
 			}
 		},
 		onReady() {},
 		computed: {
 			...mapGetters([
+                'isLogin',
                 'userInfo',
-                'isLogin'
+                'hallMessage',
+                'collectionId'
 			])
 		},
 		mounted() {
@@ -100,38 +106,44 @@
                     })
                 })
             };
-            // 查询藏品记录
-			this.queryCollectionRecords()
+            // 查询展馆信息
+			this.queryHallMessageEvent()
 		},
         updated() {
             if (this.isRenderComplete) {
-                this.calculateContentWidth(this.orderList.length)
+                this.calculateContentWidth(this.myHallDetails.exhibits.length)
             }
         },
 		methods: {
 			...mapMutations([
+                'changeQueryHallMessage',
+                'changeCollectionId'
 			]),
 
-            // 查询藏品记录
-			queryCollectionRecords () {
-				this.loadingShow = true;
-                this.orderList = [];
-				queryObjectRecord({page: 1, limit: 20}).then((res) => {
-					this.loadingShow = false;
+            // 跳转藏品记录详情
+			recordsDetailsEvent (item) {
+                let temporary = this.collectionId;
+                temporary['chain'] = item['chain'];
+                temporary['collectionName'] = item['commName'];
+                temporary['collectionUrl'] = item['path'];
+                temporary['comId'] = item['commId'];
+                temporary['id'] = item['ownId'];
+                temporary['publisher'] = item['pubName'];
+				this.changeCollectionId(temporary);
+				this.$router.push({
+					path: '/collectionRecordDetails'
+				})
+			},
+
+            // 查询展馆信息
+            queryHallMessageEvent () {
+                this.loadingShow = true;
+                queryHallMessage().then((res) => {
+                    this.loadingShow = false;
 					if (res && res.data.code == 0) {
-                        for (let item of res.data.page.list) {
-                            this.orderList.push({
-                                collectionName: item.name,
-                                collectionUrl: item.path,
-                                collectionPrice: item.price,
-                                collectionTagsList: item.tags,
-                                id: item.id,
-                                comId: item.comId,
-                                chain: item.chain,
-                                publisher: item.publisher
-                            });
-                            this.isRenderComplete = true
-                        };
+                        this.changeQueryHallMessage(res.data.data);
+                        this.myHallDetails = res.data.data;
+                        this.isRenderComplete = true
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -140,13 +152,13 @@
                     }
 				})
 				.catch((err) => {
-					this.loadingShow = false;
+                    this.loadingShow = false;
 					this.$toast({
 						message: `${err.message}`,
 						position: 'bottom'
 					})
 				})
-			},
+            },
 
             onClickLeft () {
                 this.$router.push({path: '/myObject'})
@@ -175,54 +187,59 @@
             
             // 滑动中
             touchmoveHandle(e) {
-                console.log(this.$refs.contentCenter.style.left);
                 // 滑动距离
                 let moveX = e.targetTouches[0].pageX - this.moveInfo.startX;
                 //左滑
                 if (moveX < 0) {
                     // 展品转动
                     if (this.$refs.contentCenter.offsetLeft <= -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth)) {
+                        this.isRotate = false;
                         this.$refs.contentCenter.style.left = -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth) + 'px';
-                        this.moveInfo.startX = e.targetTouches[0].pageX;
                         this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                        return
-                    }
-                    if (this.$refs.contentCenter.offsetLeft > -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth)) {
-                        this.$refs.contentCenter.style.left = -this.moveInfo.x - Math.abs(moveX) + 'px'
+                        this.moveInfo.startX = e.targetTouches[0].pageX
                     };
-                //     // 背景图转动
-                //     if (this.$refs.backgroundImg.offsetLeft <= -500) {
-                //         this.$refs.backgroundImg.style.left = -500 + 'px';
-                //         this.moveInfo.startX = e.targetTouches[0].pageX;
-                //         this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
-                //         return
-                //     }
-                //     if (this.$refs.backgroundImg.offsetLeft > -500) {
-                //         this.$refs.backgroundImg.style.left = -this.moveInfo.x - (Math.abs(moveX)/2) + 'px';
-                //     };
-                // } else {
-                //  //展品转动
-                    if (this.$refs.contentCenter.offsetLeft >= this.myObjectOffsetLeft) {
-                        this.$refs.contentCenter.style.left = this.myObjectOffsetLeft + 'px';
-                        this.moveInfo.startX = e.targetTouches[0].pageX;
+                    if (this.$refs.contentCenter.offsetLeft > -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth)) {
+                        this.isRotate = true;
+                        this.$refs.contentCenter.style.left = this.moveInfo.x - Math.abs(moveX) + 'px'
+                    };
+                    //背景图转动
+                    if (this.isRotate) {
+                        if (this.$refs.backgroundImg.offsetLeft <= -(this.$refs.backgroundImg.offsetWidth-this.$refs.content.offsetWidth)) {
+                            this.$refs.backgroundImg.style.left = -(this.$refs.backgroundImg.offsetWidth-this.$refs.content.offsetWidth) + 'px'
+                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft
+                        } else {
+                            this.$refs.backgroundImg.style.left = (this.moveInfo.x - Math.abs(moveX))/2 + 'px'
+                        }
+                    } else {
                         this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                        return
+                        this.moveInfo.startX = e.targetTouches[0].pageX;
+                    }
+                } else {
+                    //展品转动
+                    if (this.$refs.contentCenter.offsetLeft >= 0) {
+                        this.isRotate = false;
+                        this.$refs.contentCenter.style.left = 0;
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        this.moveInfo.startX = e.targetTouches[0].pageX
                     }
                     if (this.$refs.contentCenter.offsetLeft < this.myObjectOffsetLeft) {
-                        this.$refs.contentCenter.style.right = this.moveInfo.X + moveX + 'px'
+                        this.isRotate = true;
+                        this.$refs.contentCenter.style.left = this.moveInfo.x + moveX + 'px'
                     };
-                //     // 背景图转动
-                //     if (this.$refs.backgroundImg.offsetLeft >= this.backgroundImgLeft) {
-                //         this.$refs.backgroundImg.style.left = this.backgroundImgLeft + 'px';
-                //         this.moveInfo.startX = e.targetTouches[0].pageX;
-                //         this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
-                //         return
-                //     }
-                //     if (this.$refs.backgroundImg.offsetLeft < this.backgroundImgLeft) {
-                //         this.$refs.backgroundImg.style.left = this.moveInfo.x + (moveX/2) + 'px';
-                //     };   
-                };
-                // e.preventDefault()
+                    //背景图转动
+                    if (this.isRotate) {
+                        if (this.$refs.backgroundImg.offsetLeft < this.backgroundImgLeft) {
+                            this.$refs.backgroundImg.style.left = (this.moveInfo.x + moveX)/2 + 'px'
+                        } else {
+                            this.$refs.backgroundImg.style.left = 0;
+                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        }
+                    } else {
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        this.moveInfo.startX = e.targetTouches[0].pageX;
+                    }
+                }
+                e.preventDefault()
             }
 		}
 	}
@@ -236,12 +253,21 @@
         display: none; /* Chrome Safari */
     };
 	.content-box {
+        border: 1px solid green;
 		.content-wrapper();
         background: @color-background;
         /deep/ .van-nav-bar {
-            background: @color-background;
+            background: transparent;
             .van-nav-bar__title {
-                color: #fff !important
+                color: #fff !important;
+                >span {
+                    vertical-align: top;
+                };
+                >img {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%
+                }
             };
             .van-icon-arrow-left {
                 color: #fff !important;
@@ -254,7 +280,6 @@
             .van-nav-bar__right {
             }
         };
-        overflow-x: scroll;
         > img {
             position: absolute;
             top: 0;
@@ -264,11 +289,12 @@
 		.content{
             flex: 1;
             width: 100%;
+            position: relative;
             .content-center {
                 position: absolute;
                 display: flex;
                 flex-flow: row nowrap;
-                top: 15vh;
+                top: 8vh;
                 left: 0;
                 height: 72vh;
                 .content-left {
@@ -281,13 +307,15 @@
                     margin-right: 20px;
                     .title {
                         color: #fff;
-                        font-size: 22px;
+                        font-size: 24px;
                         height: 100px;
+                        line-height: 25px;
                         word-break: break-all;
                         overflow: auto;
                     };
                     .introduce {
-                        color: rgb(182, 182, 182);
+                        color: #e8e8e8;
+                        line-height: 20px;
                         font-size: 14px;
                         word-break: break-all;
                         flex: 1;
@@ -339,7 +367,7 @@
                             }
                             .author {
                                 font-size: 12px;
-                                color: black;
+                                color: #fff;
                                 margin: 8px 0;
                                 .no-wrap()
                             };
@@ -380,7 +408,7 @@
                             }
                             .publisher {
                                 font-size: 11px;
-                                color: #9e9d9d;
+                                color: #dedede;
                                 .no-wrap()
                             }
                         }

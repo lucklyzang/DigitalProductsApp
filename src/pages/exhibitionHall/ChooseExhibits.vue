@@ -17,7 +17,7 @@
             <van-loading type="spinner" v-show="loadingShow"/>
             <van-empty :description="descriptionContent" v-show="emptyShow" />
             <div class="object-list-box">
-                <div class="object-list" v-for="(item,index) in orderList" :key="index">
+                <div class="object-list" v-for="(item,index) in orderList" :key="index" @click="objectListClickEvent(index)">
                     <div class="img-show" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
 						<img :data-src="item.collectionUrl">
 					</div>
@@ -29,6 +29,11 @@
                     </p>
                     <p class="author">{{item.collectionName}}</p>
                     <p class="publisher">{{item.publisher}}</p>
+                    <div class="bottom-area">
+                        <van-checkbox checked-color="#f0c796" @click="checkboxClickEvent" v-model="item.isChecked">
+                        </van-checkbox>
+                        <span v-show="item.isExihibition">展览中</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,10 +73,12 @@
 			...mapGetters([
                 'userInfo',
                 'isLogin',
-                'hallMessage'
+                'hallMessage',
+                'queryHallMessage'
 			])
 		},
 		mounted() {
+            console.log(this.queryHallMessage);
             // 查询藏品记录
 			this.queryCollectionRecords()
 		},
@@ -87,22 +94,106 @@
                 this.orderList = [];
 				queryObjectRecord({page: 1, limit: 20}).then((res) => {
 					this.loadingShow = false;
+                    // 线上展览的产品
+                    let hallExhibits = this.queryHallMessage.exhibits;
+                    //本地存储的产品
+                    let localExhibits = this.hallMessage.hallExhibitsList;
 					if (res && res.data.code == 0) {
                         if (res.data.page.list.length == 0) {
                             this.emptyShow = true;
                         } else {
                             for (let item of res.data.page.list) {
-                                this.orderList.push({
-                                    collectionName: item.name,
-									collectionUrl: item.path,
-									collectionPrice: item.price,
-									collectionTagsList: item.tags,
-									id: item.id,
-        							comId: item.comId,
-									chain: item.chain,
-									publisher: item.publisher
-                                })
-                            }
+                                let isExihibition = hallExhibits.some((innerItem) => { return innerItem.ownId ==  item.id});
+                                let isLocalExhibits = localExhibits.some((innerItem) => { return innerItem.ownId ==  item.id});
+                                if (localExhibits.length != 0) {
+                                    if (isExihibition || isLocalExhibits) {
+                                        if (isExihibition && isLocalExhibits) {
+                                            this.orderList.push({
+                                                collectionName: item.name,
+                                                isChecked: true,
+                                                isExihibition: true,
+                                                collectionUrl: item.path,
+                                                collectionPrice: item.price,
+                                                collectionTagsList: item.tags,
+                                                id: item.id,
+                                                comId: item.comId,
+                                                chain: item.chain,
+                                                publisher: item.publisher
+                                            })
+                                        } else {
+                                            if (isExihibition) {                                                          
+                                                this.orderList.push({
+                                                    collectionName: item.name,
+                                                    isChecked: false,
+                                                    isExihibition: true,
+                                                    collectionUrl: item.path,
+                                                    collectionPrice: item.price,
+                                                    collectionTagsList: item.tags,
+                                                    id: item.id,
+                                                    comId: item.comId,
+                                                    chain: item.chain,
+                                                    publisher: item.publisher
+                                                })
+                                            } else {
+                                                this.orderList.push({
+                                                    collectionName: item.name,
+                                                    isChecked: true,
+                                                    isExihibition: false,
+                                                    collectionUrl: item.path,
+                                                    collectionPrice: item.price,
+                                                    collectionTagsList: item.tags,
+                                                    id: item.id,
+                                                    comId: item.comId,
+                                                    chain: item.chain,
+                                                    publisher: item.publisher
+                                                })
+                                            }
+                                        }
+                                    } else {
+                                        this.orderList.push({
+                                            collectionName: item.name,
+                                            isChecked: false,
+                                            isExihibition: false,
+                                            collectionUrl: item.path,
+                                            collectionPrice: item.price,
+                                            collectionTagsList: item.tags,
+                                            id: item.id,
+                                            comId: item.comId,
+                                            chain: item.chain,
+                                            publisher: item.publisher
+                                        })
+                                    }
+                                } else {
+                                    if (isExihibition) {
+                                        this.orderList.push({
+                                            collectionName: item.name,
+                                            isChecked: true,
+                                            isExihibition: true,
+                                            collectionUrl: item.path,
+                                            collectionPrice: item.price,
+                                            collectionTagsList: item.tags,
+                                            id: item.id,
+                                            comId: item.comId,
+                                            chain: item.chain,
+                                            publisher: item.publisher
+                                        })
+                                    } else {
+                                        this.orderList.push({
+                                            collectionName: item.name,
+                                            isChecked: false,
+                                            isExihibition: false,
+                                            collectionUrl: item.path,
+                                            collectionPrice: item.price,
+                                            collectionTagsList: item.tags,
+                                            id: item.id,
+                                            comId: item.comId,
+                                            chain: item.chain,
+                                            publisher: item.publisher
+                                        })
+                                    }
+                                }   
+                            };
+                            this.isCanClick = this.orderList.some((currentItem) => {return currentItem.isChecked == true});
                         }
                     } else {
 						this.isShowLoadFail = true;
@@ -123,11 +214,33 @@
 				})
 			},
 
+            //复选框点击事件
+            checkboxClickEvent () {
+            },
+
+            //展览列表点击事件
+            objectListClickEvent (index) {
+                this.orderList[index]['isChecked'] = !this.orderList[index]['isChecked'];
+                this.isCanClick= this.orderList.some((item) => {return item.isChecked == true});
+            },
+
             // 确定事件
             sureEvent () {
                 if (!this.isCanClick) {
                     return
                 };
+                //储存选中的展品
+                let checkedExhibitionList = [];
+                for (let item of this.orderList) {
+                    if (item.isChecked) {
+                        checkedExhibitionList.push({
+                            ownId: item.id
+                        })
+                    }
+                };
+                let temporaryData = this.hallMessage;
+                temporaryData['hallExhibitsList'] = checkedExhibitionList;
+                this.changeHallMessage(temporaryData);
                 this.$router.push({path: '/editNewHall'})
             },
 
@@ -156,7 +269,7 @@
                 height: 30px;
                 line-height: 30px;
                 border-radius: 20px;
-                color: #b9b9b9 !important;
+                color: #888888 !important;
                 padding: 0 6px 0 0;
                 text-align: left;
                 font-size: 16px;
@@ -211,6 +324,7 @@
                     width: 45%;
                     border-radius: 10px;
                     padding-bottom: 10px;
+                    position: relative;
                     box-sizing: border-box;
                     .img-show {
                         position: relative;
@@ -274,6 +388,27 @@
                         font-size: 11px;
                         color: #cecbcb;
                         .no-wrap()
+                    };
+                    .bottom-area {
+                        width: 100%;
+                        height: 40px;
+                        display: flex;
+                        flex-flow: row nowrap;
+                        justify-content: space-between;
+                        align-items: center;
+                        font-size: 12px;
+                        color: #090801;
+                        margin-top: 2px;
+                        >span {
+                            display: inline-block;
+                            width: 50px;
+                            height: 20px;
+                            text-align: center;
+                            line-height: 20px;
+                            border-radius: 10px;
+                            background: #f0c796
+
+                        }
                     }
                 };
             }
@@ -295,7 +430,7 @@
                 text-align: center;
                 font-weight: bold;
                 line-height: 50px;
-                background: #f5f5c4;
+                background: #f0c796;
                 border-radius: 30px
             };
             .spanStyle {

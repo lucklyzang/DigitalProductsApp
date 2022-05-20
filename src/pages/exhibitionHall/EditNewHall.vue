@@ -22,29 +22,31 @@
 		<div class="content-top">
           <div class="left" @click="exhibitionThemeEvent">
               <div class="hall-title">
-                把大家看啥就看啥看啥撒就是垃圾
+                {{hallMessage['hallTheme']}}
               </div>
               <div class="hall-introduce">
-                <span>介绍一下你的展览</span>
-                <van-icon name="edit" />
+                <span>{{hallMessage['hallIntroduce'] ? this.hallMessage['hallIntroduce'] : '介绍一下你的展览'}}</span>
+                <img :src="editIntroducePng" alt="">
               </div>
           </div>
           <div class="right">
-            <van-icon name="add" size="60" color="#929292" @click="editExhibitsEvent" />
-            <span>1</span>
+            <img :src="hallPlusPng" alt="" @click="editExhibitsEvent">
+            <span>
+                {{hallMessage.hallExhibitsList.length}}
+            </span>
           </div>
 		</div>
         <div class="content-bottom">
             <div @click="chooseHallTemplateEvent">
-                <van-icon name="award" size="30"/>
+                <img :src="chooseTemplatePng" alt="">
                 <span>选择模板</span>
             </div>
             <div @click="editExhibitsEvent">
-                <van-icon name="printer" size="30"/>
+                <img :src="editExhibitsPng" alt="">
                 <span>编辑展品</span>
             </div>
             <div @click="exhibitionThemeEvent">
-                <van-icon name="good-job" size="30"/>
+                <img :src="editExhibitionThemePng" alt="">
                 <span>展览主题</span>
             </div>
         </div>
@@ -63,7 +65,12 @@
 		},
 		data() {
 			return {
-				isShowHint: false
+				isShowHint: false,
+                hallPlusPng: require("@/common/images/hall/hall-plus.png"),
+                editIntroducePng: require("@/common/images/hall/edit-introduce.png"),
+                chooseTemplatePng: require("@/common/images/hall/choose-template.png"),
+                editExhibitsPng: require("@/common/images/hall/edit-exhibits.png"),
+                editExhibitionThemePng: require("@/common/images/hall/exhibition-theme.png")
 			}
 		},
 		onReady() {},
@@ -90,10 +97,10 @@
 		},
 
         beforeRouteLeave(to, from, next) {
-            if (to.path == '/createHall') {
-                this.isShowHint = true;
-                next(false)
-            };
+            // if (to.path == '/createHall') {
+            //     this.isShowHint = true;
+            //     next(false)
+            // };
             next()
         },
         
@@ -106,10 +113,39 @@
             },
             //发布
             onClickRight () {
+                if (this.hallMessage['hallExhibitsList'].length == 0) {
+                    this.$toast({
+                        message: '请编辑展品',
+                        position: 'bottom'
+                    });
+                    return
+                };
+                if (!this.hallMessage['hallIntroduce'] ||!this.hallMessage['hallTheme']) {
+                    this.$toast({
+                        message: '展览主题不能为空',
+                        position: 'bottom'
+                    });
+                    return
+                };
+                if (!this.hallMessage['hallTemplate']) {
+                    this.$toast({
+                        message: '请选择模板',
+                        position: 'bottom'
+                    });
+                    return
+                };
+                let hallMessage = {
+                    type: this.hallMessage['hallType'],
+                    name: this.hallMessage['hallTheme'],
+                    signTxt: this.hallMessage['hallIntroduce'],
+                    template: this.hallMessage['hallTemplate'],
+                    exhibitDtos: this.hallMessage['hallExhibitsList']
+                }
                 if(this.queryHallMessage.type == -1) {
-                    this.publishHallEvent()
+                    this.publishHallEvent(hallMessage)
                 } else {
-                    this.edithHallEvent()
+                    hallMessage.id = this.queryHallMessage.id;
+                    this.edithHallEvent(hallMessage)
                 }
             },
             // 选择展览模板事件
@@ -132,8 +168,8 @@
                         this.$toast({
                             message: '发布成功',
                             position: 'bottom'
-                        })
-                        
+                        });
+                        this.$router.push({path: '/myObject'})
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -157,7 +193,7 @@
                             message: '发布成功',
                             position: 'bottom'
                         })
-                        
+                        this.$router.push({path: '/myObject'})
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -209,7 +245,7 @@
                 height: 30px;
                 line-height: 30px;
                 border-radius: 20px;
-                background: #f5f5c4;
+                background: #f0c796;
                 color: black !important;
                 padding: 0 6px;
                 top: 10px;
@@ -251,21 +287,30 @@
             display: flex;
             flex-flow: row nowrap;
             .left {
-                height: 150px;
                 flex: 1;
+                padding-right: 20px;
+                box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 .hall-title {
                     width: 100%;
-                    height: 130px;
+                    height: 120px;
                     overflow: auto;
                     color: #fff;
+                    line-height: 25px;
                     font-size: 22px
                 };
                 .hall-introduce {
+                    width: 100%;
+                    line-height: 20px;
+                    flex: 1;
+                    overflow: auto;
                     color: #adadad;
-                    font-size: 13px
+                    font-size: 12px;
+                    >img {
+                        width: 14px
+                    }
                 }
             };
             .right {
@@ -275,8 +320,8 @@
                 flex-direction: column;
                 justify-content: space-between;
                 align-items: center;
-                /deep/ .van-icon {
-                    margin-top: 40px;
+                >img {
+                    width: 100px;
                 };
                 >span {
                     width: 100px;
@@ -291,6 +336,7 @@
         .content-bottom {
             background: #00020f;
 			width: 100%;
+            height: 100px;
 			display: flex;
 			flex-flow: row nowrap;
 			justify-content: space-between;
@@ -306,7 +352,12 @@
                 justify-content: center;
                 font-size: 12px;
                 align-items: center;
+                >img {
+                    width: 50px;
+                    height: 50px
+                }
                 >span {
+                    color: #b3b3b3;
                     margin-left: 4px;
                     margin-top: 10px
                 }

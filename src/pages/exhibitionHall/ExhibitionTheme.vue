@@ -57,7 +57,9 @@
 		data() {
 			return {
 				exhibitionTheme: '',
-                exhibitionIntroduce: ''
+                exhibitionIntroduce: '',
+                lastExhibitionTheme: '',
+                lastExhibitionIntroduce: ''
 			}
 		},
 		onReady() {},
@@ -65,7 +67,8 @@
 			...mapGetters([
                 'userInfo',
                 'isLogin',
-                'hallMessage'
+                'hallMessage',
+                'queryHallMessage'
 			])
 		},
 		mounted() {
@@ -78,15 +81,33 @@
                         path: '/editNewHall'
                     })
                 })
-            }
+            };
+            this.echoExhibitionThemeMessage()
 		},
 		methods: {
 			...mapMutations([
                 'changeHallMessage'
 			]),
 
+            //回显展览主题信息
+            echoExhibitionThemeMessage () {
+                if (this.hallMessage['hallTheme'] && this.hallMessage['hallIntroduce']) {
+                    this.exhibitionTheme = this.hallMessage['hallTheme'];
+                    this.exhibitionIntroduce  = this.hallMessage['hallIntroduce']
+                } else {
+                    this.exhibitionTheme = this.queryHallMessage['name'];
+                    this.exhibitionIntroduce  = this.queryHallMessage['signTxt']
+                }
+            },
+
+            // 保存修改前的展馆主题信息
+            saveExhibitiSMessage () {
+                this.lastExhibitionTheme = this.hallMessage['hallTheme'] ? this.hallMessage['hallTheme'] : '',
+                this.lastExhibitionIntroduce = this.hallMessage['hallIntroduce'] ? this.hallMessage['hallIntroduce'] : ''
+            },
+
             onClickLeft () {
-                this.$router.push({path: '/editNewHall'})
+               this.$router.push({path: '/editNewHall'})
             },
             onClickRight () {
                let temporaryHallMessage = this.hallMessage;
@@ -116,7 +137,7 @@
                 height: 30px;
                 line-height: 30px;
                 border-radius: 20px;
-                color: #b9b9b9 !important;
+                color: #888888 !important;
                 padding: 0 6px 0 0;
                 text-align: left;
                 font-size: 16px;
@@ -133,7 +154,7 @@
                 height: 30px;
                 line-height: 30px;
                 border-radius: 20px;
-                background: #f5f5c4;
+                background: #f0c796;
                 color: black !important;
                 padding: 0 6px;
                 top: 10px;

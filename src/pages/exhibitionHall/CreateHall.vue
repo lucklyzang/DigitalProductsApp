@@ -5,7 +5,7 @@
            <div class="hall-type-list" v-for="(item,index) in hallTypeList" :key="item.text" @click="hallTypeClickEvent(index)">
                <img :src="item.imgPath" alt="">
                <div class="title">
-                <van-checkbox checked-color="#0ddb33" @click="checkboxClickEvent" v-model="item.isChecked">
+                <van-checkbox checked-color="#f0c796" @click="checkboxClickEvent" v-model="item.isChecked">
                     {{item.text}}
                 </van-checkbox>
                </div>
@@ -35,7 +35,7 @@
                     {
                         text: '2D展览',
                         isChecked: true,
-                        imgPath: require("@/common/images/login/not-login.png")
+                        imgPath: require("@/common/images/hall/abbr-background.png")
                     }
                 ]
 				
@@ -117,7 +117,6 @@
             .hall-type-list {
                 border-radius: 10px;
                 width: 100%;
-                height: 150px;
                 position: relative;
                 border-radius: 10px;
                 img {
@@ -127,7 +126,7 @@
                 };
                 .title {
                     position: absolute;
-                    top: 10px;
+                    bottom: 20px;
                     left: 10px;
                     span {
                         font-size: 16px;
@@ -160,7 +159,7 @@
                 text-align: center;
                 font-weight: bold;
                 line-height: 50px;
-                background: #f5f5c4;
+                background: #f0c796;
                 border-radius: 30px
             };
             .spanStyle {

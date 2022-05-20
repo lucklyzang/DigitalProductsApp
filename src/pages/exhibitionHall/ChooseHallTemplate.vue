@@ -51,6 +51,7 @@
                 currentIndex: 0,
                 loadingShow: false,
                 checkedTemplateImg: '',
+                checkedTemplateId: '',
                 checkedTemplateText: '',
 				templateList: []
 			}
@@ -58,7 +59,8 @@
 		onReady() {},
 		computed: {
 			...mapGetters([
-                'hallMessage'
+                'hallMessage',
+                'queryHallMessage'
 			])
 		},
 		mounted() {
@@ -82,6 +84,7 @@
             //模板点击事件
             templateClickEvent (item,index) {
                 this.currentIndex = index;
+                this.checkedTemplateId = item.id,
                 this.checkedTemplateImg = item.path;
                 this.checkedTemplateText = item.name
             },
@@ -94,7 +97,12 @@
                     this.templateList = [];
                     if (res && res.data.code == 0) {
                         this.templateList = res.data.list;
-                        this.templateClickEvent(this.templateList[0],0)
+                        //存储模板信息
+                        let temporaryHallMessage = this.hallMessage;
+                        temporaryHallMessage['hallTemplateList'] = this.templateList;
+                        this.changeHallMessage(temporaryHallMessage);
+                        //回显模板信息
+                        this.echoTemplateMessage(this.templateList);
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -111,13 +119,30 @@
                 })
             },
 
+            //回显模板信息
+            echoTemplateMessage (dataList) {
+                if (this.hallMessage['hallTemplate']) {
+                    let echoIndex =  dataList.findIndex((item) => {return item.id == this.hallMessage['hallTemplate']});
+                    this.currentIndex = echoIndex;
+                    this.checkedTemplateId = dataList[echoIndex]['id'];
+                    this.checkedTemplateImg = dataList[echoIndex]['path'];
+                    this.checkedTemplateText = dataList[echoIndex]['name']
+                } else {
+                    let echoIndex =  dataList.findIndex((item) => {return item.id == this.queryHallMessage['template']});
+                    this.currentIndex = echoIndex;
+                    this.checkedTemplateId = dataList[echoIndex]['id'];
+                    this.checkedTemplateImg = dataList[echoIndex]['path'];
+                    this.checkedTemplateText = dataList[echoIndex]['name']
+                }
+            },
+
             onClickLeft () {
                 this.$router.push({path: '/editNewHall'})
             },
             //保存模板类型
             onClickRight () {
                let temporaryHallMessage = this.hallMessage;
-               temporaryHallMessage['hallTemplate'] = this.checkedTemplateImg;
+               temporaryHallMessage['hallTemplate'] = this.checkedTemplateId;
                this.changeHallMessage(temporaryHallMessage);
                this.$router.push({path: '/editNewHall'})
             }
@@ -142,7 +167,7 @@
                 height: 30px;
                 line-height: 30px;
                 border-radius: 20px;
-                color: #b9b9b9 !important;
+                color: #888888 !important;
                 padding: 0 6px 0 0;
                 text-align: left;
                 font-size: 16px;
@@ -159,7 +184,7 @@
                 height: 30px;
                 line-height: 30px;
                 border-radius: 20px;
-                background: #f5f5c4;
+                background: #f0c796;
                 color: black !important;
                 padding: 0 6px;
                 top: 10px;
@@ -222,7 +247,7 @@
                     }
                 };
                 .listStyle {
-                   border: 3px solid#f5f5c4
+                   border: 3px solid #edc292
                 }
             }    
         }

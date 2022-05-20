@@ -1,55 +1,76 @@
 <template>
 	<div class="content-box">
         <van-loading type="spinner" v-show="loadingShow"/>
-        <div class="my-hall">
-            <div class="my-hall-content">
-                <img :src="notLoginPng" alt="">
-                <div class="hall-tit">
-                    <span>我的展馆</span>
-                    <span>NO.0000039586</span>
+        <div class="is-login" v-if="isLogin">
+            <div class="my-hall">
+                <img :src="myHallBackgroundPng" alt="">
+                <div class="my-hall-content">
+                    <div class="hall-tit">
+                        <span>我的展馆</span>
+                        <span>NO.{{queryHallMessage.number}}</span>
+                    </div>
+                    <div class="hall-wraper">
+                        <div class="create-hall" @click="createHallEvent" v-show="queryHallMessage && queryHallMessage.type == -1">
+                            <span>创建展览</span>
+                            <p>
+                                <van-icon name="arrow" size="10" color="#f2c898"/>
+                            </p>
+                        </div>
+                        <div class="create-hall enter-hall" @click="enterHallEvent" v-show="queryHallMessage && queryHallMessage.type !== -1">
+                            <span>进入展览</span>
+                            <p>
+                                <van-icon name="arrow" size="10" color="#ef5709"/>
+                            </p>
+                        </div>
+                        <div class="create-hall edit-hall" @click="createHallEvent" v-show="queryHallMessage && queryHallMessage.type !== -1">
+                            <span>编辑展览</span>
+                            <p>
+                                <van-icon name="arrow" size="10" color="#39a3f5"/>
+                            </p>
+                        </div>
+                    </div>    
                 </div>
-                <div class="hall-wraper">
-                    <div class="create-hall" @click="createHallEvent" v-show="queryHallMessage && queryHallMessage.type == -1">
-                        <span>创建展览</span>
-                        <p>
-                            <van-icon name="arrow" size="10" color="#f2c898"/>
+            </div>
+            <div class="my-object" ref="myObject"
+                @touchstart="touchstartHandle"
+                @touchmove="touchmoveHandle"
+            >
+                <van-loading type="spinner" v-show="loadingShow"/>
+                <van-empty :description="descriptionContent" v-show="emptyShow" />
+                <div class="object-tit">我的藏品</div>
+                <div class="object-list-box">
+                    <div class="object-list" v-for="(item,index) in orderList" :key="index" @click="recordsDetailsEvent(item)">
+                        <div class="img-show" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
+                            <img :data-src="item.collectionUrl">
+                        </div>
+                        <p class="chain">
+                            <span class="blockchain-img">
+                                <img :src="blockchainPng" alt="">
+                            </span>
+                            <span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
                         </p>
+                        <p class="author">{{item.collectionName}}</p>
+                        <p class="publisher">{{item.publisher}}</p>
                     </div>
-                    <div class="create-hall enter-hall" @click="enterHallEvent" v-show="queryHallMessage && queryHallMessage.type != -1">
-                        <span>进入展馆</span>
-                         <p>
-                            <van-icon name="arrow" size="10" color="#f2c898"/>
-                        </p>
-                    </div>
-                    <div class="create-hall edit-hall" @click="createHallEvent" v-show="queryHallMessage && queryHallMessage.type != -1">
-                        <span>编辑展馆</span>
-                         <p>
-                            <van-icon name="arrow" size="10" color="#f2c898"/>
-                        </p>
-                    </div>
-                </div>    
+                </div>
             </div>
         </div>
-        <div class="my-object" ref="myObject"
-            @touchstart="touchstartHandle"
-            @touchmove="touchmoveHandle"
-        >
-            <van-loading type="spinner" v-show="loadingShow"/>
-            <van-empty :description="descriptionContent" v-show="emptyShow" />
-            <div class="object-tit">我的藏品</div>
-            <div class="object-list-box">
-                <div class="object-list" v-for="(item,index) in orderList" :key="index">
-                    <div class="img-show" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
-						<img :data-src="item.collectionUrl">
-					</div>
-                    <p class="chain">
-                        <span class="blockchain-img">
-                            <img :src="blockchainPng" alt="">
-                        </span>
-                        <span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
-                    </p>
-                    <p class="author">{{item.collectionName}}</p>
-                    <p class="publisher">{{item.publisher}}</p>
+        <div class="no-login" v-else>
+            <img :src="myHallBackgroundPng" alt="">
+            <div class="my-hall">
+                <div class="my-hall-content">
+                    <div class="hall-tit">
+                        <span>我的展馆</span>
+                        <span>登录后可查看你的私人展馆</span>
+                    </div>
+                </div>
+            </div>
+            <div class="my-object">
+                <img :src="defaultPersonPng">
+                <div class="line-one">登 录 艺 真</div>
+                <div class="line-two">发 现 有 趣</div>
+                <div class="login-btn" @click="loginEvent">
+                    立即登录
                 </div>
             </div>
         </div>
@@ -81,9 +102,10 @@
                 loadingShow: false,
 				descriptionContent: '暂无藏品',
                 orderList: [],
+                myHallBackgroundPng: require("@/common/images/hall/my-hall-background.png"),
+                defaultPersonPng: require("@/common/images/home/default-person.jpg"),
                 hallBothPng: require("@/common/images/home/hall-both.png"),
-                blockchainPng: require("@/common/images/home/hall-chain.png"),
-                notLoginPng: require("@/common/images/login/not-login.png"),
+                blockchainPng: require("@/common/images/hall/hall-chain.png"),
                 imgBorderImg: require("@/common/images/home/img-border.png")
 			}
 		},
@@ -92,20 +114,34 @@
 			...mapGetters([
                 'userInfo',
                 'isLogin',
+                'hallMessage',
                 'queryHallMessage'
 			])
 		},
 		mounted() {
-            this.myObjectOffsetTop = this.$refs.myObject.offsetTop;
-            // 查询藏品记录
-			this.queryCollectionRecords();
-            // 查询展馆信息
-            this.queryHallMessageEvent()
+            if (this.isLogin) {
+                this.myObjectOffsetTop = this.$refs.myObject.offsetTop;
+                // 查询藏品记录
+                this.queryCollectionRecords();
+                // 查询展馆信息
+                this.queryHallMessageEvent()
+            }
 		},
 		methods: {
 			...mapMutations([
-                'changeQueryHallMessage'
+                'changeQueryHallMessage',
+                'changeIsEnterLoginPageSource',
+                'changeHallMessage',
+                'changeCollectionId'
 			]),
+
+            // 登录事件
+            loginEvent () {
+                this.changeIsEnterLoginPageSource('/myObject');
+                this.$router.push({
+                    path: '/login'
+                })
+            },
             // 查询藏品记录
 			queryCollectionRecords () {
 				this.isShowLoadFail = false;
@@ -154,7 +190,27 @@
             queryHallMessageEvent () {
                 queryHallMessage().then((res) => {
 					if (res && res.data.code == 0) {
-                        this.changeQueryHallMessage(res.data.data)
+                        this.changeQueryHallMessage(res.data.data);
+                        let temporaryHallMessage = this.hallMessage;
+                        if (temporaryHallMessage['hallExhibitsList'].length == 0) {
+                            let arr = []
+                            for (let item of this.queryHallMessage['exhibits']) {
+                                arr.push({
+                                    ownId: item.ownId
+                                })
+                            };
+                            temporaryHallMessage['hallExhibitsList'] = arr
+                        };
+                        if (!temporaryHallMessage['hallIntroduce']) {
+                            temporaryHallMessage['hallIntroduce'] = this.queryHallMessage['signTxt']
+                        };
+                        if (!temporaryHallMessage['hallTheme']) {
+                            temporaryHallMessage['hallTheme'] = this.queryHallMessage['name']
+                        };
+                        if (!temporaryHallMessage['hallTemplate']) {
+                            temporaryHallMessage['hallTemplate'] = this.queryHallMessage['template']
+                        };
+                        this.changeHallMessage(temporaryHallMessage)
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -178,6 +234,14 @@
             enterHallEvent () {
                 this.$router.push({path: '/myObjectDetails'})
             },
+
+            // 跳转藏品记录详情
+			recordsDetailsEvent (item) {
+				this.changeCollectionId(item);
+				this.$router.push({
+					path: '/collectionRecordDetails'
+				})
+			},
 
             // 滑动开始
             touchstartHandle(e) {
@@ -223,192 +287,274 @@
 	.content-box {
 		.content-wrapper();
         background: @color-background;
-        .my-hall {
-            width: 100%;
-            height: 200px;
-            .my-hall-content {
+        .is-login {
+            .my-hall {
                 width: 100%;
-                height: 200px;
-                position: relative;
+                flex: 1;
                 img {
                     position: absolute;
                     top: 0;
                     left: 0;
-                    height: 200px;
                     width: 100%
                 };
-                .hall-tit {
-                    margin-left: 15px;
-                    display: flex;
-                    flex-direction: column;
-                    margin-top: 20px;
-                    span {
-                        z-index: 1;
-                        &:first-child {
+                .my-hall-content {
+                    width: 100%;
+                    height: 240px;
+                    position: relative;
+                    .hall-tit {
+                        position: absolute;
+                        top: 20px;
+                        left: 15px;
+                        display: flex;
+                        flex-direction: column;
+                        span {
+                            z-index: 1;
+                            &:first-child {
+                                color: #fff;
+                                font-size: 18px;
+                                margin-bottom: 6px
+                            };
+                            &:last-child {
+                                color: rgb(156, 154, 154);
+                                font-size: 12px
+                            }
+                        }
+                    };
+                    .hall-wraper {
+                        position: absolute;
+                        width: 100%;
+                        height: 90px;
+                        top: 55%;
+                        left: 50%;
+                        transform: translate(-50%,-50%);
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        .create-hall {
+                            border: 2px solid #fff;
+                            width: 160px;
+                            height: 40px;
+                            padding: 0 10px 0 30px;
+                            box-sizing: border-box;
+                            border-radius: 20px;
+                            background-image: linear-gradient(to right, #faddbf, #e7bc91);
                             color: #fff;
-                            font-size: 18px;
-                            margin-bottom: 6px
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            >span {
+                                font-size: 14px;
+                                z-index: 1
+                            };
+                            >p {
+                                width: 35px;
+                                height: 19px;
+                                border-radius: 10px;
+                                display: flex;
+                                background: #fff;
+                                flex-flow: row nowrap;
+                                justify-content: center;
+                                align-items: center;
+                                /deep/ .van-icon {
+                            
+                                }
+                            }
                         };
-                        &:last-child {
-                            color: rgb(156, 154, 154);
-                            font-size: 14px
+                        .enter-hall {
+                            background-image: linear-gradient(to right, #f9b990, #ef5709);
+                        }
+                        .edit-hall {
+                            margin-top: 15px;
+                            background-image: linear-gradient(to right, #c9e7e9, #39a3f5)
+                        }
+                    }    
+                }
+            };
+            .my-object {
+                width: 100%;
+                position: fixed;
+                border-top-left-radius: 20px;
+                border-top-right-radius: 20px;
+                padding: 10px 20px 50px 20px;
+                box-sizing: border-box;
+                top: 240px;
+                left: 0;
+                background: #373737;
+                display: flex;
+                height: 100vh;
+                overflow: auto;
+                z-index: 100;
+                flex-direction: column;
+                .object-tit {
+                    text-align: center;
+                    height: 50px;
+                    line-height: 50px;
+                    color: #fff;
+                    font-size: 18px
+                };
+                .object-list-box {
+                    flex: 1;
+                    width: 100%;
+                    margin-top: 10px;
+                    overflow: auto;
+                    display: flex;
+                    flex-flow: row wrap;
+                    >div {
+                        margin-right: 10%;
+                        margin-bottom: 5%;
+                        &:nth-child(even) {
+                            margin-right: 0
                         }
                     }
-                };
-                .hall-wraper {
-                    position: absolute;
-                    width: 100%;
-                    height: 80px;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%,-50%);
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    .create-hall {
-                        border: 2px solid #fff;
-                        width: 160px;
-                        height: 35px;
-                        padding: 0 10px 0 30px;
+                    .object-list {
+                        width: 45%;
+                        border-radius: 10px;
+                        padding-bottom: 10px;
                         box-sizing: border-box;
-                        border-radius: 20px;
-                        background-image: linear-gradient(to right, #faddbf, #e7bc91);
-                        color: #fff;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        >span {
-                            font-size: 14px;
-                            z-index: 1
+                        .img-show {
+                            position: relative;
+                            width: 100%;
+                            padding: 6px;
+                            border-radius: 10px;
+                            box-sizing: border-box;
+                            > img {
+                                border-radius: 6px;
+                                width: 100%;
+                            }
                         };
                         >p {
-                            width: 35px;
-                            height: 18px;
-                            border-radius: 10px;
-                            display: flex;
-                            background: #fff;
-                            flex-flow: row nowrap;
-                            justify-content: center;
-                            align-items: center;
-                            /deep/ .van-icon {
-                        
-                            }
-                        }
-                    };
-                    .edit-hall {
-                        margin-top: 10px
-                    }
-                }    
-            }
-        };
-        .my-object {
-            width: 100%;
-            position: fixed;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            padding: 20px 20px 50px 20px;
-            box-sizing: border-box;
-            top: 200px;
-            left: 0;
-            background: #373737;
-            display: flex;
-            height: 100vh;
-            overflow: auto;
-            z-index: 100;
-            flex-direction: column;
-            .object-tit {
-                text-align: center;
-                height: 50px;
-                line-height: 50px;
-                color: #fff;
-                font-size: 18px
-            };
-            .object-list-box {
-                flex: 1;
-                width: 100%;
-                margin-top: 10px;
-                overflow: auto;
-                display: flex;
-                flex-flow: row wrap;
-                >div {
-                    margin-right: 10%;
-                    margin-bottom: 5%;
-                    &:nth-child(even) {
-                        margin-right: 0
-                    }
-                }
-                .object-list {
-                    width: 45%;
-                    border-radius: 10px;
-                    padding-bottom: 10px;
-                    box-sizing: border-box;
-                    .img-show {
-                        position: relative;
-                        width: 100%;
-                        padding: 6px;
-                        border-radius: 10px;
-                        box-sizing: border-box;
-                        > img {
-                            border-radius: 6px;
                             width: 100%;
-                        }
-                    };
-                    >p {
-                        width: 100%;
-                        padding: 0 6px;
-                        box-sizing: border-box;
-                    }
-                    .author {
-                        font-size: 12px;
-                        color: #fff;
-                        margin: 8px 0;
-                        .no-wrap()
-                    };
-                    .chain {
-                        display: flex;
-                        flex-flow: row nowrap;
-                        align-items: center;
-                        height: 28px;
-                        margin-top: 12px;
-                        display: flex;
-                        flex-flow: row nowrap;
-                        align-items: center;
-                        position: relative;
-                        .blockchain-img {
-                            width: 26px;
-                            height: 28px;
-                            position: absolute;
-                            top: 1px;
-                            left: 0;
-                            img {
-                                width: 26px;
-                                height: 28px
-                            }
-                        };
-                        .blockchain-chain {
-                            display: inline-block;
-                            padding: 0 6px 0 12px;
-                            flex: 1;
-                            border-radius: 10px;
-                            font-size: 10px;
+                            padding: 0 6px;
                             box-sizing: border-box;
-                            height: 16px;
-                            line-height: 16px;
-                            margin-left: 8px;
-                            background-image: linear-gradient(to right, #fbd2a5, #f1c593);
-                            color: #9f7c0f;
+                        }
+                        .author {
+                            font-size: 12px;
+                            color: #fff;
+                            margin: 8px 0;
+                            .no-wrap()
+                        };
+                        .chain {
+                            display: flex;
+                            flex-flow: row nowrap;
+                            align-items: center;
+                            height: 28px;
+                            margin-top: 12px;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            align-items: center;
+                            position: relative;
+                            .blockchain-img {
+                                width: 26px;
+                                height: 28px;
+                                position: absolute;
+                                top: 1px;
+                                left: 0;
+                                img {
+                                    width: 26px;
+                                    // height: 28px
+                                }
+                            };
+                            .blockchain-chain {
+                                display: inline-block;
+                                padding: 0 6px 0 12px;
+                                flex: 1;
+                                border-radius: 10px;
+                                font-size: 10px;
+                                box-sizing: border-box;
+                                height: 16px;
+                                line-height: 16px;
+                                margin-left: 8px;
+                                background-image: linear-gradient(to right, #fbd2a5, #f1c593);
+                                color: #9f7c0f;
+                                .no-wrap()
+                            }
+                        }
+                        .publisher {
+                            font-size: 11px;
+                            color: #cecbcb;
                             .no-wrap()
                         }
                     }
-                    .publisher {
-                        font-size: 11px;
-                        color: #cecbcb;
-                        .no-wrap()
-                    }
                 }
             }
-        }
+        };
+        .no-login {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            >img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            };
+            .my-hall {
+                width: 100%;
+                height: 240px;
+                .my-hall-content {
+                    width: 100%;
+                    height: 240px;
+                    position: relative;
+                    .hall-tit {
+                        margin-left: 15px;
+                        display: flex;
+                        flex-direction: column;
+                        position: absolute;
+                        top: 20px;
+                        left: 20px;
+                        span {
+                            z-index: 1;
+                            &:first-child {
+                                color: #fff;
+                                font-size: 18px;
+                                margin-bottom: 6px
+                            };
+                            &:last-child {
+                                color: rgb(156, 154, 154);
+                                font-size: 12px
+                            }
+                        }
+                    }
+                }
+            };
+            .my-object {
+                z-index: 1000;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                flex: 1;
+                background: #171717;
+                img {
+                    width: 80px;
+                };
+                .line-one {
+                    margin-top: 30px;
+                    margin-bottom: 8px;
+                    font-size: 22px;
+                    color: #fff
+                };
+                .line-two {
+                    margin-bottom: 40px;
+                    font-size: 22px;
+                    color: #fff
+                };
+                .login-btn {
+                    border: 1px solid #fff;
+                    width: 150px;
+                    height: 40px;
+                    border-radius: 20px;
+                    text-align: center;
+                    line-height: 40px;
+                    font-size: 18px;
+                    color: #2b1b08;
+                    background: #e7d5c2
+                }
+            }
+        }    
 	}
 </style>
 
