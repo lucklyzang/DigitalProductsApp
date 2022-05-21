@@ -121,19 +121,25 @@
 
             //回显模板信息
             echoTemplateMessage (dataList) {
-                if (this.hallMessage['hallTemplate']) {
-                    let echoIndex =  dataList.findIndex((item) => {return item.id == this.hallMessage['hallTemplate']});
-                    this.currentIndex = echoIndex;
-                    this.checkedTemplateId = dataList[echoIndex]['id'];
-                    this.checkedTemplateImg = dataList[echoIndex]['path'];
-                    this.checkedTemplateText = dataList[echoIndex]['name']
+                if (this.queryHallMessage.type != -1) {
+                    if (this.hallMessage['hallTemplate']) {
+                        let echoIndex =  dataList.findIndex((item) => {return item.id == this.hallMessage['hallTemplate']});
+                        this.currentIndex = echoIndex;
+                        this.checkedTemplateId = dataList[echoIndex]['id'];
+                        this.checkedTemplateImg = dataList[echoIndex]['path'];
+                        this.checkedTemplateText = dataList[echoIndex]['name']
+                    } else {
+                        let echoIndex =  dataList.findIndex((item) => {return item.id == this.queryHallMessage['template']});
+                        this.currentIndex = echoIndex;
+                        this.checkedTemplateId = dataList[echoIndex]['id'];
+                        this.checkedTemplateImg = dataList[echoIndex]['path'];
+                        this.checkedTemplateText = dataList[echoIndex]['name']
+                    }
                 } else {
-                    let echoIndex =  dataList.findIndex((item) => {return item.id == this.queryHallMessage['template']});
-                    this.currentIndex = echoIndex;
-                    this.checkedTemplateId = dataList[echoIndex]['id'];
-                    this.checkedTemplateImg = dataList[echoIndex]['path'];
-                    this.checkedTemplateText = dataList[echoIndex]['name']
-                }
+                    this.checkedTemplateId = dataList[0]['id'];
+                    this.checkedTemplateImg = dataList[0]['path'];
+                    this.checkedTemplateText = dataList[0]['name']
+                }   
             },
 
             onClickLeft () {
