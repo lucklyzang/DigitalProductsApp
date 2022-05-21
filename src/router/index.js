@@ -48,6 +48,20 @@ const IndividualitySignature = () =>
     import ('@/pages/individualitySignature/IndividualitySignature')
 const ChangeNickname = () =>
     import ('@/pages/changeNickname/ChangeNickname')
+const MyObject = () =>
+    import ('@/pages/exhibitionHall/MyObject')
+const CreateHall = () => 
+    import ('@/pages/exhibitionHall/CreateHall')
+const EditNewHall = () => 
+    import ('@/pages/exhibitionHall/EditNewHall')
+const ChooseHallTemplate = () =>
+    import ('@/pages/exhibitionHall/chooseHallTemplate')
+const ChooseExhibits = () =>
+    import ('@/pages/exhibitionHall/ChooseExhibits')
+const ExhibitionTheme = () => 
+    import ('@/pages/exhibitionHall/ExhibitionTheme')
+const MyObjectDetails =  () =>
+    import ('@/pages/exhibitionHall/MyObjectDetails')
 Vue.use(Router)
 let baseRoute = [{
         path: '/login',
@@ -262,6 +276,69 @@ let baseRoute = [{
         component: AboutUs,
         meta: {
             index: 1,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/myObject',
+        name: 'myObject',
+        component: MyObject,
+        meta: {
+            index: 0,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/createHall',
+        name: 'createHall',
+        component: CreateHall,
+        meta: {
+            index: 1,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/editNewHall',
+        name: 'editNewHall',
+        component: EditNewHall,
+        meta: {
+            index: 2,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/chooseHallTemplate',
+        name: 'chooseHallTemplate',
+        component: ChooseHallTemplate,
+        meta: {
+            index: 3,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/chooseExhibits',
+        name: 'chooseExhibits',
+        component: ChooseExhibits,
+        meta: {
+            index: 3,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/exhibitionTheme',
+        name: 'exhibitionTheme',
+        component: ExhibitionTheme,
+        meta: {
+            index: 3,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/myObjectDetails',
+        name: 'myObjectDetails',
+        component: MyObjectDetails,
+        meta: {
+            index: 2,
             keepAlive: false
         }
     }

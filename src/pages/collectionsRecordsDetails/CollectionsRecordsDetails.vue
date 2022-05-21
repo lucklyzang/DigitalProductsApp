@@ -1,6 +1,6 @@
 <template>
 	<div class="page-box">
-        <NavBar path="/collectionRecords" title="藏品详情"/>
+        <NavBar :path="path" title="藏品详情"/>
         <!-- <van-loading type="spinner" v-show="loadingShow"/> -->
         <div class="content" id="top-content">
             <div class="content-top">
@@ -196,6 +196,7 @@
 
 		data() {
 			return {
+                path: '',
                 rotation: {
                     x: 0,
                     y: 0,
@@ -261,6 +262,12 @@
                 'userInfo'
 			])
 		},
+
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+               vm.path = from.path
+            })
+        },
 
 		mounted() {
             // 控制设备物理返回按键

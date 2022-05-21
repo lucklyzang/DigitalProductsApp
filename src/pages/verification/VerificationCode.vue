@@ -41,6 +41,9 @@
 	import {
 		phoneAuthCodeLogin
 	} from '@/api/login.js'
+	 import {
+        inquareUserInfo
+    } from '@/api/products.js'
 	export default {
 		name: 'VerificationCode',
 		components: {
@@ -82,7 +85,8 @@
 			...mapMutations([
 				'changeToken',
 				'changeIsLogin',
-				'changeIsTokenExpired'
+				'changeIsTokenExpired',
+				'storeUserInfo'
 			]),
 
 			// 输入框变化事件
@@ -133,9 +137,9 @@
 				}).then((res) => {
 					if (res && res.data.code == 0) {
 						this.changeToken(res.data.token);
+						this.queryuserInfo();
 						this.changeIsLogin(true);
 						this.changeIsTokenExpired(false);
-						this.$router.push({name:'home'})
 					} else {
 						this.codeOne = '';
 						this.codeTwo = '';
@@ -162,6 +166,27 @@
 					})
 				})
 			},
+			
+			// 查询用户信息
+            queryuserInfo() {
+                inquareUserInfo().then((res) => {
+					if (res && res.data.code == 0) {
+						this.storeUserInfo(res.data.data);
+						this.$router.push({name:'home'})
+					} else {
+						this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
+					}
+				})
+				.catch((err) => {
+					this.$toast({
+						message: `${err.message}`,
+						position: 'bottom'
+					})
+				})
+            },
 
 			//倒计时结束事件
 			countDownEnd () {

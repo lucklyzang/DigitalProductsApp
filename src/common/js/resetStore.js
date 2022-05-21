@@ -22,6 +22,14 @@ export function getDefaultProductsState() {
         isPaying: false, //是否支付中
         donationProductDetails: null, //赠送商品详情
         isCanSendPhoneCode: true, //是否能发送验证码
-        countdownTime: 0 //过期时间
+        countdownTime: 0, //过期时间
+        hallMessage: {
+            hallType: '',
+            hallTemplate: '',
+            hallExhibitsList: [],
+            hallTheme: '',
+            hallIntroduce: ''
+        }, //展馆信息
+        queryHallMessage: null
     }
 };

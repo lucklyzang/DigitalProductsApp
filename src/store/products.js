@@ -56,6 +56,20 @@ export default {
         collectTransferCodeMessage: (state)  => {
             state.collectTransferCodeMessage = getStore('collectTransferCodeMessage') ? JSON.parse(getStore('collectTransferCodeMessage')) : []
             return state.collectTransferCodeMessage
+        },
+        hallMessage: (state)  => {
+            state.hallMessage = getStore('hallMessage') ? JSON.parse(getStore('hallMessage')) : {
+                hallType: '',
+                hallTemplate: '',
+                hallExhibitsList: [],
+                hallTheme: '',
+                hallIntroduce: ''
+            };
+            return state.hallMessage
+        },
+        queryHallMessage: (state) => {
+            state.queryHallMessage = getStore('queryHallMessage') ? JSON.parse(getStore('queryHallMessage')) : null
+            return state.queryHallMessage
         }
     },
 
@@ -129,6 +143,18 @@ export default {
             setStore('collectTransferCodeMessage', playLoad);
             state.collectTransferCodeMessage = playLoad
         }, 
+
+        // 保存展馆的信息
+        changeHallMessage(state, playLoad) {
+            setStore('hallMessage', playLoad);
+            state.hallMessage = playLoad
+        },
+
+        //保存查询的展馆信息
+        changeQueryHallMessage(state, playLoad) {
+            setStore('queryHallMessage', playLoad);
+            state.queryHallMessage = playLoad
+        },
 
         //重置产品的状态
         resetProductsState(state) {
