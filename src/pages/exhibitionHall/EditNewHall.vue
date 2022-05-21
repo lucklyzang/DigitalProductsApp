@@ -121,10 +121,24 @@
                     return
                 };
                 if (!this.hallMessage['hallIntroduce'] ||!this.hallMessage['hallTheme']) {
-                    this.$toast({
-                        message: '展览主题不能为空',
-                        position: 'bottom'
-                    });
+                    if (!this.hallMessage['hallIntroduce'] && !this.hallMessage['hallTheme']) {
+                        this.$toast({
+                            message: '展览主题不能为空',
+                            position: 'bottom'
+                        })
+                    } else {
+                        if (!this.hallMessage['hallTheme']) {
+                            this.$toast({
+                                message: '展览主题名称不能为空',
+                                position: 'bottom'
+                            })
+                        } else {
+                            this.$toast({
+                                message: '展览主题介绍不能为空',
+                                position: 'bottom'
+                            })
+                        }
+                    }
                     return
                 };
                 if (!this.hallMessage['hallTemplate']) {
