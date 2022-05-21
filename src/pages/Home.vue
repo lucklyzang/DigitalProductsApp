@@ -40,7 +40,11 @@
                 </div>
 
                 <!-- 产品列表 -->
-                <div v-show="!loadingShow" class="object-list" @click="objectDetailEvent(item,index)" v-for="(item,index) in digitalCollectionList" :key="item.id">
+                <div v-show="!loadingShow" class="object-list" 
+                    @click="objectDetailEvent(item,index)" 
+                    v-for="(item,index) in digitalCollectionList" :key="item.id"
+                    :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'35%'}"
+                    >
                     <div class="sell-info-area">
                     <div class="left" v-show="item.isShowCountDown && item.status == 0">
                         <van-icon name="underway" size="14" color="#bd68ff" />
@@ -119,7 +123,7 @@
                     </div>
                     <div class="same-hour-list" v-for="(innerItem, innerIndex) in item.saleTimeList" :key="innerIndex">  
                     <div class="hour">
-                        <van-icon name="underway" size="20" color="#bd68ff" />
+                        <van-icon name="underway" size="20" color="#fff" />
                         <span>{{innerItem.time}}</span>
                     </div>
                     <div class="object-details-list" v-for="(lastItem, lastIndex) in innerItem.commodityList" :key="lastIndex">
@@ -206,6 +210,7 @@
                 isShowLoadFail: false,
                 isRefresh: false,
                 homeBannerPng: require("@/common/images/home/home-banner.png"),
+                homeListBackgroundPng: require("@/common/images/home/home-list-background.png"),
                 emptyShow: false,
                 objectSkeletonList: [{id:1},{id:2},{id:3},{id:4},{id:5}],
                 loadingShow: false,
@@ -552,7 +557,7 @@
                             bottom: 0;
                             width: 10px;
                             height: 3px;
-                            background-image: linear-gradient(to right, #fcbe43, #bf6bfe)
+                            background: #f5cc9b
                         }
                     }
                 }
@@ -577,7 +582,7 @@
                         border-radius: 10px;
                         position: relative;
                         margin-bottom: 20px;
-                        background: #100726;
+                        background: @color-home-block;
                         padding-bottom: 10px;
                         box-sizing: border-box;
                         position: relative;
@@ -651,7 +656,7 @@
                         border-radius: 10px;
                         position: relative;
                         margin-bottom: 20px;
-                        background: #100726;
+                        background: @color-home-block;
                         .sell-info-area {
                             position: absolute;
                             top: 10px;
@@ -780,7 +785,7 @@
                                             line-height: 20px;
                                             padding: 1px 4px;
                                             &:first-child {
-                                                background: #febd42;
+                                                background: #f0c796;
                                                 color: black;
                                                 border-top-left-radius: 2px;
                                                 border-bottom-left-radius: 2px;
@@ -788,7 +793,7 @@
                                             ;
                                             &:last-child {
                                                 background: #3e3a51;
-                                                color: #ffbc41;
+                                                color: #edc695;
                                                 border-top-right-radius: 2px;
                                                 border-bottom-right-radius: 2px
                                             }
@@ -880,7 +885,7 @@
                         padding-top: 2px;
                         box-sizing: border-box;
                         .left {
-                            color: #ffbc41;
+                            color: #edc695;
                             font-size: 18px;
                         }
                         ;
@@ -899,7 +904,7 @@
                                 &:last-child {
                                     padding: 0 8px;
                                     margin-left: 10px;
-                                    background: #febd42;
+                                    background: #f0c796;
                                     border-radius: 20px
                                 }
                             }
@@ -922,12 +927,12 @@
                                 flex-flow: row nowrap;
                                 justify-content: center;
                                 align-items: center;
-                                color: #bd68ff;
+                                color: #fff;
                                 font-size: 16px;
                                 height: 30px;
                                 margin: 0 auto;
                                 width: 90px;
-                                background: #000000;
+                                background: #2b2b28;
                                 border-radius: 20px;
                                 span {
                                     margin-left: 4px
@@ -983,7 +988,7 @@
                                                         font-size: 14px;
                                                         display: inline-block;
                                                         &:first-child {
-                                                            background: #febd42;
+                                                            background: #f0c796;
                                                             color: black;
                                                             padding: 1px 4px 1px 4px;
                                                             border-top-left-radius: 2px;
@@ -992,7 +997,7 @@
                                                         ;
                                                         &:last-child {
                                                             background: #3e3a51;
-                                                            color: #ffbc41;
+                                                            color: #edc695;
                                                             padding: 1px 4px 1px 4px;
                                                             border-top-right-radius: 2px;
                                                             border-bottom-right-radius: 2px

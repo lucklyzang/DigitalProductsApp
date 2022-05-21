@@ -647,7 +647,7 @@
                                 height: 20px;
                                 line-height: 20px;
                                 &:first-child {
-                                    background: #febd42;
+                                    background: #f0c796;
                                     color: black;
                                     padding: 1px 4px 1px 4px;
                                     border-top-left-radius: 2px;
@@ -655,7 +655,7 @@
                                 };
                                 &:last-child {
                                     background: #3e3a51;
-                                    color: #ffbc41;
+                                    color: #edc795;
                                     padding: 1px 4px 1px 4px;
                                     border-top-right-radius: 2px;
                                     border-bottom-right-radius: 2px
@@ -684,7 +684,7 @@
                                 };
                                 &:last-child {
                                     background: #3e3a51;
-                                    color: #ffbc41;
+                                    color: #edc695;
                                     padding: 1px 4px 1px 4px;
                                     border-top-right-radius: 2px;
                                     border-bottom-right-radius: 2px

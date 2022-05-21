@@ -114,7 +114,7 @@
           margin-bottom: 10px;
           padding: 20px;
           box-sizing: border-box;
-          background: #100726;
+          background: @color-block;
           border-radius: 8px;
           .top {
             display: flex;

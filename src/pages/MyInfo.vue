@@ -10,7 +10,7 @@
     >
         <template #left>
             <p>
-                <img :src="blockchainAdress" alt="">
+                <img :src="blockchainPng" alt="">
                 <span>区块链地址</span>
             </p>
         </template>
@@ -132,7 +132,6 @@
                 defaultPersonPng: require("@/common/images/home/default-person.jpg"),
                 notLoginPng: require("@/common/images/login/not-login.png"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),
-                blockchainAdress: require("@/common/images/home/blockchain-adress.png"),
                 blockchainServePng: require("@/common/images/home/blockchain-service.png")
             }
         },
@@ -368,12 +367,12 @@
                     justify-content: center;
                     align-items: center;
                     img {
-                        width: 15px;
-                        height: 15px;
+                        width: 20px;
+                        height: 22px;
                         margin-right: 4px
                     };
                     span {
-                        color: #bd68ff;
+                        color: #f0c596;
                         font-size: 10px
                     }
                 }
@@ -437,11 +436,11 @@
                             }
                             ;
                             .bottom {
-                                font-size: 13px;
+                                font-size: 12px;
                                 display: flex;
                                 flex-flow: row nowrap;
                                 margin-top: 4px;
-                                color: #686868;
+                                color: #989898;
                                 span {
                                     display: inline-block;
                                     height: 26px;
@@ -475,7 +474,8 @@
                             width: 30px;
                         };
                         span {
-                            color: #464756;
+                            font-size: 12px;
+                            color: #989898;
                             margin-top: 10px;
                         }
                     }

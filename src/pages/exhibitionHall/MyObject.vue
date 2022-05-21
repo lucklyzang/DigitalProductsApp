@@ -384,7 +384,7 @@
                 box-sizing: border-box;
                 top: 240px;
                 left: 0;
-                background: #373737;
+                background: @color-home-block;
                 display: flex;
                 height: 100vh;
                 overflow: auto;
@@ -531,7 +531,7 @@
                 justify-content: center;
                 align-items: center;
                 flex: 1;
-                background: #171717;
+                background: @color-home-block;
                 img {
                     width: 80px;
                 };

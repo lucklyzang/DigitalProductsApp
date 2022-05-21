@@ -42,7 +42,7 @@
                     </span>
                 </div>
                 <div class="pay-methods-choose-list">
-                    <van-radio-group v-model="radio" checked-color="#ffbc41">
+                    <van-radio-group v-model="radio" checked-color="#edc695">
                         <van-cell-group>
                             <van-cell clickable @click="radio = '1'">
                                 <template #default>
@@ -438,7 +438,7 @@
                 padding: 0 10px;
                 color: black;
                 font-size: 13px;
-                background-image: linear-gradient(to right, #f2c460 ,#e29119);
+                background-image: linear-gradient(to right, #fbd2a5, #f1c593);
                 border-radius: 6px
             };
 			.center{
@@ -452,7 +452,7 @@
                 align-items: center;
 				padding: 0 10px;
 				border-radius: 10px;
-				background: #100726;
+				background: @color-block;
 				.img-show {
 					width: 100px;
                     img {
@@ -491,7 +491,7 @@
                 margin-top: 10px;
 				display: flex;
 				border-radius: 10px;
-				background: #100726;
+				background: @color-block;
                 flex-flow: column;
                 .pay-methods {
                     height: 60px;
@@ -585,7 +585,7 @@
                     text-align: center;
                     line-height: 30px;
                     border-radius: 20px;
-                    background: #ffbd40;
+                    background: #f0c796;
                     margin-left: 4px
                 }
             } 

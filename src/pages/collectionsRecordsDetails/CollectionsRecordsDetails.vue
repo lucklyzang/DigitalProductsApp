@@ -530,10 +530,10 @@
                         .number-content {
                             position: relative;
                             .blockchain-img {
-                                width: 30px;
+                                width: 35px;
                                 position: absolute;
                                 left: 0;
-                                top: -6px;
+                                top: -7px;
                                 img {
                                     width: 100%;
                                 }
@@ -543,11 +543,11 @@
                                 max-width: 200px;
                                 padding: 0 16px;
                                 border-radius: 10px;
-                                margin-left: 17px;
+                                margin-left: 20px;
                                 font-size: 10px;
                                 box-sizing: border-box;
                                 line-height: 22px;
-                                background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
+                                background-image: linear-gradient(to right, #fbd2a5, #f1c593);
                                 color: black;
                                 .no-wrap()
                             }

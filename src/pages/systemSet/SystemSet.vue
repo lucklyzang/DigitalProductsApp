@@ -366,7 +366,7 @@
           color: #cbcbcb
         };
         .van-dialog__confirm {
-          color: #ffbc41;
+          color: #edc695;
           font-weight: bold
         }
       }
@@ -460,7 +460,7 @@
           align-items: center;
           height: 55px;
           background: @color-block;
-          color: #ffbc41;
+          color: #edc695;
           font-size: 18px;
         };
       .choose-photo-box {

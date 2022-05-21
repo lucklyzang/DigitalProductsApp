@@ -216,7 +216,6 @@ export default {
    .content-box {
     .content-wrapper();
     background: @color-background;
-	background: @color-background;
         /deep/ .van-nav-bar {
             .van-icon {
                 color: #fff !important;
@@ -264,7 +263,7 @@ export default {
 				height: 50px;
 				border-radius: 30px;
 				font-size: 18px;
-				background: #ffbd40;
+				background-image: linear-gradient(to right, #e5bd89, #f8cf9f);
 				margin: 30px 0 10px 0;
 				text-align: center;
 				line-height: 50px;

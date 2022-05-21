@@ -219,9 +219,9 @@
 								align-items: center;
 								position: relative;
 								.blockchain-img {
-									width: 30px;
+									width: 35px;
 									position: absolute;
-									top: 1px;
+									top: 0;
 									left: 0;
 									img {
 										width: 100%;
@@ -235,8 +235,8 @@
 									font-size: 10px;
 									box-sizing: border-box;
 									line-height: 22px;
-									margin-left: 17px;
-									background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
+									margin-left: 20px;
+									background-image: linear-gradient(to right, #fbd2a5, #f1c593);
 									color: black;
 									.no-wrap()
 								}

@@ -351,7 +351,7 @@
 							transform: translateX(-50%);
 							width: 16px;
 							height: 4px;
-							background-image: linear-gradient(to right, #fcbe43 , #bf6bfe);
+							background: #f5cc9b;
 							border-radius: 2px
 						}
 					}
@@ -438,13 +438,13 @@
 									height: 20px;
 									text-align: center;
 									line-height: 20px;
-									color: #e3921a;
+									color: #edc695;
 								};
 								.spanPaiedStyle {
-									color: #0091fd
+									color: #fff
 								};
 								.spanCancelStyle {
-									color: #686868
+									color: #656565
 								}
 							};
 							&:nth-child(2) {
