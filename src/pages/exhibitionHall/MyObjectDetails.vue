@@ -12,7 +12,9 @@
                 <span>{{userInfo.nickName}}</span>
             </template>
         </van-nav-bar>
-        <van-loading type="spinner" v-show="loadingShow" color="#333" />
+        <van-loading type="spinner" vertical v-show="loadingShow" color="#fff">
+            展馆加载中，请稍等
+        </van-loading>
         <img :src="myHallDetails.path" alt="" ref="backgroundImg">
 		<div class="content" ref="content">
             <div class="content-center"
@@ -69,12 +71,15 @@
 			return {
                 orderList: [],
                 moveInfo: {
+                    lastMoveTime: '',
                     startX: 0,
                     x: 0,
                     imgX: 0
                 },
                 myHallDetails: '',
                 isRotate: true,
+                myObjectMaxMoveDistance: '',
+                backgroundImgMaxMoveDistance: '',
                 myObjectOffsetLeft: '',
                 isRenderComplete: false,
                 backgroundImgLeft: '',
@@ -89,8 +94,7 @@
 			...mapGetters([
                 'isLogin',
                 'userInfo',
-                'hallMessage',
-                'collectionId'
+                'hallMessage'
 			])
 		},
 		mounted() {
@@ -122,7 +126,7 @@
 
             // 跳转藏品记录详情
 			recordsDetailsEvent (item) {
-                let temporary = this.collectionId;
+                let temporary = {};
                 temporary['chain'] = item['chain'];
                 temporary['collectionName'] = item['commName'];
                 temporary['collectionUrl'] = item['path'];
@@ -175,12 +179,15 @@
                     num = Math.ceil(length/2);
                     rightWidth = (this.$refs['exhibitionList0'][0].offsetWidth + 40)*num
                 };
-                this.$refs.contentCenter.style.width =  this.$refs.contentLeft.offsetWidth + rightWidth + 'px'
+                this.$refs.contentCenter.style.width =  this.$refs.contentLeft.offsetWidth + rightWidth + (this.$refs['exhibitionList0'][0].offsetWidth/2) + 'px';
+                this.myObjectMaxMoveDistance =  Math.abs(this.$refs.contentCenter.offsetWidth - this.$refs.content.offsetWidth);
+                this.backgroundImgMaxMoveDistance = Math.abs(this.$refs.backgroundImg.offsetWidth - this.$refs.content.offsetWidth);
             },
 
             // 滑动开始
             touchstartHandle(e) {
-                this.moveInfo.startX = e.targetTouches[0].pageX;
+                this.moveInfo.startX = e.targetTouches[0].clientX;
+                this.moveInfo.lastMoveTime = new Date().getTime();
                 this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
                 this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
             },
@@ -188,31 +195,34 @@
             // 滑动中
             touchmoveHandle(e) {
                 // 滑动距离
-                let moveX = e.targetTouches[0].pageX - this.moveInfo.startX;
+                let moveX = (e.targetTouches[0].clientX - this.moveInfo.startX)*1.5;
                 //左滑
                 if (moveX < 0) {
                     // 展品转动
-                    if (this.$refs.contentCenter.offsetLeft <= -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth)) {
+                    if (this.$refs.contentCenter.offsetLeft <= -this.myObjectMaxMoveDistance) {
                         this.isRotate = false;
-                        this.$refs.contentCenter.style.left = -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth) + 'px';
+                        this.$refs.contentCenter.style.left = -this.myObjectMaxMoveDistance + 'px';
                         this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                        this.moveInfo.startX = e.targetTouches[0].pageX
-                    };
-                    if (this.$refs.contentCenter.offsetLeft > -(this.$refs.contentCenter.offsetWidth-this.$refs.content.offsetWidth)) {
+                        this.moveInfo.startX = e.targetTouches[0].clientX
+                    } else {
                         this.isRotate = true;
                         this.$refs.contentCenter.style.left = this.moveInfo.x - Math.abs(moveX) + 'px'
                     };
                     //背景图转动
+                    if (this.$refs.backgroundImg.offsetLeft <= -this.backgroundImgMaxMoveDistance) {
+                        this.$refs.backgroundImg.style.left = -this.backgroundImgMaxMoveDistance + 'px'
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft
+                    };
                     if (this.isRotate) {
-                        if (this.$refs.backgroundImg.offsetLeft <= -(this.$refs.backgroundImg.offsetWidth-this.$refs.content.offsetWidth)) {
-                            this.$refs.backgroundImg.style.left = -(this.$refs.backgroundImg.offsetWidth-this.$refs.content.offsetWidth) + 'px'
+                        if (this.$refs.backgroundImg.offsetLeft <= -this.backgroundImgMaxMoveDistance) {
+                            this.$refs.backgroundImg.style.left = -this.backgroundImgMaxMoveDistance + 'px'
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft
                         } else {
                             this.$refs.backgroundImg.style.left = (this.moveInfo.x - Math.abs(moveX))/2 + 'px'
                         }
                     } else {
                         this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                        this.moveInfo.startX = e.targetTouches[0].pageX;
+                        this.moveInfo.startX = e.targetTouches[0].clientX;
                     }
                 } else {
                     //展品转动
@@ -220,23 +230,26 @@
                         this.isRotate = false;
                         this.$refs.contentCenter.style.left = 0;
                         this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                        this.moveInfo.startX = e.targetTouches[0].pageX
-                    }
-                    if (this.$refs.contentCenter.offsetLeft < this.myObjectOffsetLeft) {
+                        this.moveInfo.startX = e.targetTouches[0].clientX
+                    } else {
                         this.isRotate = true;
                         this.$refs.contentCenter.style.left = this.moveInfo.x + moveX + 'px'
                     };
                     //背景图转动
+                    if (this.$refs.backgroundImg.offsetLeft >= 0) {
+                        this.$refs.backgroundImg.style.left = 0;
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                    };
                     if (this.isRotate) {
-                        if (this.$refs.backgroundImg.offsetLeft < this.backgroundImgLeft) {
-                            this.$refs.backgroundImg.style.left = (this.moveInfo.x + moveX)/2 + 'px'
-                        } else {
+                        if (this.$refs.backgroundImg.offsetLeft >=0) {
                             this.$refs.backgroundImg.style.left = 0;
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        } else {
+                            this.$refs.backgroundImg.style.left = (this.moveInfo.x + moveX)/2 + 'px'
                         }
                     } else {
                         this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                        this.moveInfo.startX = e.targetTouches[0].pageX;
+                        this.moveInfo.startX = e.targetTouches[0].clientX;
                     }
                 }
                 e.preventDefault()
@@ -253,7 +266,6 @@
         display: none; /* Chrome Safari */
     };
 	.content-box {
-        border: 1px solid green;
 		.content-wrapper();
         background: @color-background;
         /deep/ .van-nav-bar {
@@ -294,7 +306,7 @@
                 position: absolute;
                 display: flex;
                 flex-flow: row nowrap;
-                top: 8vh;
+                top: 12vh;
                 left: 0;
                 height: 72vh;
                 .content-left {
@@ -331,17 +343,15 @@
                     flex-direction: column;
                     flex-wrap: wrap;
                     .exhibition-list {
-                        width: 140px;
+                        width: 120px;
                         box-sizing: border-box;
-                        height: 34vh;
-                        margin-bottom: 2vh;
+                        height: 31vh;
                         margin-right: 40px;
                         .exhibits-top {
                             position: relative;
-                            // width: 100px;
-                            height: 20vh;
+                            width: 90px;
                             padding: 5px;
-                            // height: 110px;
+                            height: 100px;
                             margin: 0 auto;
                             box-sizing: border-box;
                             border-radius: 10px;
@@ -352,15 +362,14 @@
                             }
                         };
                         .exhibits-line {
-                            width: 140px;
-                            height: 4vh;
+                            width: 120px;
+                            height: 25px;
                             margin-top: 8px;
                             img {
-                                width: 140px
+                                width: 120px
                             }
                         };
                         .exhibits-bottom {
-                            height: 10vh;
                             margin-top: -4px;
                             >p {
                                 width: 100%;
@@ -368,27 +377,27 @@
                             .author {
                                 font-size: 12px;
                                 color: #fff;
-                                margin: 8px 0;
+                                margin: 2px 0 4px 0;
                                 .no-wrap()
                             };
                             .chain {
                                 display: flex;
                                 flex-flow: row nowrap;
                                 align-items: center;
-                                height: 26px;
+                                height: 24px;
                                 display: flex;
                                 flex-flow: row nowrap;
                                 align-items: center;
                                 position: relative;
                                 .blockchain-img {
-                                    width: 24px;
-                                    height: 26px;
+                                    width: 22px;
+                                    height: 24px;
                                     position: absolute;
                                     top: 1px;
                                     left: 0;
                                     img {
-                                        width: 24px;
-                                        height: 26px
+                                        width: 22px;
+                                        height: 24px
                                     }
                                 };
                                 .blockchain-chain {
@@ -398,8 +407,8 @@
                                     border-radius: 10px;
                                     font-size: 10px;
                                     box-sizing: border-box;
-                                    height: 15px;
-                                    line-height: 15px;
+                                    height: 12px;
+                                    line-height: 12px;
                                     margin-left: 14px;
                                     background-image: linear-gradient(to right, #fbd2a5, #f1c593);
                                     color: #9f7c0f;
@@ -407,8 +416,10 @@
                                 }
                             }
                             .publisher {
-                                font-size: 11px;
-                                color: #dedede;
+                                height: 20px;
+                                line-height: 20px;
+                                font-size: 10px;
+                                color: #ececec;
                                 .no-wrap()
                             }
                         }

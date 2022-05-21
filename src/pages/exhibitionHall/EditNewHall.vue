@@ -169,7 +169,7 @@
                             message: '发布成功',
                             position: 'bottom'
                         });
-                        this.$router.push({path: '/myObject'})
+                        this.$router.push({path: '/myObjectDetails'})
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -193,7 +193,7 @@
                             message: '发布成功',
                             position: 'bottom'
                         })
-                        this.$router.push({path: '/myObject'})
+                        this.$router.push({path: '/myObjectDetails'})
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,

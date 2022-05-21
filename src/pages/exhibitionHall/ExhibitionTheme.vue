@@ -19,7 +19,7 @@
 		<div class="content-center">
             <div class="top">
                 <span>
-                    展览主题*
+                    展览主题
                 </span>
                 <van-field class="uni-input" v-model="exhibitionTheme"  rows="2"
                     autosize

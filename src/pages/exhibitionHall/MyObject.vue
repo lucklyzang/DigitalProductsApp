@@ -4,28 +4,28 @@
         <div class="is-login" v-if="isLogin">
             <div class="my-hall">
                 <img :src="myHallBackgroundPng" alt="">
-                <div class="my-hall-content">
+                <div class="my-hall-content" v-show="!loadingShow">
                     <div class="hall-tit">
                         <span>我的展馆</span>
-                        <span>NO.{{queryHallMessage.number}}</span>
+                        <span>NO.{{objectMessage.number}}</span>
                     </div>
-                    <div class="hall-wraper">
-                        <div class="create-hall" @click="createHallEvent" v-show="queryHallMessage && queryHallMessage.type == -1">
+                    <div class="hall-wraper" v-show="!isShowLoadFail">
+                        <div class="create-hall" @click="createHallEvent" v-show="objectMessage && objectMessage.type == -1">
                             <span>创建展览</span>
                             <p>
                                 <van-icon name="arrow" size="10" color="#f2c898"/>
                             </p>
                         </div>
-                        <div class="create-hall enter-hall" @click="enterHallEvent" v-show="queryHallMessage && queryHallMessage.type !== -1">
+                        <div class="create-hall enter-hall" @click="enterHallEvent" v-show="objectMessage && objectMessage.type !== -1">
                             <span>进入展览</span>
                             <p>
-                                <van-icon name="arrow" size="10" color="#ef5709"/>
+                                <van-icon name="arrow" size="10" color="#f2c898"/>
                             </p>
                         </div>
-                        <div class="create-hall edit-hall" @click="createHallEvent" v-show="queryHallMessage && queryHallMessage.type !== -1">
+                        <div class="create-hall edit-hall" @click="createHallEvent" v-show="objectMessage && objectMessage.type !== -1">
                             <span>编辑展览</span>
                             <p>
-                                <van-icon name="arrow" size="10" color="#39a3f5"/>
+                                <van-icon name="arrow" size="10" color="#252525"/>
                             </p>
                         </div>
                     </div>    
@@ -102,6 +102,7 @@
                 loadingShow: false,
 				descriptionContent: '暂无藏品',
                 orderList: [],
+                objectMessage: {},
                 myHallBackgroundPng: require("@/common/images/hall/my-hall-background.png"),
                 defaultPersonPng: require("@/common/images/home/default-person.jpg"),
                 hallBothPng: require("@/common/images/home/hall-both.png"),
@@ -120,7 +121,6 @@
 		},
 		mounted() {
             if (this.isLogin) {
-                this.myObjectOffsetTop = this.$refs.myObject.offsetTop;
                 // 查询藏品记录
                 this.queryCollectionRecords();
                 // 查询展馆信息
@@ -165,6 +165,9 @@
 									chain: item.chain,
 									publisher: item.publisher
                                 })
+                            };
+                            if (this.isLogin) {
+                                this.myObjectOffsetTop = this.$refs.myObject.offsetTop
                             }
                         }
                     } else {
@@ -190,6 +193,7 @@
             queryHallMessageEvent () {
                 queryHallMessage().then((res) => {
 					if (res && res.data.code == 0) {
+                        this.objectMessage = res.data.data;
                         this.changeQueryHallMessage(res.data.data);
                         let temporaryHallMessage = this.hallMessage;
                         if (temporaryHallMessage['hallExhibitsList'].length == 0) {
@@ -245,33 +249,33 @@
 
             // 滑动开始
             touchstartHandle(e) {
-                this.moveInfo.startY = e.targetTouches[0].pageY;
+                this.moveInfo.startY = e.targetTouches[0].clientY;
                 this.moveInfo.y = this.$refs.myObject.offsetTop;
             },
             
             // 滑动中
             touchmoveHandle(e) {
-                let moveY = e.targetTouches[0].pageY - this.moveInfo.startY;
+                let moveY = e.targetTouches[0].clientY - this.moveInfo.startY;
                 //上滑
                 if (moveY < 0) {
                     if (this.$refs.myObject.offsetTop <= 0) {
                         this.$refs.myObject.style.top = 0 + 'px'
                         this.moveInfo.y = this.$refs.myObject.offsetTop;
-                        this.moveInfo.startY = e.targetTouches[0].pageY;
+                        this.moveInfo.startY = e.targetTouches[0].clientY;
                         return
                     }
                     if (this.$refs.myObject.offsetTop > 0) {
-                        this.$refs.myObject.style.top = this.moveInfo.y - Math.abs(moveY) + 'px'
+                        this.$refs.myObject.style.top = (this.moveInfo.y - Math.abs(moveY*1.5)) + 'px'
                     }
                 } else {
                     if (this.$refs.myObject.offsetTop >= this.myObjectOffsetTop) {
                         this.$refs.myObject.style.top = this.myObjectOffsetTop + 'px';
                         this.moveInfo.y = this.$refs.myObject.offsetTop;
-                        this.moveInfo.startY = e.targetTouches[0].pageY;
+                        this.moveInfo.startY = e.targetTouches[0].clientY;
                         return
                     }
                     if (this.$refs.myObject.offsetTop < this.myObjectOffsetTop) {
-                        this.$refs.myObject.style.top = this.moveInfo.y + moveY + 'px'
+                        this.$refs.myObject.style.top = (this.moveInfo.y + (moveY)*1.5) + 'px'
                     }    
                 };
                 e.preventDefault()
@@ -362,11 +366,11 @@
                             }
                         };
                         .enter-hall {
-                            background-image: linear-gradient(to right, #f9b990, #ef5709);
+                            background-image: linear-gradient(to right, #faddbf, #e7bc91);
                         }
                         .edit-hall {
                             margin-top: 15px;
-                            background-image: linear-gradient(to right, #c9e7e9, #39a3f5)
+                            background-image: linear-gradient(to right, #a3a3a3, #252525);
                         }
                     }    
                 }
