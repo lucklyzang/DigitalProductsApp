@@ -814,7 +814,8 @@
                                             display: inline-block;
                                             height: 20px;
                                             line-height: 20px;
-                                            padding: 1px 4px;
+                                            padding: 1px 8px;
+                                            box-sizing: border-box;
                                             &:first-child {
                                                 background: #f0c796;
                                                 color: black;

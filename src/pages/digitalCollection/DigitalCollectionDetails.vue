@@ -651,17 +651,17 @@
                                 display: inline-block;
                                 height: 20px;
                                 line-height: 20px;
+                                padding: 1px 8px;
+                                box-sizing: border-box;
                                 &:first-child {
                                     background: #f0c796;
                                     color: black;
-                                    padding: 1px 4px 1px 4px;
                                     border-top-left-radius: 2px;
                                     border-bottom-left-radius: 2px;
                                 };
                                 &:last-child {
                                     background: #3e3a51;
                                     color: #edc795;
-                                    padding: 1px 4px 1px 4px;
                                     border-top-right-radius: 2px;
                                     border-bottom-right-radius: 2px
                                 }
@@ -680,17 +680,17 @@
                                 display: inline-block;
                                 height: 20px;
                                 line-height: 20px;
+                                padding: 1px 8px;
+                                box-sizing: border-box;
                                 &:first-child {
                                     background: #343434;
                                     color: #6d6d6d;
-                                    padding: 1px 4px 1px 4px;
                                     border-top-left-radius: 2px;
                                     border-bottom-left-radius: 2px;
                                 };
                                 &:last-child {
                                     background: #3e3a51;
                                     color: #edc695;
-                                    padding: 1px 4px 1px 4px;
                                     border-top-right-radius: 2px;
                                     border-bottom-right-radius: 2px
                                 }
