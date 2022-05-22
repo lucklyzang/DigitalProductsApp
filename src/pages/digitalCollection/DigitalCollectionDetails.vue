@@ -172,8 +172,13 @@
                 </div>
             </div>
             <div class="blockchain-server">
-                <img :src="blockchainServePng" alt="">
-                <span>提供技术支持</span>
+                 <p>
+                    <img :src="blockchainServePng" alt="">
+                    <span>提供技术支持</span>
+                </p>
+                <p>
+                    中国传统文化数字艺术联盟监制
+                </p>
             </div>
         </div>
         <div class="content-bottom" @click="purchaseEvent">
@@ -826,18 +831,31 @@
                 }	
             };
             .blockchain-server {
-                height: 60px;
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                img {
-                    width: 100px
-                };
-                span {
-                    margin-left: 8px;
-                    font-size: 10px;
-                    color: #c2c2c2;
-                    margin-top: 1px;
+                margin-top: 20px;
+                >p {
+                    height: 30px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    &:nth-child(1) {
+                        img {
+                            width: 100px
+                        };
+                        span {
+                            margin-left: 8px;
+                            margin-top: 1px;
+                            font-size: 10px;
+                            color: #c2c2c2
+                        }
+                    };
+                    &:nth-child(2) {
+                        font-size: 10px;
+                        color: #c2c2c2
+                    };
                 }
             }
         };
