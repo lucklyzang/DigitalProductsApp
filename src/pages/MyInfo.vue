@@ -494,15 +494,14 @@
                 width: 92%;
                 margin: 0 auto;
                 margin-top: 10px;
-                padding: 0 6px 6px 6px;
-                box-sizing: border-box;
                 .nick-name {
                     display: flex;
                     flex-flow: row nowrap;
                     justify-content: space-between;
                     align-items: center;
+                    box-sizing: border-box;
                     height: 46px;
-                    padding: 6px;
+                    padding: 0 10px;
                     background: @color-block;
                     margin-bottom: 10px;
                     border-radius: 10px;
