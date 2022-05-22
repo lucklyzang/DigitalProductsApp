@@ -23,7 +23,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-obj>
                         <model-fbx
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'fbx'" 
@@ -36,7 +36,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-fbx>
                         <model-three
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'json'" 
@@ -49,7 +49,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-three>
                         <model-stl
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'stl'"  
@@ -62,7 +62,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-stl>
                         <model-collada
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'dae'"  
@@ -75,7 +75,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-collada>
                         <model-ply
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'ply'"  
@@ -88,7 +88,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-ply>
                         <model-gltf
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf(2.0)'"  
@@ -101,7 +101,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-gltf>
                     </div>
                 </div>

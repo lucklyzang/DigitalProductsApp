@@ -35,7 +35,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-obj>
                         <model-fbx
                             v-if="!loadingImgGifShow && productsDetails.three === 'fbx'" 
@@ -48,7 +48,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-fbx>
                         <model-three
                             v-if="!loadingImgGifShow && productsDetails.three === 'json'" 
@@ -61,7 +61,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-three>
                         <model-stl
                             v-if="!loadingImgGifShow && productsDetails.three === 'stl'"  
@@ -74,7 +74,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-stl>
                         <model-collada
                             v-if="!loadingImgGifShow && productsDetails.three === 'dae'"  
@@ -87,7 +87,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-collada>
                         <model-ply
                             v-if="!loadingImgGifShow && productsDetails.three === 'ply'"  
@@ -100,7 +100,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-ply>
                         <model-gltf
                             v-if="!loadingImgGifShow && productsDetails.three === 'gltf(2.0)'"  
@@ -113,7 +113,7 @@
                             :width="180" 
                             :height="230" 
                             :backgroundAlpha="1" 
-                            backgroundColor="#020416">
+                            backgroundColor="#1e1e1b">
                         </model-gltf>
                     </div>
                 </div>
@@ -647,7 +647,7 @@
                             align-items: center;
                             justify-content: center;
                             >span {
-                                font-size: 14px;
+                                font-size: 12px;
                                 display: inline-block;
                                 height: 20px;
                                 line-height: 20px;
@@ -676,7 +676,7 @@
                             align-items: center;
                             justify-content: center;
                             >span {
-                                font-size: 14px;
+                                font-size: 12px;
                                 display: inline-block;
                                 height: 20px;
                                 line-height: 20px;

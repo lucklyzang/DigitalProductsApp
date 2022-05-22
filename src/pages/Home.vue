@@ -46,8 +46,8 @@
                     :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'35%'}"
                     >
                     <div class="sell-info-area">
-                    <div class="left" v-show="item.isShowCountDown && item.status == 0">
-                        <van-icon name="underway" size="14" color="#bd68ff" />
+                    <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
+                        <van-icon name="underway" size="14" color="#63b66b" />
                         <span>即将开售</span>
                         <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
                     </div>
@@ -589,7 +589,7 @@
                         .top {
                             width: 100%;
                             margin: 0 auto;
-                            background: #2d2d2d;
+                            background: #3b3b3b;
                             border-radius: 10px;
                             height: 380px
                         };
@@ -600,27 +600,27 @@
                                 height: 25px;
                                 border-radius: 6px;
                                 width: 35%;
-                                background: #353535;
+                                background: #3b3b3b;
                                 margin-top: 10px;
                             };
                             .two {
                                 border-radius: 6px;
                                 height: 25px;
                                 width: 30%;
-                                background: #353535;
+                                background: #3b3b3b;
                                 margin: 10px 0;
                             };
                             .three {
                                 border-radius: 6px;
                                 height: 25px;
                                 width: 40%;
-                                background: #353535
+                                background: #3b3b3b
                             };
                             .four {
                                 border-radius: 6px;
                                 height: 20px;
                                 width: 40px;
-                                background: #353535;
+                                background: #3b3b3b;
                                 position: absolute;
                                 bottom: 10px;
                                 right: 10px;
@@ -668,8 +668,31 @@
                             justify-content: space-between;
                             z-index: 100;
                             color: #333;
+                            .left-sell {
+                                background: rgba(0, 0, 0, .9);
+                                color: #63b66b;
+                                border-radius: 16px;
+                                padding: 0 10px;
+                                box-sizing: border-box;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                justify-content: flex-start;
+                                align-items: center;
+                                span {
+                                    &:nth-child(2) {
+                                        margin: 0 4px
+                                    }
+                                };
+                                /deep/ .van-icon {
+                                    margin-top: -1px
+                                };
+                                /deep/ .van-count-down {
+                                    color: #63b66b;
+                                    font-size: 12px;
+                                }
+                            };
                             .left {
-                                background: rgba(0, 0, 0, .54);
+                                background: rgba(0, 0, 0, .9);
                                 color: #bd68ff;
                                 border-radius: 16px;
                                 padding: 5px 10px;
@@ -682,8 +705,10 @@
                                     &:nth-child(2) {
                                         margin: 0 4px
                                     }
-                                }
-                                ;
+                                };
+                                /deep/ .van-icon {
+                                    margin-top: -1px
+                                };
                                 /deep/ .van-count-down {
                                     color: #bd68ff;
                                     font-size: 12px;
@@ -691,7 +716,7 @@
                                 }
                             };
                             .center {
-                                background:rgba(0, 0, 0, 0.54);
+                                background:rgba(0, 0, 0, .9);
                                 border-radius: 16px;
                                 padding: 5px 10px;
                                 box-sizing: border-box;
@@ -700,19 +725,25 @@
                                     &:nth-child(1) {
                                         margin: 0 4px
                                     }
-                                }
+                                };
+                                /deep/ .van-icon {
+                                    margin-top: -1px
+                                };
                             };
                             .right {
-                                background: rgba(0, 0, 0, .54);
+                                background: rgba(0, 0, 0, .9);
                                 border-radius: 14px;
-                                padding: 6px 10px;
+                                padding: 5px 10px;
                                 box-sizing: border-box;
                                 color: #e9ad70;
                                 span {
                                     &:nth-child(1) {
                                         margin: 0 4px
                                     }
-                                }
+                                };
+                                /deep/ .van-icon {
+                                    margin-top: -1px
+                                };
                             }
                         }
                         ;
@@ -779,7 +810,7 @@
                                         font-size: 0;
                                         margin: 10px 0;
                                         span {
-                                            font-size: 13px;
+                                            font-size: 12px;
                                             display: inline-block;
                                             height: 20px;
                                             line-height: 20px;
@@ -1033,7 +1064,7 @@
                 height: 50px;
                 z-index: 300;
                 border-radius: 6px;
-                background: #ffc252;
+                background: #f0c796;
                 text-align: center;
                 padding: 0 10px;
                 line-height: 50px;
@@ -1071,7 +1102,7 @@
                         border-radius: 20px;
                         font-size: 14px;
                         background: rgb(40, 40, 40);
-                        color: #f3ad2b;
+                        color: #edc695;
                         margin-right: 10px
                     }
                 }

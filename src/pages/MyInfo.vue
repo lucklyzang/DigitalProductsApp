@@ -23,56 +23,56 @@
         @refresh="onRefresh"
     >  
         <div class="content-box">
-        <div class="content-top">
-            <div class="person-message-box">
-            <div class="message-left" @click="toEditPersonPage">
-                <div class="person-picture">
-                <img :src="notLoginPng" v-show="!isLogin" alt="">
-                <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl') || isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && !userInfo.avatarUrl" alt="">
-                <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && userInfo.avatarUrl" alt="">
-                </div>
-                <div class="person-name">
-                    <div class="top">
-                        <div v-if="isLogin">{{userInfo && userInfo.nickName}}</div>
-                        <div v-else>未登录</div>
+            <div class="content-top">
+                <div class="person-message-box">
+                <div class="message-left" @click="toEditPersonPage">
+                    <div class="person-picture">
+                    <img :src="notLoginPng" v-show="!isLogin" alt="">
+                    <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl') || isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && !userInfo.avatarUrl" alt="">
+                    <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && userInfo.avatarUrl" alt="">
                     </div>
-                    <div class="bottom">
-                        <span v-show="!isLogin">登录后可以查看更多数字藏品</span>
-                        <span v-show="userInfo && !userInfo.signTxt && isLogin">TA很神秘,什么都没有留下</span>
-                        <span v-show="userInfo && userInfo.signTxt && isLogin">{{userInfo && userInfo.signTxt}}</span>
+                    <div class="person-name">
+                        <div class="top">
+                            <div v-if="isLogin">{{userInfo && userInfo.nickName}}</div>
+                            <div v-else>未登录</div>
+                        </div>
+                        <div class="bottom">
+                            <span v-show="!isLogin">登录后可以查看更多数字藏品</span>
+                            <span v-show="userInfo && !userInfo.signTxt && isLogin">TA很神秘,什么都没有留下</span>
+                            <span v-show="userInfo && userInfo.signTxt && isLogin">{{userInfo && userInfo.signTxt}}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            </div>
-            <div class="function-zone">
-            <div class="function-zone-icon-list" v-for="(item,index) in zoneIconList" :key="index" @click="featureSetTopEvent(item)">
-                <img :src="item.icon" alt="">
-                <span>{{item.span}}</span>
-            </div>
-            </div>
-            </div>
-        <div class="content-bottom">
-            <div class="nick-name" v-for="(item,index) in featureSetList" :key="index" @click="featureSetEvent(item)">
-                <div class="left">
-                    <img :src="item.iconLeft" alt="">
-                    <span>{{item.span}}</span>
                 </div>
-                <div class="right">
-                    <div>
-                        <img :src="item.iconRight" alt="">
+                <div class="function-zone">
+                    <div class="function-zone-icon-list" v-for="(item,index) in zoneIconList" :key="index" @click="featureSetTopEvent(item)">
+                        <img :src="item.icon" alt="">
+                        <span>{{item.span}}</span>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="blockchain-server">
-            <p>
-                <img :src="blockchainServePng" alt="">
-                <span>提供技术支持</span>
-            </p>
-            <p>
-                中国传统文化数字艺术联盟监制
-            </p>
-        </div>
+            <div class="content-bottom">
+                    <div class="nick-name" v-for="(item,index) in featureSetList" :key="index" @click="featureSetEvent(item)">
+                        <div class="left">
+                            <img :src="item.iconLeft" alt="">
+                            <span>{{item.span}}</span>
+                        </div>
+                        <div class="right">
+                            <div>
+                                <img :src="item.iconRight" alt="">
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="blockchain-server">
+                <p>
+                    <img :src="blockchainServePng" alt="">
+                    <span>提供技术支持</span>
+                </p>
+                <p>
+                    中国传统文化数字艺术联盟监制
+                </p>
+            </div>
         </div>
     </van-pull-refresh>  
     <FooterBottom></FooterBottom>  
@@ -485,10 +485,8 @@
                         }
                     }
                 }
-            }
-            ;
+            };
             .content-bottom {
-                flex: 1;
                 font-size: 13px;
                 position: relative;
                 display: flex;
@@ -536,6 +534,10 @@
                 }
             };
             .blockchain-server {
+                position: absolute;
+                bottom: 10px;
+                left: 0;
+                width: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;

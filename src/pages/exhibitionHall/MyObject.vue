@@ -332,7 +332,7 @@
                                 margin-bottom: 6px
                             };
                             &:last-child {
-                                color: rgb(156, 154, 154);
+                                color: #bbbbbb;
                                 font-size: 12px
                             }
                         }
@@ -514,21 +514,22 @@
                     height: 240px;
                     position: relative;
                     .hall-tit {
-                        margin-left: 15px;
                         display: flex;
                         flex-direction: column;
                         position: absolute;
-                        top: 20px;
-                        left: 20px;
+                        align-items: center;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%,-50%);
                         span {
                             z-index: 1;
                             &:first-child {
                                 color: #fff;
                                 font-size: 18px;
-                                margin-bottom: 6px
+                                margin-bottom: 20px
                             };
                             &:last-child {
-                                color: rgb(156, 154, 154);
+                                color: #bbbbbb;
                                 font-size: 12px
                             }
                         }
