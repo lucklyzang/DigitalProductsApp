@@ -121,7 +121,8 @@
 		methods: {
 			...mapMutations([
                 'changeQueryHallMessage',
-                'changeCollectionId'
+                'changeCollectionId',
+                'changeisEnterCollectionsRecordsDetailsPageSource'
 			]),
 
             // 跳转藏品记录详情
@@ -136,7 +137,8 @@
 				this.changeCollectionId(temporary);
 				this.$router.push({
 					path: '/collectionRecordDetails'
-				})
+				});
+                this.changeisEnterCollectionsRecordsDetailsPageSource('/myObjectDetails')
 			},
 
             // 查询展馆信息

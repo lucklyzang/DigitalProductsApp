@@ -119,7 +119,7 @@
                 pushHistory();
                     this.$router.push({
                         path: '/collectionRecordDetails'
-                    })
+                    });
                 })
             };
             this.extractCollectPhoneCode()
@@ -131,7 +131,7 @@
         },
 		methods: {
 			...mapMutations([
-                'changeCollectTransferCodeMessage'
+                'changeCollectTransferCodeMessage',
 			]),
 
             //转赠倒计时结束事件
@@ -400,7 +400,7 @@
                                 box-sizing: border-box;
                                 line-height: 22px;
                                 margin-left: 17px;
-                                background-image: linear-gradient(to right, #9b45e0, #6c2ba0);
+                                background-image: linear-gradient(to right, #fbd2a5, #f1c593);
                                 color: black;
                                 .no-wrap()
                             }

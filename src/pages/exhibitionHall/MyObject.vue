@@ -132,7 +132,8 @@
                 'changeQueryHallMessage',
                 'changeIsEnterLoginPageSource',
                 'changeHallMessage',
-                'changeCollectionId'
+                'changeCollectionId',
+                'changeisEnterCollectionsRecordsDetailsPageSource'
 			]),
 
             // 登录事件
@@ -244,7 +245,8 @@
 				this.changeCollectionId(item);
 				this.$router.push({
 					path: '/collectionRecordDetails'
-				})
+				});
+                this.changeisEnterCollectionsRecordsDetailsPageSource('/myObject')
 			},
 
             // 滑动开始

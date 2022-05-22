@@ -49,10 +49,21 @@ export default {
             return state.isEnterVerificationCodePage
         },
 
+        isEnterDonationFriendPage: (state)  => {
+            state.isPaying = getStore('isEnterDonationFriendPage') ? getStore('isEnterDonationFriendPage') === 'false' ? false : true : false
+            return state.isEnterDonationFriendPage
+        },
+
         isEnterLoginPageSource: (state)  => {
             state.isEnterLoginPageSource = getStore('isEnterLoginPageSource') ? getStore('isEnterLoginPageSource') : ''
             return state.isEnterLoginPageSource
         },
+
+        isEnterCollectionsRecordsDetailsPageSource: (state)  => {
+            state.isEnterCollectionsRecordsDetailsPageSource = getStore('isEnterCollectionsRecordsDetailsPageSource') ? getStore('isEnterCollectionsRecordsDetailsPageSource') : ''
+            return state.isEnterCollectionsRecordsDetailsPageSource
+        },
+
         collectTransferCodeMessage: (state)  => {
             state.collectTransferCodeMessage = getStore('collectTransferCodeMessage') ? JSON.parse(getStore('collectTransferCodeMessage')) : []
             return state.collectTransferCodeMessage
@@ -130,13 +141,25 @@ export default {
         changeIsEnterVerificationCodePage(state, playLoad) {
             setStore('isEnterVerificationCodePage', playLoad);
             state.isEnterVerificationCodePage = playLoad
-        }, 
+        },
 
-        // 保存进入登录页的来源页路径
-        changeIsEnterLoginPageSource(state, playLoad) {
+         // 保存进入登录页的来源页路径
+         changeIsEnterLoginPageSource(state, playLoad) {
             setStore('isEnterLoginPageSource', playLoad);
             state.isEnterLoginPageSource = playLoad
-        }, 
+        },
+        
+        //保存是否进入过赠送藏品页的状态
+        changeIsEnterDonationFriendPage(state, playLoad) {
+            setStore('isEnterDonationFriendPage', playLoad);
+            state.isEnterDonationFriendPage = playLoad
+        },
+        
+        // 保存进入藏品记录详情页的来源路径
+        changeisEnterCollectionsRecordsDetailsPageSource(state, playLoad) {
+            setStore('isEnterCollectionsRecordsDetailsPageSource', playLoad);
+            state.isEnterCollectionsRecordsDetailsPageSource = playLoad
+        },
 
         // 保存藏品赠送发送的验证码是否超过60s的状态
         changeCollectTransferCodeMessage(state, playLoad) {

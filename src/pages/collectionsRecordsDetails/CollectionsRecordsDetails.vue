@@ -259,14 +259,32 @@
 			...mapGetters([
                 'collectionId',
                 'isLogin',
-                'userInfo'
+                'userInfo',
+                'isEnterCollectionsRecordsDetailsPageSource',
+                'isEnterDonationFriendPage'
 			])
 		},
 
-        beforeRouteEnter(to, from, next) {
+         beforeRouteEnter(to, from, next) {
             next(vm => {
-               vm.path = from.path
+                if (vm.isEnterDonationFriendPage) {
+                    vm.path = vm.isEnterCollectionsRecordsDetailsPageSource
+                } else {
+                    vm.path = from.path
+                }
             })
+        },
+
+        beforeRouteLeave(to, from, next) {
+            if (to.path !== '/donationFriend') {
+                this.changeIsEnterDonationFriendPage(false);
+            };
+            if (this.isEnterDonationFriendPage) {
+                this.path = this.isEnterCollectionsRecordsDetailsPageSource
+            } else {
+                this.path = from.path
+            };
+            next()
         },
 
 		mounted() {
@@ -286,7 +304,9 @@
 
 		methods: {
 			...mapMutations([
-                'changeDonationProductDetails'
+                'changeDonationProductDetails',
+                'changeIsEnterDonationFriendPage',
+                'changeisEnterCollectionsRecordsDetailsPageSource'
 			]),
 
             rotate () {
@@ -405,7 +425,8 @@
 
             // 转增好友藏品
             donationFriendEvent () {
-                 this.$router.push({
+                this.changeIsEnterDonationFriendPage(true);
+                this.$router.push({
                     path: '/donationFriend'
                 })
             }

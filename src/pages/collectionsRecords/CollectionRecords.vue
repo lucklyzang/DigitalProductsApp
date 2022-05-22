@@ -78,7 +78,8 @@
 		},
 		methods: {
 			...mapMutations([
-				'changeCollectionId'
+				'changeCollectionId',
+				'changeisEnterCollectionsRecordsDetailsPageSource'
 			]),
 
 			// 查询藏品记录
@@ -128,6 +129,7 @@
 			// 跳转藏品记录详情
 			recordsDetailsEvent (item) {
 				this.changeCollectionId(item);
+				this.changeisEnterCollectionsRecordsDetailsPageSource('/collectionRecords')
 				this.$router.push({
 					path: '/collectionRecordDetails'
 				})
