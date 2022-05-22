@@ -638,20 +638,21 @@
                         justify-content: center;
                         align-items: center;
                         .left {
-                            height: 40px;
-                            line-height: 40px;
                             font-size: 0;
                             display: flex;
+                            height: 20px;
                             margin-right: 10px;
                             flex-flow: row nowrap;
                             align-items: center;
                             justify-content: center;
                             >span {
                                 font-size: 12px;
-                                display: inline-block;
                                 height: 20px;
-                                line-height: 20px;
-                                padding: 1px 8px;
+                                display: inline-block;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                align-items: center;
+                                padding: 0 8px;
                                 box-sizing: border-box;
                                 &:first-child {
                                     background: #f0c796;
@@ -660,7 +661,7 @@
                                     border-bottom-left-radius: 2px;
                                 };
                                 &:last-child {
-                                    background: #3e3a51;
+                                    background: #4e4e4e;
                                     color: #edc795;
                                     border-top-right-radius: 2px;
                                     border-bottom-right-radius: 2px
@@ -668,9 +669,8 @@
                             }
                         }
                         .right {
-                            height: 40px;
-                            line-height: 40px;
                             font-size: 0;
+                            height: 20px;
                             display: flex;
                             flex-flow: row nowrap;
                             align-items: center;
@@ -679,8 +679,10 @@
                                 font-size: 12px;
                                 display: inline-block;
                                 height: 20px;
-                                line-height: 20px;
-                                padding: 1px 8px;
+                                padding: 0 8px;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                align-items: center;
                                 box-sizing: border-box;
                                 &:first-child {
                                     background: #343434;
@@ -689,7 +691,7 @@
                                     border-bottom-left-radius: 2px;
                                 };
                                 &:last-child {
-                                    background: #3e3a51;
+                                    background: #4e4e4e;
                                     color: #edc695;
                                     border-top-right-radius: 2px;
                                     border-bottom-right-radius: 2px

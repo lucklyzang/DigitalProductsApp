@@ -814,7 +814,7 @@
                                             display: inline-block;
                                             height: 20px;
                                             line-height: 20px;
-                                            padding: 1px 8px;
+                                            padding: 0 8px;
                                             box-sizing: border-box;
                                             &:first-child {
                                                 background: #f0c796;
@@ -824,7 +824,7 @@
                                             }
                                             ;
                                             &:last-child {
-                                                background: #3e3a51;
+                                                background: #4e4e4e;
                                                 color: #edc695;
                                                 border-top-right-radius: 2px;
                                                 border-bottom-right-radius: 2px
