@@ -39,7 +39,7 @@
         </div>
         <div class="countDown-box" v-show="!isCanSendPhoneCode">
             <span>{{`请输入手机号${userInfo.mobile}接收到的验证码完成赠送`}}</span>
-            <van-count-down :time="countdownTime - new Date().getTime()" format="ss秒后再次赠送" @finish="countDownEnd" />
+            <van-count-down :time="countdownTime - new Date().getTime()" format="ss秒后再次发送验证码" @finish="countDownEnd" />
         </div>
         <div class="content-code" v-show="isShowCodeInput">
 			<div>
@@ -237,6 +237,7 @@
                         code
                     })
                     .then((res) => {
+                        this.storeCollectCodeMessage(0,true,false,'');
                         this.loadingShow = false;
                         if (res && res.data.code == 0) {
                             this.$toast({
@@ -274,6 +275,12 @@
                     return
                 };
                 this.loadingShow = true;
+                this.codeOne = '';
+				this.codeTwo = '';
+				this.codeThree = '';
+				this.codeFour = '';
+				this.codeFive = '';
+				this.codeSix = '';
                 this.sendPhoneCode()
             },
 

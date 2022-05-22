@@ -13,43 +13,74 @@
                 <span>发布</span>
             </template>
         </van-nav-bar>
+        <van-loading type="spinner" vertical v-show="loadingShow" color="#fff">
+            发布中
+        </van-loading>
+        <van-overlay :show="isShowOverlay"/>
         <van-dialog v-model="isShowHint" :show-cancel-button="true"  :close-on-popstate="false" title="你确定要离开该页面? 离开之后当前内容无法保存。"
             confirm-button-text="确定"
             cancel-button-text="取消"
             @confirm="sureEvent" 
             @cancel="cancelEvent"
         />
-		<div class="content-top">
-          <div class="left" @click="exhibitionThemeEvent">
-              <div class="hall-title">
-                {{hallMessage['hallTheme']}}
-              </div>
-              <div class="hall-introduce">
-                <span>{{hallMessage['hallIntroduce'] ? this.hallMessage['hallIntroduce'] : '介绍一下你的展览'}}</span>
-                <img :src="editIntroducePng" alt="">
-              </div>
-          </div>
-          <div class="right">
-            <img :src="hallPlusPng" alt="" @click="editExhibitsEvent">
-            <span>
-                {{hallMessage.hallExhibitsList.length}}
-            </span>
-          </div>
-		</div>
-        <div class="content-bottom">
-            <div @click="chooseHallTemplateEvent">
-                <img :src="chooseTemplatePng" alt="">
-                <span>选择模板</span>
+        <img :src="hallMessage.hallTemplatePath" alt="" ref="backgroundImg">
+        <div class="content" ref="content">
+            <div class="content-center" 
+                ref="contentCenter"
+                @touchstart="touchstartHandle"
+                @touchmove="touchmoveHandle"
+            >
+            <div class="content-left" ref="contentLeft" @click="exhibitionThemeEvent">
+                <div class="hall-title">
+                    {{exhibitionTheme}}
+                </div>
+                <div class="hall-introduce">
+                    <span>{{exhibitionIntroduce}}</span>
+                    <img :src="editIntroducePng" alt="">
+                </div>
             </div>
-            <div @click="editExhibitsEvent">
-                <img :src="editExhibitsPng" alt="">
-                <span>编辑展品</span>
+            <div class="content-right">
+                <div class="plus-exhibits" v-if="hallMessage.hallExhibitsList.length == 0">
+                    <img :src="hallPlusPng" alt="" @click="editExhibitsEvent">
+                    <span>
+                        {{hallMessage.hallExhibitsList.length}}
+                    </span>
+                </div>
+                <div class="exhibition-list" v-else v-for="(item,index) in hallMessage.hallExhibitsList" :key="index" :ref="'exhibitionList'+ index">
+                    <div class="exhibits-top" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
+                        <img :data-src="item.collectionUrl" alt="">
+                    </div>
+                    <div class="exhibits-line">
+                        <img :src="hallBothPng" alt="">
+                    </div>
+                    <div class="exhibits-bottom">
+                        <p class="chain">
+                            <span class="blockchain-img">
+                                <img :src="blockchainPng" alt="">
+                            </span>
+                            <span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
+                        </p>
+                        <p class="author">{{item.collectionName}}</p>
+                        <p class="publisher">{{item.publisher}}</p>
+                    </div>
+                </div>   
             </div>
-            <div @click="exhibitionThemeEvent">
-                <img :src="editExhibitionThemePng" alt="">
-                <span>展览主题</span>
             </div>
-        </div>
+            <div class="content-bottom">
+                <div @click="chooseHallTemplateEvent">
+                    <img :src="chooseTemplatePng" alt="">
+                    <span>选择模板</span>
+                </div>
+                <div @click="editExhibitsEvent">
+                    <img :src="editExhibitsPng" alt="">
+                    <span>编辑展品</span>
+                </div>
+                <div @click="exhibitionThemeEvent">
+                    <img :src="editExhibitionThemePng" alt="">
+                    <span>展览主题</span>
+                </div>
+            </div>
+        </div>    
 	</div>
 </template>
 
@@ -65,24 +96,43 @@
 		},
 		data() {
 			return {
+                moveInfo: {
+                    lastMoveTime: '',
+                    startX: 0,
+                    x: 0,
+                    imgX: 0
+                },
+                loadingShow: false,
+                isShowOverlay: false,
+                isRotate: true,
+                exhibitionTheme: '',
+                exhibitionIntroduce: '',
+                myObjectOffsetLeft: '',
+                myObjectMaxMoveDistance: '',
+                backgroundImgMaxMoveDistance: '',
+                backgroundImgLeft: '',
 				isShowHint: false,
+                isRenderComplete: true,
                 hallPlusPng: require("@/common/images/hall/hall-plus.png"),
                 editIntroducePng: require("@/common/images/hall/edit-introduce.png"),
                 chooseTemplatePng: require("@/common/images/hall/choose-template.png"),
                 editExhibitsPng: require("@/common/images/hall/edit-exhibits.png"),
-                editExhibitionThemePng: require("@/common/images/hall/exhibition-theme.png")
+                editExhibitionThemePng: require("@/common/images/hall/exhibition-theme.png"),
+                hallBothPng: require("@/common/images/home/hall-both.png"),
+                blockchainPng: require("@/common/images/hall/hall-chain.png"),
+                imgBorderImg: require("@/common/images/home/img-border.png")
 			}
 		},
 		onReady() {},
 		computed: {
 			...mapGetters([
                 'hallMessage',
+                'userInfo',
                 'queryHallMessage'
 			])
 		},
 
 		mounted() {
-            console.log(this.hallMessage);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -92,25 +142,49 @@
                         path: '/createHall'
                     })
                 })
-            }
-
+            };
+            this.myObjectOffsetLeft = this.$refs.contentCenter.offsetLeft;
+            this.backgroundImgLeft = this.$refs.backgroundImg.offsetLeft;
+            if (this.hallMessage.hallExhibitsList.length > 0) {
+                this.calculateContentWidth(this.hallMessage.hallExhibitsList.length)
+            };
+            this.echoExhibitionThemeMessage()
 		},
 
-        beforeRouteLeave(to, from, next) {
-            // if (to.path == '/createHall') {
-            //     this.isShowHint = true;
-            //     next(false)
-            // };
-            next()
+        updated() {
+            if (this.isRenderComplete) {
+                this.calculateContentWidth(this.hallMessage.hallExhibitsList.length)
+            }
         },
+
+        // beforeRouteLeave(to, from, next) {
+        //     if (to.path == '/createHall') {
+        //         this.isShowHint = true;
+        //         return
+        //     };
+        //     next()
+        // },
         
 		methods: {
 			...mapMutations([
-                'changeHallMessage'
+                'changeHallMessage',
+                'changeIsEnterMyObjectDetailsPageSource'
 			]),
             onClickLeft () {
                 this.$router.push({path: '/createHall'})
             },
+
+            //回显展览主题信息
+            echoExhibitionThemeMessage () {
+                if (this.queryHallMessage['type'] == -1) {
+                    this.exhibitionTheme = `${this.userInfo['nickName']}的展馆`;
+                    this.exhibitionIntroduce  = '介绍一下你的展览';
+                } else if (this.queryHallMessage['type'] == 0) {
+                    this.exhibitionTheme = this.hallMessage['hallTheme'];
+                    this.exhibitionIntroduce  = this.hallMessage['hallIntroduce'] ? this.hallMessage['hallIntroduce'] : '介绍一下你的展览'
+                }
+            },
+
             //发布
             onClickRight () {
                 if (this.hallMessage['hallExhibitsList'].length == 0) {
@@ -118,27 +192,6 @@
                         message: '请编辑展品',
                         position: 'bottom'
                     });
-                    return
-                };
-                if (!this.hallMessage['hallIntroduce'] ||!this.hallMessage['hallTheme']) {
-                    if (!this.hallMessage['hallIntroduce'] && !this.hallMessage['hallTheme']) {
-                        this.$toast({
-                            message: '展览主题不能为空',
-                            position: 'bottom'
-                        })
-                    } else {
-                        if (!this.hallMessage['hallTheme']) {
-                            this.$toast({
-                                message: '展览主题名称不能为空',
-                                position: 'bottom'
-                            })
-                        } else {
-                            this.$toast({
-                                message: '展览主题介绍不能为空',
-                                position: 'bottom'
-                            })
-                        }
-                    }
                     return
                 };
                 if (!this.hallMessage['hallTemplate']) {
@@ -153,8 +206,15 @@
                     name: this.hallMessage['hallTheme'],
                     signTxt: this.hallMessage['hallIntroduce'],
                     template: this.hallMessage['hallTemplate'],
-                    exhibitDtos: this.hallMessage['hallExhibitsList']
-                }
+                    exhibitDtos: []
+                };
+                let temporaryData = [];
+                for (let item of this.hallMessage['hallExhibitsList']) {
+                    temporaryData.push({
+                        ownId: item.ownId
+                    })
+                };
+                hallMessage['exhibitDtos'] = temporaryData;
                 if(this.queryHallMessage.type == -1) {
                     this.publishHallEvent(hallMessage)
                 } else {
@@ -175,15 +235,36 @@
                 this.$router.push({path: '/exhibitionTheme'})
             },
 
+            // 计算展品总长度
+            calculateContentWidth (length) {
+                if (length == 0) {return};
+                let rightWidth = 0;
+                if (length == 1 || length == 2) {
+                    rightWidth = this.$refs['exhibitionList0'][0].offsetWidth + 40
+                } else {
+                    let num = 0;
+                    num = Math.ceil(length/2);
+                    rightWidth = (this.$refs['exhibitionList0'][0].offsetWidth + 40)*num
+                };
+                this.$refs.contentCenter.style.width =  this.$refs.contentLeft.offsetWidth + rightWidth + (this.$refs['exhibitionList0'][0].offsetWidth/2) + 'px';
+                this.myObjectMaxMoveDistance =  Math.abs(this.$refs.contentCenter.offsetWidth - this.$refs.content.offsetWidth);
+                this.backgroundImgMaxMoveDistance = Math.abs(this.$refs.backgroundImg.offsetWidth - this.$refs.content.offsetWidth);
+            },
+
             // 发布展馆
             publishHallEvent (data) {
+                this.loadingShow = true;
+                this.isShowOverlay = true;
                 publishHall(data).then((res) => {
+                    this.loadingShow = false;
+                    this.isShowOverlay = false;
 					if (res && res.data.code == 0) {
                         this.$toast({
                             message: '发布成功',
                             position: 'bottom'
                         });
-                        this.$router.push({path: '/myObjectDetails'})
+                        this.changeIsEnterMyObjectDetailsPageSource('/editNewHall');
+                        this.$router.push({path: '/myObjectDetails'});
                     } else {
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -192,6 +273,8 @@
                     }
 				})
 				.catch((err) => {
+                    this.loadingShow = false;
+                    this.isShowOverlay = false;
 					this.$toast({
 						message: `${err.message}`,
 						position: 'bottom'
@@ -201,12 +284,17 @@
 
             // 编辑展馆
             edithHallEvent (data) {
+                this.loadingShow = true;
+                this.isShowOverlay = true;
                 edithHall(data).then((res) => {
+                    this.loadingShow = false;
+                    this.isShowOverlay = false;
 					if (res && res.data.code == 0) {
                         this.$toast({
                             message: '发布成功',
                             position: 'bottom'
-                        })
+                        });
+                        this.changeIsEnterMyObjectDetailsPageSource('/editNewHall');
                         this.$router.push({path: '/myObjectDetails'})
                     } else {
                         this.$toast({
@@ -216,6 +304,8 @@
                     }
 				})
 				.catch((err) => {
+                    this.loadingShow = false;
+                    this.isShowOverlay = false;
 					this.$toast({
 						message: `${err.message}`,
 						position: 'bottom'
@@ -233,6 +323,77 @@
             //弹框取消事件
             cancelEvent () {
                 
+            },
+
+            // 滑动开始
+            touchstartHandle(e) {
+                this.moveInfo.startX = e.targetTouches[0].clientX;
+                this.moveInfo.lastMoveTime = new Date().getTime();
+                this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
+            },
+            
+            // 滑动中
+            touchmoveHandle(e) {
+                // 滑动距离
+                let moveX = (e.targetTouches[0].clientX - this.moveInfo.startX)*1.5;
+                //左滑
+                if (moveX < 0) {
+                    // 展品转动
+                    if (this.$refs.contentCenter.offsetLeft <= -this.myObjectMaxMoveDistance) {
+                        this.isRotate = false;
+                        this.$refs.contentCenter.style.left = -this.myObjectMaxMoveDistance + 'px';
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        this.moveInfo.startX = e.targetTouches[0].clientX
+                    } else {
+                        this.isRotate = true;
+                        this.$refs.contentCenter.style.left = this.moveInfo.x - Math.abs(moveX) + 'px'
+                    };
+                    //背景图转动
+                    if (this.$refs.backgroundImg.offsetLeft <= -this.backgroundImgMaxMoveDistance) {
+                        this.$refs.backgroundImg.style.left = -this.backgroundImgMaxMoveDistance + 'px'
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft
+                    };
+                    if (this.isRotate) {
+                        if (this.$refs.backgroundImg.offsetLeft <= -this.backgroundImgMaxMoveDistance) {
+                            this.$refs.backgroundImg.style.left = -this.backgroundImgMaxMoveDistance + 'px'
+                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft
+                        } else {
+                            this.$refs.backgroundImg.style.left = (this.moveInfo.x - Math.abs(moveX))/2 + 'px'
+                        }
+                    } else {
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        this.moveInfo.startX = e.targetTouches[0].clientX;
+                    }
+                } else {
+                    //展品转动
+                    if (this.$refs.contentCenter.offsetLeft >= 0) {
+                        this.isRotate = false;
+                        this.$refs.contentCenter.style.left = 0;
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        this.moveInfo.startX = e.targetTouches[0].clientX
+                    } else {
+                        this.isRotate = true;
+                        this.$refs.contentCenter.style.left = this.moveInfo.x + moveX + 'px'
+                    };
+                    //背景图转动
+                    if (this.$refs.backgroundImg.offsetLeft >= 0) {
+                        this.$refs.backgroundImg.style.left = 0;
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                    };
+                    if (this.isRotate) {
+                        if (this.$refs.backgroundImg.offsetLeft >=0) {
+                            this.$refs.backgroundImg.style.left = 0;
+                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        } else {
+                            this.$refs.backgroundImg.style.left = (this.moveInfo.x + moveX)/2 + 'px'
+                        }
+                    } else {
+                        this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                        this.moveInfo.startX = e.targetTouches[0].clientX;
+                    }
+                }
+                e.preventDefault()
             }
 		}
 	}
@@ -246,7 +407,7 @@
 		.content-wrapper();
         background: @color-background;
         /deep/ .van-nav-bar {
-            background: @color-background;
+            background: transparent;
             .van-icon-arrow-left {
                 color: #fff !important;
                 font-size: 18px !important
@@ -292,91 +453,189 @@
                 }
             }
         };
-		.content-top {
-            width: 90%;
-            margin: 0 auto;
-			margin-top: 60px;
+        > img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100vh
+        };
+        .content {
             flex: 1;
+            width: 100%;
             position: relative;
-            display: flex;
-            flex-flow: row nowrap;
-            .left {
-                flex: 1;
-                padding-right: 20px;
-                box-sizing: border-box;
+            .content-center {
+                position: absolute;
                 display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                .hall-title {
-                    width: 100%;
-                    height: 120px;
-                    overflow: auto;
-                    color: #fff;
-                    line-height: 25px;
-                    font-size: 22px
-                };
-                .hall-introduce {
-                    width: 100%;
-                    line-height: 20px;
-                    flex: 1;
-                    overflow: auto;
-                    color: #adadad;
-                    font-size: 12px;
-                    >img {
-                        width: 14px
+                flex-flow: row nowrap;
+                top: 12vh;
+                left: 0;
+                height: 72vh;
+                .content-left {
+                    width: 220px;
+                    display: flex;
+                    height: 72vh;
+                    padding-left: 40px;
+                    box-sizing: border-box;
+                    flex-direction: column;
+                    margin-right: 20px;
+                    .hall-title {
+                        color: #fff;
+                        font-size: 24px;
+                        height: 100px;
+                        line-height: 25px;
+                        word-break: break-all;
+                        overflow: auto;
+                    };
+                    .hall-introduce {
+                        color: #e8e8e8;
+                        line-height: 20px;
+                        font-size: 14px;
+                        word-break: break-all;
+                        flex: 1;
+                        margin-top: 10px;
+                        overflow: auto;
+                        >img {
+                            width: 14px
+                        }
                     }
+                };
+                .content-right {
+                    color: #fff;
+                    font-size: 22px;
+                    height: 72vh;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                    .plus-exhibits {
+                        >img {
+                            width: 100px;
+                        };
+                        >span {
+                            width: 100px;
+                            display: inline-block;
+                            color: #adadad;
+                            font-size: 13px;
+                            height: 25px;
+                            .bottom-border-1px(#adadad,8px) 
+                        }
+                    };
+                    .exhibition-list {
+                         width: 120px;
+                        box-sizing: border-box;
+                        height: 31vh;
+                        margin-right: 40px;
+                        .exhibits-top {
+                            position: relative;
+                            width: 90px;
+                            padding: 5px;
+                            height: 100px;
+                            margin: 0 auto;
+                            box-sizing: border-box;
+                            border-radius: 10px;
+                            > img {
+                                border-radius: 6px;
+                                width: 100%;
+                                height: 100%
+                            }
+                        };
+                        .exhibits-line {
+                            width: 120px;
+                            height: 25px;
+                            margin-top: 8px;
+                            img {
+                                width: 120px
+                            }
+                        };
+                        .exhibits-bottom {
+                            margin-top: -4px;
+                            >p {
+                                width: 100%;
+                            }
+                            .author {
+                                font-size: 12px;
+                                color: #fff;
+                                margin: 2px 0 4px 0;
+                                .no-wrap()
+                            };
+                            .chain {
+                                display: flex;
+                                flex-flow: row nowrap;
+                                align-items: center;
+                                height: 24px;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                align-items: center;
+                                position: relative;
+                                .blockchain-img {
+                                    width: 22px;
+                                    height: 24px;
+                                    position: absolute;
+                                    top: 1px;
+                                    left: 0;
+                                    img {
+                                        width: 22px;
+                                        height: 24px
+                                    }
+                                };
+                                .blockchain-chain {
+                                    display: inline-block;
+                                    padding: 0 6px 0 12px;
+                                    flex: 1;
+                                    border-radius: 10px;
+                                    font-size: 10px;
+                                    box-sizing: border-box;
+                                    height: 12px;
+                                    line-height: 12px;
+                                    margin-left: 14px;
+                                    background-image: linear-gradient(to right, #fbd2a5, #f1c593);
+                                    color: #9f7c0f;
+                                    .no-wrap()
+                                }
+                            }
+                            .publisher {
+                                height: 20px;
+                                line-height: 20px;
+                                font-size: 10px;
+                                color: #ececec;
+                                .no-wrap()
+                            }
+                        }
+                    }    
                 }
             };
-            .right {
-                width: 100px;
-                height: 140px;
+            .content-bottom {
+                position: absolute;
+                bottom: 20px;
+                right: 0;
+                width: 100%;
+                height: 80px;
                 display: flex;
-                flex-direction: column;
+                flex-flow: row nowrap;
                 justify-content: space-between;
                 align-items: center;
-                >img {
-                    width: 100px;
-                };
-                >span {
-                    width: 100px;
-                    display: inline-block;
-                    color: #adadad;
-                    font-size: 13px;
-                    height: 25px;
-                    .bottom-border-1px(#adadad,8px) 
+                padding: 10px;
+                box-sizing: border-box;
+                color: #fff;
+                >div {
+                    flex: 1;
+                    height: 50px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    font-size: 12px;
+                    align-items: center;
+                    >img {
+                        width: 50px;
+                        height: 50px
+                    }
+                    >span {
+                        color: #e2e2e2;
+                        margin-left: 4px;
+                        margin-top: 10px
+                    }
                 }
             }
-		};
-        .content-bottom {
-            background: #00020f;
-			width: 100%;
-            height: 100px;
-			display: flex;
-			flex-flow: row nowrap;
-			justify-content: space-between;
-            align-items: flex-start;
-            padding: 10px;
-            box-sizing: border-box;
-            color: #fff;
-            >div {
-                flex: 1;
-                height: 50px;
-                display: flex;
-			    flex-direction: column;
-                justify-content: center;
-                font-size: 12px;
-                align-items: center;
-                >img {
-                    width: 50px;
-                    height: 50px
-                }
-                >span {
-                    color: #b3b3b3;
-                    margin-left: 4px;
-                    margin-top: 10px
-                }
-            }
-		}
+        }    
 	}
 </style>
 

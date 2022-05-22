@@ -54,9 +54,19 @@ export default {
             return state.isEnterDonationFriendPage
         },
 
+        isEnterCollectionsRecordsDetailsPage: (state)  => {
+            state.isPaying = getStore('isEnterCollectionsRecordsDetailsPage') ? getStore('isEnterCollectionsRecordsDetailsPage') === 'false' ? false : true : false
+            return state.isEnterCollectionsRecordsDetailsPage
+        },
+
         isEnterLoginPageSource: (state)  => {
             state.isEnterLoginPageSource = getStore('isEnterLoginPageSource') ? getStore('isEnterLoginPageSource') : ''
             return state.isEnterLoginPageSource
+        },
+
+        isEnterMyObjectDetailsPageSource: (state)  => {
+            state.isEnterMyObjectDetailsSource = getStore('isEnterMyObjectDetailsPageSource') ? getStore('isEnterMyObjectDetailsPageSource') : ''
+            return state.isEnterMyObjectDetailsPageSource
         },
 
         isEnterCollectionsRecordsDetailsPageSource: (state)  => {
@@ -74,6 +84,7 @@ export default {
                 hallTemplate: '',
                 hallExhibitsList: [],
                 hallTheme: '',
+                hallThemePath: '',
                 hallIntroduce: ''
             };
             return state.hallMessage
@@ -154,11 +165,23 @@ export default {
             setStore('isEnterDonationFriendPage', playLoad);
             state.isEnterDonationFriendPage = playLoad
         },
+
+        //保存是否进入过藏品详情页的状态
+        changeIsEnterCollectionsRecordsDetailsPage (state, playLoad) {
+            setStore('isEnterCollectionsRecordsDetailsPage', playLoad);
+            state.isEnterCollectionsRecordsDetailsPage = playLoad
+        },
         
         // 保存进入藏品记录详情页的来源路径
-        changeisEnterCollectionsRecordsDetailsPageSource(state, playLoad) {
+        changeIsEnterCollectionsRecordsDetailsPageSource(state, playLoad) {
             setStore('isEnterCollectionsRecordsDetailsPageSource', playLoad);
             state.isEnterCollectionsRecordsDetailsPageSource = playLoad
+        },
+
+        // 保存进入我的展馆页面来源路径
+        changeIsEnterMyObjectDetailsPageSource (state, playLoad) {
+            setStore('isEnterMyObjectDetailsPageSource', playLoad);
+            state.isEnterMyObjectDetailsPageSource = playLoad
         },
 
         // 保存藏品赠送发送的验证码是否超过60s的状态

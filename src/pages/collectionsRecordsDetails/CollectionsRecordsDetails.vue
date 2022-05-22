@@ -294,7 +294,7 @@
                 this.gotoURL(() => {
                 pushHistory();
                     this.$router.push({
-                        path: '/collectionRecords'
+                        path: this.path
                     })
                 })
             };
@@ -306,7 +306,7 @@
 			...mapMutations([
                 'changeDonationProductDetails',
                 'changeIsEnterDonationFriendPage',
-                'changeisEnterCollectionsRecordsDetailsPageSource'
+                'changeIsEnterCollectionsRecordsDetailsPageSource'
 			]),
 
             rotate () {

@@ -78,7 +78,6 @@
 			])
 		},
 		mounted() {
-            console.log(this.queryHallMessage);
             // 查询藏品记录
 			this.queryCollectionRecords()
 		},
@@ -231,15 +230,21 @@
                 };
                 //储存选中的展品
                 let checkedExhibitionList = [];
-                for (let item of this.orderList) {
-                    if (item.isChecked) {
-                        checkedExhibitionList.push({
-                            ownId: item.id
-                        })
-                    }
+                let temporaryDataList = [];
+                checkedExhibitionList = this.orderList.filter((item) => {return item.isChecked == true});
+                for (let item of checkedExhibitionList) {
+                    temporaryDataList.push({
+                        collectionName: item.collectionName,
+                        isChecked: item.isChecked,
+                        isExihibition: item.isExihibition,
+                        collectionUrl: item.collectionUrl,
+                        ownId: item.id,
+                        chain: item.chain,
+                        publisher: item.publisher
+                    })
                 };
                 let temporaryData = this.hallMessage;
-                temporaryData['hallExhibitsList'] = checkedExhibitionList;
+                temporaryData['hallExhibitsList'] = temporaryDataList;
                 this.changeHallMessage(temporaryData);
                 this.$router.push({path: '/editNewHall'})
             },

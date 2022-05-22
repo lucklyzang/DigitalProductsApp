@@ -133,7 +133,8 @@
                 'changeIsEnterLoginPageSource',
                 'changeHallMessage',
                 'changeCollectionId',
-                'changeisEnterCollectionsRecordsDetailsPageSource'
+                'changeIsEnterMyObjectDetailsPageSource',
+                'changeIsEnterCollectionsRecordsDetailsPageSource'
 			]),
 
             // 登录事件
@@ -201,7 +202,13 @@
                             let arr = []
                             for (let item of this.queryHallMessage['exhibits']) {
                                 arr.push({
-                                    ownId: item.ownId
+                                    collectionName: item.commName,
+                                    isChecked: true,
+                                    isExihibition: true,
+                                    collectionUrl: item.path,
+                                    ownId: item.ownId,
+                                    chain: item.chain,
+                                    publisher: item.pubName
                                 })
                             };
                             temporaryHallMessage['hallExhibitsList'] = arr
@@ -214,6 +221,9 @@
                         };
                         if (!temporaryHallMessage['hallTemplate']) {
                             temporaryHallMessage['hallTemplate'] = this.queryHallMessage['template']
+                        };
+                        if (!temporaryHallMessage['hallTemplatePath']) {
+                            temporaryHallMessage['hallTemplatePath'] = this.queryHallMessage['path']
                         };
                         this.changeHallMessage(temporaryHallMessage)
                     } else {
@@ -237,7 +247,8 @@
             },
             // 进入我的展馆
             enterHallEvent () {
-                this.$router.push({path: '/myObjectDetails'})
+                this.$router.push({path: '/myObjectDetails'});
+                this.changeIsEnterMyObjectDetailsPageSource('/myObject')
             },
 
             // 跳转藏品记录详情
@@ -246,7 +257,7 @@
 				this.$router.push({
 					path: '/collectionRecordDetails'
 				});
-                this.changeisEnterCollectionsRecordsDetailsPageSource('/myObject')
+                this.changeIsEnterCollectionsRecordsDetailsPageSource('/myObject')
 			},
 
             // 滑动开始

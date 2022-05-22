@@ -69,6 +69,7 @@
 		},
 		data() {
 			return {
+                path: '',
                 orderList: [],
                 moveInfo: {
                     lastMoveTime: '',
@@ -94,7 +95,9 @@
 			...mapGetters([
                 'isLogin',
                 'userInfo',
-                'hallMessage'
+                'hallMessage',
+                'isEnterMyObjectDetailsPageSource',
+                'isEnterCollectionsRecordsDetailsPage'
 			])
 		},
 		mounted() {
@@ -106,13 +109,37 @@
                 this.gotoURL(() => {
                 pushHistory();
                     this.$router.push({
-                        path: '/myObject'
+                        path: this.path
                     })
                 })
             };
             // 查询展馆信息
 			this.queryHallMessageEvent()
 		},
+
+       beforeRouteEnter(to, from, next) {
+            next(vm => {
+                if (vm.isEnterCollectionsRecordsDetailsPage) {
+                    vm.path = vm.isEnterMyObjectDetailsPageSource
+                } else {
+                    vm.path = from.path
+                }
+            })
+        },
+
+        beforeRouteLeave(to, from, next) {
+            if (to.path !== '/collectionsRecordsDetails') {
+                this.changeIsEnterCollectionsRecordsDetailsPage(false);
+            };
+            if (this.isEnterCollectionsRecordsDetailsPage) {
+                this.path = this.isEnterMyObjectDetailsPageSource
+            } else {
+                this.path = from.path
+            };
+            next()
+        },
+
+
         updated() {
             if (this.isRenderComplete) {
                 this.calculateContentWidth(this.myHallDetails.exhibits.length)
@@ -122,7 +149,8 @@
 			...mapMutations([
                 'changeQueryHallMessage',
                 'changeCollectionId',
-                'changeisEnterCollectionsRecordsDetailsPageSource'
+                'changeIsEnterCollectionsRecordsDetailsPage',
+                'changeIsEnterCollectionsRecordsDetailsPageSource'
 			]),
 
             // 跳转藏品记录详情
@@ -138,7 +166,8 @@
 				this.$router.push({
 					path: '/collectionRecordDetails'
 				});
-                this.changeisEnterCollectionsRecordsDetailsPageSource('/myObjectDetails')
+                this.changeIsEnterCollectionsRecordsDetailsPage(true);
+                this.changeIsEnterCollectionsRecordsDetailsPageSource('/myObjectDetails')
 			},
 
             // 查询展馆信息
@@ -167,7 +196,7 @@
             },
 
             onClickLeft () {
-                this.$router.push({path: '/myObject'})
+                this.$router.push({path: this.path})
             },
 
             // 计算展品总长度

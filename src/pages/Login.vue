@@ -6,8 +6,8 @@
 			<span>发现有趣</span>
 		</div>
 		<div class="content-middle">
-			<div class="phone-number">
-				<van-field class="uni-input" v-model="phoneNumber" @input="inputEvent" type="tel" placeholder="请输入手机号码" />
+			<div class="phone-number" @click="inputClicked">
+				<van-field class="uni-input" ref="phoneInput" v-model="phoneNumber" @input="inputEvent" type="tel" placeholder="请输入手机号码" />
 			</div>
 			<div class="send-auth-box" @click="loginToIndex" :class="{'sendAuthBoxStyle': !checked || !phoneNumberUsable || !isCanSendPhoneCode}">
 				<span>发送短信验证码</span>
@@ -58,7 +58,7 @@ export default {
 	  path: '',
 	  isDisabled: false,
 	  timer: null,
-	  checked: true,
+	  checked: false,
 	  phoneNumberUsable: false,
       weixinPng: require("@/common/images/login/weixin-login.png"),
 	  activeIcon: require("@/common/images/login/agree-checked.png"),
@@ -140,6 +140,13 @@ export default {
 		'changeCountdownTime',
 		'changeIsEnterVerificationCodePage'
     ]),
+
+	inputClicked() {
+       if (this.$refs.phoneInput) {
+           this.$refs.phoneInput.focus()
+       }
+   	},
+
     // 输入框值改变事件
     inputEvent (value) {
 		let myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;

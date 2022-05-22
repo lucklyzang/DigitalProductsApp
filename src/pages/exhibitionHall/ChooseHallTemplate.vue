@@ -149,6 +149,7 @@
             onClickRight () {
                let temporaryHallMessage = this.hallMessage;
                temporaryHallMessage['hallTemplate'] = this.checkedTemplateId;
+               temporaryHallMessage['hallTemplatePath'] = this.checkedTemplateImg;
                this.changeHallMessage(temporaryHallMessage);
                this.$router.push({path: '/editNewHall'})
             }
