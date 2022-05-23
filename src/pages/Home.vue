@@ -929,7 +929,7 @@
                                 line-height: 20px;
                                 &:first-child {
                                     padding: 0 8px;
-                                    background: #bd68fe;
+                                    background: #4e4e4e;
                                     border-radius: 20px
                                 }
                                 ;
@@ -1017,20 +1017,22 @@
                                                     font-size: 0;
                                                     margin: 10px 0;
                                                     span {
-                                                        font-size: 14px;
+                                                        font-size: 12px;
                                                         display: inline-block;
+                                                        height: 20px;
+                                                        line-height: 20px;
+                                                        padding: 0 8px;
+                                                        box-sizing: border-box;
                                                         &:first-child {
                                                             background: #f0c796;
                                                             color: black;
-                                                            padding: 1px 4px 1px 4px;
                                                             border-top-left-radius: 2px;
                                                             border-bottom-left-radius: 2px;
                                                         }
                                                         ;
                                                         &:last-child {
-                                                            background: #3e3a51;
+                                                            background: #4e4e4e;
                                                             color: #edc695;
-                                                            padding: 1px 4px 1px 4px;
                                                             border-top-right-radius: 2px;
                                                             border-bottom-right-radius: 2px
                                                         }
