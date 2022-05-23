@@ -1,19 +1,20 @@
 <template>
   <div class="page-box" ref="wrapper">
-    <NavBar :leftArrow="false" />
+    <NavBar :leftArrow="false" ref="navBar" />
     <van-pull-refresh
         v-model="isRefresh"
+        :disabled="isDisabledRefresh"
         pulling-text="下拉刷新"
         loosing-text="释放立即刷新"
         success-text="刷新成功"
         @refresh="onRefresh"
     >
-        <div class="content">
-            <div class="rare-object">
+        <div class="content" ref="content">
+            <div class="rare-object" ref="rareObject">
                 <img :src="homeBannerPng" alt="">
             </div>
-            <van-sticky :offset-top="4">
-                <div class="tab-switch">
+            <div class="tab-switch-copy" v-show="isFixed"></div>
+            <div class="tab-switch" ref="tabSwitch" :class="{'tabSwitchStyle':isFixed}">
                 <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
                     :class="{'active-tab-style': index === currentTabIndex }"
                 >
@@ -21,12 +22,11 @@
                     item.name
                     }}
                 </span>
-                </div>
-            </van-sticky>
+            </div>
             <div class="switch-content">
                 <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
-                <div class="object-box" v-show="currentTabIndex === 0 && !emptyShow">
+                <div class="object-box" ref="objectBox" v-show="currentTabIndex === 0 && !emptyShow">
                     
                 <!-- 产品列表骨架 -->
                 <div class="object-skeleton-list" v-show="loadingShow" v-for="(item) in objectSkeletonList" :key="item.id">
@@ -206,7 +206,13 @@
         },
         data() {
             return {
-                scrollTop: 0, // 储存滚动位置 
+                scrollTop: 0, // 储存滚动位置
+                tabSwitchOffsetTop: 0,
+                tabSwitchHeight: 0,
+                navBarHeight: 0,
+                rareObjectHeight: 0,
+                isFixed: false, 
+                isDisabledRefresh: false,
                 isShowLoadFail: false,
                 isRefresh: false,
                 homeBannerPng: require("@/common/images/home/home-banner.png"),
@@ -257,9 +263,31 @@
                 //查询藏品列表
                 this.queryProductsList()
             };
+            window.addEventListener('scroll', this.handleScroll);
             this.$nextTick(() => {
-                document.documentElement.scrollTop = this.scrollTop
-            })
+                // 吸顶元素到top的距离
+                this.tabSwitchOffsetTop = this.$refs.tabSwitch.offsetTop;
+                // 元素自身的高度
+                this.tabSwitchHeight = this.$refs.tabSwitch.offsetHeight;
+                this.navBarHeight = this.$refs.navBar.$el.clientHeight;
+                this.rareObjectHeight = this.$refs.rareObject.offsetHeight;
+                if (document.documentElement) {
+                    document.documentElement.scrollTop = this.scrollTop
+                } else if (document.body) {
+                    document.body.scrollTop = this.scrollTop
+                } else {
+                    window.pageYOffset = this.scrollTop
+                }
+            });
+            if (this.scrollTop > 0) {
+                this.isDisabledRefresh = true;
+            } else {
+                this.isDisabledRefresh = false
+            }
+        },
+
+        deactivated() {
+            window.removeEventListener('scroll', this.handleScroll)
         },
 
 
@@ -273,10 +301,6 @@
                 'isShowLoginHint',
                 'isShowNameAuthHint'
             ])
-        },
-        
-        deactivated() {
-            window.removeEventListener('scroll', this.handleScroll);
         },
 
         beforeRouteEnter(to, from, next) {
@@ -301,6 +325,17 @@
                 'changeIsRefreshHomePage'
             ]),
 
+            //页面滚动事件
+            handleScroll () {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                // 判断页面滚动的距离是否大于吸顶元素的位置
+                this.isFixed = scrollTop >= this.rareObjectHeight + this.navBarHeight;
+                if (scrollTop > 0) {
+                    this.isDisabledRefresh = true;
+                } else {
+                    this.isDisabledRefresh = false
+                }
+            },
 
             tabSwitchEvent(index) {
                 this.currentTabIndex = index;
@@ -516,6 +551,7 @@
             position: relative;
             .rare-object {
                 width: 92%;
+                height: 90px;
                 margin: 0 auto;
                 border-radius: 10px;
                 img {
@@ -524,43 +560,48 @@
                     border-radius: 10px
                 }
             }
-            /deep/ .van-sticky {
-				z-index: 2000;
-                margin-top: 2px;
-                .tab-switch {
-                    position: sticky;
-                    top: 10px;
-                    z-index: 99999;
-                    background: @color-background;
-                    width: 100%;
-                    margin: 4px 0;
-                    text-align: left;
-                    span {
-                        display: inline-block;
-                        color: #777575;
-                        font-size: 17px;
-                        width: 100px;
-                        height: 40px;
-                        line-height: 40px;
-                        text-align: center;
-                    };
-                    .active-tab-style {
-                        color: #FFFFFF;
-                        font-size: 18px;
-                        position: relative;
-                        border: none;
-                        &:after {
-                            content: '';
-                            position: absolute;
-                            left: 0;
-                            transform: translateX(420%);
-                            bottom: 0;
-                            width: 10px;
-                            height: 3px;
-                            background: #f5cc9b
-                        }
+            .tab-switch {
+                z-index: 99999;
+                background: @color-background;
+                width: 100%;
+                padding: 4px 0;
+                box-sizing: border-box;
+                text-align: left;
+                span {
+                    display: inline-block;
+                    color: #777575;
+                    font-size: 17px;
+                    width: 100px;
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                };
+                .active-tab-style {
+                    color: #FFFFFF;
+                    font-size: 18px;
+                    position: relative;
+                    border: none;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        transform: translateX(420%);
+                        bottom: 0;
+                        width: 10px;
+                        height: 3px;
+                        background: #f5cc9b
                     }
                 }
+            };
+            .tab-switch-copy {
+                width: 100%;
+                height: 40px;
+                padding: 4px 0;
+            };
+            .tabSwitchStyle {
+                position: fixed;
+                top: 0;
+                left: 0
             };    
             .switch-content {
                 flex: 1;
