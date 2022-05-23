@@ -208,7 +208,7 @@
                     color: #686868
                 };
                 &:last-child {
-                    color: #ffbc41
+                    color: #edc695
                 }
             }
         }

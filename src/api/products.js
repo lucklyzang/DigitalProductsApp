@@ -225,3 +225,11 @@ export function edithHall(data) {
         data
     })
 };
+
+//查询相关协议
+export function queryProtocolConfig(value) {
+    return request({
+        url: `app/config?key=${value}`,
+        method: 'get',
+    })
+};

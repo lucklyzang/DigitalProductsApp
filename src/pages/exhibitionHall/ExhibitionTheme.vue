@@ -50,7 +50,7 @@
 	} from 'vuex'
 	import {} from '@/api/products.js'
 	export default {
-        name: 'IndividualitySignature',
+        name: 'ExhibitionTheme',
 		components: {
 			NavBar
 		},

@@ -63,7 +63,7 @@
 	} from 'vuex'
 	import {queryHallMessage} from '@/api/products.js'
 	export default {
-        name: 'IndividualitySignature',
+        name: 'MyObjectDetails',
 		components: {
 			NavBar
 		},

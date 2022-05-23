@@ -61,13 +61,7 @@
 				<van-field class="uni-input" ref="inputSix" v-model="codeSix" @input="inputEventSix" maxlength="1" type="number"/>
 			</div>
 		</div>
-        <div class="donation-explain">
-            <p>转赠说明</p>
-            <div>1、请您确认您具备赠送数字藏品的民事行为能力;</div>
-            <div>2、请您确认您与受赠人均已通过平台的实名认证并遵守相关法律法规及平台协议;</div>
-            <div>3、请您确认本次赠送行为未设定任何形式的对价;</div>
-            <div>4、转增操作无法撤销;</div>
-            <div>5、与数字藏品相关的权利将会同步且毫无地转移至受赠人;</div>
+        <div class="donation-explain" v-html="protocolContent">
         </div>
 	</div>
 </template>
@@ -78,7 +72,7 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
-    import {transferObject, collectSendPhoneAuthCode} from '@/api/products.js'
+    import {transferObject, collectSendPhoneAuthCode, queryProtocolConfig} from '@/api/products.js'
 	export default {
         name: 'DonationFriend',
 		components: {
@@ -87,6 +81,7 @@
 		data() {
 			return {
                 adreeMessage: '',
+                protocolContent: '',
                 countdownTime: 0,
                 isCanSendPhoneCode: true,
                 codeOne: '',
@@ -122,6 +117,7 @@
                     });
                 })
             };
+            this.queryProtocolConfigEvent('TRANSFER_CONFIG');
             this.extractCollectPhoneCode()
 		},
         beforeDestroy() {
@@ -306,6 +302,26 @@
                         position: 'bottom'
                     })
                 })
+            },
+
+            //查询协议配置
+            queryProtocolConfigEvent(value) {
+                queryProtocolConfig(value).then((res) => {
+                    if (res && res.data.code == 0) {
+                        this.protocolContent = res.data.data
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    })
+                })
             }
 		}
 	}
@@ -475,7 +491,7 @@
 			> div {
 				width: 40px;
 				margin-right: 16px;
-                .bottom-border-1px(#32343c,5px);
+                .bottom-border-1px(#6e6e6e,5px);
 				&:last-child {
 					margin-right: 0;
 				};
@@ -504,14 +520,9 @@
             width: 90%;
             margin: 0 auto;
             margin-top: 20px;
-            p {
-                color: #fff;
-                font-size: 16px;
-                margin-bottom: 20px
-            };
-            >div {
+            /deep/ p {
                 color: #686868;
-                font-size: 14px;
+                font-size: 16px;
                 line-height: 20px
             }
         }

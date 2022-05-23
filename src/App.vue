@@ -87,7 +87,6 @@
   @import "~@/common/stylus/reset.less";
   @import "~@/common/stylus/variable.less";
   #app {
-    font-size: 0;
     position: relative;
     height: 100vh;
     width: 100%;

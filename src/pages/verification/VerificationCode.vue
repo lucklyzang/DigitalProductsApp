@@ -249,7 +249,7 @@
 			> div {
 				width: 40px;
 				margin-right: 16px;
-                .bottom-border-1px(#32343c,5px);
+                .bottom-border-1px(#6e6e6e,5px);
 				&:last-child {
 					margin-right: 0;
 				};

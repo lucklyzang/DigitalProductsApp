@@ -905,7 +905,7 @@
                 font-size: 18px !important
             };
             .purchaseStyle {
-                background: #bd68ff !important
+                background: #f0c796 !important
             }
 		}
 	}

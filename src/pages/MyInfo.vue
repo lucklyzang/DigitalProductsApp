@@ -282,6 +282,10 @@
                     this.$router.push({
                         path: 'accountSecurity'
                     })
+                } else if (item.span == '客服') {
+                    this.$router.push({
+                        path: 'myService'
+                    })
                 } else if (item.span === '关于') {
                      this.$router.push({
                         path: 'aboutUs'

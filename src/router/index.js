@@ -6,10 +6,16 @@ const Home = () =>
     import ('@/pages/Home')
 const Login = () =>
     import ('@/pages/Login')
+const Protocol = () =>
+    import ('@/pages/protocol/Protocol')
+const Privacy = () =>
+    import ('@/pages/protocol/Privacy')
 const WeixinLogin = () =>
     import ('@/pages/weixinLogin/WeixinLogin')
 const MyInfo = () =>
     import ('@/pages/MyInfo')
+const MyService  = () =>
+    import ('@/pages/myService/MyService')
 const RealNameAuthentication = () =>
     import ('@/pages/realNameAuthentication/RealNameAuthentication')
 const RealNameAythenticationCertified = () =>
@@ -73,6 +79,24 @@ let baseRoute = [{
         }
     },
     {
+        path: '/protocol',
+        name: 'protocol',
+        component: Protocol,
+        meta: {
+            index: 1,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/privacy',
+        name: 'privacy',
+        component: Privacy,
+        meta: {
+            index: 1,
+            keepAlive: false
+        }
+    },
+    {
         path: '/',
         redirect: '/home',
         meta: {
@@ -95,6 +119,15 @@ let baseRoute = [{
         component: MyInfo,
         meta: {
             index: 0,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/myService',
+        name: 'myService',
+        component: MyService,
+        meta: {
+            index: 1,
             keepAlive: false
         }
     },

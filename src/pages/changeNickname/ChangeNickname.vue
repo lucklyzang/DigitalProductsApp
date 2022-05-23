@@ -172,10 +172,10 @@
             border-radius: 4px;
             /deep/ .uni-input {
                 margin-bottom: 8px;
-                border: 1px solid #2c2c2c;
+                border: 1px solid #5e5446;
                 border-radius: 10px;
                 color: #fff;
-                background: @color-block;
+                background: @color-home-block;
                 font-size: 18px;
                 .van-field__control {
                     color: #fff !important
@@ -207,7 +207,7 @@
                     color: #686868
                 };
                 &:last-child {
-                    color: #ffbc41
+                    color: #edc695
                 }
             }
         }

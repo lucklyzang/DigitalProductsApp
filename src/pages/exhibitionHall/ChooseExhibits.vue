@@ -51,7 +51,7 @@
 	import {queryObjectRecord} from '@/api/products.js'
     import FooterBottom from '@/components/FooterBottom'
 	export default {
-        name: 'MyObject',
+        name: 'chooseExhibits',
 		components: {
             FooterBottom
 		},

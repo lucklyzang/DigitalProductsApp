@@ -1,5 +1,7 @@
 <template>
-  <div class="content-box">
+  <div class="content-box" 
+	:style="{backgroundImage: 'url(' + pageTopLeftBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'left top',backgroundSize:'55%'}"
+  >
 	  	<NavBar :path="path" />
 		<div class="content-top">
 			<span>登录艺真</span>
@@ -22,11 +24,13 @@
 					</template>
 					<template #default>
 						<span>已阅读并同意</span>
-						<span>《用户协议》</span>
-						<span>和</span>
-						<span>《隐私协议》</span>
 					</template>
 				</van-checkbox>
+				<div class="protocol">
+					<span @click="jumpProtocolEvent">《用户协议》</span>
+					<span>和</span>
+					<span @click="jumpPrivacyEvent">《隐私协议》</span>
+				</div>
 			</div>
 		</div>
 		<!-- <div class="content-bottom">
@@ -62,7 +66,8 @@ export default {
 	  phoneNumberUsable: false,
       weixinPng: require("@/common/images/login/weixin-login.png"),
 	  activeIcon: require("@/common/images/login/agree-checked.png"),
-      inactiveIcon: require("@/common/images/login/agree-default.png")
+      inactiveIcon: require("@/common/images/login/agree-default.png"),
+	  pageTopLeftBackgroundPng :require("@/common/images/home/page-top-left-background.png")
     }
   },
 
@@ -98,7 +103,7 @@ export default {
     },
 
 	beforeRouteLeave(to, from, next) {
-		if (to.path !== '/verificationCode') {
+		if (to.path !== '/verificationCode' && to.path !== '/protocol' && to.path !== '/privacy') {
 			this.changeIsEnterVerificationCodePage(false);
 		};
 		if (this.isEnterVerificationCodePage) {
@@ -146,6 +151,19 @@ export default {
            this.$refs.phoneInput.focus()
        }
    	},
+
+
+	// 跳转用户协议页面事件
+	jumpProtocolEvent () {
+		this.changeIsEnterVerificationCodePage(true);
+		this.$router.push({path: '/protocol'})
+	},
+
+	// 跳转隐私权政策
+	jumpPrivacyEvent () {
+		this.changeIsEnterVerificationCodePage(true);
+		this.$router.push({path: '/privacy'})
+	},
 
     // 输入框值改变事件
     inputEvent (value) {
@@ -224,6 +242,7 @@ export default {
     .content-wrapper();
     background: @color-background;
         /deep/ .van-nav-bar {
+			background: transparent;
             .van-icon {
                 color: #fff !important;
                 font-size: 18px !important
@@ -250,20 +269,20 @@ export default {
 			width: 80%;
 			margin: 0 auto;
 			.phone-number {
-        .bottom-border-1px(#343544,3px);
-        /deep/ .uni-input {
+				.bottom-border-1px(#6e6e6e,3px);
+				/deep/ .uni-input {
 					color: #fff;
 					height: 50px;
 					font-size: 18px;
-          background: transparent;
-          .van-field__value {
-            font-size: 18px
-          };
-          .van-field__body {
-            .van-field__control {
-              color: #fff
-            }
-          }
+					background: transparent;
+					.van-field__value {
+						font-size: 18px
+					};
+					.van-field__body {
+						.van-field__control {
+						color: #fff
+						}
+					}
 				}
 			};
 			.send-auth-box {
@@ -292,7 +311,10 @@ export default {
 			};
 			.tip-info {
 				font-size: 12px;
-				text-align: center;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: center;
+				align-items: center;
 				/deep/ .van-checkbox {
 					justify-content: center;
 					.van-checkbox__icon {
@@ -304,17 +326,21 @@ export default {
 						>span {
 							&:nth-child(1) {
 								color: #686868
-							};
-							&:nth-child(2) {
-								color: #FFFFFF
-							};
-							&:nth-child(3) {
-								color: #686868
-							};
-							&:nth-child(4) {
-								color: #FFFFFF
-							};
+							}
 						}
+					}
+				};
+				.protocol {
+					>span {
+						&:nth-child(1) {
+							color: #FFFFFF
+						};
+						&:nth-child(2) {
+							color: #686868
+						};
+						&:nth-child(3) {
+							color: #FFFFFF
+						};
 					}
 				}
 			}

@@ -91,7 +91,7 @@
 	} from 'vuex'
     import {publishHall,edithHall} from '@/api/products.js'
 	export default {
-        name: 'CreateHall',
+        name: 'EditNewHall',
 		components: {
 		},
 		data() {
