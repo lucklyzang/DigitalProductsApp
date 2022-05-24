@@ -239,6 +239,9 @@
                             this.$toast({
                                 message: '转赠成功',
                                 position: 'bottom'
+                            });
+                            this.$router.push({
+                                path: '/collectionRecordDetails'
                             })
                         } else {
                             this.$toast({
@@ -522,7 +525,7 @@
             margin-top: 20px;
             /deep/ p {
                 color: #686868;
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 20px
             }
         }

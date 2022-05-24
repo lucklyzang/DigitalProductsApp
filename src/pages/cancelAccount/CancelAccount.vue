@@ -14,7 +14,7 @@
 		</div>
         <div class="content-center">
             <span>温馨提示</span>
-            <p>请确认你的账号中是否存在操作中的数字藏品 (如待付款、发送中、转增中等) , 操作完成后可注销账户</p>
+            <p>请确认你的账号中是否存在操作中的数字藏品 (如待付款、发送中、转赠中等) , 操作完成后可注销账户</p>
         </div>
         <div class="content-bottom" @click="isShowLogout = true">
             注销账号

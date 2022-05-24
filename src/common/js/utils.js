@@ -88,7 +88,32 @@ export const isAndroid_ios = () => {
   } else {
     return '非安卓或ios'
   }
-}  
+} 
+
+/** 
+ * 判断是否在微信内置浏览器打开
+*/
+
+export const isWeiXin = () => {
+  let ua = window.navigator.userAgent.toLowerCase();
+  if((/MicroMessenger/i).test(ua)){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+/*
+ * url地址栏获取指定参数的值
+ * @param{String} code 指定参数名
+*/
+
+export const getUrlParam = (code) => {
+  var reg = new RegExp("(^|&)" + code + "=([^&]*)(&|$)");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return unescape(r[2]);
+  return null;
+}
 
 /*
  * 扫码枪绑定方法

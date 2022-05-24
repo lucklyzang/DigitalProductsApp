@@ -277,7 +277,7 @@
                     }
                 ],
                 imgLoadingGif: require("../../../static/img/img-loading.gif"),
-                digitalCollectioUrl: require("@/common/images/home/default-person.jpg"),
+                digitalCollectioUrl: require("@/common/images/home/default-person.png"),
                 sharePng: require("@/common/images/login/my-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
                 detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png"),
@@ -839,7 +839,7 @@
                 align-items: center;
                 margin-top: 20px;
                 >p {
-                    height: 30px;
+                    height: 26px;
                     display: flex;
                     justify-content: center;
                     align-items: center;

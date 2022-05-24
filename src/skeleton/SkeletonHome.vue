@@ -2,7 +2,7 @@
    <!-- 启动页 -->
         <div class="main">
             <div class="top">
-                <img src="../../static/img/default-person.jpg" style="width: 100px" alt="">
+                <img src="../../static/img/default-person.png" style="width: 100px" alt="">
             </div>
             <div class="bottom">
                 <img src="../../static/img/blockchain-service.png" style="width:100px" alt="">

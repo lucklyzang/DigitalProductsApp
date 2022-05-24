@@ -39,7 +39,8 @@
 		mapMutations
 	} from 'vuex'
 	import {
-		phoneAuthCodeLogin
+		phoneAuthCodeLogin,
+		getAppId
 	} from '@/api/login.js'
 	 import {
         inquareUserInfo
@@ -86,7 +87,8 @@
 				'changeToken',
 				'changeIsLogin',
 				'changeIsTokenExpired',
-				'storeUserInfo'
+				'storeUserInfo',
+				'changeAppId'
 			]),
 
 			// 输入框变化事件
@@ -172,6 +174,27 @@
                 inquareUserInfo().then((res) => {
 					if (res && res.data.code == 0) {
 						this.storeUserInfo(res.data.data);
+						this.getAppIdEvent()
+					} else {
+						this.$toast({
+							message: `${res.data.msg}`,
+							position: 'bottom'
+						})
+					}
+				})
+				.catch((err) => {
+					this.$toast({
+						message: `${err.message}`,
+						position: 'bottom'
+					})
+				})
+            },
+
+			//获取appId
+			getAppIdEvent() {
+                getAppId().then((res) => {
+					if (res && res.data.code == 0) {
+						this.changeAppId(res.data.data);
 						this.$router.push({name:'home'})
 					} else {
 						this.$toast({
@@ -187,6 +210,7 @@
 					})
 				})
             },
+
 
 			//倒计时结束事件
 			countDownEnd () {
@@ -232,11 +256,11 @@
 					align-items: center;
 					>span {
 						font-size: 12px;
-						color: #3f2e1f;
+						color: #a53d3d;
 					};
 					/deep/ .van-count-down {
 						font-size: 12px;
-						color: #3f2e1f
+						color: #a53d3d
 					}
 				}
 			}

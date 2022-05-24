@@ -168,7 +168,7 @@
                 orderList: [],
 				currentTabIndex: 0,
 				animationData: [],
-                defaultPersonPng :require("@/common/images/home/default-person.jpg"),
+                defaultPersonPng :require("@/common/images/home/default-person.png"),
 			}
 		},
 		onReady() {},

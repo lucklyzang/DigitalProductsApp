@@ -33,3 +33,19 @@ export function cancellatio() {
         method: 'post'
     })
 };
+
+// 查询appId
+export function getAppId() {
+    return request({
+        url: 'app/appId',
+        method: 'get'
+    })
+};
+
+// 获取openId
+export function getOpenId(code) {
+    return request({
+        url: `app/openId/${code}`,
+        method: 'get'
+    })
+};

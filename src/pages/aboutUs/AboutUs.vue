@@ -4,7 +4,7 @@
 		<div class="content-top">
             <img :src="defaultPersonPng">
 			<span>
-               艺真
+               有光
             </span>
 		</div>
 		<div class="content-center">
@@ -31,7 +31,7 @@
 		},
 		data() {
 			return {
-			  defaultPersonPng: require("@/common/images/home/default-person.jpg")
+			  defaultPersonPng: require("@/common/images/home/default-person.png")
 			}
 		},
 		onReady() {},

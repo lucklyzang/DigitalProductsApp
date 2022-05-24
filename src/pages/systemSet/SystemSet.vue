@@ -84,7 +84,7 @@
         isShowLogout: false,
         overlayShow: false,
         loadingShow: false,
-        defaultPersonPng :require("@/common/images/home/default-person.jpg"),
+        defaultPersonPng :require("@/common/images/home/default-person.png"),
         arrowRightPng: require("@/common/images/login/arrow-right.png"),
         notLoginPng :require("@/common/images/login/not-login.png")
       }

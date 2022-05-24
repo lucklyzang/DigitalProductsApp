@@ -54,7 +54,7 @@
 				currentTabIndex: 0,
 				animationData: [],
 				blockchainPng: require("@/common/images/home/blockchain.png"),
-                defaultPersonPng: require("@/common/images/home/default-person.jpg")
+                defaultPersonPng: require("@/common/images/home/default-person.png")
 			}
 		},
 		onReady() {},

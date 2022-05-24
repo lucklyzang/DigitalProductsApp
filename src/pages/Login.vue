@@ -4,7 +4,7 @@
   >
 	  	<NavBar :path="path" />
 		<div class="content-top">
-			<span>登录艺真</span>
+			<span>登录有光</span>
 			<span>发现有趣</span>
 		</div>
 		<div class="content-middle">

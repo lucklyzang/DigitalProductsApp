@@ -134,7 +134,7 @@
                     iconRight: require("@/common/images/login/arrow-right.png"),
                     span: '分享'
                 }],
-                defaultPersonPng: require("@/common/images/home/default-person.jpg"),
+                defaultPersonPng: require("@/common/images/home/default-person.png"),
                 notLoginPng: require("@/common/images/login/not-login.png"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),
                 blockchainServePng: require("@/common/images/home/blockchain-service.png")
@@ -418,8 +418,8 @@
                         flex-flow: row nowrap;
                         align-items: center;
                         .person-picture {
-                            width: 70px;
-                            height: 70px;
+                            width: 60px;
+                            height: 60px;
                             border-radius: 50%;
                             img {
                                 width: 100%;
@@ -546,7 +546,7 @@
                 justify-content: center;
                 align-items: center;
                 >p {
-                    height: 30px;
+                    height: 26px;
                     display: flex;
                     justify-content: center;
                     align-items: center;

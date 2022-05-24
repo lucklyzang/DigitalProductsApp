@@ -19,6 +19,12 @@ export default {
             return state.isLogin
         },
 
+        isGetCode: (state) => {
+            state.isGetCode = getStore('isGetCode') ? getStore('isGetCode') === 'false' ? false : true : false;
+            return state.isGetCode
+        },
+
+
         isShowLoginHint: (state) => {
             state.isShowLoginHint = getStore('isShowLoginHint') ? getStore('isShowLoginHint') === 'false' ? false : true : true;
             return state.isShowLoginHint
@@ -32,6 +38,16 @@ export default {
         isTokenExpired: (state) => {
             state.isTokenExpired = getStore('isTokenExpired') ? getStore('isTokenExpired') === 'false' ? false : true : '';
             return state.isTokenExpired
+        },
+
+        appId: (state) => {
+            state.appId = getStore('appId') ? getStore('appId') : '';
+            return state.appId
+        },
+
+        openId: (state) => {
+            state.openId = getStore('openId') ? getStore('openId') : '';
+            return state.openId
         }
     },
 
@@ -89,6 +105,30 @@ export default {
                 state.isTokenExpired = playLoad
             }
         },
+
+        //保存appId的状态
+        changeAppId(state, playLoad) {
+            if (playLoad != 'null') {
+                setStore('appId', playLoad);
+                state.appId = playLoad
+            }
+        },
+
+        //保存openId的状态
+        changeOpenId(state, playLoad) {
+            if (playLoad != 'null') {
+                setStore('openId', playLoad);
+                state.openId = playLoad
+            }
+        },
+
+        //保存是否获取过code的状态
+        changeIsGetCode(state, playLoad) {
+            if (playLoad != 'null') {
+                setStore('isGetCode', playLoad);
+                state.isGetCode = playLoad
+            }
+        }
     },
 
     actions: {

@@ -67,7 +67,7 @@
             </div>
             <div class="my-object">
                 <img :src="defaultPersonPng">
-                <div class="line-one">登 录 艺 真</div>
+                <div class="line-one">登 录 有 光</div>
                 <div class="line-two">发 现 有 趣</div>
                 <div class="login-btn" @click="loginEvent">
                     立即登录
@@ -104,7 +104,7 @@
                 orderList: [],
                 objectMessage: {},
                 myHallBackgroundPng: require("@/common/images/hall/my-hall-background.png"),
-                defaultPersonPng: require("@/common/images/home/default-person.jpg"),
+                defaultPersonPng: require("@/common/images/home/default-person.png"),
                 hallBothPng: require("@/common/images/home/hall-both.png"),
                 blockchainPng: require("@/common/images/hall/hall-chain.png"),
                 imgBorderImg: require("@/common/images/home/img-border.png")

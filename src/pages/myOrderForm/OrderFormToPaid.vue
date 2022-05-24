@@ -104,8 +104,9 @@
 		mapMutations
 	} from 'vuex'
 	import NavBar from '@/components/NavBar'
-    import { isAndroid_ios } from '@/common/js/utils'
+    import { isAndroid_ios, isWeiXin, getUrlParam } from '@/common/js/utils'
 	import {queryOrderDetails,cancelOrder,createPaymentOrder,queryPaymentResult} from '@/api/products.js'
+    import {getOpenId} from '@/api/login.js'
 	export default {
         name: 'OrderFormToPaid',
 		components: {
@@ -133,7 +134,10 @@
 		computed: {
 			...mapGetters([
                 'orderId',
-                'isPaying'
+                'isPaying',
+                'appId',
+                'isGetCode',
+                'openId'
 			])
 		},
 
@@ -152,6 +156,7 @@
         },
 
 		mounted() {
+            console.log(this.appId);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -166,6 +171,16 @@
             if (this.isPaying) {
                 this.isShowPaySuccess = true
             };
+
+            //微信内支付
+            if (isWeiXin()) {
+                if (!this.openId) {
+                    if (window.location.href.indexOf("code") != -1) {
+                        let code = getUrlParam('code');
+                        this.getOpenIdEvent(code);
+                    }
+                }    
+            };    
             this.inquareOrderDetails(this.orderId)
 		},
 
@@ -179,7 +194,9 @@
 			...mapMutations([
                 'changeIsPaying',
                 'changeOrderId',
-                'changeIsRefreshHomePage'
+                'changeIsRefreshHomePage',
+                'changeIsGetCode',
+                'changeOpenId'
 			]),
 
             // 查询订单详情
@@ -285,25 +302,92 @@
                     this.cancellationOfOrder()
                 } else {
                     if (this.radio == 1) {
-                    // 微信支付
-                    let payParams = {
-                        orderId: this.orderId,
-                        payMode: "WECHAT_H5",
-                        iso: "",
-                        openId: "IP"
-                    };
-                    if (isAndroid_ios() === true) {
-                        payParams['iso'] = "Android"
-                    } else if (isAndroid_ios() === false) {
-                        payParams['iso'] = " iOS"
-                    } else {
-                        payParams['iso'] = "Wap"
-                    };
-                    this.createPaymentOrderEvent(payParams)
+                        // 微信支付
+                        //微信外支付
+                        if (!isWeiXin()) {
+                            let payParams = {
+                                orderId: this.orderId,
+                                payMode: "WECHAT_H5",
+                                iso: "",
+                                openId: "IP"
+                            };
+                            if (isAndroid_ios() === true) {
+                                payParams['iso'] = "Android"
+                            } else if (isAndroid_ios() === false) {
+                                payParams['iso'] = " iOS"
+                            } else {
+                                payParams['iso'] = "Wap"
+                            };
+                            this.createPaymentOrderEvent(payParams)
+                        //微信内支付
+                        } else {
+                            this.changeIsGetCode(true);
+                            //获取code,通过code在获取openId,存在openId后就不在重新获取openId了
+                            if (this.openId) {
+                                let payParams = {
+                                    orderId: this.orderId,
+                                    payMode: "WECHAT_JSAPI",
+                                    iso: "",
+                                    openId: res.data.data
+                                };
+                                if (isAndroid_ios() === true) {
+                                    payParams['iso'] = "Android"
+                                } else if (isAndroid_ios() === false) {
+                                    payParams['iso'] = " iOS"
+                                } else {
+                                    payParams['iso'] = "Wap"
+                                };
+                                this.createPaymentOrderEvent(payParams)
+                            } else {
+                                this.getCode()
+                            }
+                        }   
                     } else if (this.radio == 2) {
                         // 支付宝支付
                     }
                 }
+            },
+
+            //获取code(微信内支付)
+            getCode () {
+                let local = window.location.href;
+                window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+this.appId+'&redirect_uri='+encodeURIComponent(local)+'&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
+            },
+
+            //获取openId(微信内支付)
+            getOpenIdEvent (data) {
+                getOpenId(data).then((res) => {
+                    if (res && res.data.code == 0) {
+                        this.changeOpenId(res.data.data);
+                        let payParams = {
+                            orderId: this.orderId,
+                            payMode: "WECHAT_JSAPI",
+                            iso: "",
+                            openId: res.data.data
+                        };
+                        if (isAndroid_ios() === true) {
+                            payParams['iso'] = "Android"
+                        } else if (isAndroid_ios() === false) {
+                            payParams['iso'] = " iOS"
+                        } else {
+                            payParams['iso'] = "Wap"
+                        };
+                        this.createPaymentOrderEvent(payParams)
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        });
+                        this.changeIsGetCode(false)
+                    }
+                })
+                .catch((err) => {
+                        this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    });
+                    this.changeIsGetCode(false)
+                })    
             },
 
             // 创建支付订单
@@ -313,16 +397,41 @@
                 createPaymentOrder(data).then((res) => {
                     this.loadingShow = false;
                     this.overlayShow = false;
-                    if (res && res.data.code == 0) {
-                        this.changeIsPaying(true);
-                        // 跳转到支付页面
-                        location.href = res.data.data.prepayId + '&redirect_url=' + encodeURIComponent(window.location.href)
-                    } else {
-                        this.$toast({
-							message: `${res.data.msg}`,
-							position: 'bottom'
-						})
-                    }
+                    // 微信外支付
+                    if (!isWeiXin()) {
+                        if (res && res.data.code == 0) {
+                            this.changeIsPaying(true);
+                            // 跳转到支付页面
+                            location.href = res.data.data.prepayId + '&redirect_url=' + encodeURIComponent(window.location.href)
+                        } else {
+                            this.$toast({
+                                message: `${res.data.msg}`,
+                                position: 'bottom'
+                            })
+                        }
+                    // 微信内支付    
+                    }  else {
+                        if (res && res.data.code == 0) {
+                            this.changeIsPaying(true);
+                            const pay_params = res.data.data.extend;
+                            if (typeof WeixinJSBridge == "undefined") {
+                                if ( document.addEventListener ) {
+                                    document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(pay_params), false);
+                                } else if (document.attachEvent) {
+                                    document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(pay_params)); 
+                                    document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady(pay_params));
+                                }
+                            } else {
+                                this.onBridgeReady(pay_params);
+                            }
+                        }   else {
+                            this.$toast({
+                                message: `${res.data.msg}`,
+                                position: 'bottom'
+                            });
+                            this.changeIsGetCode(false)
+                        }  
+                    }  
                 })
                 .catch((err) => {
                     this.loadingShow = false;
@@ -330,10 +439,41 @@
                     this.$toast({
                         message: `${err.message}`,
                         position: 'bottom'
-					})
+					});
+                    this.changeIsGetCode(false)
                 })
             },
 
+            //微信内支付
+            onBridgeReady(params) {
+                const pay_params = JSON.parse(params);
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
+                        "appId": pay_params.appId,  //公众号名称，由商户传入     
+                        "timeStamp": pay_params.timeStamp,  //时间戳，自1970年以来的秒数     
+                        "nonceStr": pay_params.nonceStr,  //随机串     
+                        "package": pay_params.package,     
+                        "signType": pay_params.signType,  //微信签名方式：     
+                        "paySign": pay_params.paySign  //微信签名 
+                    },
+                    function (res) {
+                        if (res.err_msg == "get_brand_wcpay_request:ok" ) {
+                            this.changeIsGetCode(false);
+                            // this.$toast({
+                            //     message: '支付成功',
+                            //     position: 'bottom'
+                            // })
+                        } else {
+                           this.changeIsGetCode(false);
+                           this.$toast({
+                                message: '支付失败',
+                                position: 'bottom'
+                            }) 
+                        }
+                    }
+                ) 
+            },
+            
             // 完成支付弹框事件
             completePaymentEvent () {
                 this.isShowPaySuccess = false;
@@ -555,7 +695,7 @@
             align-items: center;
             font-size: 12px;
             color: #FFFFFF;
-            background: #00020f;
+            background: @color-block;
             .btn-left {
                 >span {
                     display: inline-block;
@@ -572,18 +712,18 @@
                 .cancel-order {
                     color: #686868;
                     width: 90px;
-                    height: 30px;
+                    height: 35px;
                     text-align: center;
-                    line-height: 30px;
+                    line-height: 35px;
                     border-radius: 20px;
                     background: #00020f
                 };
                 .sure-pay {
                     color: black;
                     width: 90px;
-                    height: 30px;
+                    height: 35px;
                     text-align: center;
-                    line-height: 30px;
+                    line-height: 35px;
                     border-radius: 20px;
                     background: #f0c796;
                     margin-left: 4px
