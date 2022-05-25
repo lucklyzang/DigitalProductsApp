@@ -7,11 +7,17 @@
         z-index="1000"
         :safe-area-inset-top="true"
         @click-left="onClickLeft"
+        @click-right="onClickRight"
     >
         <template #left>
             <p>
                 <img :src="blockchainPng" alt="">
                 <span>区块链地址</span>
+            </p>
+        </template>
+        <template #right>
+            <p>
+                <img :src="setPng" alt="">
             </p>
         </template>
     </van-nav-bar>
@@ -110,12 +116,14 @@
                 }, {
                     icon: require("@/common/images/login/collection-record.png"),
                     span: '藏品记录'
-                }, {
+                }, 
+                {
+                    icon: require("@/common/images/login/donation.png"),
+                    span: '转赠记录'
+                },
+                {
                     icon: require("@/common/images/login/message.png"),
                     span: '消息'
-                }, {
-                    icon: require("@/common/images/login/set.png"),
-                    span: '设置'
                 }],
                 featureSetList: [{
                     iconLeft: require("@/common/images/login/account-security.png"),
@@ -135,6 +143,7 @@
                     span: '分享'
                 }],
                 defaultPersonPng: require("@/common/images/home/default-person.png"),
+                setPng: require("@/common/images/login/set.png"),
                 notLoginPng: require("@/common/images/login/not-login.png"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),
                 blockchainServePng: require("@/common/images/home/blockchain-service.png")
@@ -246,9 +255,9 @@
                     this.$router.push({
                         path: 'collectionRecords'
                     })
-                } else if (item.span === '设置') {
+                } else if (item.span === '转赠记录') {
                     this.$router.push({
-                        path: 'systemSet'
+                        path: 'donationRecord'
                     })
                 } else if (item.span === '消息') {
                     this.$router.push({
@@ -267,6 +276,13 @@
                     return
                 };
                 this.$router.push({path: '/blockchainAddress'})
+            },
+
+            //设置点击事件
+            onClickRight () {
+                this.$router.push({
+                    path: 'systemSet'
+                })
             },
 
             // 下部区域功能事件
@@ -367,17 +383,17 @@
             };
             .van-nav-bar__left {
                 p {
-                    padding: 1px 8px;
+                    padding: 0 8px;
                     background: rgba(81, 81, 81, 0.54);
                     border-radius: 20px;
+                    height: 23px;
                     display: flex;
                     flex-flow: row nowrap;
                     box-sizing: border-box;
                     justify-content: center;
                     align-items: center;
                     img {
-                        width: 20px;
-                        height: 22px;
+                        width: 18px;
                         margin-right: 4px
                     };
                     span {
@@ -385,6 +401,13 @@
                         font-size: 10px
                     }
                 }
+            };
+            .van-nav-bar__right {
+                p {
+                    img {
+                        width: 25px
+                    }
+                }    
             }
         };
         /deep/ .van-pull-refresh {
@@ -480,12 +503,12 @@
                         justify-content: center;
                         align-items: center;
                         img {
-                            width: 30px;
+                            width: 25px;
                         };
                         span {
                             font-size: 12px;
                             color: #989898;
-                            margin-top: 10px;
+                            margin-top: 12px;
                         }
                     }
                 }

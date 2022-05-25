@@ -1,7 +1,10 @@
 <template>
 	<div class="content-box">
 		<NavBar path="/collectionRecordDetails" title="转增好友"/>
-        <van-loading type="spinner" v-show="loadingShow"/>
+        <van-loading type="spinner" v-show="loadingShow">
+          {{loadingText}}
+        </van-loading>
+        <van-overlay :show="isShowOverlay"/>
 		<div class="content-top">
            <p>将以下藏品转增给好友</p>
            <div class="collection-details-box">
@@ -81,6 +84,7 @@
 		data() {
 			return {
                 adreeMessage: '',
+                loadingText: '',
                 protocolContent: '',
                 countdownTime: 0,
                 isCanSendPhoneCode: true,
@@ -95,6 +99,7 @@
                 isShowCountDown: true,
                 isShowCodeInput: false,
                 loadingShow: false,
+                isShowOverlay: false,
 				blockchainPng: require("@/common/images/home/blockchain.png")
 			}
 		},
@@ -224,7 +229,10 @@
 			inputEventSix (event) {
 				if (!this.codeSix) {return};
 				this.$refs.inputSix.blur();
-				if (this.codeOne && this.codeTwo && this.codeThree && this.codeFour && this.codeFive) {
+				if (this.codeOne && this.codeTwo && this.codeThree && this.codeFour && this.codeFive && this.codeSix) {
+                    this.loadingShow = true;
+                    this.isShowOverlay = true;
+                    this.loadingText = '转赠中';
                     this.storeCollectCodeMessage('','',false,'展示验证码框');
 					let code = `${this.codeOne}${this.codeTwo}${this.codeThree}${this.codeFour}${this.codeFive}${this.codeSix}`;
 					transferObject({
@@ -235,13 +243,14 @@
                     .then((res) => {
                         this.storeCollectCodeMessage(0,true,false,'');
                         this.loadingShow = false;
+                        this.isShowOverlay = false;
                         if (res && res.data.code == 0) {
                             this.$toast({
                                 message: '转赠成功',
                                 position: 'bottom'
                             });
                             this.$router.push({
-                                path: '/collectionsRecords'
+                                path: '/collectionRecords'
                             })
                         } else {
                             this.$toast({
@@ -252,6 +261,7 @@
                     })
                     .catch((err) => {
                         this.loadingShow = false;
+                        this.isShowOverlay = false;
                         this.$toast({
                             message: `${err.message}`,
                             position: 'bottom'
@@ -286,10 +296,10 @@
             //发送短信验证码
             sendPhoneCode () {
                 this.loadingShow = true;
+                this.loadingText = '';
                 collectSendPhoneAuthCode().then((res) => {
-                    this.loadingShow = false;
                     if (res && res.data.code == 0) {
-                        this.isShowCodeInput = true;
+                        this.loadingShow = false;
                         this.storeCollectCodeMessage(new Date().getTime()+60000,false,true,'')
                     } else {
                         this.$toast({

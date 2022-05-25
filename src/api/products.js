@@ -160,6 +160,14 @@ export function transferObject(data) {
     })
 };
 
+//藏品转增
+export function transfersRecord() {
+    return request({
+        url: 'app/transfers',
+        method: 'get'
+    })
+};
+
 //产品分享
 export function productionShare(id) {
     return request({

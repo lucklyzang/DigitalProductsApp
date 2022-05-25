@@ -26,6 +26,8 @@ const VerificationCode = () =>
     import ('@/pages/verification/VerificationCode')
 const CollectionRecords = () =>
     import ('@/pages/collectionsRecords/CollectionRecords')
+const DonationRecord = () =>
+    import ('@/pages/donationRecord/DonationRecord')
 const CollectionRecordsDetails = () =>
     import ('@/pages/collectionsRecordsDetails/CollectionsRecordsDetails')
 const SystemSet = () =>
@@ -199,6 +201,15 @@ let baseRoute = [{
         path: '/collectionRecords',
         name: 'collectionRecords',
         component: CollectionRecords,
+        meta: {
+            index: 1,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/donationRecord',
+        name: 'donationRecord',
+        component: DonationRecord,
         meta: {
             index: 1,
             keepAlive: false
