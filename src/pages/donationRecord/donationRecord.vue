@@ -5,7 +5,7 @@
         <van-empty :description="descriptionContent" v-show="emptyShow" />
 		<div class="content-center" v-show="!emptyShow">
 			<div class="all-order">
-				<div class="order-list" v-for="(item,index) in orderList" :key="index" @click="recordsDetailsEvent(item,index)">
+				<div class="order-list" v-for="(item,index) in orderList" :key="index">
 					<div class="top">
 						<div class="left">
 							<div class="img-show" v-lazy-container="{ selector: 'img' }">
@@ -137,15 +137,6 @@
 						position: 'bottom'
 					})
 				})
-			},
-			
-			// 跳转藏品记录详情
-			recordsDetailsEvent (item) {
-				this.changeCollectionId(item);
-				this.changeIsEnterCollectionsRecordsDetailsPageSource('/collectionRecords')
-				this.$router.push({
-					path: '/collectionRecordDetails'
-				})
 			}
 		}
 	}
@@ -253,7 +244,6 @@
 										border-radius: 10px;
 										font-size: 10px;
 										box-sizing: border-box;
-										height: 18px;
 										line-height: 18px;
 										margin-left: 16px;
 										background-image: linear-gradient(to right, #fbd2a5, #f1c593);

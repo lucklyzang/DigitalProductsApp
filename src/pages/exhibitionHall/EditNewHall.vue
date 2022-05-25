@@ -584,7 +584,6 @@
                                     border-radius: 10px;
                                     font-size: 10px;
                                     box-sizing: border-box;
-                                    height: 12px;
                                     line-height: 12px;
                                     margin-left: 14px;
                                     background-image: linear-gradient(to right, #fbd2a5, #f1c593);
