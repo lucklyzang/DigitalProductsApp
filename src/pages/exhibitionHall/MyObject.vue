@@ -93,6 +93,7 @@
 		data() {
 			return {
                 isShowLoadFail: false,
+                isSlideArea: false,
                 myObjectOffsetTop: '',
 				emptyShow: false,
                 moveInfo: {
@@ -103,7 +104,7 @@
 				descriptionContent: '暂无藏品',
                 orderList: [],
                 objectMessage: {},
-                myHallBackgroundPng: require("@/common/images/hall/my-hall-background.png"),
+                myHallBackgroundPng: require("@/common/images/hall/my-hall-background.jpg"),
                 defaultPersonPng: require("@/common/images/home/default-person.png"),
                 hallBothPng: require("@/common/images/home/hall-both.png"),
                 blockchainPng: require("@/common/images/hall/hall-chain.png"),
@@ -262,36 +263,40 @@
 
             // 滑动开始
             touchstartHandle(e) {
+                //判断是否在区域内滑动
+                this.isSlideArea = true;
                 this.moveInfo.startY = e.targetTouches[0].clientY;
                 this.moveInfo.y = this.$refs.myObject.offsetTop;
             },
             
             // 滑动中
             touchmoveHandle(e) {
-                let moveY = e.targetTouches[0].clientY - this.moveInfo.startY;
-                //上滑
-                if (moveY < 0) {
-                    if (this.$refs.myObject.offsetTop <= 0) {
-                        this.$refs.myObject.style.top = 0 + 'px'
-                        this.moveInfo.y = this.$refs.myObject.offsetTop;
-                        this.moveInfo.startY = e.targetTouches[0].clientY;
-                        return
-                    }
-                    if (this.$refs.myObject.offsetTop > 0) {
-                        this.$refs.myObject.style.top = (this.moveInfo.y - Math.abs(moveY*1.5)) + 'px'
-                    }
-                } else {
-                    if (this.$refs.myObject.offsetTop >= this.myObjectOffsetTop) {
-                        this.$refs.myObject.style.top = this.myObjectOffsetTop + 'px';
-                        this.moveInfo.y = this.$refs.myObject.offsetTop;
-                        this.moveInfo.startY = e.targetTouches[0].clientY;
-                        return
-                    }
-                    if (this.$refs.myObject.offsetTop < this.myObjectOffsetTop) {
-                        this.$refs.myObject.style.top = (this.moveInfo.y + (moveY)*1.5) + 'px'
-                    }    
-                };
-                e.preventDefault()
+                if (this.isSlideArea) {
+                    let moveY = e.targetTouches[0].clientY - this.moveInfo.startY;
+                    //上滑
+                    if (moveY < 0) {
+                        if (this.$refs.myObject.offsetTop <= 0) {
+                            this.$refs.myObject.style.top = 0 + 'px'
+                            this.moveInfo.y = this.$refs.myObject.offsetTop;
+                            this.moveInfo.startY = e.targetTouches[0].clientY;
+                            return
+                        }
+                        if (this.$refs.myObject.offsetTop > 0) {
+                            this.$refs.myObject.style.top = (this.moveInfo.y - Math.abs(moveY*1.5)) + 'px'
+                        }
+                    } else {
+                        if (this.$refs.myObject.offsetTop >= this.myObjectOffsetTop) {
+                            this.$refs.myObject.style.top = this.myObjectOffsetTop + 'px';
+                            this.moveInfo.y = this.$refs.myObject.offsetTop;
+                            this.moveInfo.startY = e.targetTouches[0].clientY;
+                            return
+                        }
+                        if (this.$refs.myObject.offsetTop < this.myObjectOffsetTop) {
+                            this.$refs.myObject.style.top = (this.moveInfo.y + (moveY)*1.5) + 'px'
+                        }    
+                    };
+                    e.preventDefault()
+                }    
             }
 		}
 	}

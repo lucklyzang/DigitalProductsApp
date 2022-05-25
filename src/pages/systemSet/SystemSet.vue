@@ -303,7 +303,7 @@
           img.onload = () => {
             // 压缩图片并转换为bolb对象;
             let formData = new FormData();
-            let blob = compress(img,file.name);
+            let blob = compress(img);
             formData.append('file',blob);
             _this.saveChangeAvatarEvent(formData)
           };
@@ -338,7 +338,7 @@
           img.onload = () => {
             // 压缩图片并转换为bolb对象;
             let formData = new FormData();
-            let blob = compress(img,file.name);
+            let blob = compress(img);
             formData.append('file',blob);
             _this.saveChangeAvatarEvent(formData)
           };
