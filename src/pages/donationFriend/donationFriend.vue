@@ -241,7 +241,7 @@
                                 position: 'bottom'
                             });
                             this.$router.push({
-                                path: '/collectionRecordDetails'
+                                path: '/collectionsRecords'
                             })
                         } else {
                             this.$toast({

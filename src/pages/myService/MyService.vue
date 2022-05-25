@@ -40,7 +40,7 @@
                 this.gotoURL(() => {
                 pushHistory();
                     this.$router.push({
-                        path: '/login'
+                        path: '/myInfo'
                     })
                 })
             };

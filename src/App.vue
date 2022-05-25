@@ -88,7 +88,7 @@
   @import "~@/common/stylus/variable.less";
   #app {
     position: relative;
-    // height: 100vh;
+    min-height: 100vh;
     width: 100%;
     background: @color-background
   };

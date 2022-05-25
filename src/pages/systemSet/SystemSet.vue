@@ -68,6 +68,7 @@
   import NavBar from '@/components/NavBar'
   import { mapGetters, mapMutations } from 'vuex'
   import {logout} from '@/api/login.js'
+  import { compress } from '@/common/js/utils'
   import {changeAvatar,inquareUserInfo} from '@/api/products.js'
   import { IsPC} from '@/common/js/utils'
   export default {
@@ -288,18 +289,30 @@
         let file = document.getElementById("demo1").files[0];
         let _this = this;
         let reader = new FileReader();
-        let isLt2M = file.size/1024/1024 < 10;
-        if (!isLt2M) {
-          _this.$toast({
-            message: '上传图片大小不能超过10MB!',
-            position: 'bottom'
-          });
-          return
-        };  
+        let isLt2M = file.size/1024/1024 < 16;
         reader.addEventListener("load", function () {
-          let formData = new FormData();
-          formData.append('file', file);
-          _this.saveChangeAvatarEvent(formData)
+          if (!isLt2M) {
+            _this.$toast({
+              message: '上传图片大小不能超过10MB!',
+              position: 'bottom'
+            });
+            return
+          };  
+          let img = new Image();
+          img.src = reader.result;
+          img.onload = () => {
+            // 压缩图片并转换为bolb对象;
+            let formData = new FormData();
+            let blob = compress(img,file.name);
+            formData.append('file',blob);
+            _this.saveChangeAvatarEvent(formData)
+          };
+        }, false);
+        reader.addEventListener("error", function () {
+          _this.$toast({
+            message: '图片读取失败!',
+            position: 'bottom'
+          })
         }, false);
         if (file) {
           reader.readAsDataURL(file);
@@ -311,22 +324,34 @@
         let file = document.getElementById("demo2").files[0];
         let _this = this;
         let reader = new FileReader();
-        let isLt2M = file.size/1024/1024 < 10;
-        if (!isLt2M) {
-          _this.$toast({
-            message: '上传图片大小不能超过10MB!',
-            position: 'bottom'
-          });
-          return
-        };  
+        let isLt2M = file.size/1024/1024 < 16;
         reader.addEventListener("load", function () {
-          let formData = new FormData();
-          formData.append('file', file);
-          _this.saveChangeAvatarEvent(formData)
+          if (!isLt2M) {
+            _this.$toast({
+              message: '上传图片大小不能超过10MB!',
+              position: 'bottom'
+            });
+            return
+          };  
+          let img = new Image();
+          img.src = reader.result;
+          img.onload = () => {
+            // 压缩图片并转换为bolb对象;
+            let formData = new FormData();
+            let blob = compress(img,file.name);
+            formData.append('file',blob);
+            _this.saveChangeAvatarEvent(formData)
+          };
+        }, false);
+        reader.addEventListener("error", function () {
+          _this.$toast({
+            message: '图片读取失败!',
+            position: 'bottom'
+          })
         }, false);
         if (file) {
           reader.readAsDataURL(file);
-        };
+        }
       },
 
       // 拍照取消

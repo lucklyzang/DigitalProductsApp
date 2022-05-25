@@ -195,7 +195,6 @@
                 'changeIsPaying',
                 'changeOrderId',
                 'changeIsRefreshHomePage',
-                'changeIsGetCode',
                 'changeOpenId'
 			]),
 
@@ -321,14 +320,13 @@
                             this.createPaymentOrderEvent(payParams)
                         //微信内支付
                         } else {
-                            this.changeIsGetCode(true);
                             //获取code,通过code在获取openId,存在openId后就不在重新获取openId了
                             if (this.openId) {
                                 let payParams = {
                                     orderId: this.orderId,
                                     payMode: "WECHAT_JSAPI",
                                     iso: "",
-                                    openId: res.data.data
+                                    openId: this.openId
                                 };
                                 if (isAndroid_ios() === true) {
                                     payParams['iso'] = "Android"
@@ -377,16 +375,14 @@
                         this.$toast({
                             message: `${res.data.msg}`,
                             position: 'bottom'
-                        });
-                        this.changeIsGetCode(false)
+                        })
                     }
                 })
                 .catch((err) => {
                         this.$toast({
                         message: `${err.message}`,
                         position: 'bottom'
-                    });
-                    this.changeIsGetCode(false)
+                    })
                 })    
             },
 
@@ -428,8 +424,7 @@
                             this.$toast({
                                 message: `${res.data.msg}`,
                                 position: 'bottom'
-                            });
-                            this.changeIsGetCode(false)
+                            })
                         }  
                     }  
                 })
@@ -439,8 +434,7 @@
                     this.$toast({
                         message: `${err.message}`,
                         position: 'bottom'
-					});
-                    this.changeIsGetCode(false)
+					})
                 })
             },
 
@@ -458,13 +452,11 @@
                     },
                     function (res) {
                         if (res.err_msg == "get_brand_wcpay_request:ok" ) {
-                            this.changeIsGetCode(false);
-                            // this.$toast({
-                            //     message: '支付成功',
-                            //     position: 'bottom'
-                            // })
+                            this.$toast({
+                                message: '支付成功',
+                                position: 'bottom'
+                            })
                         } else {
-                           this.changeIsGetCode(false);
                            this.$toast({
                                 message: '支付失败',
                                 position: 'bottom'
