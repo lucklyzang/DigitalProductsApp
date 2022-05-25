@@ -272,7 +272,7 @@
 							justify-content: center;
 							align-items: center;
 							font-size: 13px;
-							color: green
+							color: #6cb96c
 						}
 					};
 					.center-line {
