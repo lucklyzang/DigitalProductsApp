@@ -4,7 +4,7 @@
     <div class="content-box">
         <van-loading type="spinner" v-show="loadingShow"/>
         <van-empty :description="descriptionContent" v-show="emptyShow" />
-        <div class="message-list" v-for="(item,index) in messageList" :key="index">
+        <div class="message-list" v-for="(item,index) in messageList" :key="index" @click="jumpSystemMessageDetailsPage(item)">
             <div class="top">
               <div class="message-title">
                 <span v-show="item.status == 0"></span>
@@ -18,7 +18,7 @@
             <div class="bottom">
               <P v-html="item.introduction"></P>
             </div>
-            <div class="view-details" v-show="item.type != 0" @click="jumpSystemMessageDetailsPage(item)">
+            <div class="view-details" v-show="item.type != 0">
               <span>查看详情</span>
               <van-icon name="arrow" color="#9c9c9c" />
             </div>
@@ -173,6 +173,7 @@
 
       //跳转到消息详情页
       jumpSystemMessageDetailsPage (item) {
+        //设置消息已读
         this.setMessageReadEvent(item.id,item.type)
       }
     }
