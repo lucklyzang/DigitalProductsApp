@@ -5,12 +5,12 @@
                 <img src="../../static/img/default-person.png" alt="">
             </div>
             <div class="blockchain-server">
-                <p>
-                    <span>中国传统文化数字艺术联盟监制</span>
+                <p style="margin-bottom:8px">
+                    <span style="font-size:12px">中国传统文化数字艺术联盟监制</span>
                 </p>
                 <p>
                     <img src="../../static/img/blockchain-service.png" style="width:100px" alt="">
-                    <span>提供技术支持</span>
+                    <span style="font-size:12px;margin-left:8px">提供技术支持</span>
                 </p>
             </div>
         </div>
@@ -50,21 +50,14 @@ export default {
             >p {
                 &:nth-child(1) {
                     span {
-                        margin-left: 8px;
-                        margin-top: 1px;
-                        color: #c2c2c2
+                        color: #c2c2c2;
                     }
                 };
                 &:nth-child(2) {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    img {
-                        width: 100px
-                    };
                     span {
-                        margin-left: 8px;
-                        margin-top: 1px;
                         color: #c2c2c2
                     }
                 }
