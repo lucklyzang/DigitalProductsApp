@@ -72,8 +72,7 @@
             </div>
             <div class="blockchain-server">
                 <p>
-                    <img :src="producerPng" alt="">
-                    <span>监制</span>
+                    <span>中国传统文化数字艺术联盟监制</span>
                 </p>
                 <p>
                     <img :src="blockchainServePng" alt="">
@@ -144,7 +143,6 @@
                     span: '分享'
                 }],
                 defaultPersonPng: require("@/common/images/home/default-person.png"),
-                producerPng: require("@/common/images/home/producer.jpg"),
                 setPng: require("@/common/images/login/set.png"),
                 notLoginPng: require("@/common/images/login/not-login.png"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),
@@ -407,7 +405,7 @@
             .van-nav-bar__right {
                 p {
                     img {
-                        width: 25px
+                        width: 22px
                     }
                 }    
             }
@@ -494,7 +492,7 @@
                     margin: 0 auto;
                     height: 75px;
                     background: @color-block;
-                    border-radius: 15px;
+                    border-radius: 10px;
                     display: flex;
                     flex-flow: row wrap;
                     .function-zone-icon-list {
@@ -529,7 +527,7 @@
                     justify-content: space-between;
                     align-items: center;
                     box-sizing: border-box;
-                    height: 46px;
+                    height: 48px;
                     padding: 0 10px;
                     background: @color-block;
                     margin-bottom: 10px;
@@ -540,6 +538,7 @@
                         display: flex;
                         flex-flow: row nowrap;
                         justify-content: space-between;
+                        align-items: center;
                         >span {
                             margin-left: 16px;
                         }
@@ -555,7 +554,7 @@
                             flex-direction: column;
                             justify-content: center;
                             img {
-                                width: 8px
+                                width: 6px
                             }
                         }
                     }
@@ -571,14 +570,11 @@
                 justify-content: center;
                 align-items: center;
                 >p {
-                    height: 26px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     &:nth-child(1) {
-                        img {
-                            width: 50px
-                        };
+                        margin-bottom: 8px;
                         span {
                             margin-left: 8px;
                             margin-top: 1px;
@@ -596,7 +592,7 @@
                             font-size: 10px;
                             color: #c2c2c2
                         }
-                    };
+                    }
                 }
             }
         }

@@ -172,12 +172,12 @@
                 </div>
             </div>
             <div class="blockchain-server">
-                 <p>
-                    <img :src="blockchainServePng" alt="">
-                    <span>提供技术支持</span>
+                <p>
+                    <span>中国传统文化数字艺术联盟监制</span>
                 </p>
                 <p>
-                    中国传统文化数字艺术联盟监制
+                    <img :src="blockchainServePng" alt="">
+                    <span>提供技术支持</span>
                 </p>
             </div>
         </div>
@@ -278,7 +278,7 @@
                 ],
                 imgLoadingGif: require("../../../static/img/img-loading.gif"),
                 digitalCollectioUrl: require("@/common/images/home/default-person.png"),
-                sharePng: require("@/common/images/login/my-share.png"),
+                sharePng: require("@/common/images/login/my-details-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
                 detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png"),
                 blockchainServePng: require("@/common/images/home/blockchain-service.png")
@@ -837,16 +837,13 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                margin-top: 20px;
+                margin: 20px 0;
                 >p {
-                    height: 26px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     &:nth-child(1) {
-                        img {
-                            width: 100px
-                        };
+                        margin-bottom: 8px;
                         span {
                             margin-left: 8px;
                             margin-top: 1px;
@@ -855,9 +852,16 @@
                         }
                     };
                     &:nth-child(2) {
-                        font-size: 10px;
-                        color: #c2c2c2
-                    };
+                       img {
+                            width: 100px
+                        };
+                        span {
+                            margin-left: 8px;
+                            margin-top: 1px;
+                            font-size: 10px;
+                            color: #c2c2c2
+                        }
+                    }
                 }
             }
         };

@@ -401,13 +401,13 @@
                 position: fixed;
                 border-top-left-radius: 20px;
                 border-top-right-radius: 20px;
-                padding: 10px 20px 50px 20px;
+                padding: 10px 20px 0 20px;
                 box-sizing: border-box;
                 top: 240px;
                 left: 0;
                 background: @color-home-block;
                 display: flex;
-                height: 100vh;
+                height: 92vh;
                 overflow: auto;
                 z-index: 100;
                 flex-direction: column;
