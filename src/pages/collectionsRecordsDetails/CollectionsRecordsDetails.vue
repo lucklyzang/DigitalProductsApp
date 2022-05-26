@@ -481,7 +481,7 @@
                     flex-flow: row nowrap;
                     align-items: center;
                     justify-content: center;
-                    height: 50vh;
+                    min-height: 50vh;
                     img {
                         pointer-events: none;
                         width: 100%
