@@ -72,11 +72,12 @@
             </div>
             <div class="blockchain-server">
                 <p>
-                    <img :src="blockchainServePng" alt="">
-                    <span>提供技术支持</span>
+                    <img :src="producerPng" alt="">
+                    <span>监制</span>
                 </p>
                 <p>
-                    中国传统文化数字艺术联盟监制
+                    <img :src="blockchainServePng" alt="">
+                    <span>提供技术支持</span>
                 </p>
             </div>
         </div>
@@ -143,6 +144,7 @@
                     span: '分享'
                 }],
                 defaultPersonPng: require("@/common/images/home/default-person.png"),
+                producerPng: require("@/common/images/home/producer.jpg"),
                 setPng: require("@/common/images/login/set.png"),
                 notLoginPng: require("@/common/images/login/not-login.png"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),
@@ -575,7 +577,7 @@
                     align-items: center;
                     &:nth-child(1) {
                         img {
-                            width: 100px
+                            width: 50px
                         };
                         span {
                             margin-left: 8px;
@@ -585,8 +587,15 @@
                         }
                     };
                     &:nth-child(2) {
-                        font-size: 10px;
-                        color: #c2c2c2
+                       img {
+                            width: 100px
+                        };
+                        span {
+                            margin-left: 8px;
+                            margin-top: 1px;
+                            font-size: 10px;
+                            color: #c2c2c2
+                        }
                     };
                 }
             }

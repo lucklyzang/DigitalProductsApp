@@ -79,6 +79,7 @@
 		methods: {
 			...mapMutations([
 				'changeCollectionId',
+				'changeMyObjects',
 				'changeIsEnterCollectionsRecordsDetailsPageSource'
 			]),
 
@@ -105,7 +106,8 @@
 									chain: item.chain,
 									publisher: item.publisher
                                 })
-                            }
+                            };
+							this.changeMyObjects(this.orderList);
                         }
                     } else {
 						this.isShowLoadFail = true;

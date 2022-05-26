@@ -34,6 +34,11 @@ export default {
             return state.collectionId
         },
 
+        myObjects: (state)  => {
+            state.myObjects = getStore('myObjects') ? JSON.parse(getStore('myObjects')) : []
+            return state.myObjects
+        },
+
         countdownTime: (state)  => {
             state.countdownTime = getStore('countdownTime') ? getStore('countdownTime') : 0
             return state.countdownTime
@@ -128,6 +133,12 @@ export default {
         changeCollectionId(state, playLoad) {
             setStore('collectionId', playLoad);
             state.collectionId = playLoad
+        },
+
+        // 保存我的藏品状态
+        changeMyObjects(state, playLoad) {
+            setStore('myObjects', playLoad);
+            state.myObjects = playLoad
         },
 
         // 保存赠送产品的信息

@@ -128,7 +128,8 @@
 			...mapGetters([
                 'hallMessage',
                 'userInfo',
-                'queryHallMessage'
+                'queryHallMessage',
+                'myObjects'
 			])
 		},
 
@@ -182,6 +183,22 @@
                 } else if (this.queryHallMessage['type'] == 0) {
                     this.exhibitionTheme = this.hallMessage['hallTheme'];
                     this.exhibitionIntroduce  = this.hallMessage['hallIntroduce'] ? this.hallMessage['hallIntroduce'] : '介绍一下你的展览'
+                };
+                //过滤掉已经被赠送出的藏品
+                if (this.hallMessage['hallExhibitsList'].length > 0) {
+                    let temporaryHallMessage = this.hallMessage;
+                    let objectIdList = [];
+                    let temporaryHallExhibitsList = [];
+                    for (let item of this.myObjects) {
+                        objectIdList.push(item.id)
+                    };
+                    for (let item of this.hallMessage['hallExhibitsList']) {
+                        if (objectIdList.indexOf(item['ownId']) != -1) {
+                            temporaryHallExhibitsList.push(item)
+                        }
+                    };
+                    temporaryHallMessage['hallExhibitsList'] = temporaryHallExhibitsList;
+                    this.changeHallMessage(temporaryHallMessage)
                 }
             },
 

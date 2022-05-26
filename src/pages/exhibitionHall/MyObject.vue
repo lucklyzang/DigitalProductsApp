@@ -133,6 +133,7 @@
                 'changeQueryHallMessage',
                 'changeIsEnterLoginPageSource',
                 'changeHallMessage',
+                'changeMyObjects',
                 'changeCollectionId',
                 'changeIsEnterMyObjectDetailsPageSource',
                 'changeIsEnterCollectionsRecordsDetailsPageSource'
@@ -169,6 +170,8 @@
 									publisher: item.publisher
                                 })
                             };
+                            //藏品存储在本地
+                            this.changeMyObjects(this.orderList);
                             if (this.isLogin) {
                                 this.myObjectOffsetTop = this.$refs.myObject.offsetTop
                             }
@@ -200,7 +203,7 @@
                         this.changeQueryHallMessage(res.data.data);
                         let temporaryHallMessage = this.hallMessage;
                         if (temporaryHallMessage['hallExhibitsList'].length == 0) {
-                            let arr = []
+                            let arr = [];
                             for (let item of this.queryHallMessage['exhibits']) {
                                 arr.push({
                                     collectionName: item.commName,
