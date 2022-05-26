@@ -160,14 +160,6 @@ export function transferObject(data) {
     })
 };
 
-//藏品转增
-export function transfersRecord() {
-    return request({
-        url: 'app/transfers',
-        method: 'get'
-    })
-};
-
 //产品分享
 export function productionShare(id) {
     return request({
@@ -175,6 +167,7 @@ export function productionShare(id) {
         method: 'get'
     })
 };
+
 
 //我的app分享
 export function appShare() {
@@ -239,5 +232,45 @@ export function queryProtocolConfig(value) {
     return request({
         url: `app/config?key=${value}`,
         method: 'get',
+    })
+};
+
+//查询转赠记录
+export function transfersRecord() {
+    return request({
+        url: 'app/transfers',
+        method: 'get'
+    })
+};
+
+// 查询是否存在未读消息
+export function queryUnRead() {
+    return request({
+        url: '/app/unRead',
+        method: 'get'
+    })
+};
+
+// 查询消息列表
+export function queryNewsList() {
+    return request({
+        url: 'app/newsList',
+        method: 'get'
+    })
+};
+
+// 查询消息详情 /app/read/{id}
+export function queryNewsDetails(id) {
+    return request({
+        url: `app/news/${id}`,
+        method: 'get'
+    })
+};
+
+// 消息设置为已读
+export function setMessageRead(id) {
+    return request({
+        url: `app/read/${id}`,
+        method: 'post'
     })
 };

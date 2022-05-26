@@ -48,6 +48,8 @@ const BlockchainAddress = () =>
     import ('@/pages/blockchainAddress/BlockchainAddress')
 const SystemMessage = () =>
     import ('@/pages/systemMessage/SystemMessage')
+const SystemMessageDetails = () =>
+    import ('@/pages/systemMessageDetails/SystemMessageDetails')
 const DonationFriend = () =>
     import ('@/pages/donationFriend/DonationFriend')
 const OrderFormToPaid = () =>
@@ -257,6 +259,15 @@ let baseRoute = [{
         component: SystemMessage,
         meta: {
             index: 1,
+            keepAlive: false
+        }
+    },
+    {
+        path: '/systemMessageDetails',
+        name: 'systemMessageDetails',
+        component: SystemMessageDetails,
+        meta: {
+            index: 2,
             keepAlive: false
         }
     },

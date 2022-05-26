@@ -138,6 +138,12 @@
                     </div>
                     <img :src="detailsTitleWrappper" alt="">
                 </div>
+                <div class="divider">
+                    <van-divider :style="{ color: '#616161'}">
+                        <van-icon name="lock" color="#616161" size="20" />
+                        购买即可体验内容
+                    </van-divider>
+                </div>
             </div>
             <div class="content-middle">
                 <div class="framer" @click="toWorkRoomEvent">
@@ -705,6 +711,16 @@
                         left: 0;
                         width: 100%
                     }
+                };
+                .divider {
+                    width: 80%;
+                    margin: 0 auto;
+                    margin-top: 20px;
+                    /deep/ .van-divider {
+                        .van-icon-lock {
+                            margin-right: 4px
+                        }
+                    }
                 }
 		    };
             .collection-story-box {
@@ -747,7 +763,6 @@
                 margin: 0 auto;
                 background: @color-block;
                 padding: 8px 10px;
-                margin-top: 20px;
                 box-sizing: border-box;
                 border-radius: 14px;
                 display: flex;

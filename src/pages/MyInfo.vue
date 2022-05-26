@@ -54,6 +54,7 @@
                     <div class="function-zone-icon-list" v-for="(item,index) in zoneIconList" :key="index" @click="featureSetTopEvent(item)">
                         <img :src="item.icon" alt="">
                         <span>{{item.span}}</span>
+                        <p class="message-info" v-show="index == 3 && isExistUnread"></p>
                     </div>
                 </div>
             </div>
@@ -93,13 +94,14 @@
     } from 'vuex'
     import {
         inquareUserInfo,
-        appShare
+        appShare,
+        queryUnRead
     } from '@/api/products.js'
     import {
         IsPC
     } from '@/common/js/utils'
     export default {
-        name: 'Home',
+        name: 'MyInfo',
         components: {
             FooterBottom,
             NavBar
@@ -109,6 +111,7 @@
                 isRefresh: false,
                 isDisabled: false,
                 timer: null,
+                isExistUnread: null,
                 loadingShow: false,
                 zoneIconList: [{
                     icon: require("@/common/images/login/my-order.png"),
@@ -164,7 +167,8 @@
             if (this.isLogin) {
                 if (!this.userInfo) {
                     this.queryuserInfo()
-                }
+                };
+                this.queryUnReadEvent()
             }
         },
 
@@ -172,8 +176,7 @@
             console.log(this.timer);
             if(this.timer) { 
                 clearTimeout(this.timer)
-            };
-            console.log(this.timer);
+            }
         },
 
         // created(){
@@ -215,6 +218,28 @@
             eventListenerHandle(e){
                 if(e._isScroller) return;
                 e.preventDefault()
+            },
+
+            //查询是否存在未读消息
+            queryUnReadEvent () {
+                queryUnRead().then((res) => {
+                    this.isRefresh = false;
+                    if (res && res.data.code == 0) {
+                        this.isExistUnread = res.data.data
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.isRefresh = false;
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    })
+                })
             },
 
             juddgeIspc() {
@@ -497,6 +522,7 @@
                     flex-flow: row wrap;
                     .function-zone-icon-list {
                         flex: 1;
+                        position: relative;
                         height: 75px;
                         display: flex;
                         flex-direction: column;
@@ -509,6 +535,15 @@
                             font-size: 12px;
                             color: #989898;
                             margin-top: 12px;
+                        };
+                        .message-info {
+                            position: absolute;
+                            top: 9%;
+                            right: 24%;
+                            width: 9px;
+                            height: 9px;
+                            background:#f73d76;
+                            border-radius: 50%
                         }
                     }
                 }

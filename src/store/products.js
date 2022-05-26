@@ -14,6 +14,11 @@ export default {
             return state.orderId
         },
 
+        systemMessageId: (state) => {
+            state.systemMessageId = getStore('systemMessageId') ? getStore('systemMessageId') : '';
+            return state.systemMessageId
+        },
+
         isPaying: (state)  => { 
             state.isPaying = getStore('isPaying') ? getStore('isPaying') === 'false' ? false : true : false
             return state.isPaying
@@ -127,6 +132,12 @@ export default {
         changeIsPaying(state, playLoad) {
             setStore('isPaying', playLoad);
             state.isPaying = playLoad
+        },
+
+        // 保存系统消息id
+        changeSystemMessageId(state, playLoad) {
+            setStore('systemMessageId', playLoad);
+            state.systemMessageId = playLoad
         },
 
         // 保存藏品id状态
