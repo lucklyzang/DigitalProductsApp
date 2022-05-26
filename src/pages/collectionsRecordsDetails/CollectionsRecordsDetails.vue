@@ -453,6 +453,7 @@
 		.content-wrapper();
         background: @color-background;
         /deep/ .van-nav-bar {
+            background: transparent;
             .van-icon {
                 color: #fff !important;
                 font-size: 18px !important
