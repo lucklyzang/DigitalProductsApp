@@ -157,7 +157,7 @@
                     align-items: center;
                     span {
                        font-size: 14px;
-                       color: #514a60;
+                       color: #b1b1b1;
                        margin: 0 10px;
                     };
                     img {

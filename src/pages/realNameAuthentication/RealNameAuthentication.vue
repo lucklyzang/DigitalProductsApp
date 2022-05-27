@@ -241,7 +241,7 @@
               justify-content: center;
             };
             .van-field__control {
-              color: #514a60 !important
+              color: #b1b1b1 !important
             } 
           }
         };

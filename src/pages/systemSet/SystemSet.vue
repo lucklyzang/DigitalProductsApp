@@ -52,11 +52,11 @@
         <div class="choose-photo-box" v-show="photoBox">
           <div class="choose-photo">
             <van-icon name="photo" />
-            <input name="uploadImg1" id="demo1" @change="previewFileOne" type="file" accept="image/album"/>从图库中选择
+            <input id="album" @change="previewFileAlbum" type="file" accept="image/album"/>从图库中选择
           </div>
           <div class="photo-graph">
             <van-icon name="photograph" />
-            <input name="uploadImg2" id="demo2"  @change="previewFileTwo" type="file" accept="image/camera"/>拍照
+            <input id="photograph"  @change="previewFilePhotograph" type="file" accept="image/camera"/>拍照
           </div>
           <div class="photo-cancel" @click="photoCancel">取消</div>
         </div>
@@ -146,12 +146,12 @@
 
       //input调取摄像头兼容性处理
       dealPhotographCompatibleEvent () {
-        let demo1 = document.getElementById('demo1');
-        let demo2 = document.getElementById('demo2');
+        let album = document.getElementById('album');
+        let photograph = document.getElementById('photograph');
         if (this.getIos()) {
-          demo1.setAttribute("accept","image/*");
-          demo2.setAttribute("accept","image/*");
-          demo2.setAttribute("capture","camera")
+          album.setAttribute("accept","image/*");
+          photograph.setAttribute("accept","image/*");
+          photograph.setAttribute("capture","camera")
         }
       },
 
@@ -189,7 +189,7 @@
             }
         })
         .catch((err) => {
-          this.overlayShow = true;
+          this.overlayShow = false;
           this.loadingShow = false;
           this.loadingText = '';
           this.$toast({
@@ -285,15 +285,15 @@
       },
 
       // 图片上传预览
-      previewFileOne() {
-        let file = document.getElementById("demo1").files[0];
+      previewFileAlbum() {
+        let file = document.getElementById("album").files[0];
         let _this = this;
         let reader = new FileReader();
         let isLt2M = file.size/1024/1024 < 16;
         reader.addEventListener("load", function () {
           if (!isLt2M) {
             _this.$toast({
-              message: '上传图片大小不能超过10MB!',
+              message: '上传图片大小不能超过16MB!',
               position: 'bottom'
             });
             return
@@ -320,15 +320,15 @@
       },
 
       //拍照预览
-      previewFileTwo() {
-        let file = document.getElementById("demo2").files[0];
+      previewFilePhotograph() {
+        let file = document.getElementById("photograph").files[0];
         let _this = this;
         let reader = new FileReader();
         let isLt2M = file.size/1024/1024 < 16;
         reader.addEventListener("load", function () {
           if (!isLt2M) {
             _this.$toast({
-              message: '上传图片大小不能超过10MB!',
+              message: '上传图片大小不能超过16MB!',
               position: 'bottom'
             });
             return
@@ -442,7 +442,7 @@
                     align-items: center;
                     span {
                        font-size: 14px;
-                       color: #514a60;
+                       color: #b1b1b1;
                        margin-right: 8px;
                        width: 120px;
                        flex: 1;
@@ -450,7 +450,7 @@
                        .no-wrap()
                     };
                     img {
-                      width: 8px
+                      width: 6px
                     }
 				}
 			};
@@ -466,7 +466,7 @@
                        border-radius: 50%;
                        margin-right: 2px;
                        &:last-child {
-                        width: 10px !important;
+                        width: 7px !important;
                         height: auto !important
                        }
                     }

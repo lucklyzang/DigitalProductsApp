@@ -181,7 +181,7 @@
                     color: #fff !important
                 };
                 .van-field__word-limit {
-                    color: #414a5a
+                    color: #b1b1b1
                 }
             }
 		};
