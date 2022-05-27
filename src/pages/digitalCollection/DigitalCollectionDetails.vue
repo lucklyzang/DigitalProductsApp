@@ -32,8 +32,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            height="auto" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-obj>
@@ -45,8 +45,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path" 
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-fbx>
@@ -58,8 +58,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            height="auto" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-three>
@@ -71,8 +71,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            height="auto" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-stl>
@@ -84,8 +84,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            height="auto" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-collada>
@@ -97,8 +97,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            height="auto" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-ply>
@@ -110,8 +110,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            height="auto" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-gltf>
@@ -120,7 +120,7 @@
                 <div class="booth">
                     <img :src="boothPng" alt="">
                 </div>
-                <div class="synopsis">
+                <div class="synopsis" :style="{backgroundImage: 'url(' + detailsTitleWrappper+ ')',backgroundRepeat:'no-repeat',backgroundSize:'cover'}">
                     <div class="title">
                         <span>
                             {{productsDetails.name}}
@@ -136,7 +136,6 @@
                             <span>{{productsDetails.surplus}} 份</span>
                         </div>
                     </div>
-                    <img :src="detailsTitleWrappper" alt="">
                 </div>
                 <div class="divider">
                     <van-divider :style="{ color: '#616161'}">
@@ -704,12 +703,6 @@
                                 }
                             }
                         }
-                    };
-                    img {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%
                     }
                 };
                 .divider {

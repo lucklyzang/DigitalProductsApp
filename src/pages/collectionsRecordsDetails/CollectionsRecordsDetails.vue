@@ -2,6 +2,150 @@
 	<div class="page-box">
         <NavBar :path="path" title="藏品详情"/>
         <!-- <van-loading type="spinner" v-show="loadingShow"/> -->
+        <div class="show-picture-box">
+            <van-dialog v-model="isShowPicture" :show-confirm-button="false"  :close-on-popstate="false" title="" >
+                <div class="unfold-top">
+                    <div class="top-left">
+                        <p>
+                            {{collectionRecordDetails.name}}
+                        </p>
+                        <p>
+                            {{collectionRecordDetails.publisher}}
+                        </p>
+                    </div>
+                    <div class="top-right" @click="closePictureUnfoldEvent">
+                        <van-icon name="clear" size="26" color="#b1b1b1" />
+                    </div>
+                </div>
+                <div class="unfold-center">
+                    <div class="collection-exhibition">
+                        <div class="abbr-img">
+                            <img :src="collectionRecordDetails.path" ref="objectPicture">
+                        </div>
+                    </div>
+                    <div class="booth">
+                        <img :src="boothPng" alt="">
+                    </div>
+                    <div class="operation-box">
+                        <van-icon name="plus" color="#fff" size="25" @click="pictureScaleEvent" />
+                        <van-icon name="minus" color="#fff" size="25"  @click="pictureReduceEvent" />
+                    </div>
+                </div>
+            </van-dialog>
+        </div>
+        <div class="three-dimensional-box">
+            <van-dialog v-model="isShowThreeDimensional" :show-confirm-button="false"  :close-on-popstate="false" title="" >
+                <div class="unfold-top">
+                    <div class="top-left">
+                        <p>
+                            {{collectionRecordDetails.name}}
+                        </p>
+                        <p>
+                            {{collectionRecordDetails.publisher}}
+                        </p>
+                    </div>
+                    <div class="top-right" @click="closePictureUnfoldEvent">
+                        <van-icon name="clear" size="26" color="#b1b1b1" />
+                    </div>
+                </div>
+                <div class="unfold-center">
+                    <div class="collection-exhibition">
+                    <div class="three-dimensional-img">
+                        <model-obj
+                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'obj'" 
+                                :rotation="rotation"
+                                @on-error="threeDimensionalError" 
+                                @on-load="threeDimensionalLoaded"
+                                @on-progress="threeDimensionProgress" 
+                                :src="collectionRecordDetails.url"
+                                :width="350" 
+                                :height="400" 
+                                :backgroundAlpha="1" 
+                                backgroundColor="#1e1e1b">
+                            </model-obj>
+                            <model-fbx
+                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'fbx'" 
+                                :rotation="rotation"
+                                @on-error="threeDimensionalError" 
+                                @on-load="threeDimensionalLoaded"
+                                @on-progress="threeDimensionProgress" 
+                                :src="collectionRecordDetails.url" 
+                                :width="350" 
+                                :height="400"
+                                :backgroundAlpha="1" 
+                                backgroundColor="#1e1e1b">
+                            </model-fbx>
+                            <model-three
+                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'json'" 
+                                :rotation="rotation"
+                                @on-error="threeDimensionalError" 
+                                @on-load="threeDimensionalLoaded"
+                                @on-progress="threeDimensionProgress" 
+                                :src="collectionRecordDetails.url"  
+                                :width="350" 
+                                :height="400"
+                                :backgroundAlpha="1" 
+                                backgroundColor="#1e1e1b">
+                            </model-three>
+                            <model-stl
+                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'stl'"  
+                                :rotation="rotation"
+                                @on-error="threeDimensionalError" 
+                                @on-load="threeDimensionalLoaded"
+                                @on-progress="threeDimensionProgress" 
+                                :src="collectionRecordDetails.url"  
+                                :width="350" 
+                                :height="400" 
+                                :backgroundAlpha="1" 
+                                backgroundColor="#1e1e1b">
+                            </model-stl>
+                            <model-collada
+                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'dae'"  
+                                :rotation="rotation"
+                                @on-error="threeDimensionalError" 
+                                @on-load="threeDimensionalLoaded"
+                                @on-progress="threeDimensionProgress" 
+                                :src="collectionRecordDetails.url"  
+                                :width="350" 
+                                :height="400" 
+                                :backgroundAlpha="1" 
+                                backgroundColor="#1e1e1b">
+                            </model-collada>
+                            <model-ply
+                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'ply'"  
+                                :rotation="rotation"
+                                @on-error="threeDimensionalError" 
+                                @on-load="threeDimensionalLoaded"
+                                @on-progress="threeDimensionProgress" 
+                                :src="collectionRecordDetails.url"  
+                                :width="350" 
+                                :height="400"
+                                :backgroundAlpha="1" 
+                                backgroundColor="#1e1e1b">
+                            </model-ply>
+                            <model-gltf
+                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf(2.0)'"  
+                                :rotation="rotation"
+                                @on-error="threeDimensionalError" 
+                                @on-load="threeDimensionalLoaded"
+                                @on-progress="threeDimensionProgress" 
+                                :src="collectionRecordDetails.url"  
+                                :width="350" 
+                                :height="400" 
+                                :backgroundAlpha="1" 
+                                backgroundColor="#1e1e1b">
+                            </model-gltf>
+                        </div>
+                    </div>
+                    <div class="booth">
+                        <img :src="boothPng" alt="">
+                    </div>
+                    <div class="operation-box">
+                        请用手指操作藏品缩放、旋转
+                    </div>
+                </div>
+            </van-dialog>
+        </div>
         <div class="content" id="top-content">
             <div class="content-top">
                 <div class="collection-exhibition">
@@ -20,8 +164,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-obj>
@@ -33,8 +177,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url" 
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-fbx>
@@ -46,8 +190,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-three>
@@ -59,8 +203,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-stl>
@@ -72,8 +216,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-collada>
@@ -85,8 +229,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            :height="300"  
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-ply>
@@ -98,17 +242,20 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="180" 
-                            :height="230" 
+                            :width="250" 
+                            :height="300"  
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-gltf>
                     </div>
                 </div>
                 <div class="booth">
+                    <div class="unfold" @click="unfoldPictureEvent" v-show="!loadingImgGifShow">
+                        <img :src="unfoldPng" alt="">
+                    </div>
                     <img :src="boothPng" alt="">
                 </div>
-                <div class="synopsis">
+                <div class="synopsis" :style="{backgroundImage: 'url(' + detailsTitleWrappper+ ')',backgroundRepeat:'no-repeat',backgroundSize:'cover'}">
                     <div class="title">
                         <span>
                             {{collectionRecordDetails.name}}
@@ -122,7 +269,6 @@
                             <span class="blockchain-chain">{{collectionRecordDetails.chain}}</span>
                         </div>    
                     </div>
-                    <img :src="detailsTitleWrappper" alt="">
                 </div>
             </div>
             <div class="content-middle">
@@ -166,6 +312,7 @@
 </template>
 
 <script>
+let BASESCALE = 1;
 	import {
 		mapGetters,
 		mapMutations
@@ -202,6 +349,8 @@
                     y: 0,
                     z: 0
                 },
+                isShowPicture: false,
+                isShowThreeDimensional: false,
                 loadingShow: false,
                 loadingImgGifShow: false,
                 threeDimensionalShow: false,
@@ -211,6 +360,7 @@
                 blockchainPng: require("@/common/images/home/blockchain.png"),
                 sharePng: require("@/common/images/login/my-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
+                unfoldPng: require("@/common/images/home/unfold.png"),
                 detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png"),
                   lights: [
                     {
@@ -312,6 +462,40 @@
             rotate () {
                 this.rotation.y += 0.01;
                 requestAnimationFrame(this.rotate)
+            },
+
+            //藏品展开事件
+            unfoldPictureEvent () {
+                if (this.collectionRecordDetails.three === '0') {
+                    this.isShowPicture = true;
+                    BASESCALE = 1;
+                    this.$refs.objectPicture.style.transform = `scale(${BASESCALE})`
+                } else if (this.collectionRecordDetails.three !== '0') {
+                    this.isShowThreeDimensional = true
+                }
+            },
+
+            //藏品放大事件
+            pictureScaleEvent () {
+                BASESCALE = BASESCALE + 0.1;
+                this.$refs.objectPicture.style.transform = `scale(${BASESCALE})`
+            },
+
+            //藏品缩小事件
+            pictureReduceEvent () {
+                if (BASESCALE > 0.2) {
+                    BASESCALE = BASESCALE - 0.1;
+                    this.$refs.objectPicture.style.transform = `scale(${BASESCALE})`
+                }
+            },
+
+            //关闭图片展示事件
+            closePictureUnfoldEvent () {
+                if (this.collectionRecordDetails.three === '0') {
+                    this.isShowPicture = false
+                } else if (this.collectionRecordDetails.three !== '0') {
+                    this.isShowThreeDimensional = false
+                }
             },
 
             //让页面滚动到顶部
@@ -463,6 +647,207 @@
                 font-size: 16px !important
             }
         };
+        .show-picture-box {
+            /deep/ .van-dialog {
+                border-radius: 0;
+                width: 100%;
+                height: 100vh;
+                top: 0;
+                left: 0;
+                background: @color-background;
+                transform: translate3d(0,0,0);
+                .van-dialog__content {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    .unfold-top {
+                        height: 80px;
+                        display: flex;
+                        padding: 0 10px;
+                        box-sizing: border-box;
+                        flex-flow: row nowrap;
+                        align-items: center;
+                        justify-content: space-between;
+                        .top-left {
+                            flex: 1;
+                            >p {
+                                padding-left: 10px;
+                                box-sizing: border-box;
+                                .no-wrap();
+                                &:first-child {
+                                    font-size: 18px;
+                                    color: #fff;
+                                    margin-bottom: 8px;
+                                };
+                                &:last-child {
+                                    font-size: 14px;
+                                    color: #b1b1b1
+                                }
+                            }
+                        };
+                        .top-right {
+                        }
+                    };
+                    .unfold-center {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        overflow: auto;
+                        position: relative;
+                        .collection-exhibition {
+                            flex: 1;
+                            width: 100%;
+                            // perspective: 400px;
+                            // perspective-origin: 50% 50%;
+                            // transform-style: preserve-3d;
+                            margin: 0 auto;
+                            position: relative;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            align-items: center;
+                            justify-content: center;
+                            img {
+                                pointer-events: none;
+                                width: 100%
+                            };
+                            .abbr-img {
+                                width: 90%;
+                                margin-top: 60px;
+                                // animation-name: product-animation;
+                                // animation-duration: 14s;
+                                // animation-iteration-count: infinite;
+                            };
+                        };
+                        .booth {
+                            width: 100%;
+                            margin: 0 auto;
+                            margin-top: 20px;
+                            >img {
+                                width: 100%
+                            }
+                        }
+                    };
+                    .operation-box {
+                        position: fixed;
+                        bottom: 30px;
+                        width: 120px;
+                        height: 50px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: black;
+                        border-radius: 20px;
+                        display: flex;
+                        flex-flow: row nowrap;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0 20px;
+                        box-sizing: border-box
+                    }
+                }    
+            }
+        };
+        .three-dimensional-box {
+            /deep/ .van-dialog {
+                border-radius: 0;
+                width: 100%;
+                height: 100vh;
+                top: 0;
+                left: 0;
+                background: @color-background;
+                transform: translate3d(0,0,0);
+                .van-dialog__content {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    .unfold-top {
+                        height: 80px;
+                        display: flex;
+                        padding: 0 10px;
+                        box-sizing: border-box;
+                        flex-flow: row nowrap;
+                        align-items: center;
+                        justify-content: space-between;
+                        .top-left {
+                            flex: 1;
+                            >p {
+                                padding-left: 10px;
+                                box-sizing: border-box;
+                                .no-wrap();
+                                &:first-child {
+                                    font-size: 18px;
+                                    color: #fff;
+                                    margin-bottom: 8px;
+                                };
+                                &:last-child {
+                                    font-size: 14px;
+                                    color: #b1b1b1
+                                }
+                            }
+                        };
+                        .top-right {
+                        }
+                    };
+                    .unfold-center {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        overflow: auto;
+                        position: relative;
+                        .collection-exhibition {
+                            flex: 1;
+                            width: 100%;
+                            // perspective: 400px;
+                            // perspective-origin: 50% 50%;
+                            // transform-style: preserve-3d;
+                            margin: 0 auto;
+                            position: relative;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            align-items: center;
+                            justify-content: center;
+                            img {
+                                pointer-events: none;
+                                width: 100%
+                            };
+                            .three-dimensional-img {
+                                margin-top: 60px;
+                            };
+                            .abbr-img {
+                                width: 90%;
+                                margin-top: 60px;
+                                // animation-name: product-animation;
+                                // animation-duration: 14s;
+                                // animation-iteration-count: infinite;
+                            };
+                        };
+                        .booth {
+                            width: 100%;
+                            margin: 0 auto;
+                            margin-top: 20px;
+                            >img {
+                                width: 100%
+                            }
+                        }
+                    };
+                    .operation-box {
+                        position: fixed;
+                        bottom: 30px;
+                        height: 30px;
+                        font-size: 12px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: black;
+                        color: #fff;
+                        border-radius: 10px;
+                        display: flex;
+                        flex-flow: row nowrap;
+                        align-items: center;
+                        padding: 0 10px;
+                        box-sizing: border-box
+                    }
+                }    
+            }
+        };
         .content {
             flex: 1;
             display: flex;
@@ -514,14 +899,24 @@
                     width: 80%;
                     margin: 0 auto;
                     margin-top: 20px;
-                    img {
+                    position: relative;
+                    >img {
                         width: 100%
+                    };
+                    .unfold {
+                        position: absolute;
+                        top: -10px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 100px;
+                        img {
+                            width: 100px
+                        }
                     }
                 };
                 .synopsis {
                     width: 80%;
                     display: flex;
-                    height: 80px;
                     margin: 0 auto;
                     margin-top: 20px;
                     flex-direction: column;
@@ -574,12 +969,6 @@
                                 .no-wrap()
                             }
                         }    
-                    };
-                    >img {
-                        position: absolute;
-                        top: 0;
-                        left: 0%;
-                        width: 100%
                     }
                 }
 		    };
