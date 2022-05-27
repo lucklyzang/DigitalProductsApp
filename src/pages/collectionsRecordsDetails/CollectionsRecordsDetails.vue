@@ -20,7 +20,7 @@
                 <div class="unfold-center">
                     <div class="collection-exhibition">
                         <div class="abbr-img">
-                            <img :src="collectionRecordDetails.path" ref="objectPicture">
+                            <img :src="collectionRecordDetails.url" ref="objectPicture">
                         </div>
                     </div>
                     <div class="booth">
