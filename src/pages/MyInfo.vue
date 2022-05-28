@@ -98,7 +98,9 @@
         queryUnRead
     } from '@/api/products.js'
     import {
-        IsPC
+        IsPC,
+        isAndroid_ios, 
+        isWeiXin
     } from '@/common/js/utils'
     export default {
         name: 'MyInfo',
@@ -332,6 +334,8 @@
                         path: 'aboutUs'
                     })
                 } else if (item.span == '分享') {
+                    if(isAndroid_ios() == '非安卓或ios') {return};
+                    if (isWeiXin()) { return };
                     if(this.isDisabled) return;
                     this.isDisabled = !this.isDisabled;
                     this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
@@ -388,7 +392,11 @@
 
             async myShareEvent () {
                 let shareUrl = await this.appShareEvent();
-                window.android.setShareUrl(`${shareUrl}`)
+                if (isAndroid_ios()) {
+                    window.android.setShareUrl(`${shareUrl}`)
+                } else if (!isAndroid_ios()) {
+                    window.webkit.messageHandlers.setShareUrl.postMessage(`${shareUrl}`)
+                }
             }
         }
     }

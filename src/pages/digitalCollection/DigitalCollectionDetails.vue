@@ -212,6 +212,7 @@
         ModelPly,
         ModelGltf
     } from "vue-3d-model";
+    import { isAndroid_ios, isWeiXin } from '@/common/js/utils'
 	import {inquareProductDetails,purchaseCommodity,inquareUserInfo,productionShare} from '@/api/products.js'
 	export default {
         name: 'DigitalCollectionDetails',
@@ -520,11 +521,17 @@
             },
 
             async onClickRight () {
+                if(isAndroid_ios() == '非安卓或ios') {return};
+                if (isWeiXin()) { return };
                 if(this.isShareDisabled) return;
                 this.isShareDisabled = !this.isShareDisabled;
                 this.timer = setTimeout(() => {this.isShareDisabled = !this.isShareDisabled;},3000);
                 let shareUrl = await this.productionShareEvent();
-                window.android.setShareUrl(`${shareUrl}`)
+                if (isAndroid_ios()) {
+                    window.android.setShareUrl(`${shareUrl}`)
+                } else if (!isAndroid_ios()) {
+                    window.webkit.messageHandlers.setShareUrl.postMessage(`${shareUrl}`)
+                }
             }
 		}
 	}
