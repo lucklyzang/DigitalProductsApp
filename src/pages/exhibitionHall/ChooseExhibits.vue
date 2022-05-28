@@ -19,8 +19,8 @@
             <div class="object-list-box">
                 <div class="object-list" v-for="(item,index) in orderList" :key="index" @click="objectListClickEvent(index)">
                     <div class="img-show" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
-						<img :data-src="item.collectionUrl">
-					</div>
+                        <img :data-src="item.collectionUrl">
+                    </div>
                     <p class="chain">
                         <span class="blockchain-img">
                             <img :src="blockchainPng" alt="">
@@ -39,7 +39,7 @@
         </div>
         <div class="btn-area">
             <span :class="{'spanStyle':!isCanClick}" @click="sureEvent">确定</span>
-        </div>
+        </div>    
 	</div>
 </template>
 
@@ -262,7 +262,6 @@
     @import "~@/common/stylus/modifyUi.less";
 	.content-box {
 		.content-wrapper();
-        height: 100vh !important;
         background: @color-background;
          /deep/ .van-nav-bar {
             background: @color-background;
@@ -305,17 +304,13 @@
         };
         .my-object {
             width: 100%;
-            flex: 1;
-            padding: 20px 20px 10px 20px;
+            padding: 0 20px 60px 20px;
             box-sizing: border-box;
             display: flex;
-            overflow: auto;
             z-index: 100;
             flex-direction: column;
             .object-list-box {
-                flex: 1;
                 width: 100%;
-                overflow: auto;
                 display: flex;
                 flex-flow: row wrap;
                 >div {
@@ -414,14 +409,19 @@
 
                         }
                     }
-                };
+                }
             }
         };
         .btn-area {
             display: flex;
-			flex-direction: column;
-			justify-content: center;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            z-index: 1000;
             height: 60px;
             width: 80%;
             margin: 0 auto;
@@ -440,7 +440,7 @@
             .spanStyle {
                 background: #696968;
             }
-        }
+        }    
 	}
 </style>
 

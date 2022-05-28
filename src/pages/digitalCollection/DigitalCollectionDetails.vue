@@ -556,8 +556,8 @@
             };
             .van-nav-bar__right {
                 img {
-                    width: 22px;
-                    height: 22px
+                    width: 20px;
+                    height: 20px
                 }
             }
         };

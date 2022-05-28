@@ -313,6 +313,9 @@
 		.content-wrapper();
         background: @color-background;
         .is-login {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             .my-hall {
                 width: 100%;
                 flex: 1;
@@ -401,13 +404,13 @@
                 position: fixed;
                 border-top-left-radius: 20px;
                 border-top-right-radius: 20px;
-                padding: 10px 20px 0 20px;
+                padding: 10px 20px 10px 20px;
                 box-sizing: border-box;
                 top: 240px;
                 left: 0;
                 background: @color-home-block;
                 display: flex;
-                height: 92vh;
+                height: calc(100% - 50px);
                 overflow: auto;
                 z-index: 100;
                 flex-direction: column;

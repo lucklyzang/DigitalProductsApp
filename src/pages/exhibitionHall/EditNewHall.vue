@@ -66,21 +66,21 @@
                 </div>   
             </div>
             </div>
-            <div class="content-bottom">
-                <div @click="chooseHallTemplateEvent">
-                    <img :src="chooseTemplatePng" alt="">
-                    <span>选择模板</span>
-                </div>
-                <div @click="editExhibitsEvent">
-                    <img :src="editExhibitsPng" alt="">
-                    <span>编辑展品</span>
-                </div>
-                <div @click="exhibitionThemeEvent">
-                    <img :src="editExhibitionThemePng" alt="">
-                    <span>展览主题</span>
-                </div>
+        </div> 
+        <div class="content-bottom">
+            <div @click="chooseHallTemplateEvent">
+                <img :src="chooseTemplatePng" alt="">
+                <span>选择模板</span>
             </div>
-        </div>    
+            <div @click="editExhibitsEvent">
+                <img :src="editExhibitsPng" alt="">
+                <span>编辑展品</span>
+            </div>
+            <div @click="exhibitionThemeEvent">
+                <img :src="editExhibitionThemePng" alt="">
+                <span>展览主题</span>
+            </div>
+        </div>   
 	</div>
 </template>
 
@@ -484,7 +484,7 @@
                 position: absolute;
                 display: flex;
                 flex-flow: row nowrap;
-                top: 12vh;
+                top: 6vh;
                 left: 0;
                 height: 72vh;
                 .content-left {
@@ -618,37 +618,37 @@
                         }
                     }    
                 }
-            };
-            .content-bottom {
-                position: absolute;
-                bottom: 20px;
-                right: 0;
-                width: 100%;
-                height: 80px;
+            }
+        };
+        .content-bottom {
+            position: fixed;
+            bottom: 10px;
+            right: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            color: #fff;
+            >div {
+                flex: 1;
+                height: 50px;
                 display: flex;
-                flex-flow: row nowrap;
-                justify-content: space-between;
+                flex-direction: column;
+                justify-content: center;
+                font-size: 12px;
                 align-items: center;
-                padding: 10px;
-                box-sizing: border-box;
-                color: #fff;
-                >div {
-                    flex: 1;
-                    height: 50px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    font-size: 12px;
-                    align-items: center;
-                    >img {
-                        width: 50px;
-                        height: 50px
-                    }
-                    >span {
-                        color: #e2e2e2;
-                        margin-left: 4px;
-                        margin-top: 10px
-                    }
+                >img {
+                    width: 50px;
+                    height: 50px
+                }
+                >span {
+                    color: #e2e2e2;
+                    margin-left: 4px;
+                    margin-top: 10px
                 }
             }
         }    

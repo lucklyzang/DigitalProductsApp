@@ -153,7 +153,7 @@
                         <img :src="imgLoadingGif" v-show="loadingImgGifShow || threeDimensionalShow" class="loading-img">
                     </div>
                     <div class="abbr-img" v-if="collectionRecordDetails.three === '0'">
-                        <img :src="collectionRecordDetails.path" v-show="!loadingImgGifShow">
+                        <img :src="collectionRecordDetails.url" v-show="!loadingImgGifShow">
                     </div>
                     <div class="three-dimensional-img" v-else>
                        <model-obj

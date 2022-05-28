@@ -398,7 +398,7 @@
                         if (res && res.data.code == 0) {
                             this.changeIsPaying(true);
                             // 跳转到支付页面
-                            location.href = res.data.data.prepayId + '&redirect_url=' + encodeURIComponent(window.location.href)
+                            window.location.href = res.data.data.prepayId + '&redirect_url=' + encodeURIComponent(window.location.href)
                         } else {
                             this.$toast({
                                 message: `${res.data.msg}`,
