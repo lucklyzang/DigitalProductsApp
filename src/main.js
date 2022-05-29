@@ -25,6 +25,9 @@ Vue.filter('dateformat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
 //处理移动端click事件300ms延迟
 import FastClick from 'fastclick'
 FastClick.attach(document.body);
+FastClick.prototype.focus = function(targetElement) {
+    targetElement.focus();
+};
 Vue.prototype.$moment = moment;
 
 // 全局挂载监听设备物理返回按键的方法
