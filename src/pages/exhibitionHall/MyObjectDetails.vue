@@ -19,8 +19,6 @@
 		<div class="content" ref="content">
             <div class="content-center"
                 ref="contentCenter"
-                @touchstart="touchstartHandle"
-                @touchmove="touchmoveHandle"
             >
                 <div class="content-left" ref="contentLeft">
                     <div class="title">
@@ -115,7 +113,8 @@
                 })
             };
             // 查询展馆信息
-			this.queryHallMessageEvent()
+			this.queryHallMessageEvent();
+            this.registerSlideEvent()
 		},
 
        beforeRouteEnter(to, from, next) {
@@ -200,6 +199,12 @@
                 this.$router.push({path: this.path})
             },
 
+            // 注册滑动事件  
+            registerSlideEvent () {
+                this.$refs.contentCenter.addEventListener('touchstart',this.touchstartHandle,false);
+                this.$refs.contentCenter.addEventListener('touchmove',this.touchmoveHandle,false)
+            },
+
             // 计算展品总长度
             calculateContentWidth (length) {
                 if (length == 0) {return};
@@ -217,20 +222,22 @@
             },
 
             // 滑动开始
-            touchstartHandle(e) {
+            touchstartHandle() {
                 //判断是否在滑动区域内滑动
+                let e = e || window.event;
                 this.isSlideArea = true;
-                this.moveInfo.startX = e.targetTouches[0].clientX;
+                this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                 this.moveInfo.lastMoveTime = new Date().getTime();
                 this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
                 this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
             },
             
             // 滑动中
-            touchmoveHandle(e) {
+            touchmoveHandle() {
+                let e = e || window.event;
                 if (this.isSlideArea) {
                     // 滑动距离
-                    let moveX = (e.targetTouches[0].clientX - this.moveInfo.startX)*1.5;
+                    let moveX = parseInt((e.targetTouches[0].clientX - this.moveInfo.startX)*1.5);
                     //左滑
                     if (moveX < 0) {
                         // 展品转动
@@ -238,7 +245,7 @@
                             this.isRotate = false;
                             this.$refs.contentCenter.style.left = -this.myObjectMaxMoveDistance + 'px';
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                            this.moveInfo.startX = e.targetTouches[0].clientX
+                            this.moveInfo.startX = parseInt(e.targetTouches[0].clientX)
                         } else {
                             this.isRotate = true;
                             this.$refs.contentCenter.style.left = this.moveInfo.x - Math.abs(moveX) + 'px'
@@ -253,11 +260,11 @@
                                 this.$refs.backgroundImg.style.left = -this.backgroundImgMaxMoveDistance + 'px'
                                 this.moveInfo.x = this.$refs.contentCenter.offsetLeft
                             } else {
-                                this.$refs.backgroundImg.style.left = (this.moveInfo.x - Math.abs(moveX))/2 + 'px'
+                                this.$refs.backgroundImg.style.left = parseInt((this.moveInfo.x - Math.abs(moveX))/2) + 'px'
                             }
                         } else {
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                            this.moveInfo.startX = e.targetTouches[0].clientX;
+                            this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                         }
                     } else {
                         //展品转动
@@ -265,7 +272,7 @@
                             this.isRotate = false;
                             this.$refs.contentCenter.style.left = 0;
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                            this.moveInfo.startX = e.targetTouches[0].clientX
+                            this.moveInfo.startX = parseInt(e.targetTouches[0].clientX)
                         } else {
                             this.isRotate = true;
                             this.$refs.contentCenter.style.left = this.moveInfo.x + moveX + 'px'
@@ -280,14 +287,13 @@
                                 this.$refs.backgroundImg.style.left = 0;
                                 this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
                             } else {
-                                this.$refs.backgroundImg.style.left = (this.moveInfo.x + moveX)/2 + 'px'
+                                this.$refs.backgroundImg.style.left = parseInt((this.moveInfo.x + moveX)/2) + 'px'
                             }
                         } else {
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                            this.moveInfo.startX = e.targetTouches[0].clientX;
+                            this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                         }
                     }
-                    e.preventDefault()
                 }    
             }
 		}

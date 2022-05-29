@@ -32,8 +32,6 @@
                 </div>
             </div>
             <div class="my-object" ref="myObject"
-                @touchstart="touchstartHandle"
-                @touchmove="touchmoveHandle"
             >
                 <van-loading type="spinner" v-show="loadingShow"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
@@ -126,7 +124,8 @@
                 this.queryCollectionRecords();
                 // 查询展馆信息
                 this.queryHallMessageEvent()
-            }
+            };
+            this.registerSlideEvent()
 		},
 		methods: {
 			...mapMutations([
@@ -264,16 +263,24 @@
                 this.changeIsEnterCollectionsRecordsDetailsPageSource('/myObject')
 			},
 
+            // 注册滑动事件  
+            registerSlideEvent () {
+                this.$refs.myObject.addEventListener('touchstart',this.touchstartHandle,false);
+                this.$refs.myObject.addEventListener('touchmove',this.touchmoveHandle,false)
+            },
+
             // 滑动开始
-            touchstartHandle(e) {
+            touchstartHandle() {
                 //判断是否在区域内滑动
+                let e = e || window.event;
                 this.isSlideArea = true;
-                this.moveInfo.startY = e.targetTouches[0].clientY;
+                this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
                 this.moveInfo.y = this.$refs.myObject.offsetTop;
             },
             
             // 滑动中
-            touchmoveHandle(e) {
+            touchmoveHandle() {
+                let e = e || window.event;
                 if (this.isSlideArea) {
                     let moveY = e.targetTouches[0].clientY - this.moveInfo.startY;
                     //上滑
@@ -281,21 +288,21 @@
                         if (this.$refs.myObject.offsetTop <= 0) {
                             this.$refs.myObject.style.top = 0 + 'px'
                             this.moveInfo.y = this.$refs.myObject.offsetTop;
-                            this.moveInfo.startY = e.targetTouches[0].clientY;
+                            this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
                             return
                         }
                         if (this.$refs.myObject.offsetTop > 0) {
-                            this.$refs.myObject.style.top = (this.moveInfo.y - Math.abs(moveY*1.5)) + 'px'
+                            this.$refs.myObject.style.top = parseInt((this.moveInfo.y - Math.abs(moveY*1.5))) + 'px'
                         }
                     } else {
                         if (this.$refs.myObject.offsetTop >= this.myObjectOffsetTop) {
                             this.$refs.myObject.style.top = this.myObjectOffsetTop + 'px';
                             this.moveInfo.y = this.$refs.myObject.offsetTop;
-                            this.moveInfo.startY = e.targetTouches[0].clientY;
+                            this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
                             return
                         }
                         if (this.$refs.myObject.offsetTop < this.myObjectOffsetTop) {
-                            this.$refs.myObject.style.top = (this.moveInfo.y + (moveY)*1.5) + 'px'
+                            this.$refs.myObject.style.top = parseInt((this.moveInfo.y + (moveY)*1.5)) + 'px'
                         }    
                     };
                     e.preventDefault()
