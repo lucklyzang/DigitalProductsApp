@@ -273,7 +273,6 @@
             touchstartHandle() {
                 //判断是否在区域内滑动
                 let e = e || window.event;
-                e.preventDefault();
                 this.isSlideArea = true;
                 this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
                 this.moveInfo.y = this.$refs.myObject.offsetTop;
@@ -282,7 +281,6 @@
             // 滑动中
             touchmoveHandle() {
                 let e = e || window.event;
-                e.preventDefault();
                 if (this.isSlideArea) {
                     let moveY = e.targetTouches[0].clientY - this.moveInfo.startY;
                     //上滑
@@ -306,7 +304,8 @@
                         if (this.$refs.myObject.offsetTop < this.myObjectOffsetTop) {
                             this.$refs.myObject.style.top = parseInt((this.moveInfo.y + (moveY)*1.5)) + 'px'
                         }    
-                    }
+                    };
+                    e.preventDefault()
                 }    
             }
 		}
