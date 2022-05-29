@@ -351,6 +351,7 @@
             touchstartHandle() {
                 //判断是否在滑动区域内滑动
                 let e = e || window.event;
+                e.preventDefault();
                 this.isSlideArea = true;
                 this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                 this.moveInfo.lastMoveTime = new Date().getTime();
@@ -361,6 +362,7 @@
             // 滑动中
             touchmoveHandle() {
                 let e = e || window.event;
+                e.preventDefault();
                 if (this.isSlideArea) {
                     // 滑动距离
                     let moveX = parseInt((e.targetTouches[0].clientX - this.moveInfo.startX)*1.5);
@@ -419,8 +421,7 @@
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
                             this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                         }
-                    };
-                    e.preventDefault()
+                    }
                 }    
             }
 		}
