@@ -419,7 +419,8 @@
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
                             this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                         }
-                    }
+                    };
+                    e.preventDefault()
                 }    
             }
 		}
