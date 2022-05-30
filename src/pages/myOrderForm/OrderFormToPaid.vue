@@ -440,6 +440,7 @@
 
             //微信内支付
             onBridgeReady(params) {
+                let that = this;
                 const pay_params = params;
                 WeixinJSBridge.invoke(
                     'getBrandWCPayRequest', {
@@ -452,15 +453,13 @@
                     },
                     function (res) {
                         if (res.err_msg == "get_brand_wcpay_request:ok" ) {
-                            this.$toast({
-                                message: '支付成功',
-                                position: 'bottom'
-                            })
+                            that.isShowPaySuccess = true;
                         } else {
-                           this.$toast({
+                           that.$toast({
                                 message: '支付失败',
                                 position: 'bottom'
-                            }) 
+                            });
+                            that.isShowPaySuccess = true; 
                         }
                     }
                 ) 
