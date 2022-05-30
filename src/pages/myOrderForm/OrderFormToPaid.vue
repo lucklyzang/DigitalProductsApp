@@ -440,7 +440,7 @@
 
             //微信内支付
             onBridgeReady(params) {
-                const pay_params = JSON.parse(params);
+                const pay_params = params;
                 WeixinJSBridge.invoke(
                     'getBrandWCPayRequest', {
                         "appId": pay_params.appId,  //公众号名称，由商户传入     
