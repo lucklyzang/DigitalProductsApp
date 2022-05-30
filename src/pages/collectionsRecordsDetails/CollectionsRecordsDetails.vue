@@ -2,6 +2,9 @@
 	<div class="page-box">
         <NavBar :path="path" title="藏品详情"/>
         <!-- <van-loading type="spinner" v-show="loadingShow"/> -->
+        <div class="light-box">
+            <img :src="lightPng" alt="">
+        </div>
         <div class="show-picture-box">
             <van-dialog v-model="isShowPicture" :show-confirm-button="false"  :close-on-popstate="false" title="" >
                 <div class="unfold-top">
@@ -361,6 +364,7 @@ let BASESCALE = 1;
                 sharePng: require("@/common/images/login/my-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
                 unfoldPng: require("@/common/images/home/unfold.png"),
+                lightPng: require("@/common/images/home/light.png"),
                 detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png"),
                   lights: [
                     {
@@ -645,6 +649,17 @@ let BASESCALE = 1;
             .van-nav-bar__title {
                 color: #fff !important;
                 font-size: 16px !important
+            }
+        };
+        .light-box {
+            width: 80%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            >img {
+                width: 100%
             }
         };
         .show-picture-box {

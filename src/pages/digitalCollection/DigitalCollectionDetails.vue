@@ -14,6 +14,9 @@
                 <img :src="sharePng" alt="">
             </template>
         </van-nav-bar>
+        <div class="light-box">
+            <img :src="lightPng" alt="">
+        </div>
         <div class="content" id="top-content">
             <div class="content-top">
                 <div class="collection-exhibition">
@@ -286,6 +289,7 @@
                 digitalCollectioUrl: require("@/common/images/home/default-person.png"),
                 sharePng: require("@/common/images/login/my-details-share.png"),
                 boothPng: require("@/common/images/home/booth.png"),
+                lightPng: require("@/common/images/home/light.png"),
                 detailsTitleWrappper: require("@/common/images/home/details-title-wrapper.png"),
                 blockchainServePng: require("@/common/images/home/blockchain-service.png")
 			}
@@ -566,6 +570,17 @@
                     width: 20px;
                     height: 20px
                 }
+            }
+        };
+        .light-box {
+            width: 80%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            >img {
+                width: 100%
             }
         };
         .content {
