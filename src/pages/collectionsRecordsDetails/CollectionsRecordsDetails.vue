@@ -697,9 +697,9 @@ let BASESCALE = 1;
                         .collection-exhibition {
                             flex: 1;
                             width: 100%;
-                            // perspective: 400px;
-                            // perspective-origin: 50% 50%;
-                            // transform-style: preserve-3d;
+                            perspective: 400px;
+                            perspective-origin: 50% 50%;
+                            transform-style: preserve-3d;
                             margin: 0 auto;
                             position: relative;
                             display: flex;
@@ -713,15 +713,15 @@ let BASESCALE = 1;
                             .abbr-img {
                                 width: 90%;
                                 margin-top: 60px;
-                                // animation-name: product-animation;
-                                // animation-duration: 14s;
-                                // animation-iteration-count: infinite;
+                                animation-name: product-animation;
+                                animation-duration: 14s;
+                                animation-iteration-count: infinite;
                             };
                         };
                         .booth {
                             width: 100%;
                             margin: 0 auto;
-                            margin-top: 20px;
+                            margin-top: 30px;
                             >img {
                                 width: 100%
                             }
@@ -796,9 +796,9 @@ let BASESCALE = 1;
                         .collection-exhibition {
                             flex: 1;
                             width: 100%;
-                            // perspective: 400px;
-                            // perspective-origin: 50% 50%;
-                            // transform-style: preserve-3d;
+                            perspective: 400px;
+                            perspective-origin: 50% 50%;
+                            transform-style: preserve-3d;
                             margin: 0 auto;
                             position: relative;
                             display: flex;
@@ -815,15 +815,15 @@ let BASESCALE = 1;
                             .abbr-img {
                                 width: 90%;
                                 margin-top: 60px;
-                                // animation-name: product-animation;
-                                // animation-duration: 14s;
-                                // animation-iteration-count: infinite;
+                                animation-name: product-animation;
+                                animation-duration: 14s;
+                                animation-iteration-count: infinite;
                             };
                         };
                         .booth {
                             width: 100%;
                             margin: 0 auto;
-                            margin-top: 20px;
+                            margin-top: 30px;
                             >img {
                                 width: 100%
                             }
@@ -857,9 +857,9 @@ let BASESCALE = 1;
             .content-top {
                 .collection-exhibition {
                     width: 80%;
-                    // perspective: 400px;
-                    // perspective-origin: 50% 50%;
-                    // transform-style: preserve-3d;
+                    perspective: 400px;
+                    perspective-origin: 50% 50%;
+                    transform-style: preserve-3d;
                     margin: 0 auto;
                     position: relative;
                     display: flex;
@@ -874,9 +874,9 @@ let BASESCALE = 1;
                     .abbr-img {
                         width: 250px;
                         margin-top: 60px;
-                        // animation-name: product-animation;
-                        // animation-duration: 14s;
-                        // animation-iteration-count: infinite;
+                        animation-name: product-animation;
+                        animation-duration: 14s;
+                        animation-iteration-count: infinite;
                     };
                     .three-dimensional-img {
                         margin-top: 60px;
@@ -898,7 +898,7 @@ let BASESCALE = 1;
                 .booth {
                     width: 80%;
                     margin: 0 auto;
-                    margin-top: 20px;
+                    margin-top: 30px;
                     position: relative;
                     >img {
                         width: 100%
