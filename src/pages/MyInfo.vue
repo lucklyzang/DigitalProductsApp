@@ -295,7 +295,7 @@
 
             //区块链点击事件
             onClickLeft () {
-                 if (!this.isLogin) {
+                if (!this.isLogin) {
                     this.changeIsEnterLoginPageSource('/myInfo');
                     this.$router.push({
                         path: '/login'
@@ -307,6 +307,13 @@
 
             //设置点击事件
             onClickRight () {
+                if (!this.isLogin) {
+                    this.changeIsEnterLoginPageSource('/myInfo');
+                    this.$router.push({
+                        path: '/login'
+                    });
+                    return
+                };
                 this.$router.push({
                     path: 'systemSet'
                 })
