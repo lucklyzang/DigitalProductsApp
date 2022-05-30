@@ -33,7 +33,7 @@
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"
                             :width="250" 
-                            height="auto" 
+                            :height="300"  
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-obj>
@@ -59,7 +59,7 @@
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
                             :width="250" 
-                            height="auto" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-three>
@@ -72,7 +72,7 @@
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
                             :width="250" 
-                            height="auto" 
+                            :height="300"
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-stl>
@@ -85,7 +85,7 @@
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
                             :width="250" 
-                            height="auto" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-collada>
@@ -98,7 +98,7 @@
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
                             :width="250" 
-                            height="auto" 
+                            :height="300"  
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-ply>
@@ -111,7 +111,7 @@
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
                             :width="250" 
-                            height="auto" 
+                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-gltf>
