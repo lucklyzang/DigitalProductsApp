@@ -65,7 +65,8 @@
 		onReady() {},
 		computed: {
 			...mapGetters([
-				'countdownTime'
+				'countdownTime',
+				'inviteMessage'
 			])
 		},
 		mounted() {
@@ -135,7 +136,9 @@
 			phoneCodeLogin (code) {
 				phoneAuthCodeLogin({
 					mobile: this.phoneNumber,
-  					password: code
+  					password: code,
+					inviteType: this.inviteMessage ? this.inviteMessage['inviteType'] : '',
+  					inviteId: this.inviteMessage ? this.inviteMessage['inviteId'] : ''
 				}).then((res) => {
 					if (res && res.data.code == 0) {
 						this.changeToken(res.data.token);

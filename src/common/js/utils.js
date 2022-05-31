@@ -108,11 +108,11 @@ export const isWeiXin = () => {
  * @param{String} code 指定参数名
 */
 
-export const getUrlParam = (code) => {
-  var reg = new RegExp("(^|&)" + code + "=([^&]*)(&|$)");
-  var r = window.location.search.substr(1).match(reg);
-  if (r != null) return unescape(r[2]);
-  return null;
+export const getUrlParam = (code,search) => {
+  search = search ||  window.location.search.substr(1) || window.location.hash.split("?")[1];
+  let reg = new RegExp("(^|&)"+ code +"=([^&]*)(&|$)");
+  let r = search.match(reg);
+  if (r != null) return  unescape(r[2]); return null;
 }
 
 /*

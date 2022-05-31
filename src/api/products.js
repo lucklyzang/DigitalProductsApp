@@ -86,9 +86,9 @@ export function productsAccessRecord(id) {
 };
 
 // 购买商品
-export function purchaseCommodity(commId) {
+export function purchaseCommodity(commId,inviteType,inviteId) {
     return request({
-        url: `app/order/${commId}`,
+        url: !inviteId ? `app/order/${commId}` : `app/order/${commId}?inviteType=${inviteType}&inviteId=${inviteId}`,
         method: 'post'
     })
 };

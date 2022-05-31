@@ -215,7 +215,7 @@
         ModelPly,
         ModelGltf
     } from "vue-3d-model";
-    import { isAndroid_ios, isWeiXin } from '@/common/js/utils'
+    import { isAndroid_ios, isWeiXin, getUrlParam } from '@/common/js/utils'
 	import {inquareProductDetails,purchaseCommodity,inquareUserInfo,productionShare} from '@/api/products.js'
 	export default {
         name: 'DigitalCollectionDetails',
@@ -300,7 +300,8 @@
 			...mapGetters([
                 'productsId',
                 'isLogin',
-                'userInfo'
+                'userInfo',
+                'inviteMessage'
 			])
 		},
 
@@ -315,6 +316,7 @@
                     })
                 })
             };
+            this.gainInviteMessage();
             this.toTop();
             this.queryProductDetails()
 		},
@@ -329,9 +331,11 @@
 			...mapMutations([
                 'changeOrderId',
                 'changeIsPaying',
+                'changeProductsId',
                 'storeUserInfo',
                 'changeIsRefreshHomePage',
-                'changeIsEnterLoginPageSource'
+                'changeIsEnterLoginPageSource',
+                'changeInviteMessage'
 			]),
 
             rotate () {
@@ -365,16 +369,43 @@
                 })
             },
 
+            // 通过扫码进入商品详情页时获取相关参数(作品id、邀请类型、邀请码)
+            gainInviteMessage () {
+                let commId;
+                if (window.location.href.indexOf("commId") != -1) {
+                    commId = getUrlParam('commId');
+                    let temporaryMessage = {};
+                    temporaryMessage['id'] = commId;
+                    this.changeProductsId(temporaryMessage)
+                };
+                if (window.location.href.indexOf("inviteType") != -1) {
+                    let inviteType = getUrlParam('inviteType');
+                    let temporaryInviteMessage = {};
+                    temporaryInviteMessage = !this.inviteMessage ? {} : this.inviteMessage;
+                    temporaryInviteMessage['inviteType'] = inviteType;
+                    temporaryInviteMessage['id'] = commId
+                    this.changeInviteMessage(temporaryInviteMessage)
+                };
+                if (window.location.href.indexOf("inviteId") != -1) {
+                    let inviteId = getUrlParam('inviteId');
+                    let temporaryInviteMessage = {};
+                    temporaryInviteMessage = !this.inviteMessage ? {} : this.inviteMessage;
+                    temporaryInviteMessage['inviteId'] = inviteId;
+                    temporaryInviteMessage['id'] = commId;
+                    this.changeInviteMessage(temporaryInviteMessage)
+                } 
+            },
+
             // 查询作品详情
             queryProductDetails () {
                 return new Promise((resolve,rejrect) => {
                     this.loadingImgGifShow = true;
                     inquareProductDetails(this.productsId.id).then((res) => {
                         this.loadingImgGifShow = false;
-                        if (res.data.data.three !== '0') {
-                            this.threeDimensionalShow = true
-                        };
                         if (res && res.data.code == 0) {
+                            if (res.data.data.three !== '0') {
+                                this.threeDimensionalShow = true
+                            };
                             this.productsDetails = res.data.data;
                             this.isShowContent = true;
                             resolve();
@@ -459,8 +490,19 @@
             // 购买商品
             buyCommodity () {
                 this.loadingShow = true;
-                this.overlayShow = true; 
-                purchaseCommodity(this.productsId.id).then((res) => {
+                this.overlayShow = true;
+                let inviteType,inviteId;
+                // 判断是不是通过邀请下单
+                if (this.inviteMessage) {
+                    if (this.inviteMessage.id == this.productsId.id) {
+                        inviteType = this.inviteMessage['inviteType'];
+                        inviteId = this.inviteMessage['inviteId']
+                    }
+                } else {
+                    inviteType = '';
+                    inviteId = ''
+                };
+                purchaseCommodity(this.productsId.id,inviteType,inviteId).then((res) => {
                     this.loadingShow = false;
                     this.overlayShow = false; 
                     if (res && res.data.code == 0) {

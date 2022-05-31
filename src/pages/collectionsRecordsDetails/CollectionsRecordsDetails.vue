@@ -56,7 +56,6 @@
                     <div class="three-dimensional-img">
                         <model-obj
                                 v-if="!loadingImgGifShow && collectionRecordDetails.three === 'obj'" 
-                                :rotation="rotation"
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
@@ -68,7 +67,6 @@
                             </model-obj>
                             <model-fbx
                                 v-if="!loadingImgGifShow && collectionRecordDetails.three === 'fbx'" 
-                                :rotation="rotation"
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
@@ -80,7 +78,6 @@
                             </model-fbx>
                             <model-three
                                 v-if="!loadingImgGifShow && collectionRecordDetails.three === 'json'" 
-                                :rotation="rotation"
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
@@ -92,7 +89,6 @@
                             </model-three>
                             <model-stl
                                 v-if="!loadingImgGifShow && collectionRecordDetails.three === 'stl'"  
-                                :rotation="rotation"
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
@@ -104,7 +100,6 @@
                             </model-stl>
                             <model-collada
                                 v-if="!loadingImgGifShow && collectionRecordDetails.three === 'dae'"  
-                                :rotation="rotation"
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
@@ -116,7 +111,6 @@
                             </model-collada>
                             <model-ply
                                 v-if="!loadingImgGifShow && collectionRecordDetails.three === 'ply'"  
-                                :rotation="rotation"
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
@@ -128,7 +122,6 @@
                             </model-ply>
                             <model-gltf
                                 v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf(2.0)'"  
-                                :rotation="rotation"
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
@@ -712,9 +705,6 @@ let BASESCALE = 1;
                         .collection-exhibition {
                             flex: 1;
                             width: 100%;
-                            perspective: 400px;
-                            perspective-origin: 50% 50%;
-                            transform-style: preserve-3d;
                             margin: 0 auto;
                             position: relative;
                             display: flex;
@@ -727,10 +717,7 @@ let BASESCALE = 1;
                             };
                             .abbr-img {
                                 width: 90%;
-                                margin-top: 60px;
-                                animation-name: product-animation;
-                                animation-duration: 14s;
-                                animation-iteration-count: infinite;
+                                margin-top: 60px
                             };
                         };
                         .booth {

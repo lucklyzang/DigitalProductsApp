@@ -192,7 +192,8 @@
 		methods: {
 			...mapMutations([
 				'changeOrderId',
-				'changeIsPaying'
+				'changeIsPaying',
+				'changeProductsId'
 			]),
 
 			// tab切换事件
@@ -239,7 +240,8 @@
       								orderNo: item.orderNo,
 									collectionStatus: item.status,
 									extend: item.extend,
-									item: item.createTime
+									item: item.createTime,
+									comId: item.comId
                                 })
                             };
 							if (index != 0) {
@@ -297,6 +299,9 @@
 			// 跳转订单详情页面
 			orderDetailsEvent (item) {
 				this.changeOrderId(item.orderId);
+				let temporaryMessage = {};
+                temporaryMessage['id'] = item.comId;
+                this.changeProductsId(temporaryMessage);
 				this.$router.push({name: 'orderFormDetails',params: {id:item.orderId}})
 			}
 		}

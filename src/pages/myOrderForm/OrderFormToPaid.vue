@@ -137,7 +137,9 @@
                 'isPaying',
                 'appId',
                 'isGetCode',
-                'openId'
+                'openId',
+                'productsId',
+                'inviteMessage'
 			])
 		},
 
@@ -156,7 +158,6 @@
         },
 
 		mounted() {
-            console.log(this.appId);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -179,7 +180,7 @@
                         let code = getUrlParam('code');
                         this.getOpenIdEvent(code);
                     }
-                }    
+                }
             };    
             this.inquareOrderDetails(this.orderId)
 		},
@@ -195,7 +196,8 @@
                 'changeIsPaying',
                 'changeOrderId',
                 'changeIsRefreshHomePage',
-                'changeOpenId'
+                'changeOpenId',
+                'changeInviteMessage'
 			]),
 
             // 查询订单详情
@@ -268,6 +270,13 @@
                             message: '订单支付成功',
                             position: 'bottom'
                         });
+                        // 判断是不是通过邀请下单
+                        if (this.inviteMessage) {
+                            if (this.inviteMessage.id == this.productsId.id) {
+                            //同一产品只算一次引流 
+                                this.changeInviteMessage('')
+                            }
+                        }    
                         this.paymentSuccess = true;
                         this.changeIsPaying(false);
                         this.changeOrderId(this.orderId);

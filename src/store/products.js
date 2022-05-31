@@ -8,6 +8,11 @@ export default {
             state.productsId = getStore('productsId') ? JSON.parse(getStore('productsId')) : null;
             return state.productsId
         },
+
+        inviteMessage: (state) => {
+            state.inviteMessage = getStore('inviteMessage') ? JSON.parse(getStore('inviteMessage')) : null;
+            return state.inviteMessage
+        },
         
         orderId: (state) => {
             state.orderId = getStore('orderId') ? getStore('orderId') : '';
@@ -126,6 +131,12 @@ export default {
         changeIsRefreshHomePage (state, playLoad) {
             setStore('isRefreshHomePage', playLoad);
             state.isRefreshHomePage = playLoad
+        },
+
+        // 保存作品邀请信息状态
+        changeInviteMessage (state,playLoad) {
+            setStore('inviteMessage', playLoad);
+            state.inviteMessage = playLoad
         },
 
         // 保存支付状态
