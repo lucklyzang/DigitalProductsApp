@@ -91,7 +91,7 @@
 				this.loadingShow = true;
                 this.emptyShow = false;
                 this.orderList = [];
-				queryObjectRecord({page: 1, limit: 20}).then((res) => {
+				queryObjectRecord().then((res) => {
 					this.loadingShow = false;
                     // 线上展览的产品
                     let hallExhibits = this.queryHallMessage.exhibits;

@@ -151,7 +151,7 @@
 				this.loadingShow = true;
                 this.emptyShow = false;
                 this.orderList = [];
-				queryObjectRecord({page: 1, limit: 20}).then((res) => {
+				queryObjectRecord().then((res) => {
 					this.loadingShow = false;
 					if (res && res.data.code == 0) {
                         if (res.data.page.list.length == 0) {

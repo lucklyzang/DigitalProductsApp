@@ -135,11 +135,10 @@ export function queryOrderDetails(id) {
 };
 
 // 查询藏品记录
-export function queryObjectRecord(data) {
+export function queryObjectRecord() {
     return request({
         url: 'app/record',
-        method: 'get',
-        params: data
+        method: 'get'
     })
 };
 
