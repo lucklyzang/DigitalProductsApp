@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="content-right">
-                   <div class="exhibition-list" v-for="(item,index) in myHallDetails.exhibits" :key="index" :ref="'exhibitionList'+ index" @click="recordsDetailsEvent(item)">
+                   <div class="exhibition-list" v-for="(item,index) in myHallDetails.exhibits" :key="index" :ref="'exhibitionList'+ index" @click.stop="recordsDetailsEvent(item)">
                        <div class="exhibits-top" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
                            <img :data-src="item.path" alt="">
                        </div>
@@ -155,6 +155,7 @@
 
             // 跳转藏品记录详情
 			recordsDetailsEvent (item) {
+                console.log('点击开始');
                 let temporary = {};
                 temporary['chain'] = item['chain'];
                 temporary['collectionName'] = item['commName'];
@@ -225,7 +226,6 @@
             touchstartHandle() {
                 //判断是否在滑动区域内滑动
                 let e = e || window.event;
-                e.preventDefault();
                 this.isSlideArea = true;
                 this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                 this.moveInfo.lastMoveTime = new Date().getTime();
@@ -236,7 +236,6 @@
             // 滑动中
             touchmoveHandle() {
                 let e = e || window.event;
-                e.preventDefault();
                 if (this.isSlideArea) {
                     // 滑动距离
                     let moveX = parseInt((e.targetTouches[0].clientX - this.moveInfo.startX)*1.5);
@@ -295,7 +294,8 @@
                             this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
                             this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                         }
-                    }
+                    };
+                    e.preventDefault();
                 }    
             }
 		}
