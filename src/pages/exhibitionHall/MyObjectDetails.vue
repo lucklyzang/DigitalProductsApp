@@ -139,6 +139,11 @@
             next()
         },
 
+        beforeDestroy() {
+            window.removeEventListener('touchstart',this.touchstartHandle,false);
+            window.removeEventListener('touchmove',this.touchmoveHandle,false)
+        },
+
 
         updated() {
             if (this.isRenderComplete) {

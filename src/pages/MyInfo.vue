@@ -24,6 +24,7 @@
     <van-pull-refresh
         v-model="isRefresh"
         pulling-text="下拉刷新"
+        :disabled="isDisabledRefresh"
         loosing-text="释放立即刷新"
         success-text="刷新成功"
         @refresh="onRefresh"
@@ -110,6 +111,8 @@
         },
         data() {
             return {
+                scrollTop: 0, // 储存滚动位置
+                isDisabledRefresh: false,
                 isRefresh: false,
                 isDisabled: false,
                 timer: null,
@@ -171,28 +174,21 @@
                     this.queryuserInfo()
                 };
                 this.queryUnReadEvent()
+            };
+            window.addEventListener('scroll', this.handleScroll);
+            if (this.scrollTop > 0) {
+                this.isDisabledRefresh = true;
+            } else {
+                this.isDisabledRefresh = false
             }
         },
 
         beforeDestroy() {
-            console.log(this.timer);
+            window.removeEventListener('scroll', this.handleScroll);
             if(this.timer) { 
                 clearTimeout(this.timer)
             }
         },
-
-        // created(){
-        //     document.body.addEventListener('touchmove', this.eventListenerHandle, {
-        //         passive: false
-        //     })
-        // },
-
-        //页面离开销毁监听事件
-        // destroyed(){
-        //     document.body.removeEventListener('touchmove',this.eventListenerHandle,{
-        //         passive: false
-        //     })
-        // },
 
         watch: {},
 
@@ -220,6 +216,16 @@
             eventListenerHandle(e){
                 if(e._isScroller) return;
                 e.preventDefault()
+            },
+
+            //页面滚动事件
+            handleScroll () {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop > 0) {
+                    this.isDisabledRefresh = true;
+                } else {
+                    this.isDisabledRefresh = false
+                }
             },
 
             //查询是否存在未读消息
@@ -262,7 +268,8 @@
             //我的页面下拉刷新事件
             onRefresh () {
                 if (!this.isLogin) { this.isRefresh = false; return };
-                this.queryuserInfo()
+                this.queryuserInfo();
+                this.queryUnReadEvent()
             },
 
             // 上部区域功能事件

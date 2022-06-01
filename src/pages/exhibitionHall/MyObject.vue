@@ -127,6 +127,10 @@
             };
             this.registerSlideEvent()
 		},
+        beforeDestroy() {
+            window.removeEventListener('touchstart',this.touchstartHandle,false);
+            window.removeEventListener('touchmove',this.touchmoveHandle,false)
+        },
 		methods: {
 			...mapMutations([
                 'changeQueryHallMessage',

@@ -150,6 +150,11 @@
             this.echoExhibitionThemeMessage();
             this.registerSlideEvent()
 		},
+        
+        beforeDestroy() {
+            window.removeEventListener('touchstart',this.touchstartHandle,false);
+            window.removeEventListener('touchmove',this.touchmoveHandle,false)
+        },
 
         updated() {
             if (this.isRenderComplete) {
@@ -496,7 +501,7 @@
                 position: absolute;
                 display: flex;
                 flex-flow: row nowrap;
-                top: 6vh;
+                top: 10vh;
                 left: 0;
                 height: 72vh;
                 .content-left {
