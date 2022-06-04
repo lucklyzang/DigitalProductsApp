@@ -60,9 +60,7 @@
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
                                 :src="collectionRecordDetails.url"
-                                :width="350" 
-                                :height="400" 
-                                :backgroundAlpha="1" 
+                                :backgroundAlpha="1"
                                 backgroundColor="#1e1e1b">
                             </model-obj>
                             <model-fbx
@@ -71,8 +69,6 @@
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
                                 :src="collectionRecordDetails.url" 
-                                :width="350" 
-                                :height="400"
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-fbx>
@@ -82,8 +78,6 @@
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
                                 :src="collectionRecordDetails.url"  
-                                :width="350" 
-                                :height="400"
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-three>
@@ -93,8 +87,6 @@
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
                                 :src="collectionRecordDetails.url"  
-                                :width="350" 
-                                :height="400" 
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-stl>
@@ -104,8 +96,6 @@
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
                                 :src="collectionRecordDetails.url"  
-                                :width="350" 
-                                :height="400" 
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-collada>
@@ -115,8 +105,6 @@
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
                                 :src="collectionRecordDetails.url"  
-                                :width="350" 
-                                :height="400"
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-ply>
@@ -126,8 +114,6 @@
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
                                 :src="collectionRecordDetails.url"  
-                                :width="350" 
-                                :height="400" 
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-gltf>
@@ -160,8 +146,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-obj>
@@ -173,8 +157,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url" 
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-fbx>
@@ -186,8 +168,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-three>
@@ -199,8 +179,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-stl>
@@ -212,8 +190,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-collada>
@@ -225,8 +201,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :width="250" 
-                            :height="300"  
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-ply>
@@ -237,9 +211,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.url"  
-                            :width="250" 
-                            :height="300"  
+                            :src="collectionRecordDetails.url"    
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-gltf>
@@ -808,28 +780,15 @@
                         .collection-exhibition {
                             flex: 1;
                             width: 100%;
-                            perspective: 400px;
-                            perspective-origin: 50% 50%;
-                            transform-style: preserve-3d;
                             margin: 0 auto;
                             position: relative;
-                            display: flex;
-                            flex-flow: row nowrap;
-                            align-items: center;
-                            justify-content: center;
-                            img {
-                                pointer-events: none;
-                                width: 100%
-                            };
                             .three-dimensional-img {
-                                margin-top: 60px;
-                            };
-                            .abbr-img {
-                                width: 90%;
-                                margin-top: 60px;
-                                animation-name: product-animation;
-                                animation-duration: 14s;
-                                animation-iteration-count: infinite;
+                                width: 100%;
+                                height: 100%;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                align-items: center;
+                                justify-content: center
                             };
                         };
                         .booth {
@@ -891,7 +850,20 @@
                         animation-iteration-count: infinite;
                     };
                     .three-dimensional-img {
-                        margin-top: 60px;
+                        width: 90%;
+                        min-height: 50vh;
+                        display: flex;
+                        flex-flow: row nowrap;
+                        justify-content: center;
+                        align-items: center;
+                        >div {
+                            width: 500px !important;
+                            height: 250px !important;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            justify-content: center;
+                            align-items: center;
+                        }
                     };
                     .loading-img-wrapper {
                         position: absolute;

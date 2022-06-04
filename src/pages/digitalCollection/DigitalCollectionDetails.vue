@@ -35,8 +35,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"
-                            :width="250" 
-                            :height="300"  
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-obj>
@@ -48,8 +46,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path" 
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-fbx>
@@ -61,8 +57,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-three>
@@ -74,8 +68,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="250" 
-                            :height="300"
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-stl>
@@ -87,8 +79,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-collada>
@@ -99,9 +89,7 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="productsDetails.path"  
-                            :width="250" 
-                            :height="300"  
+                            :src="productsDetails.path"   
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-ply>
@@ -113,8 +101,6 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :width="250" 
-                            :height="300" 
                             :backgroundAlpha="1" 
                             backgroundColor="#1e1e1b">
                         </model-gltf>
@@ -665,12 +651,22 @@
                             width: 100px;
                         }
                     };    
-                    >div {
+                    .three-dimensional-img {
+                        width: 90%;
+                        min-height: 50vh;
                         display: flex;
                         flex-flow: row nowrap;
                         justify-content: center;
                         align-items: center;
-                    };
+                        >div {
+                            width: 500px !important;
+                            height: 250px !important;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                    }
                 };
                 .booth {
                     width: 80%;
