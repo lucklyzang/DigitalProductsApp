@@ -727,8 +727,7 @@
                                 -ms-overflow-style:none;
                             };
                             .abbr-img::-webkit-scrollbar {
-                                width: 0px;
-                                height: 0px;
+                                display: none;
                             };
                         };
                         .booth {
