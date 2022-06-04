@@ -1,5 +1,5 @@
 <template>
-	<div class="page-box">
+	<div class="page-box" id="top-content">
         <NavBar :path="path" title="藏品详情"/>
         <!-- <van-loading type="spinner" v-show="loadingShow"/> -->
         <div class="light-box">
@@ -142,7 +142,7 @@
                 </div>
             </van-dialog>
         </div>
-        <div class="content" id="top-content">
+        <div class="content">
             <div class="content-top">
                 <div class="collection-exhibition">
                     <div class="loading-img-wrapper">
@@ -308,7 +308,6 @@
 </template>
 
 <script>
-let BASESCALE = 1;
 	import {
 		mapGetters,
 		mapMutations
@@ -340,6 +339,7 @@ let BASESCALE = 1;
 		data() {
 			return {
                 path: '',
+                objectPictureWidth: '',
                 rotation: {
                     x: 0,
                     y: 0,
@@ -456,6 +456,7 @@ let BASESCALE = 1;
                 'changeIsEnterCollectionsRecordsDetailsPageSource'
 			]),
 
+            // 三维图片旋转函数
             rotate () {
                 this.rotation.y += 0.01;
                 requestAnimationFrame(this.rotate)
@@ -465,8 +466,7 @@ let BASESCALE = 1;
             unfoldPictureEvent () {
                 if (this.collectionRecordDetails.three === '0') {
                     this.isShowPicture = true;
-                    BASESCALE = 1;
-                    this.$refs.objectPicture.style.transform = `scale(${BASESCALE})`
+                    this.$refs.objectPicture.style.width = '100%';
                 } else if (this.collectionRecordDetails.three !== '0') {
                     this.isShowThreeDimensional = true
                 }
@@ -474,22 +474,25 @@ let BASESCALE = 1;
 
             //藏品放大事件
             pictureScaleEvent () {
-                BASESCALE = BASESCALE + 0.1;
-                this.$refs.objectPicture.style.transform = `scale(${BASESCALE})`
+                this.objectPictureWidth = this.$refs.objectPicture.offsetWidth;
+                this.objectPictureWidth += 10;
+                this.$refs.objectPicture.style.width = `${this.objectPictureWidth}px`
             },
 
             //藏品缩小事件
             pictureReduceEvent () {
-                if (BASESCALE > 0.2) {
-                    BASESCALE = BASESCALE - 0.1;
-                    this.$refs.objectPicture.style.transform = `scale(${BASESCALE})`
+                this.objectPictureWidth = this.$refs.objectPicture.offsetWidth;
+                if (this.objectPictureWidth > 20) {
+                    this.objectPictureWidth -= 10;
+                    this.$refs.objectPicture.style.width = `${this.objectPictureWidth}px`
                 }
             },
 
             //关闭图片展示事件
             closePictureUnfoldEvent () {
                 if (this.collectionRecordDetails.three === '0') {
-                    this.isShowPicture = false
+                    this.isShowPicture = false;
+                    this.toTop();
                 } else if (this.collectionRecordDetails.three !== '0') {
                     this.isShowThreeDimensional = false
                 }
@@ -716,8 +719,16 @@ let BASESCALE = 1;
                                 width: 100%
                             };
                             .abbr-img {
-                                width: 90%;
-                                margin-top: 60px
+                                overflow-x: scroll;
+                                margin-top: 60px;
+                                padding: 0 6px;
+                                box-sizing: border-box;
+                                scrollbar-width: none;
+                                -ms-overflow-style:none;
+                            };
+                            .abbr-img::-webkit-scrollbar {
+                                width: 0px;
+                                height: 0px;
                             };
                         };
                         .booth {
