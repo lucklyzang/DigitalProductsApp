@@ -146,7 +146,10 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            style="width:100%" 
+                            :width="500"
+                            :height="300"
                             backgroundColor="#1e1e1b">
                         </model-obj>
                         <model-fbx
@@ -155,9 +158,11 @@
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
-                            @on-progress="threeDimensionProgress" 
+                            @on-progress="threeDimensionProgress"
                             :src="collectionRecordDetails.url" 
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"
                             backgroundColor="#1e1e1b">
                         </model-fbx>
                         <model-three
@@ -168,7 +173,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300" 
                             backgroundColor="#1e1e1b">
                         </model-three>
                         <model-stl
@@ -179,7 +186,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-stl>
                         <model-collada
@@ -190,7 +199,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-collada>
                         <model-ply
@@ -201,7 +212,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"  
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-ply>
                         <model-gltf
@@ -212,7 +225,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"    
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-gltf>
                     </div>
@@ -643,6 +658,7 @@
                     display: flex;
                     flex-direction: column;
                     height: 100%;
+                    position: relative;
                     .unfold-top {
                         height: 80px;
                         display: flex;
@@ -651,6 +667,11 @@
                         flex-flow: row nowrap;
                         align-items: center;
                         justify-content: space-between;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        z-index: 1000;
                         .top-left {
                             flex: 1;
                             >p {
@@ -743,6 +764,7 @@
                     display: flex;
                     flex-direction: column;
                     height: 100%;
+                    position: relative;
                     .unfold-top {
                         height: 80px;
                         display: flex;
@@ -751,6 +773,11 @@
                         flex-flow: row nowrap;
                         align-items: center;
                         justify-content: space-between;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        z-index: 1000;
                         .top-left {
                             flex: 1;
                             >p {
@@ -850,15 +877,12 @@
                         animation-iteration-count: infinite;
                     };
                     .three-dimensional-img {
-                        width: 90%;
-                        min-height: 50vh;
+                        width: 100%;
                         display: flex;
                         flex-flow: row nowrap;
                         justify-content: center;
                         align-items: center;
                         >div {
-                            width: 500px !important;
-                            height: 250px !important;
                             display: flex;
                             flex-flow: row nowrap;
                             justify-content: center;

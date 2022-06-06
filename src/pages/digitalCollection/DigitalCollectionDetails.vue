@@ -35,7 +35,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300" 
                             backgroundColor="#1e1e1b">
                         </model-obj>
                         <model-fbx
@@ -46,7 +48,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path" 
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-fbx>
                         <model-three
@@ -57,7 +61,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-three>
                         <model-stl
@@ -69,6 +75,8 @@
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
                             :backgroundAlpha="1" 
+                            :width="500"
+                            :height="300" 
                             backgroundColor="#1e1e1b">
                         </model-stl>
                         <model-collada
@@ -79,7 +87,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-collada>
                         <model-ply
@@ -90,7 +100,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"   
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-ply>
                         <model-gltf
@@ -101,7 +113,9 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"  
-                            :backgroundAlpha="1" 
+                            :backgroundAlpha="1"
+                            :width="500"
+                            :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-gltf>
                     </div>
@@ -630,16 +644,19 @@
                     align-items: center;
                     justify-content: center;
                     min-height: 50vh;
-                    img {
-                        pointer-events: none;
-                        width: 100%;
-                    };
                     .abbr-img {
-                        width: 250px;
+                        width: 100%;
+                        height: 300px;
                         margin-top: 60px;
                         animation-name: product-animation;
                         animation-duration: 14s;
                         animation-iteration-count: infinite;
+                        img {
+                            pointer-events: none;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: contain
+                        }
                     };
                     .loading-img-wrapper {
                         position: absolute;
@@ -652,15 +669,12 @@
                         }
                     };    
                     .three-dimensional-img {
-                        width: 90%;
-                        min-height: 50vh;
+                        width: 100%;
                         display: flex;
                         flex-flow: row nowrap;
                         justify-content: center;
                         align-items: center;
                         >div {
-                            width: 500px !important;
-                            height: 250px !important;
                             display: flex;
                             flex-flow: row nowrap;
                             justify-content: center;
