@@ -725,7 +725,6 @@
                                     }
                                 };
                                 /deep/ .van-icon {
-                                    margin-top: -1px
                                 };
                                 /deep/ .van-count-down {
                                     color: #63b66b;
@@ -736,7 +735,8 @@
                                 background: rgba(0, 0, 0, .9);
                                 color: #bd68ff;
                                 border-radius: 16px;
-                                padding: 5px 10px;
+                                padding: 0 10px;
+                                height: 24px;
                                 box-sizing: border-box;
                                 display: flex;
                                 flex-flow: row nowrap;
@@ -748,7 +748,6 @@
                                     }
                                 };
                                 /deep/ .van-icon {
-                                    margin-top: -1px
                                 };
                                 /deep/ .van-count-down {
                                     color: #bd68ff;
@@ -759,31 +758,39 @@
                             .center {
                                 background:rgba(0, 0, 0, .9);
                                 border-radius: 16px;
-                                padding: 5px 10px;
+                                padding: 0 10px;
+                                height: 24px;
                                 box-sizing: border-box;
                                 color: #fff;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                justify-content: flex-start;
+                                align-items: center;
                                 span {
-                                    &:nth-child(1) {
+                                    &:nth-child(2) {
                                         margin: 0 4px
                                     }
                                 };
                                 /deep/ .van-icon {
-                                    margin-top: -1px
                                 };
                             };
                             .right {
                                 background: rgba(0, 0, 0, .9);
                                 border-radius: 14px;
-                                padding: 5px 10px;
+                                padding: 0 10px;
                                 box-sizing: border-box;
+                                height: 24px;
+                                display: flex;
+                                flex-flow: row nowrap;
+                                justify-content: flex-start;
+                                align-items: center;
                                 color: #e9ad70;
                                 span {
-                                    &:nth-child(1) {
+                                    &:nth-child(2) {
                                         margin: 0 4px
                                     }
                                 };
                                 /deep/ .van-icon {
-                                    margin-top: -1px
                                 };
                             }
                         }
@@ -850,11 +857,18 @@
                                     .number {
                                         font-size: 0;
                                         margin: 10px 0;
+                                        height: 20px;
+                                        display: flex;
+                                        flex-flow: row nowrap;
+                                        align-items: center;
+                                        justify-content: flex-start;
                                         span {
                                             font-size: 12px;
-                                            display: inline-block;
                                             height: 20px;
-                                            line-height: 20px;
+                                            display: inline-block;
+                                            display: flex;
+                                            flex-flow: row nowrap;
+                                            align-items: center;
                                             padding: 0 8px;
                                             box-sizing: border-box;
                                             &:first-child {
@@ -1056,12 +1070,20 @@
                                                 ;
                                                 &:nth-child(2) {
                                                     font-size: 0;
+                                                    height: 20px;
+                                                    margin-right: 10px;
+                                                    display: flex;
+                                                    flex-flow: row nowrap;
+                                                    align-items: center;
+                                                    justify-content: flex-start;
                                                     margin: 10px 0;
                                                     span {
                                                         font-size: 12px;
-                                                        display: inline-block;
                                                         height: 20px;
-                                                        line-height: 20px;
+                                                        display: inline-block;
+                                                        display: flex;
+                                                        flex-flow: row nowrap;
+                                                        align-items: center;
                                                         padding: 0 8px;
                                                         box-sizing: border-box;
                                                         &:first-child {

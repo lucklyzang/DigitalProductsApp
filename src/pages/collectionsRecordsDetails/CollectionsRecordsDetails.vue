@@ -60,6 +60,8 @@
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
                                 :src="collectionRecordDetails.url"
+                                :mtl="collectionRecordDetails.mtlPath"
+                                :textures="collectionRecordDetails.textures"
                                 :backgroundAlpha="1"
                                 backgroundColor="#1e1e1b">
                             </model-obj>
@@ -68,7 +70,8 @@
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
-                                :src="collectionRecordDetails.url" 
+                                :src="collectionRecordDetails.url"
+                                :textures="collectionRecordDetails.textures" 
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-fbx>
@@ -86,7 +89,8 @@
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
-                                :src="collectionRecordDetails.url"  
+                                :src="collectionRecordDetails.url"
+                                :textures="collectionRecordDetails.textures"  
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-stl>
@@ -95,7 +99,8 @@
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
-                                :src="collectionRecordDetails.url"  
+                                :src="collectionRecordDetails.url"
+                                :textures="collectionRecordDetails.textures"  
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-collada>
@@ -104,16 +109,18 @@
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
-                                :src="collectionRecordDetails.url"  
+                                :src="collectionRecordDetails.url" 
+                                :textures="collectionRecordDetails.textures" 
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-ply>
                             <model-gltf
-                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf(2.0)'"  
+                                v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf'"  
                                 @on-error="threeDimensionalError" 
                                 @on-load="threeDimensionalLoaded"
                                 @on-progress="threeDimensionProgress" 
-                                :src="collectionRecordDetails.url"  
+                                :src="collectionRecordDetails.url"
+                                :textures="collectionRecordDetails.textures"  
                                 :backgroundAlpha="1" 
                                 backgroundColor="#1e1e1b">
                             </model-gltf>
@@ -146,6 +153,8 @@
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
                             :src="collectionRecordDetails.url"
+                            :mtl="collectionRecordDetails.mtlPath"
+                            :textures="collectionRecordDetails.textures"
                             :backgroundAlpha="1"
                             style="width:100%" 
                             :width="500"
@@ -159,7 +168,8 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress"
-                            :src="collectionRecordDetails.url" 
+                            :src="collectionRecordDetails.url"
+                            :textures="collectionRecordDetails.textures" 
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"
@@ -172,7 +182,8 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.url"  
+                            :src="collectionRecordDetails.url"
+                            :textures="collectionRecordDetails.textures"  
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300" 
@@ -185,7 +196,8 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.url"  
+                            :src="collectionRecordDetails.url"
+                            :textures="collectionRecordDetails.textures"  
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  
@@ -198,7 +210,8 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.url"  
+                            :src="collectionRecordDetails.url"
+                            :textures="collectionRecordDetails.textures"  
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  
@@ -211,20 +224,22 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.url"  
+                            :src="collectionRecordDetails.url"
+                            :textures="collectionRecordDetails.textures"  
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-ply>
                         <model-gltf
-                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf(2.0)'"  
+                            v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf'"  
                             :controlsOptions="{enableRotate:false,enableZoom:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="collectionRecordDetails.url"    
+                            :src="collectionRecordDetails.url"
+                            :textures="collectionRecordDetails.textures"    
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  

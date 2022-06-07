@@ -36,6 +36,8 @@
                             @on-progress="threeDimensionProgress" 
                             :src="productsDetails.path"
                             :backgroundAlpha="1"
+                            :mtl="productsDetails.mtlPath"
+                            :textures="productsDetails.textures"
                             :width="500"
                             :height="300" 
                             backgroundColor="#1e1e1b">
@@ -47,7 +49,8 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="productsDetails.path" 
+                            :src="productsDetails.path"
+                            :textures="productsDetails.textures" 
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  
@@ -60,7 +63,8 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="productsDetails.path"  
+                            :src="productsDetails.path"
+                            :textures="productsDetails.textures"  
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  
@@ -73,7 +77,8 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="productsDetails.path"  
+                            :src="productsDetails.path"
+                            :textures="productsDetails.textures"  
                             :backgroundAlpha="1" 
                             :width="500"
                             :height="300" 
@@ -86,7 +91,8 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="productsDetails.path"  
+                            :src="productsDetails.path"
+                            :textures="productsDetails.textures"  
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  
@@ -99,20 +105,22 @@
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="productsDetails.path"   
+                            :src="productsDetails.path"
+                            :textures="productsDetails.textures"   
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  
                             backgroundColor="#1e1e1b">
                         </model-ply>
                         <model-gltf
-                            v-if="!loadingImgGifShow && productsDetails.three === 'gltf(2.0)'"  
+                            v-if="!loadingImgGifShow && productsDetails.three === 'gltf'"  
                             :controlsOptions="{enableRotate:false,enableZoom:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
                             @on-progress="threeDimensionProgress" 
-                            :src="productsDetails.path"  
+                            :src="productsDetails.path"
+                            :textures="productsDetails.textures"  
                             :backgroundAlpha="1"
                             :width="500"
                             :height="300"  
@@ -718,9 +726,9 @@
                         align-items: center;
                         .left {
                             font-size: 0;
-                            display: flex;
                             height: 20px;
                             margin-right: 10px;
+                            display: flex;
                             flex-flow: row nowrap;
                             align-items: center;
                             justify-content: center;
