@@ -187,6 +187,7 @@
 								pointer-events: none;
 								width: 80px;
 								height: 90px;
+								object-fit: contain
 							}
 						};
 						.span-show {

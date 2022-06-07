@@ -194,7 +194,8 @@
 								img {
 									pointer-events: none;
 									width: 60px;
-									height: 68px
+									height: 68px;
+									object-fit: contain
 								}
 							};
 							.span-show {

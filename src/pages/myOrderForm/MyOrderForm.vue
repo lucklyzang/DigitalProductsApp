@@ -393,6 +393,7 @@
 								pointer-events: none;
 								width: 100px;
 								height: 113px;
+								object-fit: contain;
 								border-top-left-radius: 10px;
 								border-bottom-left-radius: 10px;
 							}
@@ -429,6 +430,7 @@
 						width: 70px;
 						flex-direction: column;
 						justify-content: space-between;
+						align-items: center;
 						>div {
 							&:nth-child(1) {
 								display: flex;
