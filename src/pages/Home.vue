@@ -26,7 +26,7 @@
             <div class="switch-content">
                 <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
-                <div class="object-box" ref="objectBox" v-show="currentTabIndex === 0 && !emptyShow">
+                <div class="object-box" ref="objectBox" v-if="currentTabIndex === 0 && !emptyShow">
                     
                 <!-- 产品列表骨架 -->
                 <div class="object-skeleton-list" v-show="loadingShow" v-for="(item) in objectSkeletonList" :key="item.id">
@@ -43,7 +43,7 @@
                 <div v-show="!loadingShow" class="object-list" 
                     @click="objectDetailEvent(item,index)" 
                     v-for="(item,index) in digitalCollectionList" :key="item.id"
-                    :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'35%'}"
+                    :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'40%'}"
                     >
                     <div class="sell-info-area">
                     <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
@@ -107,7 +107,7 @@
                 <!-- 更多内容提示 -->
                 <span class="expect" v-show="!isShowLoadFail && !loadingShow">- 更多内容敬请期待 -</span>
                 </div>
-                <div class="sell-date-box" v-show="currentTabIndex === 1 && !emptyShow">
+                <div class="sell-date-box" v-if="currentTabIndex === 1 && !emptyShow">
                 <div class="sell-title">
                     <div class="left">
                     <span>近期发售计划</span>
@@ -632,7 +632,7 @@
                             margin: 0 auto;
                             background: #3b3b3b;
                             border-radius: 10px;
-                            height: 380px
+                            height: 388px
                         };
                         .bottom {
                             width: 92%;
@@ -694,7 +694,7 @@
                         }
                     };
                     .object-list {
-                        border-radius: 10px;
+                        border-radius: 8px;
                         position: relative;
                         margin-bottom: 20px;
                         background: @color-home-block;
@@ -797,12 +797,12 @@
                         ;
                         .image-area {
                             width: 100%;
-                            min-height: 350px;
                             margin: 0 auto;
+                            min-height: 300px;
                             img {
                                 pointer-events: none;
                                 width: 100%;
-                                border-radius: 10px;
+                                border-radius: 8px;
                             }
                         }
                         ;
