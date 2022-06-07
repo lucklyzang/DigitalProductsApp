@@ -356,7 +356,10 @@
             touchstartHandle() {
                 //判断是否在滑动区域内滑动
                 let e = e || window.event;
-                e.preventDefault();
+                if (e.targetTouches.length > 1) {
+                    e.preventDefault();
+                    return
+                };
                 this.isSlideArea = true;
                 this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                 this.moveInfo.lastMoveTime = new Date().getTime();

@@ -277,6 +277,10 @@
             touchstartHandle() {
                 //判断是否在区域内滑动
                 let e = e || window.event;
+                if (e.targetTouches.length > 1) {
+                    e.preventDefault();
+                    return
+                };
                 this.isSlideArea = true;
                 this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
                 this.moveInfo.y = this.$refs.myObject.offsetTop;
