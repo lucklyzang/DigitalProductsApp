@@ -356,81 +356,81 @@
             touchstartHandle() {
                 //判断是否在滑动区域内滑动
                 let e = e || window.event;
-                if (e.targetTouches.length > 1) {
-                    e.preventDefault();
-                    return
-                };
-                this.isSlideArea = true;
-                this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
-                this.moveInfo.lastMoveTime = new Date().getTime();
-                this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
+                if (e.targetTouches.length == 1) {
+                    this.isSlideArea = true;
+                    this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
+                    this.moveInfo.lastMoveTime = new Date().getTime();
+                    this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                    this.moveInfo.imgX = this.$refs.backgroundImg.offsetLeft
+                }    
             },
 
             // 滑动中
             touchmoveHandle() {
                 let e = e || window.event;
-                e.preventDefault();
-                if (this.isSlideArea) {
-                    // 滑动距离
-                    let moveX = parseInt((e.targetTouches[0].clientX - this.moveInfo.startX)*1.5);
-                    //左滑
-                    if (moveX < 0) {
-                        // 展品转动
-                        if (this.$refs.contentCenter.offsetLeft <= -this.myObjectMaxMoveDistance) {
-                            this.isRotate = false;
-                            this.$refs.contentCenter.style.left = -this.myObjectMaxMoveDistance + 'px';
-                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                            this.moveInfo.startX = parseInt(e.targetTouches[0].clientX)
-                        } else {
-                            this.isRotate = true;
-                            this.$refs.contentCenter.style.left = this.moveInfo.x - Math.abs(moveX) + 'px'
-                        };
-                        //背景图转动
-                        if (this.$refs.backgroundImg.offsetLeft <= -this.backgroundImgMaxMoveDistance) {
-                            this.$refs.backgroundImg.style.left = -this.backgroundImgMaxMoveDistance + 'px'
-                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft
-                        };
-                        if (this.isRotate) {
+                if (e.targetTouches.length == 1) {
+                    if (this.isSlideArea) {
+                        // 滑动距离
+                        let moveX = parseInt((e.targetTouches[0].clientX - this.moveInfo.startX)*1.5);
+                        //左滑
+                        if (moveX < 0) {
+                            // 展品转动
+                            if (this.$refs.contentCenter.offsetLeft <= -this.myObjectMaxMoveDistance) {
+                                this.isRotate = false;
+                                this.$refs.contentCenter.style.left = -this.myObjectMaxMoveDistance + 'px';
+                                this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                                this.moveInfo.startX = parseInt(e.targetTouches[0].clientX)
+                            } else {
+                                this.isRotate = true;
+                                this.$refs.contentCenter.style.left = this.moveInfo.x - Math.abs(moveX) + 'px'
+                            };
+                            //背景图转动
                             if (this.$refs.backgroundImg.offsetLeft <= -this.backgroundImgMaxMoveDistance) {
                                 this.$refs.backgroundImg.style.left = -this.backgroundImgMaxMoveDistance + 'px'
                                 this.moveInfo.x = this.$refs.contentCenter.offsetLeft
+                            };
+                            if (this.isRotate) {
+                                if (this.$refs.backgroundImg.offsetLeft <= -this.backgroundImgMaxMoveDistance) {
+                                    this.$refs.backgroundImg.style.left = -this.backgroundImgMaxMoveDistance + 'px'
+                                    this.moveInfo.x = this.$refs.contentCenter.offsetLeft
+                                } else {
+                                    this.$refs.backgroundImg.style.left = parseInt((this.moveInfo.x - Math.abs(moveX))/2) + 'px'
+                                }
                             } else {
-                                this.$refs.backgroundImg.style.left = parseInt((this.moveInfo.x - Math.abs(moveX))/2) + 'px'
+                                this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                                this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                             }
                         } else {
-                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                            this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
-                        }
-                    } else {
-                        //展品转动
-                        if (this.$refs.contentCenter.offsetLeft >= 0) {
-                            this.isRotate = false;
-                            this.$refs.contentCenter.style.left = 0;
-                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                            this.moveInfo.startX = parseInt(e.targetTouches[0].clientX)
-                        } else {
-                            this.isRotate = true;
-                            this.$refs.contentCenter.style.left = this.moveInfo.x + moveX + 'px'
-                        };
-                        //背景图转动
-                        if (this.$refs.backgroundImg.offsetLeft >= 0) {
-                            this.$refs.backgroundImg.style.left = 0;
-                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                        };
-                        if (this.isRotate) {
-                            if (this.$refs.backgroundImg.offsetLeft >=0) {
+                            //展品转动
+                            if (this.$refs.contentCenter.offsetLeft >= 0) {
+                                this.isRotate = false;
+                                this.$refs.contentCenter.style.left = 0;
+                                this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                                this.moveInfo.startX = parseInt(e.targetTouches[0].clientX)
+                            } else {
+                                this.isRotate = true;
+                                this.$refs.contentCenter.style.left = this.moveInfo.x + moveX + 'px'
+                            };
+                            //背景图转动
+                            if (this.$refs.backgroundImg.offsetLeft >= 0) {
                                 this.$refs.backgroundImg.style.left = 0;
                                 this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                            };
+                            if (this.isRotate) {
+                                if (this.$refs.backgroundImg.offsetLeft >=0) {
+                                    this.$refs.backgroundImg.style.left = 0;
+                                    this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                                } else {
+                                    this.$refs.backgroundImg.style.left = parseInt((this.moveInfo.x + moveX)/2) + 'px'
+                                }
                             } else {
-                                this.$refs.backgroundImg.style.left = parseInt((this.moveInfo.x + moveX)/2) + 'px'
+                                this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
+                                this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
                             }
-                        } else {
-                            this.moveInfo.x = this.$refs.contentCenter.offsetLeft;
-                            this.moveInfo.startX = parseInt(e.targetTouches[0].clientX);
-                        }
+                        };
+                        e.preventDefault();
                     }
-                }    
+                }        
             }
 		}
 	}

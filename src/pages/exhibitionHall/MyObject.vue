@@ -277,44 +277,44 @@
             touchstartHandle() {
                 //判断是否在区域内滑动
                 let e = e || window.event;
-                if (e.targetTouches.length > 1) {
-                    e.preventDefault();
-                    return
-                };
-                this.isSlideArea = true;
-                this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
-                this.moveInfo.y = this.$refs.myObject.offsetTop;
+                if (e.targetTouches.length == 1) {
+                    this.isSlideArea = true;
+                    this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
+                    this.moveInfo.y = this.$refs.myObject.offsetTop
+                }    
             },
             
             // 滑动中
             touchmoveHandle() {
                 let e = e || window.event;
-                if (this.isSlideArea) {
-                    let moveY = e.targetTouches[0].clientY - this.moveInfo.startY;
-                    //上滑
-                    if (moveY < 0) {
-                        if (this.$refs.myObject.offsetTop <= 0) {
-                            this.$refs.myObject.style.top = 0 + 'px'
-                            this.moveInfo.y = this.$refs.myObject.offsetTop;
-                            this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
-                            return
-                        }
-                        if (this.$refs.myObject.offsetTop > 0) {
-                            this.$refs.myObject.style.top = parseInt((this.moveInfo.y - Math.abs(moveY*1.5))) + 'px'
-                        }
-                    } else {
-                        if (this.$refs.myObject.offsetTop >= this.myObjectOffsetTop) {
-                            this.$refs.myObject.style.top = this.myObjectOffsetTop + 'px';
-                            this.moveInfo.y = this.$refs.myObject.offsetTop;
-                            this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
-                            return
-                        }
-                        if (this.$refs.myObject.offsetTop < this.myObjectOffsetTop) {
-                            this.$refs.myObject.style.top = parseInt((this.moveInfo.y + (moveY)*1.5)) + 'px'
-                        }    
-                    };
-                    e.preventDefault()
-                }    
+                if (e.targetTouches.length == 1) {
+                    if (this.isSlideArea) {
+                        let moveY = e.targetTouches[0].clientY - this.moveInfo.startY;
+                        //上滑
+                        if (moveY < 0) {
+                            if (this.$refs.myObject.offsetTop <= 0) {
+                                this.$refs.myObject.style.top = 0 + 'px'
+                                this.moveInfo.y = this.$refs.myObject.offsetTop;
+                                this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
+                                return
+                            }
+                            if (this.$refs.myObject.offsetTop > 0) {
+                                this.$refs.myObject.style.top = parseInt((this.moveInfo.y - Math.abs(moveY*1.5))) + 'px'
+                            }
+                        } else {
+                            if (this.$refs.myObject.offsetTop >= this.myObjectOffsetTop) {
+                                this.$refs.myObject.style.top = this.myObjectOffsetTop + 'px';
+                                this.moveInfo.y = this.$refs.myObject.offsetTop;
+                                this.moveInfo.startY = parseInt(e.targetTouches[0].clientY);
+                                return
+                            }
+                            if (this.$refs.myObject.offsetTop < this.myObjectOffsetTop) {
+                                this.$refs.myObject.style.top = parseInt((this.moveInfo.y + (moveY)*1.5)) + 'px'
+                            }    
+                        };
+                        e.preventDefault()
+                    }
+                }        
             }
 		}
 	}
