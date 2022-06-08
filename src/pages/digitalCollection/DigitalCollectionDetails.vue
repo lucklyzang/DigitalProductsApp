@@ -29,7 +29,7 @@
                     <div class="three-dimensional-img" v-else>
                         <model-obj
                             v-if="!loadingImgGifShow && productsDetails.three === 'obj'" 
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -44,7 +44,7 @@
                         </model-obj>
                         <model-fbx
                             v-if="!loadingImgGifShow && productsDetails.three === 'fbx'" 
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -58,7 +58,7 @@
                         </model-fbx>
                         <model-three
                             v-if="!loadingImgGifShow && productsDetails.three === 'json'" 
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -72,7 +72,7 @@
                         </model-three>
                         <model-stl
                             v-if="!loadingImgGifShow && productsDetails.three === 'stl'"  
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -86,7 +86,7 @@
                         </model-stl>
                         <model-collada
                             v-if="!loadingImgGifShow && productsDetails.three === 'dae'"  
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -100,7 +100,7 @@
                         </model-collada>
                         <model-ply
                             v-if="!loadingImgGifShow && productsDetails.three === 'ply'"  
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -114,7 +114,7 @@
                         </model-ply>
                         <model-gltf
                             v-if="!loadingImgGifShow && productsDetails.three === 'gltf'"  
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -575,6 +575,7 @@
             },
 
             async onClickRight () {
+                if (IsPC()) { return };
                 if(isAndroid_ios() == '非安卓或ios') {return};
                 if (isWeiXin()) { return };
                 if(this.isShareDisabled) return;

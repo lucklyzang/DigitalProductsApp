@@ -348,6 +348,7 @@
                         path: 'aboutUs'
                     })
                 } else if (item.span == '分享') {
+                    if (IsPC()) { return };
                     if(isAndroid_ios() == '非安卓或ios') {return};
                     if (isWeiXin()) { return };
                     if(this.isDisabled) return;

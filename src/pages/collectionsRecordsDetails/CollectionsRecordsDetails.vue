@@ -147,7 +147,7 @@
                     <div class="three-dimensional-img" v-else>
                        <model-obj
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'obj'" 
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -163,7 +163,7 @@
                         </model-obj>
                         <model-fbx
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'fbx'" 
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -177,7 +177,7 @@
                         </model-fbx>
                         <model-three
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'json'" 
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -191,7 +191,7 @@
                         </model-three>
                         <model-stl
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'stl'"  
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -205,7 +205,7 @@
                         </model-stl>
                         <model-collada
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'dae'"  
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -219,7 +219,7 @@
                         </model-collada>
                         <model-ply
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'ply'"  
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"
@@ -233,7 +233,7 @@
                         </model-ply>
                         <model-gltf
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'gltf'"  
-                            :controlsOptions="{enableRotate:false,enableZoom:false}" 
+                            :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
                             :rotation="rotation"
                             @on-error="threeDimensionalError" 
                             @on-load="threeDimensionalLoaded"

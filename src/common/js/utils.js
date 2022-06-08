@@ -74,11 +74,10 @@ export const IsPC = () => {
 }
 
 /** 
- * 判断是否是安卓还是ios  
+ * 判断是否是安卓环境还是ios环境  
 */
 export const isAndroid_ios = () => {  
-  let u = navigator.userAgent, 
-    app = navigator.appVersion;  
+  let u = navigator.userAgent;
   let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器  
   let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
   if (isAndroid) {
