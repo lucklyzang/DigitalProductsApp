@@ -1055,6 +1055,8 @@
             left: 0;
 			display: flex;
 			flex-flow: row nowrap;
+            padding-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS<11.2 */
+            padding-bottom: env(safe-area-inset-bottom); /* 兼容iOS>= 11.2 */
 			justify-content: space-between;
             align-items: flex-start;
             padding: 10px;

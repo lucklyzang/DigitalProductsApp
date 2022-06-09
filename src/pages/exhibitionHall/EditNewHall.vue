@@ -645,17 +645,17 @@
             bottom: 10px;
             right: 0;
             width: 100%;
-            height: 80px;
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between;
             align-items: center;
+            padding-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS<11.2 */
+            padding-bottom: env(safe-area-inset-bottom); /* 兼容iOS>= 11.2 */
             padding: 10px;
             box-sizing: border-box;
             color: #fff;
             >div {
                 flex: 1;
-                height: 50px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;

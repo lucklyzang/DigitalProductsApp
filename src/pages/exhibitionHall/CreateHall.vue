@@ -150,6 +150,8 @@
             width: 80%;
             margin: 0 auto;
             margin-top: 20px;
+            padding-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS<11.2 */
+            padding-bottom: env(safe-area-inset-bottom); /* 兼容iOS>= 11.2 */
             > span {
                 display: inline-block;
                 width: 100%;

@@ -349,7 +349,6 @@
                     })
                 } else if (item.span == '分享') {
                     if (IsPC()) { return };
-                    if(isAndroid_ios() == '非安卓或ios') {return};
                     if (isWeiXin()) { return };
                     if(this.isDisabled) return;
                     this.isDisabled = !this.isDisabled;
@@ -407,10 +406,27 @@
 
             async myShareEvent () {
                 let shareUrl = await this.appShareEvent();
+                // 区分android和ios环境
                 if (isAndroid_ios()) {
-                    window.android.setShareUrl(`${shareUrl}`)
+                    // 区分是在app内还是app外
+                    try {
+                        window.android.setShareUrl(`${shareUrl}`)
+                    } catch (err) {
+                        this.$toast({
+                            message: 'h5暂无分享功能',
+                            position: 'bottom'
+                        })
+                    }
                 } else if (!isAndroid_ios()) {
-                    window.webkit.messageHandlers.setShareUrl.postMessage(`${shareUrl}`)
+                    // 区分是在app内还是app外
+                    try {
+                        window.webkit.messageHandlers.setShareUrl.postMessage({functionName: 'shareUrl',parameter: `${shareUrl}`})
+                    } catch (err) {
+                        this.$toast({
+                            message: 'h5暂无分享功能',
+                            position: 'bottom'
+                        })
+                    }
                 }
             }
         }

@@ -318,7 +318,7 @@
 					text-align: center;
 					line-height: 40px;
 					font-size: 14px;
-					color: #c0c0c0
+					color: #c0c0c0;
 				}
 			}	
 		}

@@ -78,7 +78,7 @@ export const IsPC = () => {
 */
 export const isAndroid_ios = () => {  
   let u = navigator.userAgent;
-  let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器  
+  let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('Adr') > -1 || u.indexOf('adr') > -1; //android终端或者uc浏览器  
   let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
   if (isAndroid) {
     return true

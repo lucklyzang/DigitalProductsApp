@@ -35,7 +35,7 @@
 					<span>¥ {{orderFormDetails.price}}</span>
 				</div>
 			</div>
-            <div class="bottom">
+            <div class="bottom" v-if="isShowWeixinPay">
                 <div class="pay-methods">
                     <span>
                         支付方式
@@ -117,6 +117,7 @@
                 isShowPaySuccess: false,
                 isShowOrderCancel: false,
                 loadingShow: false,
+                isShowWeixinPay: true,
                 overlayShow: false,
                 time: '',
                 isDisabled: false,
@@ -181,7 +182,8 @@
                         this.getOpenIdEvent(code);
                     }
                 }
-            };    
+            };
+            this.judgeisWithinApp();
             this.inquareOrderDetails(this.orderId)
 		},
 
@@ -199,6 +201,20 @@
                 'changeOpenId',
                 'changeInviteMessage'
 			]),
+
+            // 判断是否在app内
+            judgeisWithinApp () {
+                if (!isAndroid_ios()) {
+                    try {
+                        window.webkit.messageHandlers.setShareUrl.postMessage({functionName: 'iOSApp',parameter: ''});
+                        this.isShowWeixinPay = false
+                    } catch (err) {
+                        this.isShowWeixinPay = true
+                    }
+                } else {
+                    this.isShowWeixinPay = true
+                }
+            },
 
             // 查询订单详情
             inquareOrderDetails(id) {
@@ -309,33 +325,16 @@
                     });
                     this.cancellationOfOrder()
                 } else {
-                    if (this.radio == 1) {
-                        // 微信支付
-                        //微信外支付
-                        if (!isWeiXin()) {
-                            let payParams = {
-                                orderId: this.orderId,
-                                payMode: "WECHAT_H5",
-                                iso: "",
-                                openId: "IP"
-                            };
-                            if (isAndroid_ios() === true) {
-                                payParams['iso'] = "Android"
-                            } else if (isAndroid_ios() === false) {
-                                payParams['iso'] = " iOS"
-                            } else {
-                                payParams['iso'] = "Wap"
-                            };
-                            this.createPaymentOrderEvent(payParams)
-                        //微信内支付
-                        } else {
-                            //获取code,通过code在获取openId,存在openId后就不在重新获取openId了
-                            if (this.openId) {
+                    if (this.isShowWeixinPay) {
+                        if (this.radio == 1) {
+                            // 微信支付
+                            //微信外支付
+                            if (!isWeiXin()) {
                                 let payParams = {
                                     orderId: this.orderId,
-                                    payMode: "WECHAT_JSAPI",
+                                    payMode: "WECHAT_H5",
                                     iso: "",
-                                    openId: this.openId
+                                    openId: "IP"
                                 };
                                 if (isAndroid_ios() === true) {
                                     payParams['iso'] = "Android"
@@ -345,13 +344,34 @@
                                     payParams['iso'] = "Wap"
                                 };
                                 this.createPaymentOrderEvent(payParams)
+                            //微信内支付
                             } else {
-                                this.getCode()
-                            }
-                        }   
-                    } else if (this.radio == 2) {
-                        // 支付宝支付
-                    }
+                                //获取code,通过code在获取openId,存在openId后就不在重新获取openId了
+                                if (this.openId) {
+                                    let payParams = {
+                                        orderId: this.orderId,
+                                        payMode: "WECHAT_JSAPI",
+                                        iso: "",
+                                        openId: this.openId
+                                    };
+                                    if (isAndroid_ios() === true) {
+                                        payParams['iso'] = "Android"
+                                    } else if (isAndroid_ios() === false) {
+                                        payParams['iso'] = " iOS"
+                                    } else {
+                                        payParams['iso'] = "Wap"
+                                    };
+                                    this.createPaymentOrderEvent(payParams)
+                                } else {
+                                    this.getCode()
+                                }
+                            }   
+                        } else if (this.radio == 2) {
+                            // 支付宝支付
+                        }
+                    } else {
+                        //在苹果app内部时调取苹果支付
+                    }   
                 }
             },
 
@@ -681,15 +701,17 @@
             }
 		};
         .content-bottom{
-            width: 94%;
-            margin: 0 auto;
-            margin-top: 30px;
-            padding: 0 10px;
-            border-radius: 10px;
-            background: #100726;
+            width: 100%;
             box-sizing: border-box;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            padding: 0 10px;
+            background: #100726;
             display: flex;
-            height: 60px;
+            height: 65px;
+            padding-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS<11.2 */
+            padding-bottom: env(safe-area-inset-bottom); /* 兼容iOS>= 11.2 */
             flex-flow: row nowrap;
             justify-content: space-between;
             align-items: center;
@@ -697,6 +719,11 @@
             color: #FFFFFF;
             background: @color-block;
             .btn-left {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                height: 35px;
+                justify-content: flex-end;
                 >span {
                     display: inline-block;
                     &:first-child {
@@ -706,12 +733,20 @@
                 }    
             };
             .btn-right {
+                flex: 1;
+                display: flex;
+                height: 35px;
+                flex-flow: row nowrap;
+                align-items: center;
+                padding-left: 30px;
+                box-sizing: border-box;
+                justify-content: flex-end;
                 >span {
                     display: inline-block;
                 };
                 .cancel-order {
                     color: #686868;
-                    width: 90px;
+                    flex: 1;
                     height: 35px;
                     text-align: center;
                     line-height: 35px;
@@ -720,7 +755,7 @@
                 };
                 .sure-pay {
                     color: black;
-                    width: 90px;
+                    flex: 1;
                     height: 35px;
                     text-align: center;
                     line-height: 35px;

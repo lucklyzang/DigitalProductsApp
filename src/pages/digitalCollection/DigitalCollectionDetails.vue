@@ -574,18 +574,38 @@
                 this.$router.push({path: 'home'})
             },
 
-            async onClickRight () {
+            onClickRight () {
                 if (IsPC()) { return };
-                if(isAndroid_ios() == '非安卓或ios') {return};
                 if (isWeiXin()) { return };
                 if(this.isShareDisabled) return;
                 this.isShareDisabled = !this.isShareDisabled;
                 this.timer = setTimeout(() => {this.isShareDisabled = !this.isShareDisabled;},3000);
+                this.myShareEvent()
+            },
+
+            async myShareEvent () {
                 let shareUrl = await this.productionShareEvent();
+                // 区分android和ios环境
                 if (isAndroid_ios()) {
-                    window.android.setShareUrl(`${shareUrl}`)
+                    // 区分是在app内还是app外
+                    try {
+                        window.android.setShareUrl(`${shareUrl}`)
+                    } catch (err) {
+                        this.$toast({
+                            message: 'h5暂无分享功能',
+                            position: 'bottom'
+                        })
+                    }
                 } else if (!isAndroid_ios()) {
-                    window.webkit.messageHandlers.setShareUrl.postMessage(`${shareUrl}`)
+                    // 区分是在app内还是app外
+                    try {
+                        window.webkit.messageHandlers.setShareUrl.postMessage({functionName: 'shareUrl',parameter: `${shareUrl}`})
+                    } catch (err) {
+                        this.$toast({
+                            message: 'h5暂无分享功能',
+                            position: 'bottom'
+                        })
+                    }
                 }
             }
 		}
@@ -963,6 +983,8 @@
             position: fixed;
             bottom: 0;
             left: 0;
+            padding-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS<11.2 */
+            padding-bottom: env(safe-area-inset-bottom); /* 兼容iOS>= 11.2 */
 			margin-top: 10px;
 			display: flex;
 			flex-flow: row nowrap;

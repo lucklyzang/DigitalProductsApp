@@ -421,6 +421,8 @@
             left: 50%;
             transform: translateX(-50%);
             bottom: 0;
+            padding-bottom: constant(safe-area-inset-bottom); /* 兼容 iOS<11.2 */
+            padding-bottom: env(safe-area-inset-bottom); /* 兼容iOS>= 11.2 */
             z-index: 1000;
             height: 60px;
             width: 80%;
