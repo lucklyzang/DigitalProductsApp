@@ -9,6 +9,11 @@ export default {
             return state.productsId
         },
 
+        swipeItemDetails: (state) => {
+            state.swipeItemDetails = getStore('swipeItemDetails') ? JSON.parse(getStore('swipeItemDetails')) : null;
+            return state.swipeItemDetails
+        },
+
         inviteMessage: (state) => {
             state.inviteMessage = getStore('inviteMessage') ? JSON.parse(getStore('inviteMessage')) : null;
             return state.inviteMessage
@@ -233,6 +238,12 @@ export default {
         changeQueryHallMessage(state, playLoad) {
             setStore('queryHallMessage', playLoad);
             state.queryHallMessage = playLoad
+        },
+
+        // 保存轮播图信息
+        changeSwipeItemDetails(state, playLoad) {
+            setStore('swipeItemDetails', playLoad);
+            state.swipeItemDetails = playLoad
         },
 
         //重置产品的状态

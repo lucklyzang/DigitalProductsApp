@@ -10,9 +10,14 @@
         @refresh="onRefresh"
     >
         <div class="content" ref="content">
-            <div class="rare-object" ref="rareObject">
-                <img :src="homeBannerPng" alt="">
+            <div class="rare-object" ref="rareObject" v-show="!isShowRareObjectCopy">
+                <van-swipe :autoplay="3000">
+                    <van-swipe-item v-for="(item, index) in bannerList" :key="index" @click="swipeItemEvent(item)">
+                        <img v-lazy="item.path" />
+                    </van-swipe-item>
+                </van-swipe>
             </div>
+            <div class="rare-object-copy" v-show="isShowRareObjectCopy"></div>
             <div class="tab-switch-copy" v-show="isFixed"></div>
             <div class="tab-switch" ref="tabSwitch" :class="{'tabSwitchStyle':isFixed}">
                 <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
@@ -189,7 +194,8 @@
     import {
         inquareProductList,
         inquareSellCalendar,
-        productVisitRecord
+        productVisitRecord,
+        getBanner
     } from '@/api/products.js'
     import {
         mapGetters,
@@ -206,16 +212,17 @@
         },
         data() {
             return {
+                isShowRareObjectCopy: true,
                 scrollTop: 0, // 储存滚动位置
                 tabSwitchOffsetTop: 0,
                 tabSwitchHeight: 0,
+                bannerList: [],
                 navBarHeight: 0,
                 rareObjectHeight: 0,
                 isFixed: false, 
                 isDisabledRefresh: false,
                 isShowLoadFail: false,
                 isRefresh: false,
-                homeBannerPng: require("@/common/images/home/home-banner.png"),
                 homeListBackgroundPng: require("@/common/images/home/home-list-background.png"),
                 emptyShow: false,
                 objectSkeletonList: [{id:1},{id:2},{id:3},{id:4},{id:5}],
@@ -245,6 +252,7 @@
 					})
                 })
             };
+            this.queryBannerList();
             this.queryProductsList()
         },
 
@@ -319,11 +327,45 @@
         methods: {
             ...mapMutations([
                 'changeProductsId',
+                'changeSwipeItemDetails',
                 'changeIsShowLoginHint',
                 'changeIsShowNameAuthHint',
                 'changeIsEnterLoginPageSource',
                 'changeIsRefreshHomePage'
             ]),
+
+            // 查询banner列表
+            queryBannerList () {
+                this.isShowRareObjectCopy =true;
+                this.bannerList = [];
+                getBanner().then((res) => {
+                    this.isShowRareObjectCopy = false;
+                    if (res && res.data.code == 0) {
+                        if (res.data.list.length == 0) {
+                        } else {
+                            this.bannerList = res.data.list
+                        }
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.isShowRareObjectCopy = false;
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    })
+                })
+            },
+
+            // 轮播图点击事件
+            swipeItemEvent (item) {
+                this.changeSwipeItemDetails(item);
+                this.$router.push({path: '/swipeItemDetails'})
+            },
 
             //页面滚动事件
             handleScroll () {
@@ -379,7 +421,8 @@
                     this.queryProductsList()
                 } else if (this.currentTabIndex == 1) {
                     this.querySaleCalendar()
-                }
+                };
+                this.queryBannerList()
             },
 
             // 查询作品列表
@@ -559,7 +602,14 @@
                     width: 100%;
                     border-radius: 10px
                 }
-            }
+            };
+            .rare-object-copy {
+                width: 92%;
+                height: 90px;
+                margin: 0 auto;
+                border-radius: 10px;
+                background: #3b3b3b;
+            };
             .tab-switch {
                 z-index: 99999;
                 background: @color-background;
@@ -802,6 +852,7 @@
                             img {
                                 pointer-events: none;
                                 width: 100%;
+                                display: block;
                                 border-radius: 8px;
                             }
                         }
@@ -1046,6 +1097,7 @@
                                             img {
                                                 pointer-events: none;
                                                 width: 100%;
+                                                display: block;
                                                 border-radius: 12px;
                                             }
                                         }

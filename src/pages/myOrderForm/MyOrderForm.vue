@@ -376,11 +376,9 @@
 					flex-flow: row nowrap;
 					justify-content: space-between;
 					align-items: center;
-					padding: 0 10px 0 0;
 					border-radius: 10px;
 					background: @color-block;
                     margin-bottom: 10px;
-                    box-sizing: border-box;
 					.left {
 						display: flex;
 						flex-flow: row nowrap;
@@ -388,12 +386,10 @@
 						flex: 1;
 						.img-show {
 							width: 100px;
-							height: 113px;
 							img {
 								pointer-events: none;
 								width: 100px;
-								height: 113px;
-								object-fit: contain;
+								display: block;
 								border-top-left-radius: 10px;
 								border-bottom-left-radius: 10px;
 							}

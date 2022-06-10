@@ -142,6 +142,14 @@ export function queryObjectRecord() {
     })
 };
 
+// 查询首页banner列表
+export function getBanner() {
+    return request({
+        url: '/app/banners',
+        method: 'get'
+    })
+};
+
 // 查询藏品记录详情
 export function queryObjectRecordDetails(id) {
     return request({

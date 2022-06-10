@@ -182,12 +182,10 @@
 						width: 100%;
 						.img-show {
 							width: 80px;
-							height: 90px;
 							img {
 								pointer-events: none;
 								width: 80px;
-								height: 90px;
-								object-fit: contain
+								display: block
 							}
 						};
 						.span-show {

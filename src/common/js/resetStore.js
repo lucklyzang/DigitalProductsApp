@@ -15,6 +15,7 @@ export function getDefaultLoginState() {
 // 产品信息store的初始值
 export function getDefaultProductsState() {
     return {
+        swipeItemDetails: null, //轮播图信息
         productsId: null, //作品id
         systemMessageId: '', //系统消息id
         inviteMessage: null, //作品邀请信息

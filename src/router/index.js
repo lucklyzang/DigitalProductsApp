@@ -12,6 +12,8 @@ const Privacy = () =>
     import ('@/pages/protocol/Privacy')
 const WeixinLogin = () =>
     import ('@/pages/weixinLogin/WeixinLogin')
+const SwipeItemDetails = () =>
+    import ('@/pages/swipeItemDetails/SwipeItemDetails')
 const MyInfo = () =>
     import ('@/pages/MyInfo')
 const MyService  = () =>
@@ -106,6 +108,15 @@ let baseRoute = [{
         meta: {
             index: 0,
             keepAlive: true
+        }
+    },
+    {
+        path: '/swipeItemDetails',
+        name: 'swipeItemDetails',
+        component: SwipeItemDetails,
+        meta: {
+            index: 1,
+            keepAlive: false
         }
     },
     {

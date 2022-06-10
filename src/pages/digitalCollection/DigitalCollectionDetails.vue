@@ -833,11 +833,7 @@
                     img {
                         pointer-events: none;
                         width: 100%;
-                        vertical-align: bottom;
-                        margin-top: -1px;
-                        &:first-child {
-                            margin-top: 0
-                        }
+                        display: block
                     }
                 };
                 .publisher-title {

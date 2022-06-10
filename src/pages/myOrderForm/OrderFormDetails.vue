@@ -267,7 +267,7 @@
 				flex-flow: row nowrap;
 				justify-content: flex-start;
                 align-items: center;
-				padding: 0 10px;
+				padding: 0;
 				border-radius: 10px;
 				background: @color-block;
 				.img-show {
@@ -275,6 +275,7 @@
                     img {
 						pointer-events: none;
                         width: 100px;
+						display: block;
 						border-top-left-radius: 10px;
 						border-bottom-left-radius: 10px;
                     }

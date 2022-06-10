@@ -610,7 +610,7 @@
 				flex-flow: row nowrap;
 				justify-content: flex-start;
                 align-items: center;
-				padding: 0 10px;
+				padding: 0;
 				border-radius: 10px;
 				background: @color-block;
 				.img-show {
@@ -618,6 +618,7 @@
                     img {
                         pointer-events: none;
                         width: 100px;
+                        display: block;
 						border-top-left-radius: 10px;
 						border-bottom-left-radius: 10px;
                     }
@@ -706,7 +707,7 @@
             position: fixed;
             left: 0;
             bottom: 0;
-            padding: 0 10px;
+            padding: 6px 10px 0 10px;
             background: #100726;
             display: flex;
             height: 65px;
@@ -746,7 +747,8 @@
                 };
                 .cancel-order {
                     color: #686868;
-                    flex: 1;
+                    padding: 0 20px;
+                    box-sizing: border-box;
                     height: 35px;
                     text-align: center;
                     line-height: 35px;
@@ -755,7 +757,8 @@
                 };
                 .sure-pay {
                     color: black;
-                    flex: 1;
+                    padding: 0 20px;
+                    box-sizing: border-box;
                     height: 35px;
                     text-align: center;
                     line-height: 35px;

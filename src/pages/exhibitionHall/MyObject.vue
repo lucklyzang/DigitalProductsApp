@@ -462,6 +462,7 @@
                             border-radius: 10px;
                             box-sizing: border-box;
                             > img {
+                                display: block;
                                 border-radius: 6px;
                                 width: 100%;
                             }
