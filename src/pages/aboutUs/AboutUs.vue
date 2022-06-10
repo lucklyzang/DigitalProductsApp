@@ -2,10 +2,7 @@
 	<div class="content-box">
 		<NavBar path="/myInfo" title="关于我们"/>
 		<div class="content-top">
-            <img :src="defaultPersonPng">
-			<span>
-               有光
-            </span>
+            <img :src="logoScriptPng">
 		</div>
 		<div class="content-center">
 			中国传统文化数字艺术联盟旨在自愿、平等、互利、合作的基础上，召集文化、文博、文旅、数字艺术相关企事业单位、社团组织、高等院校、科研院所等自愿结成的跨行业、开放性、非营利性、非法人的协调性议事机制。联盟以中国博物馆创新发展指数研究和发布及全国博物馆发展大数据中心建设、传统文化及文物的数字化开发和市场推广为起点，推动联盟组织成员在中华文化传播与教育、文化旅游、公共文化事业发展等领域进行发展，树立起文物数字化工作的行业标杆。
@@ -31,7 +28,7 @@
 		},
 		data() {
 			return {
-			  defaultPersonPng: require("@/common/images/home/default-person.png")
+			  logoScriptPng: require("@/common/images/home/logo-script.png")
 			}
 		},
 		onReady() {},
@@ -83,14 +80,7 @@
 			justify-content: center;
 			align-items: center;
 			img {
-				width: 100px
-			};
-			>span {
-                &:nth-child(2) {
-                    font-size: 20px;
-                    color: #fff;
-                    margin: 20px 0 10px 0;
-                }
+				width: 120px
 			}
 		};
 		.content-center {

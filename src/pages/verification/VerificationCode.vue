@@ -29,6 +29,9 @@
 				<van-field class="uni-input" ref="inputSix" v-model="codeSix" @input="inputEventSix" maxlength="1" type="number"/>
 			</div>
 		</div>
+		<div class="hide-input">
+			<van-field v-model="hideInput" autocomplete="one-time-code" @input="hideInputEvent" maxlength="6" type="text"/>
+		</div>
 	</div>
 </template>
 
@@ -52,6 +55,7 @@
 		},
 		data() {
 			return {
+				hideInput: '',
 				codeOne: '',
 				codeTwo: '',
 				codeThree: '',
@@ -91,6 +95,17 @@
 				'storeUserInfo',
 				'changeAppId'
 			]),
+
+			// 隐藏输入框的值变化事件
+			hideInputEvent (value) {
+				this.hideInput = value;
+				this.codeOne = this.hideInput[0];
+				this.codeTwo = this.hideInput[1];
+				this.codeThree = this.hideInput[2];
+				this.codeFour = this.hideInput[3];
+				this.codeFive =  this.hideInput[4];
+				this.codeSix =  this.hideInput[5]
+			},
 
 			// 输入框变化事件
 			inputEventOne (event) {
@@ -294,6 +309,16 @@
 					.van-cell__value {
 						display: flex
 					}
+				}
+			}
+		};
+		.hide-input {
+			width: 1px;
+			height: 1px;
+			/deep/ .van-cell {
+				background: transparent;
+				.van-field__control {
+					color: transparent !important
 				}
 			}
 		}

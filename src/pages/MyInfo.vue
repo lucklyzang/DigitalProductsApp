@@ -35,7 +35,7 @@
                 <div class="message-left" @click="toEditPersonPage">
                     <div class="person-picture">
                     <img :src="notLoginPng" v-show="!isLogin" alt="">
-                    <img :src="defaultPersonPng" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl') || isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && !userInfo.avatarUrl" alt="">
+                    <img :src="defaultPerson" v-show="isLogin && userInfo && !userInfo.hasOwnProperty('avatarUrl') || isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && !userInfo.avatarUrl" alt="">
                     <img :src="userInfo && userInfo.avatarUrl" v-show="isLogin && userInfo && userInfo.hasOwnProperty('avatarUrl') && userInfo.avatarUrl" alt="">
                     </div>
                     <div class="person-name">
@@ -150,7 +150,7 @@
                     iconRight: require("@/common/images/login/arrow-right.png"),
                     span: '分享'
                 }],
-                defaultPersonPng: require("@/common/images/home/default-person.png"),
+                defaultPerson: require("@/common/images/home/default-person.png"),
                 setPng: require("@/common/images/login/set.png"),
                 notLoginPng: require("@/common/images/login/not-login.png"),
                 blockchainPng: require("@/common/images/home/blockchain.png"),

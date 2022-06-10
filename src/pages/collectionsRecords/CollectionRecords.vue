@@ -3,32 +3,41 @@
 		<NavBar path="/myInfo" title="藏品记录"/>
 		<van-loading type="spinner" v-show="loadingShow"/>
         <van-empty :description="descriptionContent" v-show="emptyShow" />
-		<div class="content-center" v-show="!emptyShow">
-			<div class="all-order">
-				<div class="order-list" v-for="(item,index) in orderList" :key="index" @click="recordsDetailsEvent(item,index)">
-					<div class="left">
-						<div class="img-show" v-lazy-container="{ selector: 'img' }">
-							<img :data-src="item.collectionUrl">
-						</div>
-						<div class="span-show">
-							<span>{{item.collectionName}}</span>
-                            <p>
-								<span class="blockchain-img">
-									<img :src="blockchainPng" alt="">
-								</span>
-								<span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
-								<!-- <img :src="blockchainPng" alt="">
-								<span>{{item.chain ? item.chain : ''}}</span> -->
-                            </p>
-							<span>{{item.publisher}}</span>
+		<van-pull-refresh
+			v-model="isRefresh"
+			pulling-text="下拉刷新"
+			:disabled="isDisabledRefresh"
+			loosing-text="释放立即刷新"
+			success-text="刷新成功"
+			@refresh="onRefresh"
+    	>  
+			<div class="content-center" v-show="!emptyShow">
+				<div class="all-order">
+					<div class="order-list" v-for="(item,index) in orderList" :key="index" @click="recordsDetailsEvent(item,index)">
+						<div class="left">
+							<div class="img-show" v-lazy-container="{ selector: 'img' }">
+								<img :data-src="item.collectionUrl">
+							</div>
+							<div class="span-show">
+								<span>{{item.collectionName}}</span>
+								<p>
+									<span class="blockchain-img">
+										<img :src="blockchainPng" alt="">
+									</span>
+									<span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
+									<!-- <img :src="blockchainPng" alt="">
+									<span>{{item.chain ? item.chain : ''}}</span> -->
+								</p>
+								<span>{{item.publisher}}</span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
-					<span>没有更多数据</span>
+					<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
+						<span>没有更多数据</span>
+					</div>
 				</div>
 			</div>
-		</div>
+		</van-pull-refresh>  	
 	</div>
 </template>
 
@@ -47,14 +56,15 @@
 		data() {
 			return {
 				isShowLoadFail: false,
+				isRefresh: false,
+                isDisabledRefresh: false,
 				emptyShow: false,
                 loadingShow: false,
 				descriptionContent: '暂无藏品',
                 orderList: [],
 				currentTabIndex: 0,
 				animationData: [],
-				blockchainPng: require("@/common/images/home/blockchain.png"),
-                defaultPersonPng: require("@/common/images/home/default-person.png")
+				blockchainPng: require("@/common/images/home/blockchain.png")
 			}
 		},
 		onReady() {},
@@ -73,6 +83,7 @@
                     })
                 })
             };
+			window.addEventListener('scroll', this.handleScroll);
 			// 查询藏品记录
 			this.queryCollectionRecords()
 		},
@@ -83,6 +94,21 @@
 				'changeIsEnterCollectionsRecordsDetailsPageSource'
 			]),
 
+			 //页面滚动事件
+            handleScroll () {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop > 0) {
+                    this.isDisabledRefresh = true;
+                } else {
+                    this.isDisabledRefresh = false
+                }
+            },
+
+			//下拉刷新事件
+            onRefresh () {
+                this.queryCollectionRecords();
+            },
+
 			// 查询藏品记录
 			queryCollectionRecords () {
 				this.isShowLoadFail = false;
@@ -91,6 +117,7 @@
                 this.orderList = [];
 				queryObjectRecord().then((res) => {
 					this.loadingShow = false;
+					this.isRefresh = false;
 					if (res && res.data.code == 0) {
                         if (res.data.page.list.length == 0) {
                             this.emptyShow = true;
@@ -110,6 +137,7 @@
 							this.changeMyObjects(this.orderList);
                         }
                     } else {
+						this.isRefresh = false;
 						this.isShowLoadFail = true;
                         this.$toast({
                             message: `${res.data.msg}`,
