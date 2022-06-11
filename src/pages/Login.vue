@@ -283,6 +283,7 @@ export default {
 				};
 				.content {
 					width: 100%;
+					min-height: 200px;
 					>img {
 						width: 100%;
 						display: block
