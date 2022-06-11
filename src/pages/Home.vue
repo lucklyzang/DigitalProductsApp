@@ -32,141 +32,140 @@
                 <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
                 <div class="object-box" ref="objectBox" v-if="currentTabIndex === 0 && !emptyShow">
-                    
-                <!-- 产品列表骨架 -->
-                <div class="object-skeleton-list-box" v-if="loadingShow">
-                    <div class="object-skeleton-list" v-for="(item) in objectSkeletonList" :key="item.id">
-                        <div class="top"></div>
-                        <div class="bottom">
-                            <div class="one"></div>
-                            <div class="two"></div>
-                            <div class="three"></div>
-                            <div class="four"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 产品列表 -->
-                <div class="object-list-box" v-if="!loadingShow">
-                    <div class="object-list" 
-                        @click="objectDetailEvent(item,index)" 
-                        v-for="(item,index) in digitalCollectionList" :key="item.id"
-                        :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'40%'}"
-                        >
-                        <div class="sell-info-area">
-                        <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
-                            <van-icon name="underway" size="14" color="#63b66b" />
-                            <span>即将开售</span>
-                            <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
-                        </div>
-                        <div class="left" v-show="!item.isShowCountDown && item.status == 1">
-                            <van-icon name="underway" size="14" color="#bd68ff" />
-                            <span>火爆抢购中</span>
-                        </div>
-                        <div class="center" v-show="!item.isShowCountDown && item.status == 2">
-                            <van-icon name="bookmark" size="14" color="#fff" />
-                            <span>已售罄</span>
-                        </div>
-                        <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
-                            <van-icon name="bell" size="14" color="#e9ad70"/>
-                            <span>提醒我</span>
-                        </div>
-                        </div>
-                        <div class="image-area" v-lazy-container="{ selector: 'img' }">
-                        <img :data-src="item.digitalCollectioUrl">
-                        </div>
-                        <div class="message-area">
-                            <div class="message-top">
-                                <span>{{item.digitalCollectionName}}</span>
+                    <!-- 产品列表骨架 -->
+                    <div class="object-skeleton-list-box" v-if="loadingShow">
+                        <div class="object-skeleton-list" v-for="(item) in objectSkeletonList" :key="item.id">
+                            <div class="top"></div>
+                            <div class="bottom">
+                                <div class="one"></div>
+                                <div class="two"></div>
+                                <div class="three"></div>
+                                <div class="four"></div>
                             </div>
-                            <div class="message-bottom">
-                                <div class="left">
-                                    <!-- <div class="name">
-                                    <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
-                                        <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
-                                    </p>
-                                    </div> -->
-                                    <div class="number">
-                                    <span>限量</span>
-                                    <span>{{item.digitalCollectioShare}}份</span>
-                                    </div>
-                                    <div class="author">
-                                    <img :src="item.digitalCollectioAuthorPhoto">
-                                    <span>{{item.digitalCollectioAuthor}}</span>
-                                    </div>
-                                </div>
-                                <div class="right">
-                                    <div>
-                                    <span>¥</span>
-                                    <span>{{item.digitalCollectioPrice}}</span>
-                                    </div>
-                                </div>
-                            </div>    
                         </div>
                     </div>
-                </div>
-
-                <!-- 内容加载失败 -->
-                <div class="object-content-load-fail" v-show="isShowLoadFail">
-                    <van-icon name="warning" size="70" color="#5f5f5f"/>
-                    <span>内容加载失败, 点击刷新重试</span>
-                    <span @click="loadFailFreshEvent()">刷新</span>
-                </div>
-
-                <!-- 更多内容提示 -->
-                <span class="expect" v-show="!isShowLoadFail && !loadingShow">- 更多内容敬请期待 -</span>
-                </div>
-                <div class="sell-date-box" v-if="currentTabIndex === 1 && !emptyShow">
-                <div class="sell-title">
-                    <div class="left">
-                    <span>近期发售计划</span>
-                    </div>
-                    <div class="right">
-                    <!-- <span>已订阅</span>
-                    <span>分 享</span> -->
-                    </div>
-                </div>
-                <div class="sell-content-list" v-for="(item,index) in digitalCollectionCalendarList" :key="index">
-                    <div class="month-day">
-                    <span>{{item.date}}</span>
-                    </div>
-                    <div class="same-hour-list" v-for="(innerItem, innerIndex) in item.saleTimeList" :key="innerIndex">  
-                    <div class="hour">
-                        <van-icon name="underway" size="20" color="#fff" />
-                        <span>{{innerItem.time}}</span>
-                    </div>
-                    <div class="object-details-list" v-for="(lastItem, lastIndex) in innerItem.commodityList" :key="lastIndex">
-                        <div class="object-details">
-                        <div v-lazy-container="{ selector: 'img' }">
-                            <img :data-src="lastItem.imgPath">
+                    <!-- 产品列表 -->
+                    <div class="object-list-box" v-if="!loadingShow">
+                        <div class="object-list" 
+                            @click="objectDetailEvent(item,index)" 
+                            v-for="(item,index) in digitalCollectionList" :key="item.id"
+                            :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'40%'}"
+                            >
+                            <div class="sell-info-area">
+                            <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
+                                <van-icon name="underway" size="14" color="#63b66b" />
+                                <span>即将开售</span>
+                                <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
+                            </div>
+                            <div class="left" v-show="!item.isShowCountDown && item.status == 1">
+                                <van-icon name="underway" size="14" color="#bd68ff" />
+                                <span>火爆抢购中</span>
+                            </div>
+                            <div class="center" v-show="!item.isShowCountDown && item.status == 2">
+                                <van-icon name="bookmark" size="14" color="#fff" />
+                                <span>已售罄</span>
+                            </div>
+                            <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
+                                <van-icon name="bell" size="14" color="#e9ad70"/>
+                                <span>提醒我</span>
+                            </div>
+                            </div>
+                            <div class="image-area" v-lazy-container="{ selector: 'img' }">
+                            <img :data-src="item.digitalCollectioUrl">
+                            </div>
+                            <div class="message-area">
+                                <div class="message-top">
+                                    <span>{{item.digitalCollectionName}}</span>
+                                </div>
+                                <div class="message-bottom">
+                                    <div class="left">
+                                        <!-- <div class="name">
+                                        <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
+                                            <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
+                                        </p>
+                                        </div> -->
+                                        <div class="number">
+                                        <span>限量</span>
+                                        <span>{{item.digitalCollectioShare}}份</span>
+                                        </div>
+                                        <div class="author">
+                                        <img :src="item.digitalCollectioAuthorPhoto">
+                                        <span>{{item.digitalCollectioAuthor}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="right">
+                                        <div>
+                                        <span>¥</span>
+                                        <span>{{item.digitalCollectioPrice}}</span>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
                         </div>
-                        <div>
-                            <div>
-                            <span>{{lastItem.name}}</span>
+                    </div>
+
+                    <!-- 内容加载失败 -->
+                    <div class="object-content-load-fail" v-show="isShowLoadFail">
+                        <van-icon name="warning" size="70" color="#5f5f5f"/>
+                        <span>内容加载失败, 点击刷新重试</span>
+                        <span @click="loadFailFreshEvent()">刷新</span>
+                    </div>
+
+                    <!-- 更多内容提示 -->
+                    <span class="expect" v-show="!isShowLoadFail && !loadingShow && !emptyShow">- 更多内容敬请期待 -</span>
+                </div>
+                <div class="sell-date-box" v-if="currentTabIndex === 1">
+                    <div class="sell-title">
+                        <div class="left">
+                        <span>近期发售计划</span>
+                        </div>
+                        <div class="right">
+                        <!-- <span>已订阅</span>
+                        <span>分 享</span> -->
+                        </div>
+                    </div>
+                    <van-empty :description="descriptionContent" v-show="emptyShow" />
+                    <div class="sell-content-list" v-for="(item,index) in digitalCollectionCalendarList" :key="index">
+                        <div class="month-day">
+                        <span>{{item.date}}</span>
+                        </div>
+                        <div class="same-hour-list" v-for="(innerItem, innerIndex) in item.saleTimeList" :key="innerIndex">  
+                        <div class="hour">
+                            <van-icon name="underway" size="20" color="#fff" />
+                            <span>{{innerItem.time}}</span>
+                        </div>
+                        <div class="object-details-list" v-for="(lastItem, lastIndex) in innerItem.commodityList" :key="lastIndex">
+                            <div class="object-details">
+                            <div v-lazy-container="{ selector: 'img' }">
+                                <img :data-src="lastItem.imgPath">
                             </div>
                             <div>
-                            <span>限量</span>
-                            <span>{{lastItem.quantity}} 份</span>
+                                <div>
+                                <span>{{lastItem.name}}</span>
+                                </div>
+                                <div>
+                                <span>限量</span>
+                                <span>{{lastItem.quantity}} 份</span>
+                                </div>
+                                <div class="">
+                                <span>¥</span>
+                                <span>{{lastItem.price}}</span>
+                                </div>
                             </div>
-                            <div class="">
-                            <span>¥</span>
-                            <span>{{lastItem.price}}</span>
                             </div>
-                        </div>
-                        </div>
-                    </div>  
-                    </div>  
-                </div>
+                        </div>  
+                        </div>  
+                    </div>
 
-                <!-- 内容加载失败 -->
-                <div class="object-content-load-fail" v-show="isShowLoadFail">
-                    <van-icon name="warning" size="70" color="#5f5f5f"/>
-                    <span>内容加载失败, 点击刷新重试</span>
-                    <span  @click="loadFailFreshEvent()">刷新</span>
-                </div>
+                    <!-- 内容加载失败 -->
+                    <div class="object-content-load-fail" v-show="isShowLoadFail">
+                        <van-icon name="warning" size="70" color="#5f5f5f"/>
+                        <span>内容加载失败, 点击刷新重试</span>
+                        <span  @click="loadFailFreshEvent()">刷新</span>
+                    </div>
 
-                <!-- 更多内容提示 -->
-                <span class="expect" v-show="!isShowLoadFail && !loadingShow">- 更多内容敬请期待 -</span>
+                    <!-- 更多内容提示 -->
+                    <span class="expect" v-show="!isShowLoadFail && !loadingShow && !emptyShow">- 更多内容敬请期待 -</span>
                 </div>
             </div>
             <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0 && isShowNameAuthHint">
@@ -664,6 +663,14 @@
                 flex: 1;
                 width: 92%;
                 margin: 0 auto;
+                position: relative;
+                /deep/ .van-empty {
+                    width: 100%;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%)
+                };
                 .object-box {
                     padding: 0 0 50px 0;
                     box-sizing: border-box;
