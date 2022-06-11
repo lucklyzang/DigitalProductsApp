@@ -13,7 +13,7 @@
             <div class="rare-object" ref="rareObject" v-show="!isShowRareObjectCopy">
                 <van-swipe :autoplay="3000">
                     <van-swipe-item v-for="(item, index) in bannerList" :key="index" @click="swipeItemEvent(item)">
-                        <img v-lazy="item.path" />
+                        <img :src="item.path" />
                     </van-swipe-item>
                 </van-swipe>
             </div>
