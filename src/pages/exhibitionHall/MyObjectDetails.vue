@@ -8,7 +8,7 @@
             @click-left="onClickLeft"
         >
             <template #title>
-                <img :src="userInfo.avatarUrl" alt="">
+                <img :src="userInfo.avatarUrl ? userInfo.avatarUrl : defaultPerson" alt="">
                 <span>{{userInfo.nickName}}</span>
             </template>
         </van-nav-bar>
@@ -84,6 +84,7 @@
                 isSlideArea: false,
                 backgroundImgLeft: '',
                 loadingShow: false,
+                defaultPerson: require("@/common/images/home/default-person.png"),
                 hallBothPng: require("@/common/images/home/hall-both.png"),
                 blockchainPng: require("@/common/images/hall/hall-chain.png"),
                 imgBorderImg: require("@/common/images/home/img-border.png")

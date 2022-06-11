@@ -267,21 +267,25 @@ export default {
         };
 		.register-buy-info-box {
 			/deep/ .van-dialog {
+				top: 50% !important;
+				background: none !important;
 				.van-dialog__content {
-				padding: 0 0 4px 0;
-				box-sizing: border-box;
 				.title {
+					background: #0e0031;
 					width: 100%;
+					padding: 0 4px;
+					box-sizing: border-box;
 					display: flex;
 					flex-flow: row nowrap;
-					justify-content: center;
+					justify-content: flex-end;
 					align-items: center;
 					height: 30px;
 				};
 				.content {
 					width: 100%;
 					>img {
-					width: 100%
+						width: 100%;
+						display: block
 					}
 				}
 				}
