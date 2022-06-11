@@ -2,6 +2,17 @@
   <div class="content-box" 
 	:style="{backgroundImage: 'url(' + pageTopLeftBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'left top',backgroundSize:'55%'}"
   >
+		 <!-- 注册0.1元购弹框 -->
+		<div class="register-buy-info-box">
+		<van-dialog v-model="registerBuyInfoBoxShow" :show-confirm-button="false" :close-on-click-overlay="true">
+			<div class="title">
+				<van-icon name="clear" color="#808080" size="25" @click="clearAreaCodeDialogEvent" />
+			</div>
+			<div class="content">
+				<img :src="registerBuyInfoJpg" />
+			</div>
+		</van-dialog>
+		</div>  
 	  	<NavBar :path="path" />
 		<div class="content-top">
 			<span>登录有光</span>
@@ -60,11 +71,13 @@ export default {
     return {
       phoneNumber: '',
 	  path: '',
+	  registerBuyInfoBoxShow: true,
 	  isDisabled: false,
 	  timer: null,
 	  checked: false,
 	  phoneNumberUsable: false,
       weixinPng: require("@/common/images/login/weixin-login.png"),
+	  registerBuyInfoJpg: require("@/common/images/login/register-buy-info.jpg"),
 	  activeIcon: require("@/common/images/login/agree-checked.png"),
       inactiveIcon: require("@/common/images/login/agree-default.png"),
 	  pageTopLeftBackgroundPng :require("@/common/images/home/page-top-left-background.png")
@@ -152,6 +165,10 @@ export default {
        }
    	},
 
+	// 关闭二维码弹框事件
+	clearAreaCodeDialogEvent () {
+		this.registerBuyInfoBoxShow = false
+	},
 
 	// 跳转用户协议页面事件
 	jumpProtocolEvent () {
@@ -248,6 +265,28 @@ export default {
                 font-size: 18px !important
             }
         };
+		.register-buy-info-box {
+			/deep/ .van-dialog {
+				.van-dialog__content {
+				padding: 0 0 4px 0;
+				box-sizing: border-box;
+				.title {
+					width: 100%;
+					display: flex;
+					flex-flow: row nowrap;
+					justify-content: center;
+					align-items: center;
+					height: 30px;
+				};
+				.content {
+					width: 100%;
+					>img {
+					width: 100%
+					}
+				}
+				}
+			}
+		};  
 		.content-top {
 			height: 35vh;
 			line-height: 35vh;
