@@ -34,71 +34,75 @@
                 <div class="object-box" ref="objectBox" v-if="currentTabIndex === 0 && !emptyShow">
                     
                 <!-- 产品列表骨架 -->
-                <div class="object-skeleton-list" v-show="loadingShow" v-for="(item) in objectSkeletonList" :key="item.id">
-                    <div class="top"></div>
-                    <div class="bottom">
-                        <div class="one"></div>
-                        <div class="two"></div>
-                        <div class="three"></div>
-                        <div class="four"></div>
+                <div class="object-skeleton-list-box" v-if="loadingShow">
+                    <div class="object-skeleton-list" v-for="(item) in objectSkeletonList" :key="item.id">
+                        <div class="top"></div>
+                        <div class="bottom">
+                            <div class="one"></div>
+                            <div class="two"></div>
+                            <div class="three"></div>
+                            <div class="four"></div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 产品列表 -->
-                <div v-show="!loadingShow" class="object-list" 
-                    @click="objectDetailEvent(item,index)" 
-                    v-for="(item,index) in digitalCollectionList" :key="item.id"
-                    :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'40%'}"
-                    >
-                    <div class="sell-info-area">
-                    <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
-                        <van-icon name="underway" size="14" color="#63b66b" />
-                        <span>即将开售</span>
-                        <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
-                    </div>
-                    <div class="left" v-show="!item.isShowCountDown && item.status == 1">
-                        <van-icon name="underway" size="14" color="#bd68ff" />
-                        <span>火爆抢购中</span>
-                    </div>
-                    <div class="center" v-show="!item.isShowCountDown && item.status == 2">
-                        <van-icon name="bookmark" size="14" color="#fff" />
-                        <span>已售罄</span>
-                    </div>
-                    <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
-                        <van-icon name="bell" size="14" color="#e9ad70"/>
-                        <span>提醒我</span>
-                    </div>
-                    </div>
-                    <div class="image-area" v-lazy-container="{ selector: 'img' }">
-                    <img :data-src="item.digitalCollectioUrl">
-                    </div>
-                    <div class="message-area">
-                        <div class="message-top">
-                            <span>{{item.digitalCollectionName}}</span>
+                <div class="object-list-box" v-if="!loadingShow">
+                    <div class="object-list" 
+                        @click="objectDetailEvent(item,index)" 
+                        v-for="(item,index) in digitalCollectionList" :key="item.id"
+                        :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'40%'}"
+                        >
+                        <div class="sell-info-area">
+                        <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
+                            <van-icon name="underway" size="14" color="#63b66b" />
+                            <span>即将开售</span>
+                            <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
                         </div>
-                        <div class="message-bottom">
-                            <div class="left">
-                                <!-- <div class="name">
-                                <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
-                                    <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
-                                </p>
-                                </div> -->
-                                <div class="number">
-                                <span>限量</span>
-                                <span>{{item.digitalCollectioShare}}份</span>
-                                </div>
-                                <div class="author">
-                                <img :src="item.digitalCollectioAuthorPhoto">
-                                <span>{{item.digitalCollectioAuthor}}</span>
-                                </div>
+                        <div class="left" v-show="!item.isShowCountDown && item.status == 1">
+                            <van-icon name="underway" size="14" color="#bd68ff" />
+                            <span>火爆抢购中</span>
+                        </div>
+                        <div class="center" v-show="!item.isShowCountDown && item.status == 2">
+                            <van-icon name="bookmark" size="14" color="#fff" />
+                            <span>已售罄</span>
+                        </div>
+                        <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
+                            <van-icon name="bell" size="14" color="#e9ad70"/>
+                            <span>提醒我</span>
+                        </div>
+                        </div>
+                        <div class="image-area" v-lazy-container="{ selector: 'img' }">
+                        <img :data-src="item.digitalCollectioUrl">
+                        </div>
+                        <div class="message-area">
+                            <div class="message-top">
+                                <span>{{item.digitalCollectionName}}</span>
                             </div>
-                            <div class="right">
-                                <div>
-                                <span>¥</span>
-                                <span>{{item.digitalCollectioPrice}}</span>
+                            <div class="message-bottom">
+                                <div class="left">
+                                    <!-- <div class="name">
+                                    <p v-show="item.tagAttributes && !item.tagAttributes.some((tagItem) => {return tagItem == null}) && item.tagAttributes.length>0">
+                                        <span v-for="(innerItem, innerIndex) in item.tagAttributes" :key="innerIndex">{{innerItem}}</span>
+                                    </p>
+                                    </div> -->
+                                    <div class="number">
+                                    <span>限量</span>
+                                    <span>{{item.digitalCollectioShare}}份</span>
+                                    </div>
+                                    <div class="author">
+                                    <img :src="item.digitalCollectioAuthorPhoto">
+                                    <span>{{item.digitalCollectioAuthor}}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>    
+                                <div class="right">
+                                    <div>
+                                    <span>¥</span>
+                                    <span>{{item.digitalCollectioPrice}}</span>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
                     </div>
                 </div>
 
@@ -340,6 +344,9 @@
                 this.bannerList = [];
                 getBanner().then((res) => {
                     this.isShowRareObjectCopy = false;
+                    this.$nextTick(() => {
+                        this.rareObjectHeight = this.$refs.rareObject.offsetHeight;
+                    });
                     if (res && res.data.code == 0) {
                         if (res.data.list.length == 0) {
                         } else {
@@ -669,55 +676,57 @@
                         text-align: center;
                         line-height: 30px
                     };
-                    .object-skeleton-list {
-                        border-radius: 10px;
-                        position: relative;
-                        margin-bottom: 20px;
-                        background: @color-home-block;
-                        padding-bottom: 10px;
-                        box-sizing: border-box;
-                        position: relative;
-                        .top {
-                            width: 100%;
-                            margin: 0 auto;
-                            background: #3b3b3b;
+                    .object-skeleton-list-box {
+                        .object-skeleton-list {
                             border-radius: 10px;
-                            height: 388px
-                        };
-                        .bottom {
-                            width: 92%;
-                            margin: 0 auto;
-                            .one {
-                                height: 25px;
-                                border-radius: 6px;
-                                width: 35%;
+                            position: relative;
+                            margin-bottom: 20px;
+                            background: @color-home-block;
+                            padding-bottom: 10px;
+                            box-sizing: border-box;
+                            position: relative;
+                            .top {
+                                width: 100%;
+                                margin: 0 auto;
                                 background: #3b3b3b;
-                                margin-top: 10px;
+                                border-radius: 10px;
+                                height: 388px
                             };
-                            .two {
-                                border-radius: 6px;
-                                height: 25px;
-                                width: 30%;
-                                background: #3b3b3b;
-                                margin: 10px 0;
-                            };
-                            .three {
-                                border-radius: 6px;
-                                height: 25px;
-                                width: 40%;
-                                background: #3b3b3b
-                            };
-                            .four {
-                                border-radius: 6px;
-                                height: 20px;
-                                width: 40px;
-                                background: #3b3b3b;
-                                position: absolute;
-                                bottom: 10px;
-                                right: 10px;
+                            .bottom {
+                                width: 92%;
+                                margin: 0 auto;
+                                .one {
+                                    height: 25px;
+                                    border-radius: 6px;
+                                    width: 35%;
+                                    background: #3b3b3b;
+                                    margin-top: 10px;
+                                };
+                                .two {
+                                    border-radius: 6px;
+                                    height: 25px;
+                                    width: 30%;
+                                    background: #3b3b3b;
+                                    margin: 10px 0;
+                                };
+                                .three {
+                                    border-radius: 6px;
+                                    height: 25px;
+                                    width: 40%;
+                                    background: #3b3b3b
+                                };
+                                .four {
+                                    border-radius: 6px;
+                                    height: 20px;
+                                    width: 40px;
+                                    background: #3b3b3b;
+                                    position: absolute;
+                                    bottom: 10px;
+                                    right: 10px;
+                                }
                             }
-                        }
-                    };
+                        };
+                    };    
                     .object-content-load-fail {
                         height: 60vh;
                         display: flex;
@@ -743,239 +752,241 @@
                             }
                         }
                     };
-                    .object-list {
-                        border-radius: 8px;
-                        position: relative;
-                        margin-bottom: 20px;
-                        background: @color-home-block;
-                        .sell-info-area {
-                            position: absolute;
-                            top: 10px;
-                            font-size: 12px;
-                            left: 4%;
-                            width: 92%;
-                            display: flex;
-                            flex-flow: row nowrap;
-                            justify-content: space-between;
-                            z-index: 100;
-                            color: #333;
-                            .left-sell {
-                                background: rgba(0, 0, 0, .9);
-                                color: #63b66b;
-                                border-radius: 16px;
-                                padding: 0 10px;
-                                box-sizing: border-box;
-                                display: flex;
-                                flex-flow: row nowrap;
-                                justify-content: flex-start;
-                                align-items: center;
-                                span {
-                                    &:nth-child(2) {
-                                        margin: 0 4px
-                                    }
-                                };
-                                /deep/ .van-icon {
-                                };
-                                /deep/ .van-count-down {
-                                    color: #63b66b;
-                                    font-size: 12px;
-                                }
-                            };
-                            .left {
-                                background: rgba(0, 0, 0, .9);
-                                color: #bd68ff;
-                                border-radius: 16px;
-                                padding: 0 10px;
-                                height: 24px;
-                                box-sizing: border-box;
-                                display: flex;
-                                flex-flow: row nowrap;
-                                justify-content: flex-start;
-                                align-items: center;
-                                span {
-                                    &:nth-child(2) {
-                                        margin: 0 4px
-                                    }
-                                };
-                                /deep/ .van-icon {
-                                };
-                                /deep/ .van-count-down {
-                                    color: #bd68ff;
-                                    font-size: 12px;
-                                    line-height: 0 !important
-                                }
-                            };
-                            .center {
-                                background:rgba(0, 0, 0, .9);
-                                border-radius: 16px;
-                                padding: 0 10px;
-                                height: 24px;
-                                box-sizing: border-box;
-                                color: #fff;
-                                display: flex;
-                                flex-flow: row nowrap;
-                                justify-content: flex-start;
-                                align-items: center;
-                                span {
-                                    &:nth-child(2) {
-                                        margin: 0 4px
-                                    }
-                                };
-                                /deep/ .van-icon {
-                                };
-                            };
-                            .right {
-                                background: rgba(0, 0, 0, .9);
-                                border-radius: 14px;
-                                padding: 0 10px;
-                                box-sizing: border-box;
-                                height: 24px;
-                                display: flex;
-                                flex-flow: row nowrap;
-                                justify-content: flex-start;
-                                align-items: center;
-                                color: #e9ad70;
-                                span {
-                                    &:nth-child(2) {
-                                        margin: 0 4px
-                                    }
-                                };
-                                /deep/ .van-icon {
-                                };
-                            }
-                        }
-                        ;
-                        .image-area {
-                            width: 100%;
-                            margin: 0 auto;
-                            min-height: 300px;
-                            img {
-                                pointer-events: none;
-                                width: 100%;
-                                display: block;
-                                border-radius: 8px;
-                            }
-                        }
-                        ;
-                        .message-area {
-                            padding: 12px 0;
-                            width: 92%;
-                            margin: 0 auto;
-                            .message-top {
-                                width: 100%;
-                                font-size: 19px;
-                                color: #FFFFFF;
-                                display: flex;
-                                flex-flow: row nowrap;
-                                justify-content: flex-start;
-                                align-items: center;
-                                >span {
-                                    display: inline-block;
-                                    flex: 1;
-                                    width: 0;
-                                    .no-wrap();
-                                }
-                                >p {
-                                    flex: 1;
-                                    overflow: auto;
-                                    height: 40px;
-                                    display: flex;
-                                    flex-flow: row nowrap;
-                                    align-items: center;
-                                    >span {
-                                        display: inline-block;
-                                        padding: 0 4px;
-                                        height: 20px;
-                                        border: 1px solid #bd6aff;
-                                        font-size: 10px;
-                                        border-radius: 10px;
-                                        margin-right: 4px;
-                                        text-align: center;
-                                        line-height: 20px;
-                                        color: #bd68ff;
-                                        &:last-child {
-                                            margin-right: 0
-                                        }
-                                    }
-                                }
-                            };
-                            .message-bottom {
+                    .object-list-box {
+                        .object-list {
+                            border-radius: 8px;
+                            position: relative;
+                            margin-bottom: 20px;
+                            background: @color-home-block;
+                            .sell-info-area {
+                                position: absolute;
+                                top: 10px;
+                                font-size: 12px;
+                                left: 4%;
+                                width: 92%;
                                 display: flex;
                                 flex-flow: row nowrap;
                                 justify-content: space-between;
+                                z-index: 100;
+                                color: #333;
+                                .left-sell {
+                                    background: rgba(0, 0, 0, .9);
+                                    color: #63b66b;
+                                    border-radius: 16px;
+                                    padding: 0 10px;
+                                    box-sizing: border-box;
+                                    display: flex;
+                                    flex-flow: row nowrap;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    span {
+                                        &:nth-child(2) {
+                                            margin: 0 4px
+                                        }
+                                    };
+                                    /deep/ .van-icon {
+                                    };
+                                    /deep/ .van-count-down {
+                                        color: #63b66b;
+                                        font-size: 12px;
+                                    }
+                                };
                                 .left {
-                                    width: 75%;
-                                    .number {
-                                        font-size: 0;
-                                        margin: 10px 0;
-                                        height: 20px;
+                                    background: rgba(0, 0, 0, .9);
+                                    color: #bd68ff;
+                                    border-radius: 16px;
+                                    padding: 0 10px;
+                                    height: 24px;
+                                    box-sizing: border-box;
+                                    display: flex;
+                                    flex-flow: row nowrap;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    span {
+                                        &:nth-child(2) {
+                                            margin: 0 4px
+                                        }
+                                    };
+                                    /deep/ .van-icon {
+                                    };
+                                    /deep/ .van-count-down {
+                                        color: #bd68ff;
+                                        font-size: 12px;
+                                        line-height: 0 !important
+                                    }
+                                };
+                                .center {
+                                    background:rgba(0, 0, 0, .9);
+                                    border-radius: 16px;
+                                    padding: 0 10px;
+                                    height: 24px;
+                                    box-sizing: border-box;
+                                    color: #fff;
+                                    display: flex;
+                                    flex-flow: row nowrap;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    span {
+                                        &:nth-child(2) {
+                                            margin: 0 4px
+                                        }
+                                    };
+                                    /deep/ .van-icon {
+                                    };
+                                };
+                                .right {
+                                    background: rgba(0, 0, 0, .9);
+                                    border-radius: 14px;
+                                    padding: 0 10px;
+                                    box-sizing: border-box;
+                                    height: 24px;
+                                    display: flex;
+                                    flex-flow: row nowrap;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    color: #e9ad70;
+                                    span {
+                                        &:nth-child(2) {
+                                            margin: 0 4px
+                                        }
+                                    };
+                                    /deep/ .van-icon {
+                                    };
+                                }
+                            }
+                            ;
+                            .image-area {
+                                width: 100%;
+                                margin: 0 auto;
+                                min-height: 388px;
+                                img {
+                                    pointer-events: none;
+                                    width: 100%;
+                                    display: block;
+                                    border-radius: 8px;
+                                }
+                            }
+                            ;
+                            .message-area {
+                                padding: 12px 0;
+                                width: 92%;
+                                margin: 0 auto;
+                                .message-top {
+                                    width: 100%;
+                                    font-size: 19px;
+                                    color: #FFFFFF;
+                                    display: flex;
+                                    flex-flow: row nowrap;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    >span {
+                                        display: inline-block;
+                                        flex: 1;
+                                        width: 0;
+                                        .no-wrap();
+                                    }
+                                    >p {
+                                        flex: 1;
+                                        overflow: auto;
+                                        height: 40px;
                                         display: flex;
                                         flex-flow: row nowrap;
                                         align-items: center;
-                                        justify-content: flex-start;
-                                        span {
-                                            font-size: 12px;
-                                            height: 20px;
+                                        >span {
                                             display: inline-block;
+                                            padding: 0 4px;
+                                            height: 20px;
+                                            border: 1px solid #bd6aff;
+                                            font-size: 10px;
+                                            border-radius: 10px;
+                                            margin-right: 4px;
+                                            text-align: center;
+                                            line-height: 20px;
+                                            color: #bd68ff;
+                                            &:last-child {
+                                                margin-right: 0
+                                            }
+                                        }
+                                    }
+                                };
+                                .message-bottom {
+                                    display: flex;
+                                    flex-flow: row nowrap;
+                                    justify-content: space-between;
+                                    .left {
+                                        width: 75%;
+                                        .number {
+                                            font-size: 0;
+                                            margin: 10px 0;
+                                            height: 20px;
                                             display: flex;
                                             flex-flow: row nowrap;
                                             align-items: center;
-                                            padding: 0 8px;
-                                            box-sizing: border-box;
-                                            &:first-child {
-                                                background: #f0c796;
-                                                color: black;
-                                                border-top-left-radius: 2px;
-                                                border-bottom-left-radius: 2px;
+                                            justify-content: flex-start;
+                                            span {
+                                                font-size: 12px;
+                                                height: 20px;
+                                                display: inline-block;
+                                                display: flex;
+                                                flex-flow: row nowrap;
+                                                align-items: center;
+                                                padding: 0 8px;
+                                                box-sizing: border-box;
+                                                &:first-child {
+                                                    background: #f0c796;
+                                                    color: black;
+                                                    border-top-left-radius: 2px;
+                                                    border-bottom-left-radius: 2px;
+                                                }
+                                                ;
+                                                &:last-child {
+                                                    background: #4e4e4e;
+                                                    color: #edc695;
+                                                    border-top-right-radius: 2px;
+                                                    border-bottom-right-radius: 2px
+                                                }
                                             }
-                                            ;
-                                            &:last-child {
-                                                background: #4e4e4e;
-                                                color: #edc695;
-                                                border-top-right-radius: 2px;
-                                                border-bottom-right-radius: 2px
+                                        }
+                                        ;
+                                        .author {
+                                            display: flex;
+                                            flex-flow: row nowrap;
+                                            align-items: center;
+                                            img {
+                                                width: 20px;
+                                                height: 20px;
+                                                border-radius: 50%;
+                                                vertical-align: top;
+                                            };
+                                            span {
+                                                flex: 1;
+                                                margin-left: 6px;
+                                                font-size: 13px;
+                                                color: #686866;
+                                                margin-top: 2px;
+                                                .no-wrap()
                                             }
                                         }
                                     }
                                     ;
-                                    .author {
+                                    .right {
                                         display: flex;
-                                        flex-flow: row nowrap;
-                                        align-items: center;
-                                        img {
-                                            width: 20px;
-                                            height: 20px;
-                                            border-radius: 50%;
-                                            vertical-align: top;
-                                        };
+                                        flex-direction: column;
+                                        justify-content: flex-end;
+                                        align-items: flex-end;
+                                        width: 25%;
                                         span {
-                                            flex: 1;
-                                            margin-left: 6px;
-                                            font-size: 13px;
-                                            color: #686866;
-                                            margin-top: 2px;
-                                            .no-wrap()
+                                            font-size: 20px;
+                                            color: #FFFFFF;
+                                            &:first-child {
+                                                margin-right: 4px
+                                            }
                                         }
                                     }
-                                }
-                                ;
-                                .right {
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: flex-end;
-                                    align-items: flex-end;
-                                    width: 25%;
-                                    span {
-                                        font-size: 20px;
-                                        color: #FFFFFF;
-                                        &:first-child {
-                                            margin-right: 4px
-                                        }
-                                    }
-                                }
-                            }    
+                                }    
+                            }
                         }
-                    }
+                    }    
                 };
                 .sell-date-box {
                     padding: 0 0 50px 0;
