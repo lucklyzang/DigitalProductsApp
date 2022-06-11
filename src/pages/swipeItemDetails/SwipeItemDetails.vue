@@ -59,7 +59,8 @@
             /deep/  p {
                 width: 100%;
                 img {
-                    width: 100%
+                    width: 100%;
+                    display: block;
                 }
             }
         }
