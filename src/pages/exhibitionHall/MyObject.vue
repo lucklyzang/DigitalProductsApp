@@ -34,8 +34,8 @@
             <div class="my-object" ref="myObject"
             >
                 <van-loading type="spinner" v-show="loadingShow"/>
-                <van-empty :description="descriptionContent" v-show="emptyShow" />
                 <div class="object-tit">我的藏品</div>
+                <van-empty :description="descriptionContent" v-show="emptyShow" />
                 <div class="object-list-box">
                     <div class="object-list" v-for="(item,index) in orderList" :key="index" @click="recordsDetailsEvent(item)">
                         <div class="img-show" v-lazy-container="{ selector: 'img' }" :style="{background: 'url(' + imgBorderImg+ ') no-repeat center center' }">
@@ -275,6 +275,7 @@
 
             // 滑动开始
             touchstartHandle() {
+                if (this.orderList.length == 0) { return };
                 //判断是否在区域内滑动
                 let e = e || window.event;
                 if (e.targetTouches.length == 1) {
