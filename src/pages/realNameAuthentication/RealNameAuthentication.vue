@@ -109,7 +109,7 @@
 
       //身份证号输入框值变化事件
       cardChangeEvent (event) {
-        let regIdCard = /^\d{15}$|^\d{17}[\d|x]/;
+        let regIdCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         if (!regIdCard.test(this.cardValue)) {
           this.phoneCardUsable = false;
           if (this.cardValue) {
