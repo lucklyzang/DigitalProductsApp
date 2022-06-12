@@ -228,7 +228,7 @@
                 isRefresh: false,
                 homeListBackgroundPng: require("@/common/images/home/home-list-background.png"),
                 emptyShow: false,
-                objectSkeletonList: [{id:1},{id:2},{id:3},{id:4},{id:5}],
+                objectSkeletonList: [{id:1},{id:2}],
                 loadingShow: false,
                 descriptionContent: '暂无产品',
                 tabTitlelList: [{
@@ -984,6 +984,7 @@
                                         width: 25%;
                                         span {
                                             font-size: 20px;
+                                            font-weight: bolder;
                                             color: #FFFFFF;
                                             &:first-child {
                                                 margin-right: 4px
