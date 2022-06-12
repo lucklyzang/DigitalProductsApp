@@ -38,7 +38,7 @@
 				<span>个性签名</span>
 			</div>
 			<div class="right" @click="changeIndividualitySignature">
-        <span v-show="!userInfo.signTxt && isLogin">TA很神秘,什么都没有留下,TA很神秘,什么都没有留下</span>
+        <span v-show="!userInfo.signTxt && isLogin">TA很神秘,什么都没有留下</span>
         <span v-show="userInfo.signTxt && isLogin">{{userInfo.signTxt}}</span>
         <img :src="arrowRightPng" alt="">
 			</div>
