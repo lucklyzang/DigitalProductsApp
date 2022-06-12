@@ -500,7 +500,6 @@
                     justify-content: space-between;
                     .message-left {
                         flex: 1;
-                        padding-left: 6px;
                         display: flex;
                         flex-flow: row nowrap;
                         align-items: center;
@@ -538,10 +537,9 @@
                                 margin-top: 4px;
                                 color: #989898;
                                 span {
+                                    margin-top: 4px;
                                     display: inline-block;
-                                    height: 26px;
                                     text-align: center;
-                                    line-height: 26px;
                                     width: 100%;
                                     text-align: left;
                                     .no-wrap()

@@ -419,7 +419,7 @@
 				justify-content: space-between;
                 align-items: center;
 				height: 46px;
-				padding: 6px;
+				padding: 6px 8px;
                 background: @color-block;
                 border-radius: 10px;
                 margin-bottom: 10px;
@@ -431,7 +431,6 @@
                     flex-flow: row nowrap;
 					justify-content: space-between;
                     >span {
-                        margin-left: 16px;
                     }
 				};
 				.right {
