@@ -347,6 +347,7 @@
                     y: 0,
                     z: 0
                 },
+                timeIndex: null,
                 isShowPicture: false,
                 isShowThreeDimensional: false,
                 loadingShow: false,
@@ -451,6 +452,12 @@
             this.queryCollectionDetails()
 		},
 
+        beforeDestroy() {
+            if (this.timeIndex) {
+                cancelAnimationFrame(this.timeIndex); 
+            }
+        },
+
 		methods: {
 			...mapMutations([
                 'changeDonationProductDetails',
@@ -461,7 +468,7 @@
             // 三维图片旋转函数
             rotate () {
                 this.rotation.y += 0.01;
-                requestAnimationFrame(this.rotate)
+                this.timeIndex = requestAnimationFrame(this.rotate)
             },
 
             //藏品展开事件

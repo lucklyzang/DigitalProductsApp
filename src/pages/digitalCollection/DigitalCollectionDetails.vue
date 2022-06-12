@@ -254,6 +254,7 @@
                 overlayShow: false,
                 productsDetails: {},
                 isCountDownShow: true,
+                timeIndex: null,
                 lights: [
                     {
                         type: 'HemisphereLight',
@@ -332,6 +333,9 @@
         beforeDestroy() {
             if(this.timer) { 
                 clearTimeout(this.timer)
+            };
+            if (this.timeIndex) {
+                cancelAnimationFrame(this.timeIndex); 
             }
         },
 
@@ -348,7 +352,7 @@
 
             rotate () {
                 this.rotation.y += 0.01;
-                requestAnimationFrame(this.rotate)
+                this.timeIndex = requestAnimationFrame(this.rotate)
             },
 
             //让页面滚动到顶部
