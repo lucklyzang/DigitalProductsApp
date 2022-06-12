@@ -3,6 +3,7 @@
     <NavBar title="实名认证" :path="path" />
     <div class="content-box">
       <van-loading type="spinner" v-show="loadingShow">认证中...</van-loading>
+      <van-overlay :show="isShowOverlay"/>
       <div class="content-top">
         <van-field
             v-model="realNameValue"
@@ -36,6 +37,7 @@
     data() {
       return {
         loadingShow: false,
+        isShowOverlay: false,
         phoneRealNameUsable: false,
         phoneCardUsable: false,
         isDisabled: false,
@@ -140,8 +142,11 @@
         if(this.isDisabled) return;
         this.isDisabled = !this.isDisabled;
         this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
+        this.loadingShow = true;
+        this.isShowOverlay = true;
         realNameArenhzneuthentication({name: this.realNameValue, idCard: this.cardValue}).then((res) => {
             this.loadingShow = false;
+            this.isShowOverlay = false;
             if (res && res.data.code == 0) {
               this.queryuserInfo();
               this.$toast({
@@ -157,6 +162,7 @@
         })
         .catch((err) => {
           this.loadingShow = false;
+          this.isShowOverlay = false;
           this.$toast({
             message: `${err.message}`,
             position: 'bottom'

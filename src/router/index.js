@@ -16,7 +16,7 @@ const SwipeItemDetails = () =>
     import ('@/pages/swipeItemDetails/SwipeItemDetails')
 const MyInfo = () =>
     import ('@/pages/MyInfo')
-const MyService  = () =>
+const MyService = () =>
     import ('@/pages/myService/MyService')
 const RealNameAuthentication = () =>
     import ('@/pages/realNameAuthentication/RealNameAuthentication')
@@ -39,7 +39,7 @@ const WorkRoom = () =>
 const CancelAccount = () =>
     import ('@/pages/cancelAccount/CancelAccount')
 const AboutUs = () =>
-    import ('@/pages/aboutUs/AboutUs')    
+    import ('@/pages/aboutUs/AboutUs')
 const MyOrderForm = () =>
     import ('@/pages/myOrderForm/MyOrderForm')
 const CollectionDetails = () =>
@@ -62,17 +62,17 @@ const ChangeNickname = () =>
     import ('@/pages/changeNickname/ChangeNickname')
 const MyObject = () =>
     import ('@/pages/exhibitionHall/MyObject')
-const CreateHall = () => 
+const CreateHall = () =>
     import ('@/pages/exhibitionHall/CreateHall')
-const EditNewHall = () => 
+const EditNewHall = () =>
     import ('@/pages/exhibitionHall/EditNewHall')
 const ChooseHallTemplate = () =>
     import ('@/pages/exhibitionHall/chooseHallTemplate')
 const ChooseExhibits = () =>
     import ('@/pages/exhibitionHall/ChooseExhibits')
-const ExhibitionTheme = () => 
+const ExhibitionTheme = () =>
     import ('@/pages/exhibitionHall/ExhibitionTheme')
-const MyObjectDetails =  () =>
+const MyObjectDetails = () =>
     import ('@/pages/exhibitionHall/MyObjectDetails')
 Vue.use(Router)
 let baseRoute = [{
@@ -182,7 +182,7 @@ let baseRoute = [{
             keepAlive: false
         }
     },
-    
+
     {
         path: '/myOrderForm',
         name: 'myOrderForm',
@@ -442,6 +442,6 @@ let router = new Router({
 // });
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
-   return originalPush.call(this, location).catch(err => err)
+    return originalPush.call(this, location).catch(err => err)
 };
 export default router
