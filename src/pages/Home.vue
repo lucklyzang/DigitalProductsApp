@@ -65,10 +65,10 @@
                                 <van-icon name="bookmark" size="14" color="#fff" />
                                 <span>已售罄</span>
                             </div>
-                            <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
+                            <!-- <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
                                 <van-icon name="bell" size="14" color="#e9ad70"/>
                                 <span>提醒我</span>
-                            </div>
+                            </div> -->
                             </div>
                             <div class="image-area" v-lazy-container="{ selector: 'img' }">
                             <img :data-src="item.digitalCollectioUrl">
