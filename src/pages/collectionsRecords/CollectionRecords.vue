@@ -184,6 +184,14 @@
                 font-size: 16px !important
             }
         };
+		/deep/ .van-pull-refresh {
+            flex: 1;
+            display: flex;
+            .van-pull-refresh__track {
+                flex: 1;
+                height: auto;
+            }
+        };
 		.content-center {
 			width: 95%;
 			margin: 0 auto;
