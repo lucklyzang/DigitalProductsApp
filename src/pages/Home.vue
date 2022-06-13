@@ -408,6 +408,7 @@
 
             // 日历和产品列表加载失败后刷新事件
             loadFailFreshEvent () {
+                this.queryBannerList();
                 if (this.currentTabIndex == 0) {
                     this.queryProductsList()
                 } else if (this.currentTabIndex == 1) {
