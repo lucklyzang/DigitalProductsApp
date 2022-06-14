@@ -326,7 +326,6 @@
                 })
             };
             this.gainInviteMessage();
-            this.toTop();
             this.queryProductDetails()
 		},
 
