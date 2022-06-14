@@ -97,11 +97,10 @@
             display: flex;
             flex-flow: row nowrap;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             box-sizing: border-box;
             >img {
-                width: 260px;
-                margin-top: -50px
+                width: 100%
             }
         }
 	}
