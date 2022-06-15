@@ -679,6 +679,7 @@
                     justify-content: center;
                     min-height: 50vh;
                     .abbr-img {
+                        transform: translate3d(0, 0, 0);
                         width: 100%;
                         height: 300px;
                         margin-top: 60px;
