@@ -56,6 +56,7 @@
 		data() {
 			return {
 				hideInput: '',
+				getCode: '',
 				codeOne: '',
 				codeTwo: '',
 				codeThree: '',
@@ -83,7 +84,12 @@
 					this.$router.push({
 						path: '/login'
 					})
-				})
+				});
+			};
+			// 提供给原生app调用的方法
+			let me = this;
+			window['sendMessageAuthenticationCode'] = (val) => {
+				me.sendMessageAuthenticationCode(val);
 			};
 			this.phoneNumber = this.$route.params.phoneNumber;
 			this.$refs.inputOne.focus()
@@ -96,6 +102,13 @@
 				'storeUserInfo',
 				'changeAppId'
 			]),
+
+			// 获取原生传递的值
+			sendMessageAuthenticationCode (val) {
+				if (val.length == 6) {
+					this.getCode = val
+				}
+			},
 
 			//让页面滚动到顶部
 			toTop() {
