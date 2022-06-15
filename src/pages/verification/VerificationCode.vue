@@ -106,7 +106,13 @@
 			// 获取原生传递的值
 			sendMessageAuthenticationCode (val) {
 				if (val.length == 6) {
-					this.getCode = val
+					this.getCode = val;
+					this.codeOne = this.getCode[0];
+					this.codeTwo = this.getCode[1];
+					this.codeThree = this.getCode[2];
+					this.codeFour = this.getCode[3];
+					this.codeFive =  this.getCode[4];
+					this.codeSix =  this.getCode[5]
 				}
 			},
 
