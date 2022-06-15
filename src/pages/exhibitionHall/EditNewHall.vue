@@ -132,7 +132,6 @@
 		},
 
 		mounted() {
-            // this.toTop();
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
