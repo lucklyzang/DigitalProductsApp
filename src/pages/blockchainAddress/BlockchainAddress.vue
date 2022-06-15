@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
 		<NavBar path="/myInfo" title="区块链地址"/>
 		<div class="content-top">
             <img :src="blockchainPng" alt="">
@@ -42,6 +42,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -56,6 +57,10 @@
 		methods: {
 			...mapMutations([
 			]),
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
             onCopySuccess(){
                 this.$toast("复制成功");
             },

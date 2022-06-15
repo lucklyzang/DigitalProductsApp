@@ -67,7 +67,6 @@ if (IsPC()) {
     //    connection: 'http://localhost:10001'
     // }))
 };
-
 new Vue({
     el: '#app',
     router,

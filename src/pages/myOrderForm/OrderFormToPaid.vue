@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
         <van-loading type="spinner" v-show="loadingShow"/>
         <van-overlay :show="overlayShow" />
 		<NavBar :path="path" title="支付"/>
@@ -159,6 +159,7 @@
         },
 
 		mounted() {
+            this.toTop();
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -201,7 +202,10 @@
                 'changeOpenId',
                 'changeInviteMessage'
 			]),
-
+            //让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
             // 判断是否在app内
             judgeisWithinApp () {
                 if (!isAndroid_ios()) {

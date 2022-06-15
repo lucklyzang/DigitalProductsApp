@@ -1,5 +1,5 @@
 <template>
-  <div class="page-box">
+  <div class="page-box" id="top-content">
     <NavBar title="设置" path="myInfo" />
      <!-- 是否退出登录确认框 -->
     <van-dialog v-model="isShowLogout" :show-cancel-button="true"  :close-on-popstate="false" title="确认要退出登录吗"
@@ -92,6 +92,7 @@
     },
 
     mounted() {
+      this.toTop();
       // 控制设备物理返回按键
       if (!IsPC()) {
         pushHistory();
@@ -143,6 +144,11 @@
       juddgeIspc () {
         return IsPC()
       },
+
+      //让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
 
       //input调取摄像头兼容性处理
       dealPhotographCompatibleEvent () {

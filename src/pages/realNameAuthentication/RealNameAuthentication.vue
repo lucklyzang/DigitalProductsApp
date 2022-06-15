@@ -1,5 +1,5 @@
 <template>
-  <div class="page-box">
+  <div class="page-box" id="top-content">
     <NavBar title="实名认证" :path="path" />
     <div class="content-box">
       <van-loading type="spinner" v-show="loadingShow">认证中...</van-loading>
@@ -55,6 +55,7 @@
     },
 
     mounted() {
+      this.toTop();
       // 控制设备物理返回按键
       if (!IsPC()) {
         pushHistory();
@@ -86,6 +87,11 @@
       ...mapMutations([
         'storeUserInfo'
       ]),
+
+      //让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
 
       juddgeIspc () {
         return IsPC()

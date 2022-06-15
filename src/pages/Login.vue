@@ -1,5 +1,5 @@
 <template>
-  <div class="content-box" 
+  <div class="content-box" id="top-content"
 	:style="{backgroundImage: 'url(' + pageTopLeftBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'left top',backgroundSize:'55%'}"
   >
 		 <!-- 注册0.1元购弹框 -->
@@ -128,6 +128,7 @@ export default {
 	},
 
   mounted () {
+	this.toTop();
     // 控制设备物理返回按键
     if (!IsPC()) {
       let that = this;
@@ -158,6 +159,11 @@ export default {
 		'changeCountdownTime',
 		'changeIsEnterVerificationCodePage'
     ]),
+
+	//让页面滚动到顶部
+	toTop() {
+		document.querySelector('#top-content').scrollIntoView(true)
+	},
 
 	inputClicked() {
        if (this.$refs.phoneInput) {

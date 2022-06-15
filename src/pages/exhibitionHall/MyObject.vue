@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
         <van-loading type="spinner" v-show="loadingShow"/>
         <div class="is-login" v-if="isLogin">
             <div class="my-hall">
@@ -119,6 +119,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
             if (this.isLogin) {
                 // 查询藏品记录
                 this.queryCollectionRecords();
@@ -148,6 +149,10 @@
                 this.$router.push({
                     path: '/login'
                 })
+            },
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
             },
             // 查询藏品记录
 			queryCollectionRecords () {

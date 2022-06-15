@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
 		<NavBar path="/collectionRecordDetails" title="转增好友"/>
         <van-loading type="spinner" v-show="loadingShow">
           {{loadingText}}
@@ -112,6 +112,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -134,6 +135,11 @@
 			...mapMutations([
                 'changeCollectTransferCodeMessage',
 			]),
+
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
 
             //转赠倒计时结束事件
             cocuntDownEvent () {

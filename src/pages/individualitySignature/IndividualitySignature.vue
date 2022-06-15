@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
         <NavBar path="/systemSet" title="个性签名" />
         <van-loading type="spinner" v-show="loadingShow"/>
 		<div class="content-center">
@@ -45,6 +45,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -68,6 +69,11 @@
 			...mapMutations([
                 'storeUserInfo'
 			]),
+
+            //让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
 
             //保存签名修改事件
             saveChangeEvent () {

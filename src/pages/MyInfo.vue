@@ -1,5 +1,5 @@
 <template>
-  <div class="page-box">
+  <div class="page-box" id="top-content">
     <van-loading type="spinner" v-show="loadingShow"/>
     <van-nav-bar :border="false"
         :placeholder="true"
@@ -159,6 +159,7 @@
         },
 
         mounted() {
+            this.toTop();
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -216,6 +217,11 @@
             eventListenerHandle(e){
                 if(e._isScroller) return;
                 e.preventDefault()
+            },
+
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
             },
 
             //页面滚动事件

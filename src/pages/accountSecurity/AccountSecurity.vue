@@ -1,5 +1,5 @@
 <template>
-  <div class="page-box">
+  <div class="page-box" id="top-content">
     <NavBar title="账号与安全" path="myInfo" />
     <div class="content-box">
       <div class="content-top">
@@ -46,6 +46,7 @@
     },
 
     mounted() {
+      this.toTop();
       // 控制设备物理返回按键
       if (!IsPC()) {
         pushHistory();
@@ -78,6 +79,11 @@
     methods:{
       ...mapMutations([
       ]),
+
+      //让页面滚动到顶部
+      toTop() {
+          document.querySelector('#top-content').scrollIntoView(true)
+      },
 
       //实名认证事件
       realNameAuthenticationEvent () {

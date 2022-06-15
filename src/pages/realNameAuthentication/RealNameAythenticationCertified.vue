@@ -1,5 +1,5 @@
 <template>
-  <div class="page-box">
+  <div class="page-box" id="top-content">
     <NavBar title="实名认证" path="accountSecurity" />
     <div class="content-box">
       <div class="content-top">
@@ -54,6 +54,7 @@
     },
 
     mounted() {
+      this.toTop();
       // 控制设备物理返回按键
       if (!IsPC()) {
         pushHistory();
@@ -90,6 +91,11 @@
       ...mapMutations([
         'changeTitleTxt'
       ]),
+
+      //让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
 
       //账号注销事件
       cancellationEvent () {

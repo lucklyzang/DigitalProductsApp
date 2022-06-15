@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
          <van-nav-bar left-arrow :border="false"
             :placeholder="true"
             :fixed="true"
@@ -101,6 +101,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
             this.myObjectOffsetLeft = this.$refs.contentCenter.offsetLeft;
             this.backgroundImgLeft = this.$refs.backgroundImg.offsetLeft;
             // 控制设备物理返回按键
@@ -158,6 +159,11 @@
                 'changeIsEnterCollectionsRecordsDetailsPage',
                 'changeIsEnterCollectionsRecordsDetailsPageSource'
 			]),
+
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
 
             // 跳转藏品记录详情
 			recordsDetailsEvent (item) {

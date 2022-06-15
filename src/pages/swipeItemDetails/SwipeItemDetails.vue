@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
 		<NavBar path="/home" />
 		<div class="content" v-html="swipeItemDetails.remark">
 		</div>
@@ -26,6 +26,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -36,7 +37,13 @@
                     })
                 })
             }
-		}
+		},
+        methods: {
+            //让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			}
+        }
 	}
 </script>
 

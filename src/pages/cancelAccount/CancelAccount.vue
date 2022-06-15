@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
 		<NavBar path="/accountSecurity" title="注销账号"/>
         <!-- 是否注销确认框 -->
         <van-dialog v-model="isShowLogout" :show-cancel-button="true"  :close-on-popstate="false" title="确认注销账号?"
@@ -49,6 +49,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -70,6 +71,11 @@
                 'storeUserInfo',
                 'changeIsLogin'
 			]),
+
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
 
             // 弹框确定注销
             logoutSureEvent () {

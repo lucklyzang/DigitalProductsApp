@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
         <van-nav-bar :border="false"
             :placeholder="true"
             title="选择展厅模板"
@@ -64,6 +64,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -80,6 +81,11 @@
 			...mapMutations([
                 'changeHallMessage'
 			]),
+
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
 
             //模板点击事件
             templateClickEvent (item,index) {

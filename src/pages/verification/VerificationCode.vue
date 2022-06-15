@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
         <NavBar path="/login" />
 		<div class="content-top">
 			<span>请输入验证码</span>
@@ -74,6 +74,7 @@
 			])
 		},
 		mounted() {
+			this.toTop();
 			// 控制设备物理返回按键
 			if (!IsPC()) {
 				pushHistory();
@@ -95,6 +96,11 @@
 				'storeUserInfo',
 				'changeAppId'
 			]),
+
+			//让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
 
 			// 隐藏输入框的值变化事件
 			hideInputEvent (value) {
@@ -242,6 +248,14 @@
 	@import "~@/common/stylus/variable.less";
     @import "~@/common/stylus/mixin.less";
     @import "~@/common/stylus/modifyUi.less";
+	// 去除自动填充的输入框黄色背景
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+		-webkit-transition-delay: 9999s;
+		-webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
+	};
 	.content-box {
 		.content-wrapper();
         background: @color-background;

@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
 		<NavBar path="/myInfo" title="我的订单"/>
 		<div class="content-top">
 			<van-sticky :offset-top="45">
@@ -177,6 +177,7 @@
 			])
 		},
 		mounted() {
+			this.toTop();
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -195,6 +196,11 @@
 				'changeIsPaying',
 				'changeProductsId'
 			]),
+
+			//让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
 
 			// tab切换事件
 			tabSwitchEvent (index) {

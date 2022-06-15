@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
         <NavBar path="/myObject" :title="queryHallMessage.type == -1 ? '创建新展览' : '编辑展览'"/>
 		<div class="content-top">
            <div class="hall-type-list" v-for="(item,index) in hallTypeList" :key="item.text" @click="hallTypeClickEvent(index)">
@@ -49,6 +49,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -67,6 +68,10 @@
 			...mapMutations([
                 'changeHallMessage'
 			]),
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
             //展览类型点击事件
             hallTypeClickEvent (index) {
                 this.hallTypeList[index]['isChecked'] = !this.hallTypeList[index]['isChecked'];

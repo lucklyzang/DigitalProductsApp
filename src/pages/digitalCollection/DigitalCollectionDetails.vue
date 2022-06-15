@@ -1,5 +1,5 @@
 <template>
-	<div class="page-box">
+	<div class="page-box" id="top-content">
         <van-loading type="spinner" v-show="loadingShow"/>
         <van-overlay :show="overlayShow" />
         <van-nav-bar left-arrow :border="false"
@@ -17,7 +17,7 @@
         <div class="light-box">
             <img :src="lightPng" alt="">
         </div>
-        <div class="content" id="top-content">
+        <div class="content">
             <div class="content-top">
                 <div class="collection-exhibition">
                     <div class="loading-img-wrapper">

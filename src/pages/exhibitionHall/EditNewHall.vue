@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
         <van-nav-bar left-arrow :border="false"
             :placeholder="true"
             :title="queryHallMessage.type == -1 ? '创建新展览' : '编辑展览'"
@@ -132,6 +132,7 @@
 		},
 
 		mounted() {
+            // this.toTop();
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -178,7 +179,10 @@
             onClickLeft () {
                 this.$router.push({path: '/createHall'})
             },
-
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
             //回显展览主题信息
             echoExhibitionThemeMessage () {
                 if (this.queryHallMessage['type'] == -1) {

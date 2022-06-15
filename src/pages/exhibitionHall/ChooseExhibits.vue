@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
         <van-nav-bar :border="false"
             :placeholder="true"
             title="选择展品"
@@ -78,6 +78,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
             // 查询藏品记录
 			this.queryCollectionRecords()
 		},
@@ -85,6 +86,10 @@
 			...mapMutations([
                 'changeHallMessage'
 			]),
+            //让页面滚动到顶部
+            toTop() {
+                document.querySelector('#top-content').scrollIntoView(true)
+            },
             // 查询藏品记录
 			queryCollectionRecords () {
 				this.isShowLoadFail = false;

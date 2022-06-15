@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
 		<NavBar path="/myInfo" title="客服"/>
         <van-loading type="spinner" v-show="loadingShow"/>
 		<div class="content">
@@ -34,6 +34,7 @@
 			])
 		},
 		mounted() {
+            this.toTop();
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -49,6 +50,10 @@
 		methods: {
 			...mapMutations([
 			]),
+            //让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
             //查询协议配置
             queryProtocolConfigEvent(value) {
                 this.loadingShow = true;

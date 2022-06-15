@@ -1,5 +1,5 @@
 <template>
-	<div class="content-box">
+	<div class="content-box" id="top-content">
 		<NavBar path="/myOrderForm" title="订单详情"/>
 		<van-loading type="spinner" v-show="loadingShow"/>
 		<!-- 是否取消订单询问框 -->
@@ -90,6 +90,7 @@
 			])
 		},
 		mounted() {
+			this.toTop();
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -113,6 +114,11 @@
 				'changeOrderId',
 				'changeIsRefreshHomePage'
 			]),
+
+			//让页面滚动到顶部
+			toTop() {
+				document.querySelector('#top-content').scrollIntoView(true)
+			},
 
 			// 查询订单详情
             inquareOrderDetails(id) {

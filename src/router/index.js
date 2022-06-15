@@ -422,7 +422,6 @@ let router = new Router({
         }
     }
 });
-
 // router.beforeEach((to, from, next) => {
 //     let login = getStore('isLogin');
 //     let name = to.name;
