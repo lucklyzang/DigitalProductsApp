@@ -140,11 +140,11 @@
                     <div class="number" v-show="!loadingImgGifShow">
                         <div class="left">
                             <span>限量</span>
-                            <span>{{productsDetails.quantity}} 份</span>
+                            <span>{{productsDetails.quantity}}份</span>
                         </div>
                         <div class="right">
                             <span>剩余</span>
-                            <span>{{productsDetails.surplus}} 份</span>
+                            <span>{{productsDetails.surplus}}份</span>
                         </div>
                     </div>
                 </div>
@@ -756,7 +756,7 @@
                         .left {
                             font-size: 0;
                             height: 20px;
-                            margin-right: 10px;
+                            margin-right: 4px;
                             display: flex;
                             flex-flow: row nowrap;
                             align-items: center;
@@ -780,7 +780,9 @@
                                     background: #4e4e4e;
                                     color: #edc795;
                                     border-top-right-radius: 2px;
-                                    border-bottom-right-radius: 2px
+                                    border-bottom-right-radius: 2px;
+                                    flex: 1;
+                                    overflow-x: scroll
                                 }
                             }
                         }
@@ -810,7 +812,9 @@
                                     background: #4e4e4e;
                                     color: #edc695;
                                     border-top-right-radius: 2px;
-                                    border-bottom-right-radius: 2px
+                                    border-bottom-right-radius: 2px;
+                                    flex: 1;
+                                    overflow-x: scroll
                                 }
                             }
                         }
