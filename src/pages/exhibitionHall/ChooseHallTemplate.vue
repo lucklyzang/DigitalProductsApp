@@ -245,15 +245,20 @@
             };
             .template-list-wrapper {
                 display: flex;
-                overflow: auto;
-                flex-flow: row wrap;
+                width: 100%;
+                overflow-x: scroll;
+                overflow-y: hidden;
+                &::-webkit-scrollbar {
+                    height: 0;
+                    display: none
+                };
                 .template-list {
-                    width: 32%;
+                    width: 100px;
                     box-sizing: border-box;
                     border-radius: 8px;
                     margin-right: 2%;
-                    margin-bottom: 2%;
-                    &:nth-child(3n+3) {
+                    flex: none;
+                    &:last-child{
                         margin-right: 0
                     };
                     img {
