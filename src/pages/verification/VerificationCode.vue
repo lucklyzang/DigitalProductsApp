@@ -267,14 +267,6 @@
 	@import "~@/common/stylus/variable.less";
     @import "~@/common/stylus/mixin.less";
     @import "~@/common/stylus/modifyUi.less";
-	// 去除自动填充的输入框黄色背景
-	input:-webkit-autofill,
-	input:-webkit-autofill:hover,
-	input:-webkit-autofill:focus,
-	input:-webkit-autofill:active {
-		-webkit-transition-delay: 9999s;
-		-webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
-	};
 	.content-box {
 		.content-wrapper();
         background: @color-background;
@@ -339,6 +331,14 @@
                         color: #fff !important;
                         text-align: center !important
                     };
+					// 去除自动填充的输入框黄色背景
+					input:-webkit-autofill,
+					input:-webkit-autofill:hover,
+					input:-webkit-autofill:focus,
+					input:-webkit-autofill:active {
+						-webkit-transition-delay: 9999s;
+						-webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
+					};
 					.van-cell__value {
 						display: flex
 					}
