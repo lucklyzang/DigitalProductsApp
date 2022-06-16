@@ -392,9 +392,11 @@
 						flex: 1;
 						.img-show {
 							width: 100px;
+							height: 112.5px;
 							img {
 								pointer-events: none;
 								width: 100px;
+								height: 112.5px;
 								display: block;
 								border-top-left-radius: 10px;
 								border-bottom-left-radius: 10px;

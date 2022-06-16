@@ -135,7 +135,7 @@
                             <span>{{innerItem.time}}</span>
                         </div>
                         <div class="object-details-list" v-for="(lastItem, lastIndex) in innerItem.commodityList" :key="lastIndex">
-                            <div class="object-details">
+                            <div class="object-details" :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'25%'}">
                             <div v-lazy-container="{ selector: 'img' }">
                                 <img :data-src="lastItem.imgPath">
                             </div>
@@ -145,7 +145,7 @@
                                 </div>
                                 <div>
                                 <span>限量</span>
-                                <span>{{lastItem.quantity}} 份</span>
+                                <span>{{lastItem.quantity}}份</span>
                                 </div>
                                 <div class="">
                                 <span>¥</span>
@@ -1108,7 +1108,7 @@
                                     height: 130px;
                                     padding-left: 20px;
                                     box-sizing: border-box;
-                                    background: @color-block;
+                                    background-color: @color-block;
                                     >div {
                                         &:first-child {
                                             width: 90px;
@@ -1178,6 +1178,7 @@
                                                     span {
                                                         font-size: 18px;
                                                         color: #FFFFFF;
+                                                        font-weight: bolder;
                                                         &:first-child {
                                                             margin-right: 4px
                                                         }

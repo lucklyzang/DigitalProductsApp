@@ -1009,7 +1009,10 @@
 					font-size: 18px;
 					height: 50px;
 					line-height: 50px;
-					color: #FFFFFF
+					color: #FFFFFF;
+                    >span {
+                        font-weight: bolder
+                    }
 				};
 				&:last-child {
 					display: flex;
