@@ -132,12 +132,12 @@
                     <img :src="boothPng" alt="">
                 </div>
                 <div class="synopsis" :style="{backgroundImage: 'url(' + detailsTitleWrappper+ ')',backgroundRepeat:'no-repeat',backgroundSize:'cover'}">
-                    <div class="title">
+                    <div class="title" v-show="!loadingImgGifShow">
                         <span>
                             {{productsDetails.name}}
                         </span>
                     </div>
-                    <div class="number">
+                    <div class="number" v-show="!loadingImgGifShow">
                         <div class="left">
                             <span>限量</span>
                             <span>{{productsDetails.quantity}} 份</span>
@@ -156,7 +156,7 @@
                 </div>
             </div>
             <div class="content-middle">
-                <div class="framer" @click="toWorkRoomEvent">
+                <div class="framer" @click="toWorkRoomEvent" v-if="!loadingImgGifShow">
                     <div>
                         <img :src="productsDetails.avatar">
                     </div>
@@ -198,10 +198,10 @@
             </div>
         </div>
         <div class="content-bottom" @click="purchaseEvent">
-			<div>
+			<div v-show="!loadingImgGifShow">
 				<span>¥ {{productsDetails.price}}</span>
 			</div>
-			<div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}" v-show="!this.loadingImgGifShow">
+			<div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}" v-show="!loadingImgGifShow">
 				<span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购买' : '已售罄'}}</span>
 				<van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime)- new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
 			</div>
@@ -727,6 +727,7 @@
                 };
                 .synopsis {
                     width: 80%;
+                    height: 80px;
                     display: flex;
                     margin: 0 auto;
                     margin-top: 20px;
@@ -735,7 +736,8 @@
                     align-items: center;
                     position: relative;
                     .title {
-                        width: 60%;
+                        width: 80%;
+                        height: 24px;
                         font-size: 24px;
                         color: #FFFFFF;
                         text-align: center;
