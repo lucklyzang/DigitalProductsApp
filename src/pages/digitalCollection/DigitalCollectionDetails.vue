@@ -677,12 +677,12 @@
                     flex-flow: row nowrap;
                     align-items: center;
                     justify-content: center;
-                    min-height: 50vh;
+                    height: 50vh;
                     .abbr-img {
                         transform: translate3d(0, 0, 0);
                         width: 100%;
-                        height: 300px;
-                        margin-top: 60px;
+                        height: 35vh;
+                        margin-top: 6vh;
                         animation-name: product-animation;
                         animation-duration: 14s;
                         animation-iteration-count: infinite;
