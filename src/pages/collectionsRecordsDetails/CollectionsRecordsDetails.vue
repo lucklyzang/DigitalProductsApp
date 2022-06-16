@@ -886,17 +886,23 @@
                     flex-flow: row nowrap;
                     align-items: center;
                     justify-content: center;
-                    min-height: 50vh;
+                    height: 50vh;
                     img {
                         pointer-events: none;
                         width: 100%
                     };
                     .abbr-img {
                         width: 250px;
-                        margin-top: 60px;
+                        height: 35vh;
+                        margin-top: 6vh;
                         animation-name: product-animation;
                         animation-duration: 14s;
                         animation-iteration-count: infinite;
+                        >img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: contain
+                        }
                     };
                     .three-dimensional-img {
                         width: 100%;

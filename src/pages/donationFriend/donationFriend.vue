@@ -46,22 +46,7 @@
         </div>
         <div class="content-code" v-show="isShowCodeInput">
 			<div>
-                <van-field class="uni-input" ref="inputOne" v-model="codeOne" @input="inputEventOne" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputTwo" v-model="codeTwo" @input="inputEventTwo" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputThree" v-model="codeThree" @input="inputEventThree" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputFour" v-model="codeFour" @input="inputEventFour" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputFive" v-model="codeFive" @input="inputEventFive" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputSix" v-model="codeSix" @input="inputEventSix" maxlength="1" type="number"/>
+                <van-field class="uni-input" ref="inputOne" v-model="codeValue" @input="inputChange" maxlength="6" type="number"/>>
 			</div>
 		</div>
         <div class="donation-explain" v-html="protocolContent">
@@ -88,12 +73,7 @@
                 protocolContent: '',
                 countdownTime: 0,
                 isCanSendPhoneCode: true,
-                codeOne: '',
-				codeTwo: '',
-				codeThree: '',
-				codeFour: '',
-				codeFive: '',
-				codeSix: '',
+                codeValue: '',
                 isDisabled: false,
                 timer: null,
                 isShowCountDown: true,
@@ -202,55 +182,21 @@
 
 
             // 输入框变化事件
-			inputEventOne (event) {
-				if (event) {
-					this.$refs.inputOne.blur();
-					this.$refs.inputTwo.focus()
-				}
-			},
-			inputEventTwo (event) {
-				if (event) {
-					this.$refs.inputTwo.blur();
-					this.$refs.inputThree.focus()
-				}
-			},
-			inputEventThree (event) {
-				if (event) {
-					this.$refs.inputThree.blur();
-					this.$refs.inputFour.focus()
-				}
-			},
-			inputEventFour (event) {
-				if (event) {
-					this.$refs.inputFour.blur();
-					this.$refs.inputFive.focus()
-				}
-			},
-			inputEventFive (event) {
-				if (event) {
-					this.$refs.inputFive.blur();
-					this.$refs.inputSix.focus()
-				}
-			},
-			inputEventSix (event) {
-				if (!this.codeSix) {return};
-				this.$refs.inputSix.blur();
-				if (this.codeOne && this.codeTwo && this.codeThree && this.codeFour && this.codeFive && this.codeSix) {
+			inputChange (event) {
+				if (this.codeValue.length == 6) {
                     this.loadingShow = true;
                     this.isShowOverlay = true;
                     this.loadingText = '转赠中';
-                    this.storeCollectCodeMessage('','',false,'展示验证码框');
-					let code = `${this.codeOne}${this.codeTwo}${this.codeThree}${this.codeFour}${this.codeFive}${this.codeSix}`;
 					transferObject({
                         id: this.donationProductDetails.id,
                         receiver: this.adreeMessage,
-                        code
+                        code: this.codeValue
                     })
                     .then((res) => {
-                        this.storeCollectCodeMessage(0,true,false,'');
                         this.loadingShow = false;
                         this.isShowOverlay = false;
                         if (res && res.data.code == 0) {
+                            this.storeCollectCodeMessage(0,true,false,'');
                             this.$toast({
                                 message: '转赠成功',
                                 position: 'bottom'
@@ -290,12 +236,7 @@
                     return
                 };
                 this.loadingShow = true;
-                this.codeOne = '';
-				this.codeTwo = '';
-				this.codeThree = '';
-				this.codeFour = '';
-				this.codeFive = '';
-				this.codeSix = '';
+                this.codeValue = '';
                 this.sendPhoneCode()
             },
 
@@ -508,25 +449,25 @@
 			flex-flow: row nowrap;
 			justify-content: center;
 			> div {
-				width: 40px;
-				margin-right: 16px;
-                .bottom-border-1px(#6e6e6e,5px);
-				&:last-child {
-					margin-right: 0;
-				};
+				width: 80%;
+				margin: 0 auto;
+                .bottom-border-1px(#6e6e6e,3px);
 				/deep/ .uni-input {
 					color: #fff;
-					height: 50px;
+					height: 30px;
 					text-align: center;
 					font-size: 18px;
                     background: transparent;
-					padding: 0 !important;
                     .van-field__control {
-                        color: #fff !important;
-                        text-align: center !important
+                        color: #fff !important
                     };
-					.van-cell__value {
-						display: flex
+					// 去除自动填充的输入框黄色背景
+					input:-webkit-autofill,
+					input:-webkit-autofill:hover,
+					input:-webkit-autofill:focus,
+					input:-webkit-autofill:active {
+						-webkit-transition-delay: 9999s;
+						-webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
 					}
 				}
 			}

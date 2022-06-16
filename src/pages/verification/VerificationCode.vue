@@ -11,26 +11,8 @@
 		</div>
 		<div class="content-center">
 			<div>
-                <van-field class="uni-input" ref="inputOne" v-model="codeOne" @input="inputEventOne" maxlength="1" type="number"/>
+                <van-field class="uni-input" ref="inputOne" v-model="codeValue" @input="inputChange" maxlength="6" type="number"/>
 			</div>
-			<div>
-				<van-field class="uni-input" ref="inputTwo" v-model="codeTwo" @input="inputEventTwo" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputThree" v-model="codeThree" @input="inputEventThree" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputFour" v-model="codeFour" @input="inputEventFour" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputFive" v-model="codeFive" @input="inputEventFive" maxlength="1" type="number"/>
-			</div>
-			<div>
-				<van-field class="uni-input" ref="inputSix" v-model="codeSix" @input="inputEventSix" maxlength="1" type="number"/>
-			</div>
-		</div>
-		<div class="hide-input">
-			<van-field v-model="hideInput" autocomplete="one-time-code" @input="hideInputEvent" maxlength="6" type="text"/>
 		</div>
 	</div>
 </template>
@@ -57,12 +39,7 @@
 			return {
 				hideInput: '',
 				getCode: '',
-				codeOne: '',
-				codeTwo: '',
-				codeThree: '',
-				codeFour: '',
-				codeFive: '',
-				codeSix: '',
+				codeValue: '',
 				phoneNumber: '',
 				showCountDownTime: true
 			}
@@ -105,15 +82,6 @@
 
 			// 获取原生传递的值
 			sendMessageAuthenticationCode (val) {
-				if (val.length == 6) {
-					this.getCode = val;
-					this.codeOne = this.getCode[0];
-					this.codeTwo = this.getCode[1];
-					this.codeThree = this.getCode[2];
-					this.codeFour = this.getCode[3];
-					this.codeFive =  this.getCode[4];
-					this.codeSix =  this.getCode[5]
-				}
 			},
 
 			//让页面滚动到顶部
@@ -121,54 +89,10 @@
 				document.querySelector('#top-content').scrollIntoView(true)
 			},
 
-			// 隐藏输入框的值变化事件
-			hideInputEvent (value) {
-				this.hideInput = value;
-				this.codeOne = this.hideInput[0];
-				this.codeTwo = this.hideInput[1];
-				this.codeThree = this.hideInput[2];
-				this.codeFour = this.hideInput[3];
-				this.codeFive =  this.hideInput[4];
-				this.codeSix =  this.hideInput[5]
-			},
-
 			// 输入框变化事件
-			inputEventOne (event) {
-				if (event) {
-					this.$refs.inputOne.blur();
-					this.$refs.inputTwo.focus()
-				}
-			},
-			inputEventTwo (event) {
-				if (event) {
-					this.$refs.inputTwo.blur();
-					this.$refs.inputThree.focus()
-				}
-			},
-			inputEventThree (event) {
-				if (event) {
-					this.$refs.inputThree.blur();
-					this.$refs.inputFour.focus()
-				}
-			},
-			inputEventFour (event) {
-				if (event) {
-					this.$refs.inputFour.blur();
-					this.$refs.inputFive.focus()
-				}
-			},
-			inputEventFive (event) {
-				if (event) {
-					this.$refs.inputFive.blur();
-					this.$refs.inputSix.focus()
-				}
-			},
-			inputEventSix (event) {
-				if (!this.codeSix) {return};
-				this.$refs.inputSix.blur();
-				if (this.codeOne && this.codeTwo && this.codeThree && this.codeFour && this.codeFive) {
-					let code = `${this.codeOne}${this.codeTwo}${this.codeThree}${this.codeFour}${this.codeFive}${this.codeSix}`
-					this.phoneCodeLogin(code)
+			inputChange (event) {
+				if (this.codeValue.length == 6) {
+					this.phoneCodeLogin(this.codeValue)
 				}
 			},
 
@@ -186,12 +110,6 @@
 						this.changeIsLogin(true);
 						this.changeIsTokenExpired(false);
 					} else {
-						this.codeOne = '';
-						this.codeTwo = '';
-						this.codeThree = '';
-						this.codeFour = '';
-						this.codeFive = '';
-						this.codeSix = '';
 						this.$toast({
                             message: `${res.data.msg}`,
                             position: 'bottom'
@@ -199,12 +117,6 @@
 					}
 				})
 				.catch((err) => {
-					this.codeOne = '';
-					this.codeTwo = '';
-					this.codeThree = '';
-					this.codeFour = '';
-					this.codeFive = '';
-					this.codeSix = '';
 					this.$toast({
 						message: `${err.message}`,
 						position: 'bottom'
@@ -314,22 +226,17 @@
 			justify-content: center;
 			margin-top: 30px;
 			> div {
-				width: 40px;
-				margin-right: 16px;
-                .bottom-border-1px(#6e6e6e,5px);
-				&:last-child {
-					margin-right: 0;
-				};
+				width: 80%;
+				margin: 0 auto;
+                .bottom-border-1px(#6e6e6e,3px);
 				/deep/ .uni-input {
 					color: #fff;
 					height: 50px;
 					text-align: center;
 					font-size: 18px;
                     background: transparent;
-					padding: 0 !important;
                     .van-field__control {
-                        color: #fff !important;
-                        text-align: center !important
+                        color: #fff !important
                     };
 					// 去除自动填充的输入框黄色背景
 					input:-webkit-autofill,
@@ -338,9 +245,6 @@
 					input:-webkit-autofill:active {
 						-webkit-transition-delay: 9999s;
 						-webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
-					};
-					.van-cell__value {
-						display: flex
 					}
 				}
 			}
