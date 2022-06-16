@@ -22,8 +22,8 @@
 			<div class="phone-number" @click="inputClicked">
 				<van-field class="uni-input" ref="phoneInput" v-model="phoneNumber" @input="inputEvent" type="tel" placeholder="请输入手机号码" />
 			</div>
-			<div class="send-auth-box" @click="loginToIndex" :class="{'sendAuthBoxStyle': !checked || !phoneNumberUsable || !isCanSendPhoneCode}">
-				<span>发送短信验证码</span>
+			<div class="send-auth-box" @click="loginToIndex" :class="{'sendAuthBoxStyle': !checked || !phoneNumberUsable || !isCanSendPhoneCode || isSending}">
+				<span>{{!isSending ? '发送短信验证码' : '发送中···'}}</span>
 			</div>
 			<div class="countDown-box" v-show="!isCanSendPhoneCode">
 				<van-count-down :time="countdownTime - new Date().getTime()" format=" ss秒后重新发送" @finish="countDownEnd" />
@@ -71,6 +71,7 @@ export default {
     return {
       phoneNumber: '',
 	  path: '',
+	  isSending: false,
 	  registerBuyInfoBoxShow: true,
 	  isDisabled: false,
 	  timer: null,
@@ -234,7 +235,10 @@ export default {
 		if(this.isDisabled) return;
 		this.isDisabled = !this.isDisabled;
 		this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
+		if (this.isSending) { return };
+		this.isSending = true;
 		sendPhoneAuthCode(this.phoneNumber).then((res) => {
+			this.isSending = false;
 			if (res && res.data.code == 0) {
 				this.changeIsCanSendPhoneCode(false);
 				this.changeIsEnterVerificationCodePage(true);
@@ -248,6 +252,7 @@ export default {
             }
 		})
 		.catch((err) => {
+			this.isSending = false;
 			this.$toast({
 				message: `${err.message}`,
 				position: 'bottom'

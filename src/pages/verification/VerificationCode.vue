@@ -1,6 +1,10 @@
 <template>
 	<div class="content-box" id="top-content">
         <NavBar path="/login" />
+		<van-loading type="spinner" vertical v-show="loadingShow" color="#fff">
+            登录中
+        </van-loading>
+        <van-overlay :show="isShowOverlay"/>
 		<div class="content-top">
 			<span>请输入验证码</span>
 			<span>已发送到手机号 {{phoneNumber}}</span>
@@ -41,6 +45,8 @@
 				getCode: '',
 				codeValue: '',
 				phoneNumber: '',
+				loadingShow: false,
+				isShowOverlay: false,
 				showCountDownTime: true
 			}
 		},
@@ -98,12 +104,16 @@
 
 			// 手机验证码登录
 			phoneCodeLogin (code) {
+				this.loadingShow = true;
+				this.isShowOverlay =  true;
 				phoneAuthCodeLogin({
 					mobile: this.phoneNumber,
   					password: code,
 					inviteType: this.inviteMessage ? this.inviteMessage['inviteType'] : '',
   					inviteId: this.inviteMessage ? this.inviteMessage['inviteId'] : ''
 				}).then((res) => {
+					this.loadingShow = false;
+					this.isShowOverlay =  false;
 					if (res && res.data.code == 0) {
 						this.changeToken(res.data.token);
 						this.queryuserInfo();
@@ -117,6 +127,8 @@
 					}
 				})
 				.catch((err) => {
+					this.loadingShow = false;
+					this.isShowOverlay =  false;
 					this.$toast({
 						message: `${err.message}`,
 						position: 'bottom'
