@@ -622,6 +622,9 @@
     @import "~@/common/stylus/modifyUi.less";
     @keyframes product-animation{
        0% {
+            transform: translateX(-1px) translateZ(10px) rotateY(0deg)
+        }
+        25% {
             transform: translateX(-1px) translateZ(10px) rotateY(20deg)
         }
         50% {
