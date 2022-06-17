@@ -141,10 +141,10 @@
                     <div class="loading-img-wrapper">
                         <img :src="imgLoadingGif" v-show="loadingImgGifShow || threeDimensionalShow" class="loading-img">
                     </div>
-                    <div class="abbr-img" v-if="collectionRecordDetails.three === '0'">
+                    <div class="abbr-img" v-show="collectionRecordDetails.three === '0'">
                         <img :src="collectionRecordDetails.url" v-show="!loadingImgGifShow">
                     </div>
-                    <div class="three-dimensional-img" v-else>
+                    <div class="three-dimensional-img" v-show="collectionRecordDetails.three !== '0'">
                        <model-obj
                             v-if="!loadingImgGifShow && collectionRecordDetails.three === 'obj'" 
                             :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 

@@ -23,10 +23,10 @@
                     <div class="loading-img-wrapper">
                         <img :src="imgLoadingGif" class="loading-img" v-show="loadingImgGifShow || threeDimensionalShow">
                     </div>
-                    <div class="abbr-img" v-if="productsDetails.three === '0'">
+                    <div class="abbr-img" v-show="productsDetails.three === '0'">
                         <img :src="productsDetails.path"  v-show="!loadingImgGifShow">
                     </div>
-                    <div class="three-dimensional-img" v-else>
+                    <div class="three-dimensional-img" v-show="productsDetails.three !== '0'">
                         <model-obj
                             v-if="!loadingImgGifShow && productsDetails.three === 'obj'" 
                             :controlsOptions="{enableRotate:false,enableZoom:false,enabled:false}" 
