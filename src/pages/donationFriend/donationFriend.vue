@@ -46,7 +46,7 @@
         </div>
         <div class="content-code" v-show="isShowCodeInput">
 			<div>
-                <van-field class="uni-input" ref="inputOne" v-model="codeValue" @input="inputChange" maxlength="6" type="number"/>>
+                <van-field class="uni-input" ref="inputOne" v-model="codeValue" placeholder="六位短信验证码" @input="inputChange" maxlength="6" type="number"/>>
 			</div>
 		</div>
         <div class="donation-explain" v-html="protocolContent">
@@ -461,6 +461,10 @@
                     .van-field__control {
                         color: #fff !important
                     };
+                    input::placeholder{
+						color:rgb(66, 66, 66);
+						font-size: 14px
+					};     
 					// 去除自动填充的输入框黄色背景
 					input:-webkit-autofill,
 					input:-webkit-autofill:hover,

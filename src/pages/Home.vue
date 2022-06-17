@@ -31,9 +31,9 @@
             <div class="switch-content">
                 <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
-                <div class="object-box" ref="objectBox" v-if="currentTabIndex === 0 && !emptyShow">
+                <div class="object-box" ref="objectBox" v-show="currentTabIndex === 0 && !emptyShow">
                     <!-- 产品列表骨架 -->
-                    <div class="object-skeleton-list-box" v-if="loadingShow">
+                    <div class="object-skeleton-list-box" v-show="loadingShow">
                         <div class="object-skeleton-list" v-for="(item) in objectSkeletonList" :key="item.id">
                             <div class="top"></div>
                             <div class="bottom">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <!-- 产品列表 -->
-                    <div class="object-list-box" v-if="!loadingShow">
+                    <div class="object-list-box" v-show="!loadingShow">
                         <div class="object-list" 
                             @click="objectDetailEvent(item,index)" 
                             v-for="(item,index) in digitalCollectionList" :key="item.id"
@@ -114,7 +114,7 @@
                     <!-- 更多内容提示 -->
                     <span class="expect" v-show="!isShowLoadFail && !loadingShow && !emptyShow">- 更多内容敬请期待 -</span>
                 </div>
-                <div class="sell-date-box" v-if="currentTabIndex === 1">
+                <div class="sell-date-box" v-show="currentTabIndex === 1">
                     <div class="sell-title">
                         <div class="left">
                         <span>近期发售计划</span>
@@ -205,6 +205,7 @@
         mapMutations
     } from 'vuex'
     import {
+        repeArray,
         IsPC
     } from '@/common/js/utils'
     export default {
@@ -245,6 +246,7 @@
         },
 
         mounted() {
+            console.log(1,this.digitalCollectionList);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -260,6 +262,7 @@
         },
 
         activated() {
+            console.log(2,this.digitalCollectionList);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
