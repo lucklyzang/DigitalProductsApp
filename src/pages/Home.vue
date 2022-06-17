@@ -784,6 +784,7 @@
                                     background: rgba(0, 0, 0, .9);
                                     color: #63b66b;
                                     border-radius: 16px;
+                                    height: 24px;
                                     padding: 0 10px;
                                     box-sizing: border-box;
                                     display: flex;
