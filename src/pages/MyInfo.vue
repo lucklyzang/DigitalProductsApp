@@ -31,10 +31,10 @@
             <div class="unfold-top">
                 <div class="top-left">
                     <p>
-                     的好时机多喝水2
+                     我的邀请码
                     </p>
                     <p>
-                        的哈涉及到哈市
+                        一个邀请码只能邀请一次
                     </p>
                 </div>
                 <div class="top-right" @click="closePictureUnfoldEvent">
@@ -42,13 +42,33 @@
                 </div>
             </div>
             <div class="unfold-center">
-                <div class="collection-exhibition">
-                    <div class="abbr-img">
-                        
-                    </div>
+                <div class="unfold-center-top">
+                    {{ !invitationCodeValue ? '待生成' : invitationCodeValue  }}
                 </div>
-                <div class="booth">
-                    
+                <div class="unfold-center-bottom"
+                    v-clipboard:copy="invitationCodeValue"
+                    v-clipboard:success="onCopySuccess"
+                    v-clipboard:error="onCopyError" 
+                >
+                    点击复制
+                </div>
+            </div>
+            <div class="create-code-box">
+                <div class="create-code-btn" @click="createInviationCodeEvent">
+                    <van-icon name="replay" color="#fff" size="15" />
+                    生成新的邀请码
+                </div>
+                <div class="create-code-info">
+                    还能生成新的邀请码次数
+                    <span>200</span>
+                </div>
+            </div>
+            <div class="create-record">
+                <van-divider dashed :style="{ borderColor: '#6e6e6e',fontSize: '13px' }">生成记录</van-divider>
+                <div class="create-record-list">
+                    <span v-for="(item,index) in inviationCodeList" :key="index">
+                        {{ item }}
+                    </span>
                 </div>
             </div>
         </van-dialog>
@@ -145,7 +165,11 @@
             return {
                 scrollTop: 0, // 储存滚动位置
                 isDisabledRefresh: false,
-                inviationCodeBox: true,
+                isDisabled: false,
+	            timer: null,
+                inviationCodeBox: false,
+                invitationCodeValue: '',
+                inviationCodeList: ['saghj1298s','saghj1298s','saghj1298s','saghj1298s','saghj1298s','saghj1298s'],
                 isRefresh: false,
                 isDisabled: false,
                 timer: null,
@@ -254,7 +278,28 @@
 
             //邀请码点击事件
             invitationCodeEvent () {
-                console.log(1)
+                // if (!this.isLogin) {
+                //     this.changeIsEnterLoginPageSource('/myInfo');
+                //     this.$router.push({
+                //         path: '/login'
+                //     });
+                //     return
+                // };
+                this.inviationCodeBox = true
+            },
+
+            // 生成新邀请码事件
+            createInviationCodeEvent () {
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000)
+            },
+
+            onCopySuccess(){
+                this.$toast("复制成功");
+            },
+            onCopyError(){
+                this.$toast("复制失败");
             },
 
             //让页面滚动到顶部
@@ -543,9 +588,10 @@
             /deep/ .van-dialog {
                 border-radius: 0;
                 width: 85%;
-                height: 50vh;
+                max-height: 70vh;
                 top: 50%;
                 left: 50%;
+                overflow: auto;
                 background: @color-background;
                 transform: translate(-50%,-50%);
                 .van-dialog__content {
@@ -557,15 +603,11 @@
                         height: 80px;
                         display: flex;
                         padding: 0 10px;
+                        margin-bottom: 4px;
                         box-sizing: border-box;
                         flex-flow: row nowrap;
                         align-items: center;
                         justify-content: space-between;
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        z-index: 1000;
                         .top-left {
                             flex: 1;
                             text-align: center;
@@ -577,11 +619,11 @@
                                 &:first-child {
                                     font-size: 18px;
                                     color: #fff;
-                                    margin-bottom: 8px;
+                                    margin-bottom: 12px;
                                 };
                                 &:last-child {
-                                    font-size: 14px;
-                                    color: #b1b1b1
+                                    font-size: 12px;
+                                    color: #7c7c7c
                                 }
                             }
                         };
@@ -590,42 +632,87 @@
                         }
                     };
                     .unfold-center {
-                        flex: 1;
-                        display: flex;
-                        flex-direction: column;
-                        overflow: auto;
-                        position: relative;
-                        .collection-exhibition {
-                            flex: 1;
-                            width: 100%;
-                            margin: 0 auto;
-                            position: relative;
+                       width: 90%;
+                       margin: 0 auto;
+                       height: 130px;
+                       background: #252525;
+                       .unfold-center-top {
+                            height: 85px;
+                            color: #fff;
+                            font-size: 22px;
                             display: flex;
                             flex-flow: row nowrap;
-                            align-items: center;
                             justify-content: center;
-                            img {
-                                pointer-events: none;
-                                width: 100%
-                            };
-                            .abbr-img {
-                                overflow-x: scroll;
-                                margin-top: 60px;
-                                padding: 0 6px;
-                                box-sizing: border-box;
-                                scrollbar-width: none;
-                                -ms-overflow-style:none;
-                            };
-                            .abbr-img::-webkit-scrollbar {
-                                display: none;
-                            };
-                        };
-                        .booth {
+                            align-items: center;
+                            .bottom-border-1px(#6e6e6e,1px);
+                       };
+                       .unfold-center-bottom {
+                            text-align: center;
+                            height: 45px;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            justify-content: center;
+                            align-items: center;
+                            color: #f0c596;
+                            font-size: 14px
+                       }
+                    };
+                    .create-code-box {
+                        width: 90%;
+                        margin: 0 auto;
+                        margin-top: 20px;
+                        .create-code-btn {
+                            display: flex;
+                            flex-flow: row nowrap;
+                            justify-content: center;
+                            align-items: center;
+                            height: 35px;
+                            border-radius: 10px;
                             width: 100%;
-                            margin: 0 auto;
-                            margin-top: 30px;
-                            >img {
-                                width: 100%
+                            color: #fff;
+                            font-size: 12px;
+                            background: #f0c596;
+                            .van-icon {
+                                margin-right: 2px
+                            }
+                        };
+                        .create-code-info {
+                            width: 100%;
+                            margin-top: 12px;
+                            text-align: center;
+                            font-size: 12px;
+                            color: #7c7c7c;
+                            span {
+                                color: #f0c596
+                            }
+                        }
+                    };
+                    .create-record {
+                        width: 90%;
+                        margin: 0 auto;
+                        margin-top: 10px;
+                        flex: 1;
+                        padding: 4px 0;
+                        box-sizing: border-box;
+                        .create-record-list {
+                            width: 100%;
+                            display: flex;
+                            flex-flow: row wrap;
+                            justify-self: flex-start;
+                            span {
+                                width: 32%;
+                                height: 30px;
+                                margin-right: 2%;
+                                margin-bottom: 4px;
+                                text-align: center;
+                                line-height: 30px;
+                                display: inline-block;
+                                background: #252525;
+                                color: #fff;
+                                font-size: 12px;
+                                &:nth-child(3n) {
+                                    margin-right: 0
+                                }
                             }
                         }
                     }
