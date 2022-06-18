@@ -21,8 +21,11 @@
 								</p>
 							</div>
 						</div>
-						<div class="right">
-							{{item.type == 0 ? '转赠成功' : '转入成功'}}
+						<div class="right" v-if="item.type == 0">
+							{{item.status == 0 ? '转赠中' : item.status == 1 ? '转赠成功' : '转赠失败'}}
+						</div>
+						<div class="right" v-else>
+							{{item.status == 0 ? '转入中' : item.status == 1 ? '转入成功' : '转入失败'}}
 						</div>
 					</div>
 					<div class="center-line"></div>
@@ -119,6 +122,7 @@
 									collectionUrl: item.path,
 									owner: item.owner,
 									type: item.type,
+									status: item.status,
 									account: item.account,
 									chain: item.chain,
 									status: item.status,

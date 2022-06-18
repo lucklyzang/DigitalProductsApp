@@ -175,9 +175,11 @@
 									id: item.id,
         							comId: item.comId,
 									chain: item.chain,
-									publisher: item.publisher
+									publisher: item.publisher,
+                                    status: item.status
                                 })
                             };
+                            this.orderList = this.orderList.filter((i) => { return i.status == 1});
                             //藏品存储在本地
                             this.changeMyObjects(this.orderList);
                             if (this.isLogin) {

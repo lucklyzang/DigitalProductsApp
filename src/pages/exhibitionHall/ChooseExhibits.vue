@@ -122,8 +122,10 @@
                                                 id: item.id,
                                                 comId: item.comId,
                                                 chain: item.chain,
-                                                publisher: item.publisher
-                                            })
+                                                publisher: item.publisher,
+                                                status: item.status
+                                            });
+                                            this.orderList = this.orderList.filter((i) => { return i.status == 1})
                                         } else {
                                             if (isExihibition) {                                                          
                                                 this.orderList.push({
@@ -136,8 +138,10 @@
                                                     id: item.id,
                                                     comId: item.comId,
                                                     chain: item.chain,
-                                                    publisher: item.publisher
-                                                })
+                                                    publisher: item.publisher,
+                                                    status: item.status
+                                                });
+                                                this.orderList = this.orderList.filter((i) => { return i.status == 1})
                                             } else {
                                                 this.orderList.push({
                                                     collectionName: item.name,
@@ -149,8 +153,10 @@
                                                     id: item.id,
                                                     comId: item.comId,
                                                     chain: item.chain,
-                                                    publisher: item.publisher
-                                                })
+                                                    publisher: item.publisher,
+                                                    status: item.status
+                                                });
+                                                this.orderList = this.orderList.filter((i) => { return i.status == 1})
                                             }
                                         }
                                     } else {
@@ -164,8 +170,10 @@
                                             id: item.id,
                                             comId: item.comId,
                                             chain: item.chain,
-                                            publisher: item.publisher
-                                        })
+                                            publisher: item.publisher,
+                                            status: item.status
+                                        });
+                                        this.orderList = this.orderList.filter((i) => { return i.status == 1})
                                     }
                                 } else {
                                     if (isExihibition) {
@@ -179,8 +187,10 @@
                                             id: item.id,
                                             comId: item.comId,
                                             chain: item.chain,
-                                            publisher: item.publisher
-                                        })
+                                            publisher: item.publisher,
+                                            status: item.status
+                                        });
+                                        this.orderList = this.orderList.filter((i) => { return i.status == 1})
                                     } else {
                                         this.orderList.push({
                                             collectionName: item.name,
@@ -192,8 +202,10 @@
                                             id: item.id,
                                             comId: item.comId,
                                             chain: item.chain,
-                                            publisher: item.publisher
-                                        })
+                                            publisher: item.publisher,
+                                            status: item.status
+                                        });
+                                        this.orderList = this.orderList.filter((i) => { return i.status == 1})
                                     }
                                 }   
                             };
