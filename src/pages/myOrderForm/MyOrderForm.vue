@@ -34,7 +34,7 @@
 					<div class="right">
 						<div>
 							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
-							<span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
+							<span :class="[item.collectionStatus == '1' ? 'spanPaiedStyle' : item.collectionStatus =='-1' || item.collectionStatus == '2' ? 'spanCancelStyle' : '']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
 						<div v-show="item.collectionStatus == '0'" @click.stop="toPayEvent(item)">
 							<span>
@@ -64,7 +64,7 @@
 					<div class="right">
 						<div>
 							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
-							<span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
+							<span :class="[item.collectionStatus == '1' ? 'spanPaiedStyle' : item.collectionStatus == '-1' || item.collectionStatus == '2' ? 'spanCancelStyle' : '']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
 						<div v-show="item.collectionStatus == '0'"  @click.stop="toPayEvent(item)">
 							<span>
@@ -94,7 +94,7 @@
 					<div class="right">
 						<div>
 							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
-                           <span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
+                           <span :class="[item.collectionStatus == '1' ? 'spanPaiedStyle' : item.collectionStatus == '-1' || item.collectionStatus == '2' ? 'spanCancelStyle' : '']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
 						<div v-show="item.collectionStatus == '0'">
 							<span>
@@ -124,7 +124,7 @@
 					<div class="right">
 						<div>
 							<van-icon name="underway" size="14" color="#e3921a" v-show="item.collectionStatus == '0'" />
-                            <span :class="[item.collectionStatus=='1'?'spanPaiedStyle':item.collectionStatus=='-1'? 'spanCancelStyle':'']">{{payStatusTransfer(item.collectionStatus)}}</span>
+                            <span :class="[item.collectionStatus == '1' ? 'spanPaiedStyle' : item.collectionStatus == '-1' || item.collectionStatus == '2' ? 'spanCancelStyle' : '']">{{payStatusTransfer(item.collectionStatus)}}</span>
 						</div>
 						<div v-show="item.collectionStatus == '0'">
 							<span>
@@ -219,6 +219,9 @@
 						break;
 					case 1 :
 						return '已支付'
+						break;
+					case 2 :
+						return '已退款'
 						break;
 				}
 			},

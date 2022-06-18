@@ -145,7 +145,6 @@
 							this.changeMyObjects(this.orderList);
                         }
                     } else {
-						this.isRefresh = false;
 						this.isShowLoadFail = true;
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -154,6 +153,7 @@
                     }
 				})
 				.catch((err) => {
+					this.isRefresh = false;
 					this.isShowLoadFail = true;
 					this.loadingShow = false;
                     this.emptyShow = false;

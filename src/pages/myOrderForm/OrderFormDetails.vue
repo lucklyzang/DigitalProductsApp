@@ -16,7 +16,7 @@
 		<div class="content-top">
 			<van-icon name="underway" size="80" color="#e3921a" v-show="orderFormDetails.status == 0" />
             <img :src="orderFormDetails.status == 1 ? accountPaidPng : canceledPng " alt="" v-show="orderFormDetails.status != 0">
-			<span>{{orderFormDetails.status == 1 ? '已支付' : orderFormDetails.status == 0 ? '待支付' : '已取消'}}</span>
+			<span>{{orderFormDetails.status == 1 ? '已支付' : orderFormDetails.status == 0 ? '待支付' : orderFormDetails.status == -1 ? '已取消' : '已退款'}}</span>
 			<p>
 				<van-count-down v-show="orderFormDetails.status == 0" :time="`${(new Date(orderFormDetails.createTime).getTime() + orderFormDetails.expire*60*1000) - new Date().getTime()}`" format="支付剩余时间 mm : ss "/>
 			</p>

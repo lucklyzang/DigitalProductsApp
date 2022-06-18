@@ -3,48 +3,57 @@
 		<NavBar path="/myInfo" title="转赠记录"/>
 		<van-loading type="spinner" v-show="loadingShow"/>
         <van-empty :description="descriptionContent" v-show="emptyShow" />
-		<div class="content-center" v-show="!emptyShow">
-			<div class="all-order">
-				<div class="order-list" v-for="(item,index) in orderList" :key="index">
-					<div class="top">
-						<div class="left">
-							<div class="img-show" v-lazy-container="{ selector: 'img' }">
-								<img :data-src="item.collectionUrl">
+		<van-pull-refresh
+			v-model="isRefresh"
+			pulling-text="下拉刷新"
+			:disabled="isDisabledRefresh"
+			loosing-text="释放立即刷新"
+			success-text="刷新成功"
+			@refresh="onRefresh"
+    	>  
+			<div class="content-center" v-show="!emptyShow">
+				<div class="all-order">
+					<div class="order-list" v-for="(item,index) in orderList" :key="index">
+						<div class="top">
+							<div class="left">
+								<div class="img-show" v-lazy-container="{ selector: 'img' }">
+									<img :data-src="item.collectionUrl">
+								</div>
+								<div class="span-show">
+									<span>{{item.collectionName}}</span>
+									<p>
+										<span class="blockchain-img">
+											<img :src="blockchainPng" alt="">
+										</span>
+										<span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
+									</p>
+								</div>
 							</div>
-							<div class="span-show">
-								<span>{{item.collectionName}}</span>
-								<p>
-									<span class="blockchain-img">
-										<img :src="blockchainPng" alt="">
-									</span>
-									<span class="blockchain-chain">{{item.chain ? item.chain : ''}}</span>
-								</p>
+							<div class="right" v-if="item.type == 0" :class="[item.status=='0'?'rightDonationIngStyle':item.status=='-1'? 'rightDonationFailStyle':'']">
+								{{item.status == 0 ? '转赠中' : item.status == 1 ? '转赠成功' : '转赠失败'}}
+							</div>
+							<div class="right" v-else :class="[item.status=='0'?'rightDonationIngStyle':item.status=='-1'? 'rightDonationFailStyle':'']">
+								{{item.status == 0 ? '转入中' : item.status == 1 ? '转入成功' : '转入失败'}}
 							</div>
 						</div>
-						<div class="right" v-if="item.type == 0">
-							{{item.status == 0 ? '转赠中' : item.status == 1 ? '转赠成功' : '转赠失败'}}
-						</div>
-						<div class="right" v-else>
-							{{item.status == 0 ? '转入中' : item.status == 1 ? '转入成功' : '转入失败'}}
+						<div class="center-line"></div>
+						<div class="bottom">
+							<div class="donation-person">
+								<div class="donation-person-left">{{item.type == 0 ? '转赠对象' : '转入对象'}}</div>
+								<div class="donation-person-right">{{item.account}}</div>
+							</div>
+							<div class="donation-date">
+								<div class="donation-date-left">{{item.type == 0 ? '转赠时间' : '转入时间'}}</div>
+								<div class="donation-date-right">{{item.createTime}}</div>
+							</div>
 						</div>
 					</div>
-					<div class="center-line"></div>
-					<div class="bottom">
-						<div class="donation-person">
-							<div class="donation-person-left">{{item.type == 0 ? '转赠对象' : '转入对象'}}</div>
-							<div class="donation-person-right">{{item.account}}</div>
-						</div>
-						<div class="donation-date">
-							<div class="donation-date-left">{{item.type == 0 ? '转赠时间' : '转入时间'}}</div>
-							<div class="donation-date-right">{{item.createTime}}</div>
-						</div>
+					<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
+						<span>没有更多数据</span>
 					</div>
-				</div>
-				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
-					<span>没有更多数据</span>
 				</div>
 			</div>
-		</div>
+		</van-pull-refresh>	
 	</div>
 </template>
 
@@ -63,6 +72,8 @@
 		data() {
 			return {
 				isShowLoadFail: false,
+				isRefresh: false,
+                isDisabledRefresh: false,
 				emptyShow: false,
                 loadingShow: false,
 				descriptionContent: '暂无转赠记录',
@@ -90,6 +101,7 @@
                     })
                 })
             };
+			window.addEventListener('scroll', this.handleScroll);
 			// 查询藏品记录
 			this.queryTransfersRecord()
 		},
@@ -99,9 +111,24 @@
 				'changeIsEnterCollectionsRecordsDetailsPageSource'
 			]),
 
+			//下拉刷新事件
+            onRefresh () {
+                this.queryTransfersRecord();
+            },
+
 			//让页面滚动到顶部
             toTop() {
                 document.querySelector('#top-content').scrollIntoView(true)
+            },
+
+			//页面滚动事件
+            handleScroll () {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop > 0) {
+                    this.isDisabledRefresh = true;
+                } else {
+                    this.isDisabledRefresh = false
+                }
             },
 
 			// 查询藏品记录
@@ -112,6 +139,7 @@
                 this.orderList = [];
 				transfersRecord().then((res) => {
 					this.loadingShow = false;
+					this.isRefresh = false;
 					if (res && res.data.code == 0) {
                         if (res.data.list.length == 0) {
                             this.emptyShow = true;
@@ -125,7 +153,6 @@
 									status: item.status,
 									account: item.account,
 									chain: item.chain,
-									status: item.status,
 									createTime: item.createTime,
                                 })
                             }
@@ -139,6 +166,7 @@
                     }
 				})
 				.catch((err) => {
+					this.isRefresh = false;
 					this.isShowLoadFail = true;
 					this.loadingShow = false;
                     this.emptyShow = false;
@@ -166,6 +194,14 @@
             .van-nav-bar__title {
                 color: #fff !important;
                 font-size: 16px !important
+            }
+        };
+		/deep/ .van-pull-refresh {
+            flex: 1;
+            display: flex;
+            .van-pull-refresh__track {
+                flex: 1;
+                height: auto;
             }
         };
 		.content-center {
@@ -274,6 +310,12 @@
 							align-items: center;
 							font-size: 13px;
 							color: #6cb96c
+						};
+						.rightDonationIngStyle {
+							color: #fff
+						};
+						.rightDonationFailStyle {
+							color: #656565
 						}
 					};
 					.center-line {
