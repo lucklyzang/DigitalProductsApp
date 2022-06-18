@@ -7,13 +7,7 @@
         z-index="1000"
         :safe-area-inset-top="true"
         @click-left="onClickLeft"
-        @click-right="onClickRight"
     >   
-         <template #title>
-            <p @click="invitationCodeEvent">
-                邀请码
-            </p>
-        </template>
         <template #left>
             <p>
                 <img :src="blockchainPng" alt="">
@@ -21,7 +15,10 @@
             </p>
         </template>
         <template #right>
-            <p>
+            <p class="inviation-code-box" @click="invitationCodeEvent">
+                邀请码
+            </p>
+            <p  class="set-box" @click="onClickRight">
                 <img :src="setPng" alt="">
             </p>
         </template>
@@ -539,22 +536,6 @@
                 color: #fff !important;
                 font-size: 24px !important
             };
-            .van-nav-bar__title {
-                p {
-                    padding: 0 8px;
-                    height: 23px;
-                    box-sizing: border-box;
-                    color: #f0c596;
-                    border-radius: 10px;
-                    display: flex;
-                    flex-flow: row nowrap;
-                    box-sizing: border-box;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 10px;
-                    background: rgba(81, 81, 81, 0.54);
-                }
-            };
             .van-nav-bar__left {
                 p {
                     padding: 0 8px;
@@ -577,11 +558,27 @@
                 }
             };
             .van-nav-bar__right {
-                p {
-                    img {
-                        width: 22px
+                .set-box {
+                      img {
+                        width: 22px;
+                        vertical-align: middle
                     }
-                }    
+                };
+                .inviation-code-box {
+                    padding: 0 8px;
+                    margin-right: 4px;
+                    height: 23px;
+                    box-sizing: border-box;
+                    color: #f0c596;
+                    border-radius: 10px;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    box-sizing: border-box;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 10px;
+                    background: rgba(81, 81, 81, 0.54);
+                }
             }
         };
         .show-picture-box {

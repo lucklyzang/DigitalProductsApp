@@ -353,7 +353,7 @@ export default {
 						font-size: 18px
 					};
 					input::placeholder{
-						color:rgb(66, 66, 66);
+						color: #fff;
 						font-size: 16px
 					};
 					.van-field__body {
@@ -374,7 +374,7 @@ export default {
 						font-size: 18px
 					};
 					input::placeholder{
-						color:rgb(66, 66, 66);
+						color:#fff;
 						font-size: 16px
 					};
 					.van-field__body {

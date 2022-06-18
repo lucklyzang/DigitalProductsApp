@@ -253,7 +253,7 @@
                         color: #fff !important
                     };
 					input::placeholder{
-						color:rgb(66, 66, 66);
+						color: #fff;
 						font-size: 14px
 					};     
 					// 去除自动填充的输入框黄色背景
