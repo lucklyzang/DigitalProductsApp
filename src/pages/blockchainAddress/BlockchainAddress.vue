@@ -9,9 +9,9 @@
         <div class="content-center">
             {{userInfo.account}}
         </div>
-        <div class="content-bottom" 
-            v-clipboard:copy="userInfo.account" 
-            v-clipboard:success="onCopySuccess" 
+        <div class="content-bottom" :class="{'contentBtnStyle': !userInfo.account}"
+            v-clipboard:copy="userInfo.account"
+            v-clipboard:success="onCopySuccess"
             v-clipboard:error="onCopyError"
         >
             复制地址
@@ -65,6 +65,9 @@
                 this.$toast("复制成功");
             },
             onCopyError(){
+                if (!this.userInfo.account) {
+                    return;
+                };
                 this.$toast("复制失败");
             }
 		}
@@ -138,7 +141,11 @@
             color: black;
             font-size: 14px;
             background-image: linear-gradient(to right, #f2c460 ,#e29119)
-        }
+        };
+        .contentBtnStyle {
+            background-image: linear-gradient(to right, #f1f0ee ,#555453);
+            color: #666
+        };
 	}
 </style>
 
