@@ -19,6 +19,12 @@
 			<span>发现有趣</span>
 		</div>
 		<div class="content-middle">
+			<div class="invitation-code" @click="invitationCodeClicked">
+				<van-field class="uni-input" ref="invitationCode" v-model="invitationCodeValue" @input="invitationCodeEvent" type="number" placeholder="请输入邀请码(非必填)" />
+			</div>
+			<div class="invitation-code-info">
+				邀请码通过已注册用户分享进行获取(非必填)
+			</div>
 			<div class="phone-number" @click="inputClicked">
 				<van-field class="uni-input" ref="phoneInput" v-model="phoneNumber" @input="inputEvent" type="tel" placeholder="请输入手机号码" />
 			</div>
@@ -70,6 +76,7 @@ export default {
   data () {
     return {
       phoneNumber: '',
+	  invitationCodeValue: '',
 	  path: '',
 	  isSending: false,
 	  registerBuyInfoBoxShow: true,
@@ -172,6 +179,12 @@ export default {
        }
    	},
 
+	invitationCodeClicked () {
+		if (this.$refs.invitationCode) {
+           this.$refs.invitationCode.focus()
+       }
+	},
+
 	// 关闭二维码弹框事件
 	clearAreaCodeDialogEvent () {
 		this.registerBuyInfoBoxShow = false
@@ -187,6 +200,11 @@ export default {
 	jumpPrivacyEvent () {
 		this.changeIsEnterVerificationCodePage(true);
 		this.$router.push({path: '/privacy'})
+	},
+
+	// 邀请码输入框值改变事件
+	invitationCodeEvent (value) {
+
 	},
 
     // 输入框值改变事件
@@ -243,7 +261,7 @@ export default {
 				this.changeIsCanSendPhoneCode(false);
 				this.changeIsEnterVerificationCodePage(true);
 				this.changeCountdownTime(new Date().getTime()+60000);
-				this.$router.push({name:'verificationCode',params: {phoneNumber: this.phoneNumber}})
+				this.$router.push({name:'verificationCode',params: {phoneNumber: this.phoneNumber, invitationCodeValue: this.invitationCodeValue}})
             } else {
 				this.$toast({
 					message: `${res.data.msg}`,
@@ -324,6 +342,7 @@ export default {
 			width: 80%;
 			margin: 0 auto;
 			.phone-number {
+				margin-top: 20px;
 				.bottom-border-1px(#6e6e6e,3px);
 				/deep/ .uni-input {
 					color: #fff;
@@ -333,12 +352,42 @@ export default {
 					.van-field__value {
 						font-size: 18px
 					};
+					input::placeholder{
+						color:rgb(66, 66, 66);
+						font-size: 16px
+					};
 					.van-field__body {
 						.van-field__control {
 						color: #fff
 						}
 					}
 				}
+			};
+			.invitation-code {
+				.bottom-border-1px(#6e6e6e,3px);
+				/deep/ .uni-input {
+					color: #fff;
+					height: 50px;
+					font-size: 18px;
+					background: transparent;
+					.van-field__value {
+						font-size: 18px
+					};
+					input::placeholder{
+						color:rgb(66, 66, 66);
+						font-size: 16px
+					};
+					.van-field__body {
+						.van-field__control {
+						color: #fff
+						}
+					}
+				}
+			};
+			.invitation-code-info {
+				color:rgb(66, 66, 66);
+				font-size: 12px;
+				margin-top: 6px
 			};
 			.send-auth-box {
 				height: 50px;

@@ -45,6 +45,7 @@
 				getCode: '',
 				codeValue: '',
 				phoneNumber: '',
+				invitationCodeValue: '',
 				loadingShow: false,
 				isShowOverlay: false,
 				showCountDownTime: true
@@ -75,6 +76,7 @@
 				me.sendMessageAuthenticationCode(val);
 			};
 			this.phoneNumber = this.$route.params.phoneNumber;
+			this.invitationCodeValue = this.$route.params.invitationCodeValue;
 			this.$refs.inputOne.focus()
 		},
 		methods: {

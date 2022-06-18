@@ -8,7 +8,12 @@
         :safe-area-inset-top="true"
         @click-left="onClickLeft"
         @click-right="onClickRight"
-    >
+    >   
+         <template #title>
+            <p @click="invitationCodeEvent">
+                邀请码
+            </p>
+        </template>
         <template #left>
             <p>
                 <img :src="blockchainPng" alt="">
@@ -21,6 +26,33 @@
             </p>
         </template>
     </van-nav-bar>
+    <div class="show-picture-box">
+        <van-dialog v-model="inviationCodeBox" :show-confirm-button="false"  :close-on-popstate="false" title="" >
+            <div class="unfold-top">
+                <div class="top-left">
+                    <p>
+                     的好时机多喝水2
+                    </p>
+                    <p>
+                        的哈涉及到哈市
+                    </p>
+                </div>
+                <div class="top-right" @click="closePictureUnfoldEvent">
+                    <van-icon name="clear" size="26" color="#b1b1b1" />
+                </div>
+            </div>
+            <div class="unfold-center">
+                <div class="collection-exhibition">
+                    <div class="abbr-img">
+                        
+                    </div>
+                </div>
+                <div class="booth">
+                    
+                </div>
+            </div>
+        </van-dialog>
+    </div>
     <van-pull-refresh
         v-model="isRefresh"
         pulling-text="下拉刷新"
@@ -113,6 +145,7 @@
             return {
                 scrollTop: 0, // 储存滚动位置
                 isDisabledRefresh: false,
+                inviationCodeBox: true,
                 isRefresh: false,
                 isDisabled: false,
                 timer: null,
@@ -219,6 +252,11 @@
                 e.preventDefault()
             },
 
+            //邀请码点击事件
+            invitationCodeEvent () {
+                console.log(1)
+            },
+
             //让页面滚动到顶部
             toTop() {
                 document.querySelector('#top-content').scrollIntoView(true)
@@ -276,6 +314,11 @@
                 if (!this.isLogin) { this.isRefresh = false; return };
                 this.queryuserInfo();
                 this.queryUnReadEvent()
+            },
+
+            //关闭邀请码弹框展示事件
+            closePictureUnfoldEvent () {
+                this.inviationCodeBox = false
             },
 
             // 上部区域功能事件
@@ -451,6 +494,22 @@
                 color: #fff !important;
                 font-size: 24px !important
             };
+            .van-nav-bar__title {
+                p {
+                    padding: 0 8px;
+                    height: 23px;
+                    box-sizing: border-box;
+                    color: #f0c596;
+                    border-radius: 10px;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    box-sizing: border-box;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 10px;
+                    background: rgba(81, 81, 81, 0.54);
+                }
+            };
             .van-nav-bar__left {
                 p {
                     padding: 0 8px;
@@ -476,6 +535,99 @@
                 p {
                     img {
                         width: 22px
+                    }
+                }    
+            }
+        };
+        .show-picture-box {
+            /deep/ .van-dialog {
+                border-radius: 0;
+                width: 85%;
+                height: 50vh;
+                top: 50%;
+                left: 50%;
+                background: @color-background;
+                transform: translate(-50%,-50%);
+                .van-dialog__content {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    position: relative;
+                    .unfold-top {
+                        height: 80px;
+                        display: flex;
+                        padding: 0 10px;
+                        box-sizing: border-box;
+                        flex-flow: row nowrap;
+                        align-items: center;
+                        justify-content: space-between;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        z-index: 1000;
+                        .top-left {
+                            flex: 1;
+                            text-align: center;
+                            margin-top: 20px;
+                            >p {
+                                padding-left: 10px;
+                                box-sizing: border-box;
+                                .no-wrap();
+                                &:first-child {
+                                    font-size: 18px;
+                                    color: #fff;
+                                    margin-bottom: 8px;
+                                };
+                                &:last-child {
+                                    font-size: 14px;
+                                    color: #b1b1b1
+                                }
+                            }
+                        };
+                        .top-right {
+                            margin-top: -20px
+                        }
+                    };
+                    .unfold-center {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        overflow: auto;
+                        position: relative;
+                        .collection-exhibition {
+                            flex: 1;
+                            width: 100%;
+                            margin: 0 auto;
+                            position: relative;
+                            display: flex;
+                            flex-flow: row nowrap;
+                            align-items: center;
+                            justify-content: center;
+                            img {
+                                pointer-events: none;
+                                width: 100%
+                            };
+                            .abbr-img {
+                                overflow-x: scroll;
+                                margin-top: 60px;
+                                padding: 0 6px;
+                                box-sizing: border-box;
+                                scrollbar-width: none;
+                                -ms-overflow-style:none;
+                            };
+                            .abbr-img::-webkit-scrollbar {
+                                display: none;
+                            };
+                        };
+                        .booth {
+                            width: 100%;
+                            margin: 0 auto;
+                            margin-top: 30px;
+                            >img {
+                                width: 100%
+                            }
+                        }
                     }
                 }    
             }
