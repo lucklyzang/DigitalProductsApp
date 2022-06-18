@@ -634,13 +634,19 @@
     @import "~@/common/stylus/modifyUi.less";
     @keyframes product-animation{
         0% {
-            transform: rotateY(15deg)
+            transform: translateX(-1px) translateZ(10px) rotateY(0deg)
+        }
+        25% {
+            transform: translateX(-1px) translateZ(10px) rotateY(15deg)
         }
         50% {
-            transform: rotateY(-15deg)
+            transform: translateX(-1px) translateZ(10px) rotateY(-15deg)
+        }
+        75% {
+            transform: translateX(-1px) translateZ(10px) rotateY(15deg)
         }
         100% {
-            transform: rotateY(15deg)
+            transform: translateX(-1px) translateZ(10px) rotateY(0deg)
         }
     };
 	.page-box {
