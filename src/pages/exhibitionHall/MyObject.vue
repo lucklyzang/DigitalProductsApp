@@ -451,6 +451,7 @@
                     overflow: auto;
                     display: flex;
                     flex-flow: row wrap;
+                    align-content: flex-start;
                     >div {
                         margin-right: 10%;
                         margin-bottom: 5%;

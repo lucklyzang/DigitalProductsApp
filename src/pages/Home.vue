@@ -168,7 +168,7 @@
                     <span class="expect" v-show="!isShowLoadFail && !loadingShow && !emptyShow">- 更多内容敬请期待 -</span>
                 </div>
             </div>
-            <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0 && isShowNameAuthHint">
+            <div class="name-auth" v-show="userInfo && (userInfo.realFlag == 0 || userInfo.realFlag == -1) && isShowNameAuthHint">
                 <div class="left">
                     <span>实名认证后才可以购买数字藏品</span>
                 </div>

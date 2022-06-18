@@ -18,6 +18,9 @@
             :border="false"
         />
       </div>
+      <div class="freeze-info" v-show="userInfo.realFlag == -1">
+        认证的身份证号开立账户已达2用户上线,请重新认证
+      </div>
       <div class="content-bottom" @click="cancellationEvent">
         <span>开始认证</span>
       </div>
@@ -112,7 +115,7 @@
           this.phoneRealNameUsable = true
         }
       },
-
+      
       //身份证号输入框值变化事件
       cardChangeEvent (event) {
         let regIdCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
@@ -224,17 +227,15 @@
       position: relative;
       background: @color-background;
       .content-top {
-          height: 300px;
           position: relative;
           display: flex;
           flex-direction: column;
                 width: 92%;
           margin: 0 auto;
-          margin-top: 20px;
           padding: 6px;
           box-sizing: border-box;
           /deep/ .van-cell {
-            margin-bottom: 16px;
+            margin-top: 20px;
             background: @color-block;
             height: 55px;
             border: 1px solid #382057;
@@ -257,10 +258,20 @@
             } 
           }
         };
+        .freeze-info {
+          width: 92%;
+          margin: 0 auto;
+          height: 20px;
+          line-height: 20px;
+          text-align: center;
+          color: #444444;
+          font-size: 12px
+        };
         .content-bottom {
             width: 92%;
 			margin: 0 auto;
 			border-radius: 10px;
+      margin-top: 100px;
             box-sizing: border-box;
             padding: 6px;
             display: flex;

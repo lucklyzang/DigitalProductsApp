@@ -42,6 +42,14 @@ export function getAppId() {
     })
 };
 
+// 查询用户状态
+export function getPurchaserStatus() {
+    return request({
+        url: '/app/purchaser/status',
+        method: 'get'
+    })
+};
+
 // 获取openId
 export function getOpenId(code) {
     return request({

@@ -51,7 +51,7 @@ service.interceptors.response.use(
             store.dispatch('resetLoginState');
             window.localStorage.clear();
             store.commit('changeIsTokenExpired', true);
-            Toast('token已过期,请重新登录');
+            Toast('登录已过期,为了你的账号安全,请重新登录!');
             router.push({
                 path: '/login'
             });

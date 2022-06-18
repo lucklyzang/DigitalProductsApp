@@ -31,6 +31,7 @@
 </template>
 <script>
   import NavBar from '@/components/NavBar'
+  import {inquareUserInfo} from '@/api/products.js'
   import { mapGetters, mapMutations } from 'vuex'
   import {IsPC} from '@/common/js/utils'
   export default {
@@ -56,7 +57,8 @@
             path: '/myInfo'
           })
         })
-      }
+      };
+      this.queryuserInfo()
     },
 
     watch: {
@@ -78,6 +80,7 @@
 
     methods:{
       ...mapMutations([
+        'storeUserInfo'
       ]),
 
       //让页面滚动到顶部
@@ -94,6 +97,26 @@
           //已认证
           this.$router.push({path: '/realNameAythenticationCertified'})
         }
+      },
+
+      // 查询用户信息
+      queryuserInfo() {
+        inquareUserInfo().then((res) => {
+          if (res && res.data.code == 0) {
+            this.storeUserInfo(res.data.data);
+          } else {
+            this.$toast({
+              message: `${res.data.msg}`,
+              position: 'bottom'
+            })
+          }
+        })
+        .catch((err) => {
+          this.$toast({
+            message: `${err.message}`,
+            position: 'bottom'
+          })
+        })
       },
 
       //去往注销账号登录页事件
