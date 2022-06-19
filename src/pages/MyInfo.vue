@@ -31,9 +31,9 @@
                     <p>
                      我的邀请码
                     </p>
-                    <p>
+                    <!-- <p>
                         一个邀请码只能邀请一次
-                    </p>
+                    </p> -->
                 </div>
                 <div class="top-right" @click="closePictureUnfoldEvent">
                     <van-icon name="clear" size="26" color="#b1b1b1" />
@@ -56,10 +56,10 @@
                     <van-icon name="replay" color="#fff" size="15" />
                     生成新的邀请码
                 </div>
-                <div class="create-code-info">
+                <!-- <div class="create-code-info">
                     还能生成新的邀请码次数
                     <span>{{ 200 - inviationCodeList.length}}</span>
-                </div>
+                </div> -->
             </div>
             <div class="create-record">
                 <van-divider dashed :style="{ borderColor: '#6e6e6e',fontSize: '13px' }">生成记录</van-divider>
@@ -667,11 +667,12 @@
                     .unfold-top {
                         height: 80px;
                         display: flex;
-                        padding: 0 10px;
+                        width: 90%;
+                        margin: 0 auto;
                         margin-bottom: 4px;
-                        box-sizing: border-box;
                         flex-flow: row nowrap;
                         align-items: center;
+                        position: relative;
                         justify-content: space-between;
                         .top-left {
                             flex: 1;
@@ -682,18 +683,20 @@
                                 box-sizing: border-box;
                                 .no-wrap();
                                 &:first-child {
-                                    font-size: 18px;
+                                    font-size: 16px;
                                     color: #fff;
                                     margin-bottom: 12px;
                                 };
-                                &:last-child {
-                                    font-size: 12px;
-                                    color: #7c7c7c
-                                }
+                                // &:last-child {
+                                //     font-size: 12px;
+                                //     color: #7c7c7c
+                                // }
                             }
                         };
                         .top-right {
-                            margin-top: -20px
+                            position: absolute;
+                            top: 10px;
+                            right: 0
                         }
                     };
                     .unfold-center {
