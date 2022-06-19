@@ -707,7 +707,7 @@
                        .unfold-center-top {
                             height: 85px;
                             color: #fff;
-                            font-size: 22px;
+                            font-size: 24px;
                             display: flex;
                             flex-flow: row nowrap;
                             justify-content: center;
