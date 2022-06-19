@@ -105,12 +105,13 @@
 			},
 
 			// 手机验证码登录
-			phoneCodeLogin (code) {
+			phoneCodeLogin (val) {
 				this.loadingShow = true;
 				this.isShowOverlay =  true;
 				phoneAuthCodeLogin({
 					mobile: this.phoneNumber,
-  					password: code,
+  					password: val,
+					code: this.invitationCodeValue,
 					inviteType: this.inviteMessage ? this.inviteMessage['inviteType'] : '',
   					inviteId: this.inviteMessage ? this.inviteMessage['inviteId'] : ''
 				}).then((res) => {

@@ -1,6 +1,7 @@
 <template>
   <div class="page-box" id="top-content">
     <van-loading type="spinner" v-show="loadingShow"/>
+    <van-overlay :show="isShowOverlay"/>
     <van-nav-bar :border="false"
         :placeholder="true"
         :fixed="true"
@@ -42,7 +43,7 @@
                 <div class="unfold-center-top">
                     {{ !invitationCodeValue ? '待生成' : invitationCodeValue  }}
                 </div>
-                <div class="unfold-center-bottom"
+                <div class="unfold-center-bottom" :class="{'unfoldCenterBottomStyle' : loadingShow == true || !invitationCodeValue || invitationCodeValue == '待生成'}"
                     v-clipboard:copy="invitationCodeValue"
                     v-clipboard:success="onCopySuccess"
                     v-clipboard:error="onCopyError" 
@@ -51,13 +52,13 @@
                 </div>
             </div>
             <div class="create-code-box">
-                <div class="create-code-btn" @click="createInviationCodeEvent">
+                <div class="create-code-btn" @click="createInviationCodeEvent" :class="{'createCodeBtn' : loadingShow == true}">
                     <van-icon name="replay" color="#fff" size="15" />
                     生成新的邀请码
                 </div>
                 <div class="create-code-info">
                     还能生成新的邀请码次数
-                    <span>200</span>
+                    <span>{{ 200 - inviationCodeList.length}}</span>
                 </div>
             </div>
             <div class="create-record">
@@ -143,6 +144,10 @@
         mapMutations
     } from 'vuex'
     import {
+		getInviteCode,
+		getInviteCodeRecords
+	} from '@/api/login.js'
+    import {
         inquareUserInfo,
         appShare,
         queryUnRead
@@ -162,13 +167,13 @@
             return {
                 scrollTop: 0, // 储存滚动位置
                 isDisabledRefresh: false,
+                isShowOverlay: false,
                 isDisabled: false,
 	            timer: null,
                 inviationCodeBox: false,
                 invitationCodeValue: '',
-                inviationCodeList: ['saghj1298s','saghj1298s','saghj1298s','saghj1298s','saghj1298s','saghj1298s'],
+                inviationCodeList: [],
                 isRefresh: false,
-                isDisabled: false,
                 timer: null,
                 isExistUnread: null,
                 loadingShow: false,
@@ -275,27 +280,87 @@
 
             //邀请码点击事件
             invitationCodeEvent () {
-                // if (!this.isLogin) {
-                //     this.changeIsEnterLoginPageSource('/myInfo');
-                //     this.$router.push({
-                //         path: '/login'
-                //     });
-                //     return
-                // };
-                this.inviationCodeBox = true
+                if (!this.isLogin) {
+                    this.changeIsEnterLoginPageSource('/myInfo');
+                    this.$router.push({
+                        path: '/login'
+                    });
+                    return
+                };
+                this.inviationCodeBox = true;
+                this.invitationCodeValue = '';
+                this.getInviteCodeRecords()
             },
 
             // 生成新邀请码事件
             createInviationCodeEvent () {
-                if(this.isDisabled) return;
-                this.isDisabled = !this.isDisabled;
-                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000)
+                this.invitationCodeValue = '';
+                if (this.loadingShow) { return };
+                this.getInviteCode()
+            },
+
+            // 获取邀请码
+            getInviteCode () {
+                this.loadingShow = true;
+                this.isShowOverlay = true;
+                getInviteCode().then((res) => {
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                        this.invitationCodeValue = res.data.data;
+                        this.getInviteCodeRecords()
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.isShowOverlay = false;
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    })
+                })
+            },
+
+            // 获取邀请码生成记录
+            getInviteCodeRecords () {
+                this.loadingShow = true;
+                this.isShowOverlay = true;
+                getInviteCodeRecords().then((res) => {
+                    this.loadingShow = false;
+                    this.isShowOverlay = false;
+                    if (res && res.data.code == 0) {
+                        if (res.data.list.length > 0) {
+                            this.inviationCodeList = [];
+                            this.inviationCodeList = res.data.list
+                        }
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.isShowOverlay = false;
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    })
+                })
             },
 
             onCopySuccess(){
                 this.$toast("复制成功");
             },
             onCopyError(){
+                if (this.loadingShow || this.invitationCodeValue == '待生成' || !this.invitationCodeValue) {
+                    return
+                };
                 this.$toast("复制失败");
             },
 
@@ -530,6 +595,9 @@
     .page-box {
         .content-wrapper();
         background: @color-background;
+        /deep/ .van-loading {
+            z-index: 3000 !important
+        };
         /deep/ .van-nav-bar {
             background: @color-background;
             .van-icon-arrow-left {
@@ -561,7 +629,7 @@
                 .set-box {
                       img {
                         width: 22px;
-                        vertical-align: middle
+                        vertical-align: top
                     }
                 };
                 .inviation-code-box {
@@ -652,6 +720,9 @@
                             align-items: center;
                             color: #f0c596;
                             font-size: 14px
+                       };
+                       .unfoldCenterBottomStyle {
+                        color: #7c7c7c !important
                        }
                     };
                     .create-code-box {
@@ -672,6 +743,9 @@
                             .van-icon {
                                 margin-right: 2px
                             }
+                        };
+                        .createCodeBtn {
+                            background:#7c7c7c !important;
                         };
                         .create-code-info {
                             width: 100%;

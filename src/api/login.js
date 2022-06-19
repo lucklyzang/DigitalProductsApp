@@ -49,3 +49,19 @@ export function getOpenId(code) {
         method: 'get'
     })
 };
+
+// 获取邀请码
+export function getInviteCode() {
+    return request({
+        url: '/app/invite',
+        method: 'post'
+    })
+};
+
+// 查询邀请码生成记录
+export function getInviteCodeRecords() {
+    return request({
+        url: '/app/invites',
+        method: 'get'
+    })
+};
