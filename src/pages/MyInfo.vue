@@ -132,7 +132,7 @@
                 </p>
             </div>
         </div>
-    </van-pull-refresh>  
+    </van-pull-refresh>
     <FooterBottom></FooterBottom>  
   </div>
 </template>
@@ -679,8 +679,6 @@
                             text-align: center;
                             margin-top: 20px;
                             >p {
-                                padding-left: 10px;
-                                box-sizing: border-box;
                                 .no-wrap();
                                 &:first-child {
                                     font-size: 16px;
