@@ -340,8 +340,8 @@
             // 查询banner列表
             queryBannerList () {
                 this.isShowRareObjectCopy =true;
-                this.bannerList = [];
                 getBanner().then((res) => {
+                    this.bannerList = [];
                     this.isShowRareObjectCopy = false;
                     this.$nextTick(() => {
                         this.rareObjectHeight = this.$refs.rareObject.offsetHeight;
@@ -359,6 +359,7 @@
                     }
                 })
                 .catch((err) => {
+                    this.bannerList = [];
                     this.isShowRareObjectCopy = false;
                     this.$toast({
                         message: `${err.message}`,
@@ -437,8 +438,8 @@
                 this.isShowLoadFail = false;
                 this.loadingShow = true;
                 this.emptyShow = false;
-                this.digitalCollectionList = [];
                 inquareProductList().then((res) => {
+                        this.digitalCollectionList = [];
                         this.changeIsRefreshHomePage(false);
                         this.isRefresh = false;
                         this.loadingShow = false;
@@ -472,6 +473,7 @@
                         }
                     })
                     .catch((err) => {
+                        this.digitalCollectionList = [];
                         this.isRefresh = false;
                         this.loadingShow = false;
                         this.isShowLoadFail = true;
