@@ -507,8 +507,9 @@
             // 支付问题弹框事件
             paymentIssueEvent () {
                 this.isShowPaySuccess = false;
-                this.paymentSuccess = false;
-                this.changeIsPaying(false)
+                this.queryPayResult();
+                // this.paymentSuccess = false;
+                // this.changeIsPaying(false)
             },
 
             //取消订单取消事件
