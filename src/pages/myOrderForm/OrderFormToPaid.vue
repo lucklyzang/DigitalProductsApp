@@ -317,6 +317,7 @@
                                 message: '订单未支付',
                                 position: 'bottom'
                             });
+                            this.changeOrderId(this.orderId);
                             this.paymentSuccess = false;
                             this.changeIsPaying(false)
                         } else if (res.data.data.status == 2) {
@@ -324,6 +325,7 @@
                                 message: '订单支付失败',
                                 position: 'bottom'
                             });
+                            this.changeOrderId(this.orderId);
                             this.paymentSuccess = false;
                             this.changeIsPaying(false)
                         }    
