@@ -246,7 +246,6 @@
         },
 
         mounted() {
-            console.log(1,this.digitalCollectionList);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -257,12 +256,10 @@
 					})
                 })
             };
-            this.queryBannerList();
-            this.queryProductsList()
+            this.queryBannerList()
         },
 
         activated() {
-            console.log(2,this.digitalCollectionList);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
