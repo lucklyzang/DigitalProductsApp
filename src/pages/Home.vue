@@ -256,6 +256,8 @@
 					})
                 })
             };
+            //查询藏品列表
+            this.queryProductsList();
             this.queryBannerList()
         },
 
