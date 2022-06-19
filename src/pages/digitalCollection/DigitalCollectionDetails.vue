@@ -142,10 +142,10 @@
                             <span>限量</span>
                             <span>{{productsDetails.quantity}}份</span>
                         </div>
-                        <div class="right">
+                        <!-- <div class="right">
                             <span>剩余</span>
                             <span>{{productsDetails.surplus}}份</span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="divider">

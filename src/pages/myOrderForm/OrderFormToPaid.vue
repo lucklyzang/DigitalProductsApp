@@ -286,21 +286,47 @@
                     this.changeIsRefreshHomePage(true);
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
-                       this.$toast({
-                            message: '订单支付成功',
-                            position: 'bottom'
-                        });
-                        // 判断是不是通过邀请下单
-                        if (this.inviteMessage) {
-                            if (this.inviteMessage.id == this.productsId.id) {
-                            //同一产品只算一次引流 
-                                this.changeInviteMessage('')
-                            }
+                        //  -1-已取消 0-未支付 1-已支付，2-支付失败 
+                        if (res.data.data.status == 1) {
+                            this.$toast({
+                                message: '订单支付成功',
+                                position: 'bottom'
+                            });
+                            // 判断是不是通过邀请下单
+                            if (this.inviteMessage) {
+                                if (this.inviteMessage.id == this.productsId.id) {
+                                //同一产品只算一次引流 
+                                    this.changeInviteMessage('')
+                                }
+                            };
+                            this.paymentSuccess = true;
+                            this.changeIsPaying(false);
+                            this.changeOrderId(this.orderId);
+                            this.$router.push({name: 'orderFormDetails'})    
+                        } else if (res.data.data.status == -1) {
+                            this.$toast({
+                                message: '订单已取消',
+                                position: 'bottom'
+                            });
+                            this.paymentSuccess = false;
+                            this.changeIsPaying(false);
+                            this.changeOrderId(this.orderId);
+                            this.$router.push({name: 'orderFormDetails'})
+                        } else if (res.data.data.status == 0) {
+                             this.$toast({
+                                message: '订单未支付',
+                                position: 'bottom'
+                            });
+                            this.paymentSuccess = false;
+                            this.changeIsPaying(false)
+                        } else if (res.data.data.status == 2) {
+                            this.$toast({
+                                message: '订单支付失败',
+                                position: 'bottom'
+                            });
+                            this.paymentSuccess = false;
+                            this.changeIsPaying(false)
                         }    
-                        this.paymentSuccess = true;
-                        this.changeIsPaying(false);
-                        this.changeOrderId(this.orderId);
-                        this.$router.push({name: 'orderFormDetails'})
                     } else {
                         this.$toast({
 							message: `${res.data.msg}`,

@@ -20,7 +20,7 @@
 		</div>
 		<div class="content-middle">
 			<div class="invitation-code" @click="invitationCodeClicked">
-				<van-field class="uni-input" ref="invitationCode" v-model="invitationCodeValue" @input="invitationCodeEvent" type="number" placeholder="请输入邀请码(非必填)" />
+				<van-field class="uni-input" ref="invitationCode" v-model="invitationCodeValue" @input="invitationCodeEvent" type="text" placeholder="请输入邀请码(非必填)" />
 			</div>
 			<div class="invitation-code-info">
 				邀请码通过已注册用户分享进行获取(非必填)
