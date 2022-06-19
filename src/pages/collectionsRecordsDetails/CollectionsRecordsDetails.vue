@@ -288,13 +288,13 @@
                 </div>  
             </div>
         </div>
-        <div class="content-bottom">
+        <div class="content-bottom" :class="{'donationStyle' : collectionRecordDetails.status == 0}">
             <!-- <div>
                 <van-icon name="award" />
                 <span>炫耀</span>
             </div> -->
             <div  @click="donationFriendEvent">
-                <van-icon name="printer" />
+                <van-icon name="printer" :color="collectionRecordDetails.status == 0 ? '#666' : '' " />
                 <span>转赠</span>
             </div>
             <!-- <div @click="useObjectImgEvent">
@@ -618,6 +618,7 @@
 
             // 转增好友藏品
             donationFriendEvent () {
+                if (this.collectionRecordDetails.status == 0 ) { return };
                 this.changeIsEnterDonationFriendPage(true);
                 this.$router.push({
                     path: '/donationFriend'
@@ -633,13 +634,19 @@
     @import "~@/common/stylus/modifyUi.less";
     @keyframes product-animation{
         0% {
-            transform: rotateY(15deg)
+            transform: translateX(-1px) translateZ(10px) rotateY(0deg)
+        }
+        25% {
+            transform: translateX(-1px) translateZ(10px) rotateY(15deg)
         }
         50% {
-            transform: rotateY(-15deg)
+            transform: translateX(-1px) translateZ(10px) rotateY(-15deg)
+        }
+        75% {
+            transform: translateX(-1px) translateZ(10px) rotateY(15deg)
         }
         100% {
-            transform: rotateY(15deg)
+            transform: translateX(-1px) translateZ(10px) rotateY(0deg)
         }
     };
 	.page-box {
@@ -1087,7 +1094,11 @@
                     margin-left: 4px
                 }
             }
-		}
+		};
+        .donationStyle {
+            background-image: linear-gradient(to right, #f1f0ee ,#555453);
+            color: #666     
+        }
 	}
 </style>
 

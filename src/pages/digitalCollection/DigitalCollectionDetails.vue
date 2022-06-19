@@ -465,7 +465,7 @@
                     });
                     return
                 };
-                // 未认证
+                // 未认证或账户已冻结
                 if (this.userInfo.realFlag != 1) {
                     this.$router.push({
                         path: '/realNameAuthentication'
@@ -1043,7 +1043,7 @@
                 font-size: 18px !important
             };
             .purchaseStyle {
-                background: #f0c796 !important
+                background: #ffd4a0 !important
             }
 		}
 	}

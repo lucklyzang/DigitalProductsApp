@@ -20,7 +20,7 @@
 							</div>
 							<div class="span-show">
 								<span>{{item.collectionName}}</span>
-								<p>
+								<p v-if="item.status == 1" class="cast-complete">
 									<span class="blockchain-img">
 										<img :src="blockchainPng" alt="">
 									</span>
@@ -28,6 +28,7 @@
 									<!-- <img :src="blockchainPng" alt="">
 									<span>{{item.chain ? item.chain : ''}}</span> -->
 								</p>
+								<p v-else class="casting">铸造中···</p>
 								<span>{{item.publisher}}</span>
 							</div>
 						</div>
@@ -137,13 +138,13 @@
 									id: item.id,
         							comId: item.comId,
 									chain: item.chain,
+									status: item.status,
 									publisher: item.publisher
                                 })
                             };
 							this.changeMyObjects(this.orderList);
                         }
                     } else {
-						this.isRefresh = false;
 						this.isShowLoadFail = true;
                         this.$toast({
                             message: `${res.data.msg}`,
@@ -152,6 +153,7 @@
                     }
 				})
 				.catch((err) => {
+					this.isRefresh = false;
 					this.isShowLoadFail = true;
 					this.loadingShow = false;
                     this.emptyShow = false;
@@ -252,16 +254,13 @@
 									color: #686866
 								};
 							};
-                            p {
+                            .cast-complete {
 								margin: 6px 0;
 								width: 75%;
-								display: flex;
 								flex-flow: row nowrap;
 								align-items: center;
 								height: 35px;
 								display: flex;
-								flex-flow: row nowrap;
-								align-items: center;
 								position: relative;
 								.blockchain-img {
 									width: 35px;
@@ -285,7 +284,16 @@
 									color: black;
 									.no-wrap()
 								}
-                            }
+                            };
+							.casting {
+								margin: 6px 0;
+								display: flex;
+								flex-flow: row nowrap;
+								align-items: center;
+								height: 35px;
+								font-size: 15px;
+								color: #fbd2a5
+							}
 						}
 					}
 				};
