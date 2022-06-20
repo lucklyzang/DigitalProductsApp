@@ -297,6 +297,7 @@ export default {
 		.register-buy-info-box {
 			/deep/ .van-dialog {
 				top: 50% !important;
+				width: 90% !important;
 				background: none !important;
 				.van-dialog__content {
 				.title {
