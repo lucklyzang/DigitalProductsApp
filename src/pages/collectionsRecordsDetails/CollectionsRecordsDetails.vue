@@ -288,14 +288,14 @@
                 </div>  
             </div>
         </div>
-        <div class="content-bottom" :class="{'donationStyle' : collectionRecordDetails.status == 0}" v-show="!loadingImgGifShow">
+        <div class="content-bottom" :class="{'donationStyle' : collectionRecordDetails.status == 0}">
             <!-- <div>
                 <van-icon name="award" />
                 <span>炫耀</span>
             </div> -->
             <div  @click="donationFriendEvent">
-                <van-icon name="printer" :color="collectionRecordDetails.status == 0 ? '#666' : '' " />
-                <span>转赠</span>
+                <van-icon name="printer" v-show="!loadingImgGifShow" :color="collectionRecordDetails.status == 0 ? '#666' : '' " />
+                <span v-show="!loadingImgGifShow">转赠</span>
             </div>
             <!-- <div @click="useObjectImgEvent">
                 <van-icon name="good-job" />
