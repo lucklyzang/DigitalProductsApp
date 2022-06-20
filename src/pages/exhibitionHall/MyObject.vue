@@ -124,9 +124,9 @@
                 // 查询藏品记录
                 this.queryCollectionRecords();
                 // 查询展馆信息
-                this.queryHallMessageEvent()
-            };
-            this.registerSlideEvent()
+                this.queryHallMessageEvent();
+                this.registerSlideEvent()
+            }
 		},
         beforeDestroy() {
             window.removeEventListener('touchstart',this.touchstartHandle,false);
