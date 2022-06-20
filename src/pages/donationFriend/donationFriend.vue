@@ -205,6 +205,7 @@
                                 path: '/collectionRecords'
                             })
                         } else {
+                            this.codeValue = '';
                             this.$toast({
                                 message: `${res.data.msg}`,
                                 position: 'bottom'
@@ -212,6 +213,7 @@
                         }
                     })
                     .catch((err) => {
+                        this.codeValue = '';
                         this.loadingShow = false;
                         this.isShowOverlay = false;
                         this.$toast({
@@ -462,7 +464,7 @@
                         color: #fff !important
                     };
                     input::placeholder{
-						color:rgb(66, 66, 66);
+						color: #fff;
 						font-size: 14px
 					};     
 					// 去除自动填充的输入框黄色背景
