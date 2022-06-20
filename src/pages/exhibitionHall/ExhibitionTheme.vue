@@ -96,11 +96,11 @@
             //回显展览主题信息
             echoExhibitionThemeMessage () {
                 if (this.queryHallMessage['type'] == -1) {
-                    this.exhibitionTheme = `${this.userInfo['nickName']}的展馆`;
-                    this.exhibitionIntroduce  = ''
+                    this.exhibitionTheme = this.hallMessage['hallTheme'] ? this.hallMessage['hallTheme'] : `${this.userInfo['nickName']}的展馆`;
+                    this.exhibitionIntroduce  =  this.hallMessage['hallIntroduce'] ? this.hallMessage['hallIntroduce'] : '介绍一下你的展览';
                 } else if (this.queryHallMessage['type'] == 0) {
-                    this.exhibitionTheme = this.hallMessage['hallTheme'];
-                    this.exhibitionIntroduce  = this.hallMessage['hallIntroduce']
+                    this.exhibitionTheme = this.hallMessage['hallTheme'] ? this.hallMessage['hallTheme'] : `${this.userInfo['nickName']}的展馆`;
+                    this.exhibitionIntroduce  = this.hallMessage['hallIntroduce'] ? this.hallMessage['hallIntroduce'] : '介绍一下你的展览'
                 }
             },
 
