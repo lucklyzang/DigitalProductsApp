@@ -254,12 +254,12 @@
                     <img :src="boothPng" alt="">
                 </div>
                 <div class="synopsis" :style="{backgroundImage: 'url(' + detailsTitleWrappper+ ')',backgroundRepeat:'no-repeat',backgroundSize:'cover'}">
-                    <div class="title">
+                    <div class="title" v-show="!loadingImgGifShow">
                         <span>
                             {{collectionRecordDetails.name}}
                         </span>
                     </div>
-                    <div class="number">
+                    <div class="number" v-show="!loadingImgGifShow">
                         <div class="number-content">
                             <span class="blockchain-img">
                                 <img :src="blockchainPng" alt="">
@@ -269,7 +269,7 @@
                     </div>
                 </div>
             </div>
-            <div class="content-middle">
+            <div class="content-middle" v-show="!loadingImgGifShow">
                 <div class="collector">
                     <span>收藏者</span>
                     <span>{{collectionRecordDetails.collector}}</span>
@@ -288,7 +288,7 @@
                 </div>  
             </div>
         </div>
-        <div class="content-bottom" :class="{'donationStyle' : collectionRecordDetails.status == 0}">
+        <div class="content-bottom" :class="{'donationStyle' : collectionRecordDetails.status == 0}" v-show="!loadingImgGifShow">
             <!-- <div>
                 <van-icon name="award" />
                 <span>炫耀</span>
