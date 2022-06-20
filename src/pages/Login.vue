@@ -300,7 +300,7 @@ export default {
 				background: none !important;
 				.van-dialog__content {
 				.title {
-					background: #0e0031;
+					background: #10100e;
 					width: 100%;
 					padding: 0 4px;
 					box-sizing: border-box;
