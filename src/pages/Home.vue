@@ -286,7 +286,6 @@
                 this.tabSwitchHeight = this.$refs.tabSwitch.offsetHeight;
                 this.navBarHeight = this.$refs.navBar.$el.clientHeight;
                 this.rareObjectHeight = this.$refs.rareObject.offsetHeight;
-                console.log('定时预备开始',this.rareObjectHeight);
                 if (document.documentElement) {
                     document.documentElement.scrollTop = this.scrollTop
                 } else if (document.body) {
@@ -386,8 +385,7 @@
                     this.bannerList = [];
                     this.isShowRareObjectCopy = false;
                     this.$nextTick(() => {
-                        this.rareObjectHeight = this.$refs.rareObject.offsetHeight;
-                        console.log(this.rareObjectHeight);
+                        this.rareObjectHeight = this.$refs.rareObject.offsetHeight
                     });
                     if (res && res.data.code == 0) {
                         if (res.data.list.length == 0) {
@@ -462,7 +460,6 @@
 
             //提醒我事件
             remindMeEvent () {
-                console.log(1);
 
             },
 
@@ -718,7 +715,7 @@
                 };
                 .active-tab-style {
                     color: #FFFFFF;
-                    font-size: 18px;
+                    font-weight: bold;
                     position: relative;
                     border: none;
                     &:after {
@@ -1069,7 +1066,7 @@
                                         width: 25%;
                                         span {
                                             font-size: 20px;
-                                            font-weight: bolder;
+                                            font-weight: bold;
                                             color: #FFFFFF;
                                             &:first-child {
                                                 margin-right: 4px
@@ -1262,7 +1259,7 @@
                                                     span {
                                                         font-size: 18px;
                                                         color: #FFFFFF;
-                                                        font-weight: bolder;
+                                                        font-weight: bold;
                                                         &:first-child {
                                                             margin-right: 4px
                                                         }
