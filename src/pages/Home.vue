@@ -168,7 +168,7 @@
                     <span class="expect" v-show="!isShowLoadFail && !loadingShow && !emptyShow">- 更多内容敬请期待 -</span>
                 </div>
             </div>
-            <div class="name-auth" v-show="userInfo && userInfo.realFlag === 0 && isShowNameAuthHint">
+            <div class="name-auth" ref="nameAuth" v-show="userInfo && userInfo.realFlag === 0 && isShowNameAuthHint">
                 <div class="left">
                     <span>实名认证后才可以购买数字藏品</span>
                 </div>
@@ -177,7 +177,7 @@
                     <van-icon name="clear" size="25" color="#5f5f5f" @click="clearNameAuthHintEvent"/>
                 </div>
             </div>
-            <div class="name-auth" v-show="!isLogin && isShowLoginHint">
+            <div class="name-auth" ref="loginInfo" v-show="!isLogin && isShowLoginHint">
                 <div class="left">
                     <span>去登录,开启新的体验</span>
                 </div>
@@ -296,6 +296,31 @@
                 this.isDisabledRefresh = true;
             } else {
                 this.isDisabledRefresh = false
+            };
+            // 监控屏幕高度变化
+            let originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            window.onresize = ()=>{
+                let resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;
+                if (resizeHeight < originalHeight) {
+                    if (!this.isLogin && this.isShowLoginHint) {
+                        return (()=>{
+                            this.$refs['loginInfo'].style.cssText='bottom:60px'
+                        })()
+                    };
+                    if (this.userInfo && this.userInfo.realFlag === 0 && this.isShowNameAuthHint) {
+                        return (()=>{
+                            this.$refs['nameAuth'].style.cssText='bottom:60px'
+                        })() 
+                    }    
+                } else {
+                    if (!this.isLogin && this.isShowLoginHint) {
+                        this.$refs['loginInfo'].style.cssText='bottom:95px'
+                    };
+                    if (this.userInfo && this.userInfo.realFlag === 0 && this.isShowNameAuthHint) {
+                        this.$refs['nameAuth'].style.cssText='bottom:95px'
+                    }
+                };
+                originalHeight = resizeHeight
             }
         },
 
