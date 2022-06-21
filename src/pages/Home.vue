@@ -208,6 +208,7 @@
         repeArray,
         IsPC
     } from '@/common/js/utils'
+    let windowTimer
     export default {
         name: 'Home',
         components: {
@@ -219,6 +220,7 @@
                 isShowRareObjectCopy: true,
                 scrollTop: 0, // 储存滚动位置
                 tabSwitchOffsetTop: 0,
+                isTimeoutContinue: true,
                 tabSwitchHeight: 0,
                 bannerList: [],
                 navBarHeight: 0,
@@ -262,6 +264,7 @@
         },
 
         activated() {
+            console.log('定时预备开始',windowTimer);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -321,11 +324,23 @@
                     }
                 };
                 originalHeight = resizeHeight
-            }
+            };
+            // 轮询任务状态
+            // if (!windowTimer) {
+            //     windowTimer = window.setInterval(() => {
+            //         if (this.isTimeoutContinue) {
+                    
+            //         }
+            //     }, 3000)
+            // }
         },
 
         deactivated() {
-            window.removeEventListener('scroll', this.handleScroll)
+            window.removeEventListener('scroll', this.handleScroll);
+            if(windowTimer) {
+                clearTimeout(windowTimer);
+                windowTimer = null
+            }
         },
 
 
@@ -625,6 +640,7 @@
         };
         .content {
             flex: 1;
+            width: 100%;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -633,10 +649,21 @@
                 height: 90px;
                 margin: 0 auto;
                 border-radius: 10px;
-                img {
-                    pointer-events: none;
+                /deep/ .van-swipe {
                     width: 100%;
-                    border-radius: 10px
+                    height: 100%;
+                    .van-swipe__track {
+                        width: 100% !important;
+                        .van-swipe-item {
+                            width: 100% !important;
+                            img {
+                                pointer-events: none;
+                                width: 100%;
+                                height: 90px;
+                                border-radius: 10px
+                            }
+                        }
+                    }
                 }
             };
             .rare-object-copy {
