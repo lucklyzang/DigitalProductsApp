@@ -11,7 +11,7 @@
     >
         <div class="content" ref="content">
             <div class="rare-object" ref="rareObject" v-show="!isShowRareObjectCopy">
-                <van-swipe :autoplay="3000">
+                <van-swipe :autoplay="3000" indicator-color="#fff">
                     <van-swipe-item v-for="(item, index) in bannerList" :key="index" @click="swipeItemEvent(item)">
                         <img :src="item.path" />
                     </van-swipe-item>
@@ -264,7 +264,6 @@
         },
 
         activated() {
-            console.log('定时预备开始',windowTimer);
             // 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -287,6 +286,7 @@
                 this.tabSwitchHeight = this.$refs.tabSwitch.offsetHeight;
                 this.navBarHeight = this.$refs.navBar.$el.clientHeight;
                 this.rareObjectHeight = this.$refs.rareObject.offsetHeight;
+                console.log('定时预备开始',this.rareObjectHeight);
                 if (document.documentElement) {
                     document.documentElement.scrollTop = this.scrollTop
                 } else if (document.body) {
@@ -326,13 +326,13 @@
                 originalHeight = resizeHeight
             };
             // 轮询任务状态
-            // if (!windowTimer) {
-            //     windowTimer = window.setInterval(() => {
-            //         if (this.isTimeoutContinue) {
-                    
-            //         }
-            //     }, 3000)
-            // }
+            if (!windowTimer) {
+                windowTimer = window.setInterval(() => {
+                    if (this.isTimeoutContinue) {
+                        this.timingQueryProductsList()
+                    }
+                }, 3000)
+            }
         },
 
         deactivated() {
@@ -387,6 +387,7 @@
                     this.isShowRareObjectCopy = false;
                     this.$nextTick(() => {
                         this.rareObjectHeight = this.$refs.rareObject.offsetHeight;
+                        console.log(this.rareObjectHeight);
                     });
                     if (res && res.data.code == 0) {
                         if (res.data.list.length == 0) {
@@ -481,50 +482,73 @@
                 this.loadingShow = true;
                 this.emptyShow = false;
                 inquareProductList().then((res) => {
-                        this.digitalCollectionList = [];
-                        this.changeIsRefreshHomePage(false);
-                        this.isRefresh = false;
-                        this.loadingShow = false;
-                        if (res && res.data.code == 0) {
-                            if (res.data.list.length == 0) {
-                                this.emptyShow = true;
-                            } else {
-                                for (let item of res.data.list) {
-                                    this.digitalCollectionList.push({
-                                        countdownTime: Number(item.seckillTime) - new Date().getTime(),
-                                        digitalCollectionName: item.name,
-                                        digitalCollectioUrl: item.imgPath,
-                                        digitalCollectioShare: item.quantity,
-                                        digitalCollectioAuthor: item.publisher,
-                                        creator: item.creator,
-                                        digitalCollectioAuthorPhoto: item.avatar,
-                                        digitalCollectioPrice: item.price,
-                                        tagAttributes: item.tags,
-                                        id: item.id,
-                                        status: item.status,
-                                        isShowCountDown: true
-                                    })
-                                }
-                            }
+                    this.digitalCollectionList = [];
+                    this.changeIsRefreshHomePage(false);
+                    this.isRefresh = false;
+                    this.loadingShow = false;
+                    if (res && res.data.code == 0) {
+                        if (res.data.list.length == 0) {
+                            this.emptyShow = true;
                         } else {
-                            this.isShowLoadFail = true;
-                            this.$toast({
-                                message: `${res.data.msg}`,
-                                position: 'bottom'
-                            })
+                            for (let item of res.data.list) {
+                                this.digitalCollectionList.push({
+                                    countdownTime: Number(item.seckillTime) - new Date().getTime(),
+                                    digitalCollectionName: item.name,
+                                    digitalCollectioUrl: item.imgPath,
+                                    digitalCollectioShare: item.quantity,
+                                    digitalCollectioAuthor: item.publisher,
+                                    creator: item.creator,
+                                    digitalCollectioAuthorPhoto: item.avatar,
+                                    digitalCollectioPrice: item.price,
+                                    tagAttributes: item.tags,
+                                    id: item.id,
+                                    status: item.status,
+                                    isShowCountDown: true
+                                })
+                            }
                         }
-                    })
-                    .catch((err) => {
-                        this.digitalCollectionList = [];
-                        this.isRefresh = false;
-                        this.loadingShow = false;
+                    } else {
                         this.isShowLoadFail = true;
-                        this.emptyShow = false;
                         this.$toast({
-                            message: `${err.message}`,
+                            message: `${res.data.msg}`,
                             position: 'bottom'
                         })
+                    }
+                })
+                .catch((err) => {
+                    this.digitalCollectionList = [];
+                    this.isRefresh = false;
+                    this.loadingShow = false;
+                    this.isShowLoadFail = true;
+                    this.emptyShow = false;
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
                     })
+                })
+            },
+
+            // 定时查询作品列表(实时更新任务状态)
+            timingQueryProductsList() {
+                this.isTimeoutContinue = false;
+                inquareProductList().then((res) => {
+                    this.isTimeoutContinue = true;
+                    if (res && res.data.code == 0) {
+                        if (res.data.list.length > 0) {
+                            for (let item of res.data.list) {
+                                    let currentIndex = this.digitalCollectionList.indexOf(this.digitalCollectionList.filter((innerItem) => { return innerItem.id == item.id})[0]);
+                                    if (currentIndex != -1) {
+                                        if (this.digitalCollectionList[currentIndex]['status'] != item.status) {
+                                            this.digitalCollectionList[currentIndex]['status'] = item.status
+                                        }
+                                    }
+                            } 
+                        }
+                    }
+                })
+                .catch((err) => {
+                    this.isTimeoutContinue = true
+                })
             },
 
             // 查询发售日历
@@ -646,12 +670,10 @@
             position: relative;
             .rare-object {
                 width: 92%;
-                height: 90px;
                 margin: 0 auto;
                 border-radius: 10px;
                 /deep/ .van-swipe {
                     width: 100%;
-                    height: 100%;
                     .van-swipe__track {
                         width: 100% !important;
                         .van-swipe-item {
@@ -659,7 +681,6 @@
                             img {
                                 pointer-events: none;
                                 width: 100%;
-                                height: 90px;
                                 border-radius: 10px
                             }
                         }
@@ -668,7 +689,7 @@
             };
             .rare-object-copy {
                 width: 92%;
-                height: 90px;
+                height: 161px;
                 margin: 0 auto;
                 border-radius: 10px;
                 background: #3b3b3b;
