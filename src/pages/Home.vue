@@ -702,7 +702,8 @@
             .tab-switch {
                 z-index: 99999;
                 background: @color-background;
-                width: 100%;
+                width: 92%;
+                margin: 0 auto;
                 padding: 4px 0;
                 box-sizing: border-box;
                 text-align: left;
@@ -713,7 +714,7 @@
                     width: 100px;
                     height: 40px;
                     line-height: 40px;
-                    text-align: center;
+                    text-align: left;
                 };
                 .active-tab-style {
                     color: #FFFFFF;
@@ -740,7 +741,7 @@
             .tabSwitchStyle {
                 position: fixed;
                 top: 0;
-                left: 0
+                left: 4%
             };    
             .switch-content {
                 flex: 1;
