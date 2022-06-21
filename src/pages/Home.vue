@@ -670,15 +670,20 @@
             position: relative;
             .rare-object {
                 width: 92%;
+                height: 91px;
                 margin: 0 auto;
                 border-radius: 10px;
                 /deep/ .van-swipe {
                     width: 100%;
+                    height: 91px;
                     .van-swipe__track {
                         width: 100% !important;
+                        height: 91px;
                         .van-swipe-item {
                             width: 100% !important;
+                            height: 91px;
                             img {
+                                height: 91px;
                                 pointer-events: none;
                                 width: 100%;
                                 border-radius: 10px
@@ -689,7 +694,7 @@
             };
             .rare-object-copy {
                 width: 92%;
-                height: 161px;
+                height: 91px;
                 margin: 0 auto;
                 border-radius: 10px;
                 background: #3b3b3b;
