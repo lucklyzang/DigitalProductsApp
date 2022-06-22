@@ -737,6 +737,7 @@
             };
             .tabSwitchStyle {
                 position: fixed;
+                -webkit-transform: translateZ(0);
                 top: 0;
                 left: 4%
             };    
