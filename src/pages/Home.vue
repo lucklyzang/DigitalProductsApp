@@ -11,7 +11,7 @@
     >
         <div class="content" ref="content">
             <div class="rare-object" ref="rareObject" v-show="!isShowRareObjectCopy">
-                <van-swipe :autoplay="3000" indicator-color="#fff">
+                <van-swipe :autoplay="3000" indicator-color="#fff" :stop-propagation="false">
                     <van-swipe-item v-for="(item, index) in bannerList" :key="index" @click="swipeItemEvent(item)">
                         <img :src="item.path" />
                     </van-swipe-item>
