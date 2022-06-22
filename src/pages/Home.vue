@@ -721,8 +721,8 @@
                     &:after {
                         content: '';
                         position: absolute;
-                        left: 0;
-                        transform: translateX(290%);
+                        left: 50%;
+                        transform: translateX(-205%);
                         bottom: 0;
                         width: 10px;
                         height: 3px;
