@@ -722,7 +722,7 @@
                         content: '';
                         position: absolute;
                         left: 0;
-                        transform: translateX(420%);
+                        transform: translateX(290%);
                         bottom: 0;
                         width: 10px;
                         height: 3px;
