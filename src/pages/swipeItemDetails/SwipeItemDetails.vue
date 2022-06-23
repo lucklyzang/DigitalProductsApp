@@ -54,13 +54,17 @@
 	.content-box {
 		.content-wrapper();
         background: @color-background;
-        /deep/ .van-nav-bar {
-            background: transparent;
-            .van-icon {
-                color: #fff !important;
-                font-size: 18px !important
+        /deep/
+        .van-nav-bar__placeholder {
+            height: 0 !important;
+            .van-nav-bar {
+                background: transparent;
+                .van-icon {
+                    color: #fff !important;
+                    font-size: 18px !important
+                }
             }
-        };
+        };    
         .content {
             flex: 1;
             /deep/  p {
