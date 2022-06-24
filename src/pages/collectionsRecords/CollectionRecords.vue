@@ -20,7 +20,7 @@
 							</div>
 							<div class="span-show">
 								<span>{{item.collectionName}}</span>
-								<p v-if="item.status == 1" class="cast-complete">
+								<p v-show="item.status == 1" class="cast-complete">
 									<span class="blockchain-img">
 										<img :src="blockchainPng" alt="">
 									</span>
@@ -28,7 +28,8 @@
 									<!-- <img :src="blockchainPng" alt="">
 									<span>{{item.chain ? item.chain : ''}}</span> -->
 								</p>
-								<p v-else class="casting">铸造中···</p>
+								<p v-show="item.status == 0" class="casting">铸造中···</p>
+								<p v-show="item.status == 2" class="donationing">转赠中···</p>
 								<span>{{item.publisher}}</span>
 							</div>
 						</div>
@@ -249,7 +250,7 @@
 									text-overflow: ellipsis;
 									white-space: nowrap;
 								};
-								&:nth-child(3) {
+								&:nth-child(5) {
 									font-size: 14px;
 									color: #686866
 								};
@@ -294,6 +295,15 @@
 								height: 35px;
 								font-size: 15px;
 								color: #fbd2a5
+							};
+							.donationing {
+								margin: 6px 0;
+								display: flex;
+								flex-flow: row nowrap;
+								align-items: center;
+								height: 35px;
+								font-size: 15px;
+								color: #bfbfbf
 							}
 						}
 					}

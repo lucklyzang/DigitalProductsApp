@@ -285,16 +285,16 @@
                 <div class="generated-time">
                     <span>生成时间</span>
                     <span>{{collectionRecordDetails.createTime}}</span>
-                </div>  
+                </div>
             </div>
         </div>
-        <div class="content-bottom" :class="{'donationStyle' : collectionRecordDetails.status == 0}">
+        <div class="content-bottom" :class="{'donationStyle' : collectionRecordDetails.status == 0 || collectionRecordDetails.status == 2}">
             <!-- <div>
                 <van-icon name="award" />
                 <span>炫耀</span>
             </div> -->
             <div  @click="donationFriendEvent">
-                <van-icon name="printer" v-show="!loadingImgGifShow" :color="collectionRecordDetails.status == 0 ? '#666' : '' " />
+                <van-icon name="printer" v-show="!loadingImgGifShow" :color="collectionRecordDetails.status == 0 || collectionRecordDetails.status == 2 ? '#666' : '' " />
                 <span v-show="!loadingImgGifShow">转赠</span>
             </div>
             <!-- <div @click="useObjectImgEvent">
@@ -618,7 +618,7 @@
 
             // 转增好友藏品
             donationFriendEvent () {
-                if (this.collectionRecordDetails.status == 0 ) { return };
+                if (this.collectionRecordDetails.status == 0 || this.collectionRecordDetails.status == 2) { return };
                 this.changeIsEnterDonationFriendPage(true);
                 this.$router.push({
                     path: '/donationFriend'
