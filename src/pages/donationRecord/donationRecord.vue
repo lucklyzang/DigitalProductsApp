@@ -281,7 +281,7 @@
 										top: -1px;
 										left: 0;
 										img {
-											width: 100%;
+											width: 28px;
 										}
 									};
 									.blockchain-chain {
@@ -291,6 +291,7 @@
 										border-radius: 10px;
 										font-size: 10px;
 										box-sizing: border-box;
+										height: 18px;
 										line-height: 18px;
 										margin-left: 16px;
 										background-image: linear-gradient(to right, #fbd2a5, #f1c593);

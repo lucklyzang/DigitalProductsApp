@@ -989,13 +989,16 @@
                         flex-flow: row nowrap;
                         .number-content {
                             position: relative;
+                            display: flex;
+                            align-items: center;
+                            height: 38px;
                             .blockchain-img {
                                 width: 35px;
                                 position: absolute;
                                 left: 0;
-                                top: -7px;
+                                top: 0;
                                 img {
-                                    width: 100%;
+                                    width: 35px;
                                 }
                             };
                             .blockchain-chain {
@@ -1006,6 +1009,7 @@
                                 margin-left: 20px;
                                 font-size: 10px;
                                 box-sizing: border-box;
+                                height: 22px;
                                 line-height: 22px;
                                 background-image: linear-gradient(to right, #fbd2a5, #f1c593);
                                 color: black;

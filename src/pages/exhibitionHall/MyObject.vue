@@ -499,13 +499,11 @@
                             position: relative;
                             .blockchain-img {
                                 width: 26px;
-                                height: 28px;
                                 position: absolute;
                                 top: 1px;
                                 left: 0;
                                 img {
                                     width: 26px;
-                                    // height: 28px
                                 }
                             };
                             .blockchain-chain {
@@ -515,6 +513,7 @@
                                 border-radius: 10px;
                                 font-size: 10px;
                                 box-sizing: border-box;
+                                height: 16px;
                                 line-height: 16px;
                                 margin-left: 8px;
                                 background-image: linear-gradient(to right, #fbd2a5, #f1c593);
