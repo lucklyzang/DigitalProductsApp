@@ -351,6 +351,9 @@
 			]),
 
             rotate () {
+                if (this.timeIndex) {
+                    cancelAnimationFrame(this.timeIndex); 
+                };
                 this.rotation.y += 0.01;
                 this.timeIndex = requestAnimationFrame(this.rotate)
             },
