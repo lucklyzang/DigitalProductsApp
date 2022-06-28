@@ -703,6 +703,7 @@
                         z-index: 1000;
                         .top-left {
                             flex: 1;
+                            width: 0;
                             >p {
                                 padding-left: 10px;
                                 box-sizing: border-box;
@@ -809,6 +810,7 @@
                         z-index: 1000;
                         .top-left {
                             flex: 1;
+                            width: 0;
                             >p {
                                 padding-left: 10px;
                                 box-sizing: border-box;
