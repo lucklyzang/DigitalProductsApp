@@ -807,7 +807,7 @@
                                 .four {
                                     border-radius: 6px;
                                     height: 20px;
-                                    width: 40px;
+                                    width: 70px;
                                     background: #3b3b3b;
                                     position: absolute;
                                     bottom: 10px;
