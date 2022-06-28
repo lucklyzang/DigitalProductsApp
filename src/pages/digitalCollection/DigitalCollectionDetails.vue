@@ -149,7 +149,7 @@
                     </div>
                 </div>
                 <div class="divider">
-                    <van-divider :style="{ color: '#616161'}">
+                    <van-divider :style="{ color: '#616161', borderColor: '#8c8c8c'}">
                         <van-icon name="lock" color="#616161" size="20" />
                         购买即可体验内容
                     </van-divider>
