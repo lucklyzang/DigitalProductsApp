@@ -731,7 +731,8 @@
                 }
             };
             .tab-switch-copy {
-                width: 100%;
+                width: 92%;
+                margin: 0 auto;
                 height: 40px;
                 padding: 4px 0;
             };
@@ -739,7 +740,11 @@
                 position: fixed;
                 -webkit-transform: translateZ(0);
                 top: 0;
-                left: 4%
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 40px;
+                box-sizing: content-box
             };    
             .switch-content {
                 flex: 1;
