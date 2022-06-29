@@ -417,9 +417,10 @@
 
             //页面滚动事件
             handleScroll () {
+                 console.log(this.tabSwitchOffsetTop,this.navBarHeight,this.rareObjectHeight);
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-                // 判断页面滚动的距离是否大于吸顶元素的位置
-                this.isFixed = scrollTop >= this.rareObjectHeight + this.navBarHeight;
+                // 判断页面滚动的距离是否大于吸顶元素距离顶部的位置
+                this.isFixed = scrollTop >= this.navBarHeight + this.rareObjectHeight;
                 if (scrollTop > 0) {
                     this.isDisabledRefresh = true;
                 } else {
@@ -644,10 +645,13 @@
         background: @color-background;
         /deep/ .tabBar-box {
             .van-nav-bar__placeholder {
-                height: 15px !important;
-                .van-nav-bar__content {
-                    height: 15px !important
-                }
+                .van-nav-bar {
+                    background: transparent !important;
+                    height: 15px !important;
+                    .van-nav-bar__content {
+                        height: 15px !important
+                    }
+                }    
             }
         };
         /deep/ .van-pull-refresh {
