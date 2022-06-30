@@ -51,24 +51,38 @@
                             v-for="(item,index) in digitalCollectionList" :key="item.id"
                             :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'40%'}"
                             >
-                            <div class="sell-info-area">
-                            <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
-                                <van-icon name="underway" size="14" color="#63b66b" />
-                                <span>即将开售</span>
-                                <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
+                            <div class="sell-info-area" v-if="item.presale == 0 || item.entity.status == 2">
+                                <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
+                                    <van-icon name="underway" size="14" color="#63b66b" />
+                                    <span>即将开售</span>
+                                    <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
+                                </div>
+                                <div class="left" v-show="!item.isShowCountDown && item.status == 1">
+                                    <van-icon name="underway" size="14" color="#bd68ff" />
+                                    <span>火爆抢购中</span>
+                                </div>
+                                <div class="center" v-show="!item.isShowCountDown && item.status == 2">
+                                    <van-icon name="bookmark" size="14" color="#fff" />
+                                    <span>已售罄</span>
+                                </div>
+                                <!-- <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
+                                    <van-icon name="bell" size="14" color="#e9ad70"/>
+                                    <span>提醒我</span>
+                                </div> -->
                             </div>
-                            <div class="left" v-show="!item.isShowCountDown && item.status == 1">
-                                <van-icon name="underway" size="14" color="#bd68ff" />
-                                <span>火爆抢购中</span>
-                            </div>
-                            <div class="center" v-show="!item.isShowCountDown && item.status == 2">
-                                <van-icon name="bookmark" size="14" color="#fff" />
-                                <span>已售罄</span>
-                            </div>
-                            <!-- <div class="right" v-preventReClick v-show="item.isShowCountDown && item.status == 0" @click.stop="remindMeEvent">
-                                <van-icon name="bell" size="14" color="#e9ad70"/>
-                                <span>提醒我</span>
-                            </div> -->
+                            <div class="sell-info-area" v-if="item.presale == 1 && item.entity.status != 2 ">
+                                <div class="left-sell" v-show="item.isShowPresaleCountDown && item.entity.status == 0">
+                                    <van-icon name="underway" size="14" color="#63b66b" />
+                                    <span>预购</span>
+                                    <van-count-down :time="item.presellCountdownTime" v-show="false" @finish="presellCountDownEvent(index)" format="DD:HH:mm:ss"/>
+                                    <span>
+                                        {{ `${cutoutTimeQuantum(item.entity.startTime)} - ${cutoutTimeQuantum(item.entity.endTime)}`}}
+                                    </span>
+                                </div>
+                                <div class="left" v-show="!item.isShowPresaleCountDown && item.entity.status == 1">
+                                    <van-icon name="underway" size="14" color="#bd68ff" />
+                                    <span>预购中</span>
+                                </div>
                             </div>
                             <div class="image-area" v-lazy-container="{ selector: 'img' }">
                             <img :data-src="item.digitalCollectioUrl">
@@ -378,6 +392,15 @@
                 'changeIsRefreshHomePage'
             ]),
 
+            // 截取时间段
+            cutoutTimeQuantum (timeString) {
+                if (!timeString) { return };
+                let index, newTimeString;
+                index = timeString.indexOf('-');
+                newTimeString = timeString.substring(index + 1);
+                return newTimeString
+            },
+
             // 查询banner列表
             queryBannerList () {
                 this.isShowRareObjectCopy =true;
@@ -490,6 +513,7 @@
                             for (let item of res.data.list) {
                                 this.digitalCollectionList.push({
                                     countdownTime: Number(item.seckillTime) - new Date().getTime(),
+                                    presellCountdownTime: item.entity && Number(item.entity.start) - new Date().getTime(),
                                     digitalCollectionName: item.name,
                                     digitalCollectioUrl: item.imgPath,
                                     digitalCollectioShare: item.quantity,
@@ -499,10 +523,14 @@
                                     digitalCollectioPrice: item.price,
                                     tagAttributes: item.tags,
                                     id: item.id,
+                                    entity: item.entity,
+                                    presale: item.presale,
                                     status: item.status,
-                                    isShowCountDown: true
+                                    isShowCountDown: true,
+                                    isShowPresaleCountDown: true
                                 })
-                            }
+                            };
+                            console.log(this.digitalCollectionList)
                         }
                     } else {
                         this.isShowLoadFail = true;
@@ -537,6 +565,7 @@
                                     if (currentIndex != -1) {
                                         if (this.digitalCollectionList[currentIndex]['status'] != item.status) {
                                             this.digitalCollectionList[currentIndex]['status'] = item.status
+                                            this.digitalCollectionList[currentIndex]['countdownTime'] = Number(item.seckillTime) - new Date().getTime()
                                         }
                                     }
                             } 
@@ -586,6 +615,11 @@
             //倒计时结束事件
             countDownEvent(index) {
                 this.digitalCollectionList[index]['isShowCountDown'] = false
+            },
+
+            //预售倒计时结束事件
+            presellCountDownEvent(index) {
+                this.digitalCollectionList[index]['isShowPresaleCountDown'] = false
             },
 
             //作品访问统计

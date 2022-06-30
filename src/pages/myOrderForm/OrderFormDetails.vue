@@ -13,15 +13,15 @@
             @cancel="cancelOrderSureEvent"
             show-cancel-button>
         </van-dialog>
-		<div class="content-top">
+		<div class="content-top" v-if="loadingComplete">
 			<van-icon name="underway" size="80" color="#e3921a" v-show="orderFormDetails.status == 0" />
             <img :src="orderFormDetails.status == 1 ? accountPaidPng : canceledPng " alt="" v-show="orderFormDetails.status != 0">
-			<span>{{orderFormDetails.status == 1 ? '已支付' : orderFormDetails.status == 0 ? '待支付' : orderFormDetails.status == -1 ? '已取消' : '已退款'}}</span>
+			<span>{{ payStatusTransfer(orderFormDetails.status) }}</span>
 			<p>
 				<van-count-down v-show="orderFormDetails.status == 0" :time="`${(new Date(orderFormDetails.createTime).getTime() + orderFormDetails.expire*60*1000) - new Date().getTime()}`" format="支付剩余时间 mm : ss "/>
 			</p>
 		</div>
-		<div class="content-center">
+		<div class="content-center" v-if="loadingComplete">
 			<div class="top">
 				<div class="img-show" >
 					<img :src="orderFormDetails.imgPath">
@@ -56,7 +56,6 @@
 			<span @click="cancelOrderEvent">取消订单</span>
 			<span @click="toPaymentEvent">去付款</span>
 		</div>
-		<van-loading type="spinner" v-show="loadingShow"/>
 	</div>
 </template>
 
@@ -75,6 +74,7 @@
 		data() {
 			return {
 				loadingShow: false,
+				loadingComplete: false,
 				isDisabled: false,
 				timer: null,
 				isShowOrderCancel: false,
@@ -120,11 +120,33 @@
 				document.querySelector('#top-content').scrollIntoView(true)
 			},
 
+			// 支付状态转换
+			payStatusTransfer (index) {
+				switch(index) {
+					case -2 :
+						return '已取消'
+						break;
+					case -1 :
+						return '已取消'
+						break;
+					case 0 :
+						return '待支付'
+						break;
+					case 1 :
+						return '已支付'
+						break;
+					case 2 :
+						return '已退款'
+						break;
+				}
+			},
+
 			// 查询订单详情
             inquareOrderDetails(id) {
                 this.loadingShow = true;
                 queryOrderDetails(id).then((res) => {
                     this.loadingShow = false;
+					this.loadingComplete = true;
                     if (res && res.data.code == 0) {
                        this.orderFormDetails = res.data.data;
 					   this.orderFormDetails.createTime = this.orderFormDetails.createTime.replace(/-/g,"/");
@@ -137,6 +159,7 @@
                 })
                 .catch((err) => {
                     this.loadingShow = false;
+					this.loadingComplete = true;
 					this.$toast({
 						message: `${err.message}`,
 						position: 'bottom'

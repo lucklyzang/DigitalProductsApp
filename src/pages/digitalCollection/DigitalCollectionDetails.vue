@@ -197,14 +197,25 @@
                 </p>
             </div>
         </div>
-        <div class="content-bottom" @click="purchaseEvent">
-			<div v-show="!loadingImgGifShow">
-				<span>¥ {{productsDetails.price}}</span>
-			</div>
-			<div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}" v-show="!loadingImgGifShow">
-				<span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购 买' : '已售罄'}}</span>
-				<van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime)- new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
-			</div>
+        <div class="content-bottom">
+            <div class="sell-area" v-if="productsDetails.presale == 0 || productsDetails.entity.status == 2">
+                <div v-show="!loadingImgGifShow">
+                    <span>¥ {{productsDetails.price}}</span>
+                </div>
+                <div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1}" v-show="!loadingImgGifShow" @click="purchaseEvent">
+                    <span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购 买' : '已售罄'}}</span>
+                    <van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
+                </div>
+            </div>
+            <div class="presell-area" v-if="productsDetails.presale == 1 && productsDetails.entity.status != 2">   
+                <div v-show="!loadingImgGifShow">
+                    <span>预购金额 ¥ {{productsDetails.entity.amount}}</span>
+                </div>
+                <div :class="{'sellStyle': !isShowPresaleCountDown,'purchaseStyle': productsDetails.entity.status == 1}" v-show="!loadingImgGifShow" @click="presellPurchaseEvent">
+                    <span>{{isShowPresaleCountDown ? '即将预购' : productsDetails.entity.status == 1  ||  productsDetails.entity.status == 0 ? '预 购' : '预购结束'}}</span>
+                    <van-count-down v-show="isShowPresaleCountDown" :time="Number(productsDetails.entity.start) - new Date().getTime()" format="DD:HH:mm:ss" @finish="presellCountDownEvent"/>
+                </div>
+            </div> 
 		</div>
 	</div>
 </template>
@@ -224,7 +235,7 @@
         ModelGltf
     } from "vue-3d-model";
     import { isAndroid_ios, isWeiXin, getUrlParam } from '@/common/js/utils'
-	import {inquareProductDetails,purchaseCommodity,inquareUserInfo,productionShare} from '@/api/products.js'
+	import {inquareProductDetails,purchaseCommodity,inquareUserInfo,productionShare,presellPurchaseCommodity} from '@/api/products.js'
 	export default {
         name: 'DigitalCollectionDetails',
 		components: { 
@@ -252,8 +263,11 @@
                 threeDimensionalShow: false,
                 loadingShow: false,
                 overlayShow: false,
-                productsDetails: {},
+                productsDetails: {
+                    entity: {}
+                },
                 isCountDownShow: true,
+                isShowPresaleCountDown: true,
                 timeIndex: null,
                 lights: [
                     {
@@ -422,6 +436,7 @@
                                 this.threeDimensionalShow = true
                             };
                             this.productsDetails = res.data.data;
+                            this.productsDetails.entity = res.data.data.entity;
                             this.isShowContent = true;
                             resolve();
                             if (this.isLogin) {
@@ -480,6 +495,42 @@
                     return
                 };
                 this.buyCommodity()
+            },
+
+            // 预售购买商品
+            async presellPurchaseEvent () {
+                // 防止多次快速点击
+                if(this.isDisabled) return;
+                this.isDisabled = !this.isDisabled;
+                this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
+                //未开启预购
+                if (this.isShowPresaleCountDown) {
+                    return
+                };
+                //预购已售罄
+                if (this.productsDetails.entity.status == 2) {
+                    return
+                };
+                // 未登录
+                if (!this.isLogin) {
+                    this.changeIsEnterLoginPageSource('/collectionDetails');
+                    this.$router.push({
+                        path: '/login'
+                    });
+                    return
+                };
+                // 未认证或账户已冻结
+                if (this.userInfo.realFlag != 1) {
+                    this.$router.push({
+                        path: '/realNameAuthentication'
+                    });
+                    return
+                };
+                await this.queryProductDetails();
+                if (this.productsDetails.entity.status == 2) {
+                    return
+                };
+                this.presellBuyCommodity()
             },
 
             // 查询用户信息
@@ -542,6 +593,46 @@
                 })
             },
 
+            // 预购买商品
+            presellBuyCommodity () {
+                this.loadingShow = true;
+                this.overlayShow = true;
+                let inviteType,inviteId;
+                // 判断是不是通过邀请下单
+                if (this.inviteMessage) {
+                    if (this.inviteMessage.id == this.productsId.id) {
+                        inviteType = this.inviteMessage['inviteType'];
+                        inviteId = this.inviteMessage['inviteId']
+                    }
+                } else {
+                    inviteType = '';
+                    inviteId = ''
+                };
+                presellPurchaseCommodity(this.productsId.id,inviteType,inviteId).then((res) => {
+                    this.loadingShow = false;
+                    this.overlayShow = false; 
+                    if (res && res.data.code == 0) {
+                        this.changeIsRefreshHomePage(true);
+                        this.changeOrderId(res.data.data.orderId);
+                        this.changeIsPaying(false);
+                        this.$router.push({path: 'orderFormToPaid'})
+                    } else {
+                        this.$toast({
+                            message: `${res.data.msg}`,
+                            position: 'bottom'
+                        })
+                    }
+                })
+                .catch((err) => {
+                    this.loadingShow = false;
+                    this.overlayShow = false;
+                    this.$toast({
+                        message: `${err.message}`,
+                        position: 'bottom'
+                    }) 
+                })
+            },
+
             // 作品分享
             productionShareEvent() {
                 return new Promise((resolve,rejrect) => {
@@ -570,6 +661,11 @@
             // 倒计时结束事件
             countDownEvent () {
                 this.isCountDownShow = false
+            },
+
+            // 预售倒计时结束事件
+            presellCountDownEvent () {
+                this.isShowPresaleCountDown = false
             },
 
 			toWorkRoomEvent() {
@@ -1014,40 +1110,47 @@
             padding: 0 20px;
             box-sizing: border-box;
 			> div {
-				&:first-child {
-					font-size: 18px;
-					height: 50px;
-					line-height: 50px;
-					color: #FFFFFF;
-                    >span {
-                        font-weight: bolder
-                    }
-				};
-				&:last-child {
-					display: flex;
-					flex-direction: column;
-					justify-content: space-between;
-                    font-size: 14px;
-					align-items: center;
-					background: #272833;
-					width: 140px;
-					padding: 8px 0;
-					box-sizing: border-box;
-					height: 50px;
-					border-radius: 26px;
-					color: #FFFFFF;
-                    /deep/ .van-count-down {
+                width: 100%;
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+                align-items: center;
+                > div {
+                    &:first-child {
+                        font-size: 18px;
+                        height: 50px;
+                        line-height: 50px;
                         color: #FFFFFF;
+                        >span {
+                            font-weight: bolder
+                        }
+                    };
+                    &:last-child {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        font-size: 14px;
+                        align-items: center;
+                        background: #272833;
+                        width: 140px;
+                        padding: 8px 0;
+                        box-sizing: border-box;
+                        height: 50px;
+                        border-radius: 26px;
+                        color: #FFFFFF;
+                        /deep/ .van-count-down {
+                            color: #FFFFFF;
+                        }
                     }
-				}
-			}
-            .sellStyle {
-                justify-content: center !important;
-                font-size: 18px !important
-            };
-            .purchaseStyle {
-                background: #ffd4a0 !important;
-                color: black !important
+                }
+                .sellStyle {
+                    justify-content: center !important;
+                    font-size: 18px !important
+                };
+                .purchaseStyle {
+                    background: #ffd4a0 !important;
+                    color: black !important
+                }
             }
 		}
 	}

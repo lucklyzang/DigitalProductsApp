@@ -93,6 +93,14 @@ export function purchaseCommodity(commId,inviteType,inviteId) {
     })
 };
 
+// 预付购买商品
+export function presellPurchaseCommodity(commId,inviteType,inviteId) {
+    return request({
+        url: !inviteId ? `app/presale/${commId}` : `app/presale/${commId}?inviteType=${inviteType}&inviteId=${inviteId}`,
+        method: 'post'
+    })
+};
+
 // 创建支付订单
 export function createPaymentOrder(data) {
     return request({
