@@ -18,16 +18,17 @@
                 </van-swipe>
             </div>
             <div class="rare-object-copy" v-show="isShowRareObjectCopy"></div>
-            <div class="tab-switch-copy" v-show="isFixed"></div>
-            <div class="tab-switch" ref="tabSwitch" :class="{'tabSwitchStyle':isFixed}">
-                <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
-                    :class="{'active-tab-style': index === currentTabIndex }"
-                >
-                    {{
-                    item.name
-                    }}
-                </span>
-            </div>
+            <div class="tab-switch-box">
+                <div class="tab-switch" ref="tabSwitch" :class="{'tabSwitchStyle':isFixed}">
+                    <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
+                        :class="{'active-tab-style': index === currentTabIndex }"
+                    >
+                        {{
+                        item.name
+                        }}
+                    </span>
+                </div>
+            </div>    
             <div class="switch-content">
                 <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
@@ -733,56 +734,53 @@
                 border-radius: 10px;
                 background: #3b3b3b;
             };
-            .tab-switch {
-                z-index: 99999;
-                background: @color-background;
-                width: 92%;
-                margin: 0 auto;
-                padding: 4px 0;
-                box-sizing: border-box;
-                text-align: left;
-                span {
-                    display: inline-block;
-                    color: #777575;
-                    font-size: 17px;
-                    width: 100px;
-                    height: 40px;
-                    line-height: 40px;
+            .tab-switch-box {
+                height: 48px;
+                .tab-switch {
+                    z-index: 99999;
+                    background: @color-background;
+                    width: 92%;
+                    margin: 0 auto;
+                    padding: 4px 0;
+                    box-sizing: border-box;
                     text-align: left;
-                };
-                .active-tab-style {
-                    color: #FFFFFF;
-                    font-weight: bold;
-                    position: relative;
-                    border: none;
-                    &:after {
-                        content: '';
-                        position: absolute;
-                        left: 50%;
-                        transform: translateX(-205%);
-                        bottom: 0;
-                        width: 10px;
-                        height: 3px;
-                        background: #f5cc9b
+                    span {
+                        display: inline-block;
+                        color: #777575;
+                        font-size: 17px;
+                        width: 100px;
+                        height: 40px;
+                        line-height: 40px;
+                        text-align: left;
+                    };
+                    .active-tab-style {
+                        color: #FFFFFF;
+                        font-weight: bold;
+                        position: relative;
+                        border: none;
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            left: 50%;
+                            transform: translateX(-205%);
+                            bottom: 0;
+                            width: 10px;
+                            height: 3px;
+                            background: #f5cc9b
+                        }
                     }
-                }
+                };
+                .tabSwitchStyle {
+                    position: fixed;
+                    transform: translateZ(0);
+                    -webkit-transform: translateZ(0);
+                    top: -1px;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    height: 48px
+                }    
             };
-            .tab-switch-copy {
-                width: 92%;
-                margin: 0 auto;
-                height: 40px;
-                padding: 4px 0;
-            };
-            .tabSwitchStyle {
-                position: fixed;
-                -webkit-transform: translateZ(0);
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                height: 40px;
-                box-sizing: content-box
-            };    
             .switch-content {
                 flex: 1;
                 width: 92%;
