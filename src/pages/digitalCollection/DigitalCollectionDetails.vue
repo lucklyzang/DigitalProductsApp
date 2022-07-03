@@ -198,7 +198,8 @@
             </div>
         </div>
         <div class="content-bottom">
-            <div class="sell-area" v-if="productsDetails.presale == 0 || productsDetails.entity.status == 2">
+            <!-- 未开启预售 -->
+            <div class="sell-area" v-if="productsDetails.presale == 0">
                 <div v-show="!loadingImgGifShow">
                     <span>¥ {{productsDetails.price}}</span>
                 </div>
@@ -207,15 +208,50 @@
                     <van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
                 </div>
             </div>
-            <div class="presell-area" v-if="productsDetails.presale == 1 && productsDetails.entity.status != 2">   
-                <div v-show="!loadingImgGifShow">
+            <!-- 标记支付售卖开始 -->
+            <van-count-down v-show="false" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
+            <!-- 标记支付尾款开始 -->
+            <van-count-down v-show="false" :time="Number(productsDetails.entity && productsDetails.entity.end) - new Date().getTime()" format="DD:HH:mm:ss" @finish="presellEndCountDownEvent"/>
+            <!-- 开启预售 -->
+            <div class="presell-area" v-if="productsDetails.presale == 1 && productsDetails.status == 0">   
+                <div v-show="!loadingImgGifShow && (productsDetails.entity.status == 1  ||  productsDetails.entity.status == 0)">
                     <span>预购金额 ¥ {{productsDetails.entity.amount}}</span>
                 </div>
-                <div :class="{'sellStyle': !isShowPresaleCountDown,'purchaseStyle': productsDetails.entity.status == 1}" v-show="!loadingImgGifShow" @click="presellPurchaseEvent">
-                    <span>{{isShowPresaleCountDown ? '即将预购' : productsDetails.entity.status == 1  ||  productsDetails.entity.status == 0 ? '预 购' : '预购结束'}}</span>
-                    <van-count-down v-show="isShowPresaleCountDown" :time="Number(productsDetails.entity.start) - new Date().getTime()" format="DD:HH:mm:ss" @finish="presellCountDownEvent"/>
+                <div :class="{'sellStyle': !isShowPresaleStartCountDown,'purchaseStyle': productsDetails.entity.status == 1}" v-show="!loadingImgGifShow && (productsDetails.entity.status == 1  ||  productsDetails.entity.status == 0)" @click="presellPurchaseEvent">
+                    <span>{{isShowPresaleStartCountDown ? '即将预购' : productsDetails.entity.status == 1  ||  productsDetails.entity.status == 0 ? '预 购' : '预购结束'}}</span>
+                    <van-count-down v-show="isShowPresaleStartCountDown" :time="Number(productsDetails.entity.start) - new Date().getTime()" format="DD:HH:mm:ss" @finish="presellStartCountDownEvent"/>
                 </div>
-            </div> 
+                <div v-show="!loadingImgGifShow && productsDetails.entity.status == 2 && (productsDetails.priority == 0 || productsDetails.priority == 1) ">
+                    <span>¥ {{productsDetails.price}}</span>
+                </div>
+                <div :class="{'sellStyle': false,'purchaseStyle': false}" v-if="!loadingImgGifShow && productsDetails.priority == 0 && productsDetails.entity.status == 2">
+                    <span>即将开售</span>
+                    <van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
+                </div>
+                <div :class="{'sellStyle': !isBalancePaymentShow,'purchaseStyle': !isBalancePaymentShow}" v-if="!loadingImgGifShow && productsDetails.priority == 1 && !isShowPresaleEndCountDown && productsDetails.entity.status == 2" @click="purchaseEvent">
+                    <span>支付尾款</span>
+                    <van-count-down v-show="isBalancePaymentShow" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="balancePaymentEvent"/>
+                </div>
+            </div>
+            <div class="presell-area" v-if="productsDetails.presale == 1 && productsDetails.status == 1">   
+                <div v-show="!loadingImgGifShow">
+                    <span>¥ {{productsDetails.price}}</span>
+                </div>
+                <div :class="{'sellStyle': true,'purchaseStyle': true}" v-if="!loadingImgGifShow && productsDetails.priority == 0 && productsDetails.status == 1" @click="purchaseEvent">
+                    <span>购买</span>
+                </div>
+                <div :class="{'sellStyle': true,'purchaseStyle': true}" v-if="!loadingImgGifShow && productsDetails.priority == 1 && productsDetails.status == 1" @click="purchaseEvent">
+                    <span>支付尾款</span>
+                </div>
+            </div>
+            <div class="presell-area" v-if="productsDetails.presale == 1 && productsDetails.status == 2">   
+                <div v-show="!loadingImgGifShow">
+                    <span>¥ {{productsDetails.price}}</span>
+                </div>
+                <div :class="{'sellStyle': true,'purchaseStyle': false}">
+                    <span>已售罄</span>
+                </div>
+            </div>  
 		</div>
 	</div>
 </template>
@@ -267,7 +303,9 @@
                     entity: {}
                 },
                 isCountDownShow: true,
-                isShowPresaleCountDown: true,
+                isBalancePaymentShow: true,
+                isShowPresaleStartCountDown: true,
+                isShowPresaleEndCountDown: true,
                 timeIndex: null,
                 lights: [
                     {
@@ -468,7 +506,11 @@
                 this.isDisabled = !this.isDisabled;
                 this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 //未开售
-                if (this.isCountDownShow) {
+                if (this.isCountDownShow && this.productsDetails.priority == 0) {
+                    return
+                };
+                //付尾款未开始
+                if (this.isBalancePaymentShow && this.productsDetails.priority == 1) {
                     return
                 };
                 //已售罄
@@ -504,7 +546,7 @@
                 this.isDisabled = !this.isDisabled;
                 this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 //未开启预购
-                if (this.isShowPresaleCountDown) {
+                if (this.isShowPresaleStartCountDown) {
                     return
                 };
                 //预购已售罄
@@ -663,9 +705,19 @@
                 this.isCountDownShow = false
             },
 
-            // 预售倒计时结束事件
-            presellCountDownEvent () {
-                this.isShowPresaleCountDown = false
+            // 付尾款倒计时结束事件
+            balancePaymentEvent () {
+                this.isBalancePaymentShow = false
+            },
+
+            // 预售倒计时结束事件(预售开始)
+            presellStartCountDownEvent () {
+                this.isShowPresaleStartCountDown = false
+            },
+
+            // 预售倒计时结束事件(预售结束)
+            presellEndCountDownEvent () {
+                this.isShowPresaleEndCountDown = false
             },
 
 			toWorkRoomEvent() {

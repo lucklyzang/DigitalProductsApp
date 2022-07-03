@@ -52,7 +52,8 @@
                             v-for="(item,index) in digitalCollectionList" :key="item.id"
                             :style="{backgroundImage: 'url(' + homeListBackgroundPng+ ')',backgroundRepeat:'no-repeat',backgroundPosition:'right bottom',backgroundSize:'40%'}"
                             >
-                            <div class="sell-info-area" v-if="item.presale == 0 || item.entity.status == 2">
+                            <!-- 未开启预售 -->
+                            <div class="sell-info-area" v-if="item.presale == 0">
                                 <div class="left-sell" v-show="item.isShowCountDown && item.status == 0">
                                     <van-icon name="underway" size="14" color="#63b66b" />
                                     <span>即将开售</span>
@@ -71,18 +72,46 @@
                                     <span>提醒我</span>
                                 </div> -->
                             </div>
-                            <div class="sell-info-area" v-if="item.presale == 1 && item.entity.status != 2 ">
-                                <div class="left-sell" v-show="item.isShowPresaleCountDown && item.entity.status == 0">
+                            <!-- 开启预售 -->
+                            <div class="sell-info-area" v-if="item.presale == 1 && item.status == 0">
+                                <div class="left-sell" v-show="item.isShowPresaleStartCountDown && item.entity.status == 0">
                                     <van-icon name="underway" size="14" color="#63b66b" />
                                     <span>预购</span>
-                                    <van-count-down :time="item.presellCountdownTime" v-show="false" @finish="presellCountDownEvent(index)" format="DD:HH:mm:ss"/>
+                                    <van-count-down :time="item.presellStartCountdownTime" v-show="false" @finish="presellStartCountDownEvent(index)" format="DD:HH:mm:ss"/>
                                     <span>
                                         {{ `${cutoutTimeQuantum(item.entity.startTime)} - ${cutoutTimeQuantum(item.entity.endTime)}`}}
                                     </span>
                                 </div>
-                                <div class="left" v-show="!item.isShowPresaleCountDown && item.entity.status == 1">
+                                <div class="left" v-show="!item.isShowPresaleStartCountDown && item.entity.status == 1">
                                     <van-icon name="underway" size="14" color="#bd68ff" />
                                     <span>预购中</span>
+                                    <van-count-down :time="item.presellEndCountdownTime" v-show="false" @finish="presellEndCountDownEvent(index)" format="DD:HH:mm:ss"/>
+                                </div>
+                                <div class="left-sell" v-show="!item.isShowPresaleEndCountDown && item.entity.status == 2 && item.priority == 1">
+                                    <van-icon name="underway" size="14" color="#63b66b" />
+                                    <span>支付尾款</span>
+                                    <van-count-down v-show="!item.isBalancePaymentShow" :time="item.countdownTime" @finish="balancePaymentEvent(index)" format="DD:HH:mm:ss"/>
+                                </div>
+                                <div class="left-sell" v-show="item.entity.status == 2 && item.priority == 0">
+                                    <van-icon name="underway" size="14" color="#63b66b" />
+                                    <span>即将开售</span>
+                                    <van-count-down :time="item.countdownTime" @finish="countDownEvent(index)" format="DD:HH:mm:ss"/>
+                                </div>
+                            </div>
+                            <div class="sell-info-area" v-if="item.presale == 1 && item.status == 1">
+                                <div class="left" v-show="item.priority == 0">
+                                    <van-icon name="underway" size="14" color="#bd68ff" />
+                                    <span>火爆抢购中</span>
+                                </div>
+                                <div class="left" v-show="item.priority == 1">
+                                    <van-icon name="underway" size="14" color="#bd68ff" />
+                                    <span>支付尾款</span>
+                                </div>
+                            </div>
+                            <div class="sell-info-area" v-if="item.presale == 1 && item.status == 2">
+                                <div class="center">
+                                    <van-icon name="bookmark" size="14" color="#fff" />
+                                    <span>已售罄</span>
                                 </div>
                             </div>
                             <div class="image-area" v-lazy-container="{ selector: 'img' }">
@@ -514,7 +543,8 @@
                             for (let item of res.data.list) {
                                 this.digitalCollectionList.push({
                                     countdownTime: Number(item.seckillTime) - new Date().getTime(),
-                                    presellCountdownTime: item.entity && Number(item.entity.start) - new Date().getTime(),
+                                    presellStartCountdownTime: item.entity && Number(item.entity.start) - new Date().getTime(),
+                                    presellEndCountdownTime: item.entity && Number(item.entity.end) - new Date().getTime(),
                                     digitalCollectionName: item.name,
                                     digitalCollectioUrl: item.imgPath,
                                     digitalCollectioShare: item.quantity,
@@ -525,10 +555,13 @@
                                     tagAttributes: item.tags,
                                     id: item.id,
                                     entity: item.entity,
+                                    priority: item.priority,
                                     presale: item.presale,
                                     status: item.status,
                                     isShowCountDown: true,
-                                    isShowPresaleCountDown: true
+                                    isBalancePaymentShow: true,
+                                    isShowPresaleStartCountDown: true,
+                                    isShowPresaleEndCountDown: true
                                 })
                             };
                             console.log(this.digitalCollectionList)
@@ -562,13 +595,11 @@
                     if (res && res.data.code == 0) {
                         if (res.data.list.length > 0) {
                             for (let item of res.data.list) {
-                                    let currentIndex = this.digitalCollectionList.indexOf(this.digitalCollectionList.filter((innerItem) => { return innerItem.id == item.id})[0]);
-                                    if (currentIndex != -1) {
-                                        if (this.digitalCollectionList[currentIndex]['status'] != item.status) {
-                                            this.digitalCollectionList[currentIndex]['status'] = item.status
-                                            this.digitalCollectionList[currentIndex]['countdownTime'] = Number(item.seckillTime) - new Date().getTime()
-                                        }
-                                    }
+                                let currentIndex = this.digitalCollectionList.indexOf(this.digitalCollectionList.filter((innerItem) => { return innerItem.id == item.id})[0]);
+                                if (currentIndex != -1) {
+                                    this.digitalCollectionList[currentIndex]['status'] = item.status;
+                                    this.digitalCollectionList[currentIndex]['priority'] = item.priority 
+                                }
                             } 
                         }
                     }
@@ -618,9 +649,19 @@
                 this.digitalCollectionList[index]['isShowCountDown'] = false
             },
 
-            //预售倒计时结束事件
-            presellCountDownEvent(index) {
-                this.digitalCollectionList[index]['isShowPresaleCountDown'] = false
+            // 付尾款倒计时结束事件
+            balancePaymentEvent () {
+                this.digitalCollectionList[index]['isBalancePaymentShow'] = false
+            },
+
+            //预售倒计时结束事件(预售开始)
+            presellStartCountDownEvent(index) {
+                this.digitalCollectionList[index]['isShowPresaleStartCountDown'] = false
+            },
+
+            //预售倒计时结束事件(预售结束)
+            presellEndCountDownEvent(index) {
+                this.digitalCollectionList[index]['isShowPresaleEndCountDown'] = false
             },
 
             //作品访问统计
