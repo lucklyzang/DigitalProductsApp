@@ -119,6 +119,7 @@
                 loadingShow: false,
                 isShowWeixinPay: true,
                 overlayShow: false,
+                isIosPaySuccess: false,
                 time: '',
                 isDisabled: false,
                 timer: null,
@@ -174,6 +175,14 @@
             if (this.isPaying) {
                 this.isShowPaySuccess = true
             };
+            if (this.isIosPaySuccess) {
+                this.isShowPaySuccess = true
+            };
+            // 提供给原生app调用的方法
+			let me = this;
+			window['getPayStatus'] = (val) => {
+				me.getPayStatus(val);
+			};
 
             //微信内支付
             if (isWeiXin()) {
@@ -202,6 +211,14 @@
                 'changeOpenId',
                 'changeInviteMessage'
 			]),
+
+            // 获取苹果支付订单状态的值
+			getPayStatus (val) {
+                if (val == '成功') {
+                    this.isIosPaySuccess = true
+                }
+			},
+
             //让页面滚动到顶部
 			toTop() {
 				document.querySelector('#top-content').scrollIntoView(true)
@@ -403,6 +420,7 @@
                         }
                     } else {
                         //在苹果app内部时调取苹果支付
+                        window.webkit.messageHandlers.setShareUrl.postMessage({functionName: 'ApplePay',parameter: 'YGSC001'})
                     }   
                 }
             },

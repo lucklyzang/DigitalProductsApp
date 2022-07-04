@@ -41,6 +41,11 @@
 								去付款
 							</span>
 						</div>
+						<div v-show="item.status != 0 ">
+							<span>
+								{{item.type == 3 ? '尾款订单' : item.type == 2 ? '预购订单' : ''}}
+							</span>
+						</div>
 					</div>
 				</div>
 				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
@@ -69,6 +74,11 @@
 						<div v-show="item.collectionStatus == '0'"  @click.stop="toPayEvent(item)">
 							<span>
 								去付款
+							</span>
+						</div>
+						<div v-show="item.status != 0 ">
+							<span>
+								{{item.type == 3 ? '尾款订单' : item.type == 2 ? '预购订单' : ''}}
 							</span>
 						</div>
 					</div>
@@ -101,6 +111,11 @@
 								去付款
 							</span>
 						</div>
+						<div v-show="item.status != 0 ">
+							<span>
+								{{item.type == 3 ? '尾款订单' : item.type == 2 ? '预购订单' : ''}}
+							</span>
+						</div>
 					</div>
 				</div>
 				<div class="no-more-data" v-show="!emptyShow && !isShowLoadFail && !loadingShow">
@@ -129,6 +144,11 @@
 						<div v-show="item.collectionStatus == '0'">
 							<span>
 								去付款
+							</span>
+						</div>
+						<div v-show="item.status != 0 ">
+							<span>
+								{{item.type == 3 ? '尾款订单' : item.type == 2 ? '预购订单' : ''}}
 							</span>
 						</div>
 					</div>
@@ -250,7 +270,8 @@
 									collectionStatus: item.status,
 									extend: item.extend,
 									item: item.createTime,
-									comId: item.comId
+									comId: item.comId,
+									type: item.type
                                 })
                             };
 							if (index != 0) {
@@ -471,6 +492,10 @@
 								border-radius: 18px;
 								background-image: linear-gradient(to right, #fcbe43 ,#f7c241);
 							};
+							&:nth-child(3) {
+								font-size: 15px;
+								color: #656565
+							}
 						}
 					}
 				};

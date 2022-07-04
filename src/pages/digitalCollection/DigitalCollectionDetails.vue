@@ -230,7 +230,7 @@
                 </div>
                 <div :class="{'sellStyle': false,'purchaseStyle': false}" v-if="!loadingImgGifShow && productsDetails.priority == 0 && productsDetails.entity.status == 2">
                     <span>即将开售</span>
-                    <van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
+                    <van-count-down :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
                 </div>
                 <div :class="{'sellStyle': !isBalancePaymentShow,'purchaseStyle': !isBalancePaymentShow}" v-if="!loadingImgGifShow && productsDetails.priority == 1 && !isShowPresaleEndCountDown && productsDetails.entity.status == 2" @click="purchaseEvent">
                     <span>{{isBalancePaymentShow ? '即将支付尾款' : '支付尾款'}}</span>
@@ -276,6 +276,7 @@
     } from "vue-3d-model";
     import { isAndroid_ios, isWeiXin, getUrlParam } from '@/common/js/utils'
 	import {inquareProductDetails,purchaseCommodity,inquareUserInfo,productionShare,presellPurchaseCommodity} from '@/api/products.js'
+    let windowTimer
 	export default {
         name: 'DigitalCollectionDetails',
 		components: { 
@@ -295,6 +296,7 @@
                     z: 0
                 },
                 isDisabled: false,
+                isTimeoutContinue: true,
                 isShareDisabled: false,
 	            timer: null,
                 collectionExhibitionHeight: '',
@@ -381,6 +383,14 @@
                     })
                 })
             };
+             // 轮询任务状态
+            if (!windowTimer) {
+                windowTimer = window.setInterval(() => {
+                    if (this.isTimeoutContinue) {
+                        this.timingQueryProductDetails()
+                    }
+                }, 3000)
+            };
             this.gainInviteMessage();
             this.toTop();
             this.queryProductDetails()
@@ -392,6 +402,10 @@
             };
             if (this.timeIndex) {
                 cancelAnimationFrame(this.timeIndex); 
+            };
+            if(windowTimer) {
+                clearTimeout(windowTimer);
+                windowTimer = null
             }
         },
 
@@ -465,6 +479,21 @@
                     temporaryInviteMessage['id'] = commId;
                     this.changeInviteMessage(temporaryInviteMessage)
                 } 
+            },
+
+            // 定时查询作品详情状态
+            timingQueryProductDetails () {
+                this.isTimeoutContinue = false;
+                inquareProductDetails(this.productsId.id).then((res) => {
+                    this.isTimeoutContinue = true;
+                    if (res && res.data.code == 0) {
+                        this.productsDetails = res.data.data;
+                        this.productsDetails.entity = res.data.data.entity
+                    }
+                })
+                .catch((err) => {
+                    this.isTimeoutContinue = true
+                })
             },
 
             // 查询作品详情
