@@ -598,7 +598,8 @@
                                 let currentIndex = this.digitalCollectionList.indexOf(this.digitalCollectionList.filter((innerItem) => { return innerItem.id == item.id})[0]);
                                 if (currentIndex != -1) {
                                     this.digitalCollectionList[currentIndex]['status'] = item.status;
-                                    this.digitalCollectionList[currentIndex]['priority'] = item.priority 
+                                    this.digitalCollectionList[currentIndex]['priority'] = item.priority;
+                                    this.digitalCollectionList[currentIndex]['entity'] = item.entity
                                 }
                             } 
                         }
