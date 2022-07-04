@@ -119,7 +119,6 @@
                 loadingShow: false,
                 isShowWeixinPay: true,
                 overlayShow: false,
-                isIosPaySuccess: false,
                 time: '',
                 isDisabled: false,
                 timer: null,
@@ -140,6 +139,7 @@
                 'appId',
                 'isGetCode',
                 'openId',
+                'isIosPaySuccess',
                 'productsId',
                 'inviteMessage'
 			])
@@ -176,7 +176,7 @@
                 this.isShowPaySuccess = true
             };
             if (this.isIosPaySuccess) {
-                this.isShowPaySuccess = true
+
             };
             // 提供给原生app调用的方法
 			let me = this;
@@ -209,13 +209,23 @@
                 'changeOrderId',
                 'changeIsRefreshHomePage',
                 'changeOpenId',
-                'changeInviteMessage'
+                'changeInviteMessage',
+                'changeIsIosPaySuccess'
 			]),
 
             // 获取苹果支付订单状态的值
 			getPayStatus (val) {
                 if (val == '成功') {
-                    this.isIosPaySuccess = true
+                    this.changeIsIosPaySuccess(true);
+                    this.$toast({
+                        message: '支付成功',
+                        position: 'bottom'
+                    })
+                } else {
+                    this.$toast({
+                        message: '支付失败',
+                        position: 'bottom'
+                    })
                 }
 			},
 
@@ -294,12 +304,12 @@
             },
 
             // 查询支付结果
-            queryPayResult() {
+            queryPayResult(orderId) {
                 if(this.isDisabled) return;
                 this.isDisabled = !this.isDisabled;
                 this.timer = setTimeout(() => {this.isDisabled = !this.isDisabled;},3000);
                 this.loadingShow = true;
-                queryPaymentResult(this.orderId).then((res) => {
+                queryPaymentResult(orderId).then((res) => {
                     this.changeIsRefreshHomePage(true);
                     this.loadingShow = false;
                     if (res && res.data.code == 0) {
@@ -318,7 +328,7 @@
                             };
                             this.paymentSuccess = true;
                             this.changeIsPaying(false);
-                            this.changeOrderId(this.orderId);
+                            this.changeOrderId(orderId);
                             this.$router.push({name: 'orderFormDetails'})    
                         } else if (res.data.data.status == -1) {
                             this.$toast({
@@ -327,14 +337,14 @@
                             });
                             this.paymentSuccess = false;
                             this.changeIsPaying(false);
-                            this.changeOrderId(this.orderId);
+                            this.changeOrderId(orderId);
                             this.$router.push({name: 'orderFormDetails'})
                         } else if (res.data.data.status == 0) {
                              this.$toast({
                                 message: '订单未支付',
                                 position: 'bottom'
                             });
-                            this.changeOrderId(this.orderId);
+                            this.changeOrderId(orderId);
                             this.paymentSuccess = false;
                             this.changeIsPaying(false)
                         } else if (res.data.data.status == 2) {
@@ -342,7 +352,7 @@
                                 message: '订单支付失败',
                                 position: 'bottom'
                             });
-                            this.changeOrderId(this.orderId);
+                            this.changeOrderId(orderId);
                             this.paymentSuccess = false;
                             this.changeIsPaying(false)
                         }    
@@ -547,13 +557,13 @@
             // 完成支付弹框事件
             completePaymentEvent () {
                 this.isShowPaySuccess = false;
-                this.queryPayResult()
+                this.queryPayResult(this.orderId)
             },
 
             // 支付问题弹框事件
             paymentIssueEvent () {
                 this.isShowPaySuccess = false;
-                this.queryPayResult();
+                this.queryPayResult(this.orderId);
                 // this.paymentSuccess = false;
                 // this.changeIsPaying(false)
             },

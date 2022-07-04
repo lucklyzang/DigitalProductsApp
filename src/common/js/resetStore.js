@@ -16,6 +16,7 @@ export function getDefaultLoginState() {
 export function getDefaultProductsState() {
     return {
         swipeItemDetails: null, //轮播图信息
+        isIosPaySuccess: false, //苹果内购状态
         productsId: null, //作品id
         systemMessageId: '', //系统消息id
         inviteMessage: null, //作品邀请信息

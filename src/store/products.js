@@ -34,6 +34,11 @@ export default {
             return state.isPaying
         },
 
+        isIosPaySuccess: (state)  => { 
+            state.isIosPaySuccess = getStore('isIosPaySuccess') ? getStore('isIosPaySuccess') === 'false' ? false : true : false
+            return state.isIosPaySuccess
+        },
+
         isRefreshHomePage: (state) => {
             state.isRefreshHomePage = getStore('isRefreshHomePage') ? getStore('isRefreshHomePage') === 'false' ? false : true : false
             return state.isRefreshHomePage
@@ -148,6 +153,12 @@ export default {
         changeIsPaying(state, playLoad) {
             setStore('isPaying', playLoad);
             state.isPaying = playLoad
+        },
+
+        // 保存苹果内购支付订单状态
+        changeIsIosPaySuccess(state, playLoad) {
+            setStore('isIosPaySuccess', playLoad);
+            state.isIosPaySuccess = playLoad
         },
 
         // 保存系统消息id
