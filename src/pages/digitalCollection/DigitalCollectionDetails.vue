@@ -203,15 +203,19 @@
                 <div v-show="!loadingImgGifShow">
                     <span>¥ {{productsDetails.price}}</span>
                 </div>
-                <div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': productsDetails.status == 1 || !isCountDownShow}" v-show="!loadingImgGifShow" @click="purchaseEvent">
+                <div :class="{'sellStyle': !isCountDownShow,'purchaseStyle': (productsDetails.status == 1 || !isCountDownShow) && productsDetails.status != 2}" v-show="!loadingImgGifShow" @click="purchaseEvent">
                     <span>{{isCountDownShow ? '即将开售' : productsDetails.status == 1  ||  productsDetails.status == 0 ? '购 买' : '已售罄'}}</span>
                     <van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
                 </div>
             </div>
             <!-- 标记支付售卖开始 -->
             <van-count-down v-show="false" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
-            <!-- 标记支付尾款开始 -->
+            <!-- 标记预售开始 -->
+            <van-count-down v-show="false" :time="Number(productsDetails.entity && productsDetails.entity.start) - new Date().getTime()" format="DD:HH:mm:ss" @finish="presellStartCountDownEvent"/>
+            <!-- 标记预售结束 -->
             <van-count-down v-show="false" :time="Number(productsDetails.entity && productsDetails.entity.end) - new Date().getTime()" format="DD:HH:mm:ss" @finish="presellEndCountDownEvent"/>
+             <!-- 标记付尾款开始 -->
+            <van-count-down v-show="false" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="balancePaymentEvent"/>
             <!-- 开启预售 -->
             <div class="presell-area" v-if="productsDetails.presale == 1 && productsDetails.status == 0">   
                 <div v-if="!loadingImgGifShow && (productsDetails.entity.status == 1  ||  productsDetails.entity.status == 0)">
