@@ -229,7 +229,7 @@
                     <van-count-down v-show="isCountDownShow" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="countDownEvent"/>
                 </div>
                 <div :class="{'sellStyle': !isBalancePaymentShow,'purchaseStyle': !isBalancePaymentShow}" v-if="!loadingImgGifShow && productsDetails.priority == 1 && !isShowPresaleEndCountDown && productsDetails.entity.status == 2" @click="purchaseEvent">
-                    <span>支付尾款</span>
+                    <span>{{isBalancePaymentShow ? '即将支付尾款' : '支付尾款'}}</span>
                     <van-count-down v-show="isBalancePaymentShow" :time="Number(productsDetails.seckillTime) - new Date().getTime()" format="DD:HH:mm:ss" @finish="balancePaymentEvent"/>
                 </div>
             </div>

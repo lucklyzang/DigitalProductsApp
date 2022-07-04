@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="left-sell" v-show="!item.isShowPresaleEndCountDown && item.entity.status == 2 && item.priority == 1">
                                     <van-icon name="underway" size="14" color="#63b66b" />
-                                    <span>支付尾款</span>
+                                    <span>{{item.isBalancePaymentShow ? '即将支付尾款' : '支付尾款'}}</span>
                                     <van-count-down v-show="item.isBalancePaymentShow" :time="item.countdownTime" @finish="balancePaymentEvent(index)" format="DD:HH:mm:ss"/>
                                 </div>
                                 <div class="left-sell" v-show="item.entity.status == 2 && item.priority == 0">
