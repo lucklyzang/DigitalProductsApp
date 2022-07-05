@@ -264,6 +264,7 @@
                                     collectionName: item.name,
 									collectionUrl: item.imgPath,
 									pubName: item.pubName,
+									status: item.status,
 									collectionPrice: item.price,
 									orderId: item.orderId,
       								orderNo: item.orderNo,

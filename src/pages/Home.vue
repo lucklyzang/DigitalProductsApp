@@ -667,27 +667,17 @@
 
             //作品访问统计
             productsVisitStatistics(item) {
+                this.changeProductsId(item);
+                this.$router.push({
+                    name: 'collectionDetails',
+                    params: {
+                        id: item.id
+                    }
+                });
                 productVisitRecord(item.id).then((res) => {
-                        this.changeProductsId(item);
-                        this.$router.push({
-                            name: 'collectionDetails',
-                            params: {
-                                id: item.id
-                            }
-                        });
-                        if (res && res.data.code == 0) {} else {
-                            this.$toast({
-                                message: `${res.data.msg}`,
-                                position: 'bottom'
-                            })
-                        }
-                    })
-                    .catch((err) => {
-                        this.$toast({
-                            message: `${err.message}`,
-                            position: 'bottom'
-                        })
-                    })
+                })
+                .catch((err) => {
+                })
             },
 
             // 藏品点击详情事件
