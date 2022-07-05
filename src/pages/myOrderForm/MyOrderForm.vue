@@ -41,7 +41,7 @@
 								去付款
 							</span>
 						</div>
-						<div v-show="item.status != 0 ">
+						<div v-show="item.collectionStatus != 0 ">
 							<span>
 								{{item.type == 3 ? '尾款订单' : item.type == 2 ? '预购订单' : ''}}
 							</span>
@@ -76,7 +76,7 @@
 								去付款
 							</span>
 						</div>
-						<div v-show="item.status != 0 ">
+						<div v-show="item.collectionStatus != 0 ">
 							<span>
 								{{item.type == 3 ? '尾款订单' : item.type == 2 ? '预购订单' : ''}}
 							</span>
@@ -111,7 +111,7 @@
 								去付款
 							</span>
 						</div>
-						<div v-show="item.status != 0 ">
+						<div v-show="item.collectionStatus != 0 ">
 							<span>
 								{{item.type == 3 ? '尾款订单' : item.type == 2 ? '预购订单' : ''}}
 							</span>
@@ -146,7 +146,7 @@
 								去付款
 							</span>
 						</div>
-						<div v-show="item.status != 0 ">
+						<div v-show="item.collectionStatus != 0 ">
 							<span>
 								{{item.type == 3 ? '尾款订单' : item.type == 2 ? '预购订单' : ''}}
 							</span>
@@ -264,7 +264,6 @@
                                     collectionName: item.name,
 									collectionUrl: item.imgPath,
 									pubName: item.pubName,
-									status: item.status,
 									collectionPrice: item.price,
 									orderId: item.orderId,
       								orderNo: item.orderNo,
