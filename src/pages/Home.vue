@@ -597,9 +597,12 @@
                             for (let item of res.data.list) {
                                 let currentIndex = this.digitalCollectionList.indexOf(this.digitalCollectionList.filter((innerItem) => { return innerItem.id == item.id})[0]);
                                 if (currentIndex != -1) {
-                                    this.digitalCollectionList[currentIndex]['status'] = item.status;
-                                    this.digitalCollectionList[currentIndex]['priority'] = item.priority;
-                                    this.digitalCollectionList[currentIndex]['entity'] = item.entity
+                                    // 已售罄的状态不更改
+                                    if (this.digitalCollectionList[currentIndex]['status'] != 2) {
+                                        this.digitalCollectionList[currentIndex]['status'] = item.status;
+                                        this.digitalCollectionList[currentIndex]['priority'] = item.priority;
+                                        this.digitalCollectionList[currentIndex]['entity'] = item.entity
+                                    }    
                                 }
                             } 
                         }

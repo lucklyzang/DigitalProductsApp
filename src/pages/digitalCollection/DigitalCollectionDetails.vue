@@ -383,10 +383,10 @@
                     })
                 })
             };
-             // 轮询任务状态
+            // 轮询任务状态
             if (!windowTimer) {
                 windowTimer = window.setInterval(() => {
-                    if (this.isTimeoutContinue) {
+                    if (this.isTimeoutContinue && this.productsDetails.status != 2) {
                         this.timingQueryProductDetails()
                     }
                 }, 3000)
