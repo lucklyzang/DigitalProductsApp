@@ -371,7 +371,9 @@
             // 轮询任务状态
             if (!windowTimer) {
                 windowTimer = window.setInterval(() => {
-                    if (this.isTimeoutContinue) {
+                    // 所有产品都售罄时就不在查询产品状态
+                    let isAllSellout = this.digitalCollectionList.every((item) => { return item.status == 2 });
+                    if (this.isTimeoutContinue && !isAllSellout) {
                         this.timingQueryProductsList()
                     }
                 }, 3000)

@@ -242,7 +242,7 @@
                     <span>¥ {{productsDetails.price}}</span>
                 </div>
                 <div :class="{'sellStyle': true,'purchaseStyle': true}" v-if="!loadingImgGifShow && productsDetails.priority == 0 && productsDetails.status == 1" @click="purchaseEvent">
-                    <span>购买</span>
+                    <span>购 买</span>
                 </div>
                 <div :class="{'sellStyle': true,'purchaseStyle': true}" v-if="!loadingImgGifShow && productsDetails.priority == 1 && productsDetails.status == 1" @click="purchaseEvent">
                     <span>支付尾款</span>
