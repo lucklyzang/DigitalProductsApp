@@ -1,5 +1,6 @@
 <template>
 	<div class="content-box" id="top-content">
+		<van-empty :description="descriptionContent" v-show="emptyShow" />
 		<NavBar path="/myInfo" title="我的订单"/>
 		<div class="content-top">
 			<van-sticky :offset-top="45">
@@ -16,7 +17,6 @@
 		</div>
 		<div class="content-bottom">
 			<van-loading type="spinner" v-show="loadingShow"/>
-        	<van-empty :description="descriptionContent" v-show="emptyShow" />
 			<div class="all-order" v-show="currentTabIndex === 0">
 				<div class="order-list" @click="orderDetailsEvent(item)" v-for="(item,index) in orderList" :key="index">
 					<div class="left">
@@ -354,6 +354,13 @@
                 font-size: 16px !important
             }
         };
+		/deep/ .van-empty {
+			width: 100%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%)
+		};
 		.content-top {
 			/deep/ .van-sticky {
 				z-index: 2000;

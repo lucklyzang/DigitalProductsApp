@@ -1,9 +1,9 @@
 <template>
   <div class="page-box" id="top-content">
     <NavBar title="消息" path="myInfo" />
+    <van-empty :description="descriptionContent" v-show="emptyShow" />
     <div class="content-box">
         <van-loading type="spinner" v-show="loadingShow"/>
-        <van-empty :description="descriptionContent" v-show="emptyShow" />
         <div class="message-list" v-for="(item,index) in messageList" :key="index" @click="jumpSystemMessageDetailsPage(item)">
             <div class="top">
               <div class="message-title">
@@ -200,6 +200,14 @@
             color: #fff !important;
             font-size: 16px !important
         }
+    };
+    /deep/ .van-empty {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 100
     };
     .content-box {
       flex: 1;

@@ -204,6 +204,13 @@
                 height: auto;
             }
         };
+		 /deep/ .van-empty {
+			width: 100%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%)
+		};
 		.content-center {
 			width: 95%;
 			margin: 0 auto;
