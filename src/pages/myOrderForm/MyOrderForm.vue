@@ -365,7 +365,7 @@
 			position: relative;
 			/deep/ .van-tabs {
 				.van-tab {
-					font-size: 16px;
+					font-size: 15px;
 				};
 				.van-tabs__content {
 					min-height: 80vh
