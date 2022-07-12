@@ -1,13 +1,13 @@
 <template>
 	<div class="content-box" id="top-content">
 		<van-empty :description="descriptionContent" v-show="emptyShow" />
-		<NavBar path="/myInfo" title="我的订单"/>
+		<NavBar path="/myInfo" title="我的订单" ref="navBar"/>
 		<div class="content-order">
 			<van-loading type="spinner" v-show="loadingShow"/>
 			<van-tabs v-model="activeName" background="#1e1e1b"
 				line-width="14px"
 				sticky
-				offset-top="0"
+				:offset-top="navBarHeight"
 				swipeable
 				color="#f5cc9b"
 				title-inactive-color="#686868"
@@ -174,6 +174,7 @@
 		data() {
 			return {
 				activeName: '0',
+				navBarHeight: '',
 				isShowLoadFail: false,
 				emptyShow: false,
                 loadingShow: false,
@@ -190,6 +191,10 @@
 		},
 		mounted() {
 			this.toTop();
+			// 获取导航栏高度
+			this.$nextTick(() => {
+				this.navBarHeight = (this.$refs.navBar.$el.clientHeight - 1) + 'px'
+			});
 			// 控制设备物理返回按键
             if (!IsPC()) {
                 pushHistory();
@@ -208,6 +213,7 @@
 				'changeIsPaying',
 				'changeProductsId'
 			]),
+			
 
 			//让页面滚动到顶部
 			toTop() {
