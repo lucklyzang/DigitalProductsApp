@@ -4,7 +4,7 @@
 		<NavBar path="/myInfo" title="我的订单"/>
 		<div class="content-order">
 			<van-loading type="spinner" v-show="loadingShow"/>
-			<van-tabs v-model="activeName" background="transparent"
+			<van-tabs v-model="activeName" background="#1e1e1b"
 				line-width="14px"
 				sticky
 				offset-top="46px"
