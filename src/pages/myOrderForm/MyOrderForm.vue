@@ -7,7 +7,7 @@
 			<van-tabs v-model="activeName" background="#1e1e1b"
 				line-width="14px"
 				sticky
-				offset-top="46px"
+				offset-top="0"
 				swipeable
 				color="#f5cc9b"
 				title-inactive-color="#686868"
@@ -364,6 +364,9 @@
 			box-sizing: border-box;
 			position: relative;
 			/deep/ .van-tabs {
+				.van-sticky--fixed {
+					z-index: 2000
+				};
 				.van-tab {
 					font-size: 15px;
 				};
