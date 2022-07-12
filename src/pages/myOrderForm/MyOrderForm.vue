@@ -364,6 +364,9 @@
 			left: 50%;
 			transform: translate(-50%,-50%)
 		};
+		.tabBar-box {
+			margin-top: -1px
+		};
 		.content-order {
 			width: 95%;
 			margin: 0 auto;
