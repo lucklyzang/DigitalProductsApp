@@ -364,6 +364,9 @@
 			box-sizing: border-box;
 			position: relative;
 			/deep/ .van-tabs {
+				.van-tab {
+					font-size: 16px;
+				};
 				.van-tabs__content {
 					min-height: 80vh
 				};
