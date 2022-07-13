@@ -345,7 +345,6 @@
 @import "~@/common/stylus/modifyUi.less";
 	.content-box {
 		.content-wrapper();
-		height: 100vh;
         background: @color-background;
         /deep/ .van-nav-bar {
             .van-icon {

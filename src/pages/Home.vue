@@ -18,17 +18,19 @@
                 </van-swipe>
             </div>
             <div class="rare-object-copy" v-show="isShowRareObjectCopy"></div>
-            <div class="tab-switch-box">
-                <div class="tab-switch" ref="tabSwitch" :class="{'tabSwitchStyle':isFixed}">
-                    <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
-                        :class="{'active-tab-style': index === currentTabIndex }"
-                    >
-                        {{
-                        item.name
-                        }}
-                    </span>
+            <van-sticky>
+                <div class="tab-switch-box">
+                    <div class="tab-switch" ref="tabSwitch">
+                        <span v-for="(item,index) in tabTitlelList" :key="index" @click="tabSwitchEvent(index)"
+                            :class="{'active-tab-style': index === currentTabIndex }"
+                        >
+                            {{
+                            item.name
+                            }}
+                        </span>
+                    </div>
                 </div>
-            </div>    
+            </van-sticky>        
             <div class="switch-content">
                 <van-loading type="spinner" v-show="loadingShow && currentTabIndex === 1"/>
                 <van-empty :description="descriptionContent" v-show="emptyShow" />
@@ -269,7 +271,6 @@
                 bannerList: [],
                 navBarHeight: 0,
                 rareObjectHeight: 0,
-                isFixed: false, 
                 isDisabledRefresh: false,
                 isShowLoadFail: false,
                 isRefresh: false,
@@ -473,8 +474,6 @@
             //页面滚动事件
             handleScroll () {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-                // 判断页面滚动的距离是否大于吸顶元素距离顶部的位置
-                this.isFixed = scrollTop >= this.navBarHeight + this.rareObjectHeight;
                 if (scrollTop > 0) {
                     this.isDisabledRefresh = true;
                 } else {
@@ -771,6 +770,9 @@
                 border-radius: 10px;
                 background: #3b3b3b;
             };
+            /deep/ .van-sticky--fixed {
+                z-index: 2000
+            };
             .tab-switch-box {
                 height: 48px;
                 .tab-switch {
@@ -806,17 +808,7 @@
                             background: #f5cc9b
                         }
                     }
-                };
-                .tabSwitchStyle {
-                    position: fixed;
-                    transform: translateZ(0);
-                    -webkit-transform: translateZ(0);
-                    top: -1px;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    height: 48px
-                }    
+                }
             };
             .switch-content {
                 flex: 1;
