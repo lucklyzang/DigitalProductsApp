@@ -1032,6 +1032,7 @@
                 .img-box {
                     width: 100%;
                     margin: 0 auto;
+                    min-height: 10vh;
                     img {
                         pointer-events: none;
                         width: 100%;
