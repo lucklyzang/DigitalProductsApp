@@ -83,6 +83,9 @@
 	} from 'vuex'
 	import {queryObjectRecord,queryHallMessage} from '@/api/products.js'
     import FooterBottom from '@/components/FooterBottom'
+    import {
+        IsPC
+    } from '@/common/js/utils'
 	export default {
         name: 'MyObject',
 		components: {
@@ -120,6 +123,16 @@
 		},
 		mounted() {
             this.toTop();
+            // 控制设备物理返回按键
+            if (!IsPC()) {
+                pushHistory();
+                this.gotoURL(() => {
+                    pushHistory();
+					this.$router.push({
+						path: '/myObject'
+					})
+                })
+            };
             if (this.isLogin) {
                 // 查询藏品记录
                 this.queryCollectionRecords();
