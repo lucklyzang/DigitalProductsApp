@@ -144,7 +144,7 @@ export default {
       that.gotoURL(() => {
         pushHistory();
 		if (this.isTokenExpired === true) {
-			if (this.path == '/myInfo' || this.path == '/collectionDetails') {
+			if (this.path == '/myInfo' || this.path == '/collectionDetails' || this.path == '/myObject') {
 				this.$router.push({path: this.path})
 			} else {
 				this.$router.push({path: 'home'})
