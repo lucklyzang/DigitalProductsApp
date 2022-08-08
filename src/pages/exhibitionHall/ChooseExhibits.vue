@@ -280,7 +280,14 @@
 	.content-box {
 		.content-wrapper();
         background: @color-background;
-         /deep/ .van-nav-bar {
+        /deep/ .van-empty {
+			width: 100%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%)
+		};
+        /deep/ .van-nav-bar {
             background: @color-background;
             .van-nav-bar__title {
                 color: #fff !important
