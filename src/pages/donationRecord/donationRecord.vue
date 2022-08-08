@@ -204,7 +204,7 @@
                 height: auto;
             }
         };
-		 /deep/ .van-empty {
+		/deep/ .van-empty {
 			width: 100%;
 			position: absolute;
 			top: 50%;

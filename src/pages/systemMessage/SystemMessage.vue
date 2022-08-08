@@ -23,7 +23,7 @@
               <van-icon name="arrow" color="#9c9c9c" />
             </div>
         </div>
-        <span class="expect" v-show="!loadingShow">- 没有更多消息了 -</span>
+        <span class="expect" v-show="!loadingShow && !emptyShow">- 没有更多消息了 -</span>
     </div>
   </div>
 </template>
