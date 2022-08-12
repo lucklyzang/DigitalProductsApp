@@ -240,7 +240,7 @@
 
 			// tab切换点击事件
 			tabClickEvent (name,title) {
-				this.queryProductsList(Number(name))
+				// this.queryProductsList(Number(name))
 			},
 
 			// tab激活的标签改变时触发
